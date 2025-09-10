@@ -92,7 +92,7 @@ export default function SignInPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="name@example.com"
+                placeholder="メールアドレスを入力"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
