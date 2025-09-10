@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, CheckCircle } from 'lucide-react'
+import { FcGoogle } from 'react-icons/fc'
 
 export default function SignUpPage() {
   const router = useRouter()
@@ -102,6 +103,28 @@ export default function SignUpPage() {
       }
     } catch (error) {
       setError('サインアップに失敗しました。')
+      setLoading(false)
+    }
+  }
+
+  const handleGoogleSignUp = async () => {
+    setError(null)
+    setLoading(true)
+
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      })
+
+      if (error) {
+        setError(error.message)
+        setLoading(false)
+      }
+    } catch (error) {
+      setError('Googleサインアップに失敗しました。')
       setLoading(false)
     }
   }
@@ -203,6 +226,24 @@ export default function SignUpPage() {
               ) : (
                 '新規登録'
               )}
+            </Button>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">または</span>
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={handleGoogleSignUp}
+              disabled={loading || success}
+            >
+              <FcGoogle className="mr-2 h-4 w-4" />
+              Googleで新規登録
             </Button>
             <div className="text-center text-sm">
               すでにアカウントをお持ちの方は{' '}

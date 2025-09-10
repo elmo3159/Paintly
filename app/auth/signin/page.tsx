@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2 } from 'lucide-react'
+import { FcGoogle } from 'react-icons/fc'
 
 export default function SignInPage() {
   const router = useRouter()
@@ -42,6 +43,28 @@ export default function SignInPage() {
       }
     } catch (error) {
       setError('サインインに失敗しました。')
+      setLoading(false)
+    }
+  }
+
+  const handleGoogleSignIn = async () => {
+    setError(null)
+    setLoading(true)
+
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      })
+
+      if (error) {
+        setError(error.message)
+        setLoading(false)
+      }
+    } catch (error) {
+      setError('Googleサインインに失敗しました。')
       setLoading(false)
     }
   }
@@ -110,6 +133,24 @@ export default function SignInPage() {
               ) : (
                 'サインイン'
               )}
+            </Button>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">または</span>
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={handleGoogleSignIn}
+              disabled={loading}
+            >
+              <FcGoogle className="mr-2 h-4 w-4" />
+              Googleでサインイン
             </Button>
             <div className="text-center text-sm">
               アカウントをお持ちでない方は{' '}
