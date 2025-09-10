@@ -8,9 +8,14 @@ export async function middleware(request: NextRequest) {
     },
   })
 
+  // Skip middleware if env vars are not set
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return response
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
         get(name: string) {
@@ -65,7 +70,8 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect to dashboard if user is logged in and trying to access auth pages
-  if (user && request.nextUrl.pathname.startsWith('/auth/')) {
+  // BUT exclude /auth/callback to allow OAuth flow to complete
+  if (user && request.nextUrl.pathname.startsWith('/auth/') && !request.nextUrl.pathname.startsWith('/auth/callback')) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
