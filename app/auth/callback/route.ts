@@ -55,8 +55,7 @@ export async function GET(request: Request) {
           .insert({
             id: user.id,
             email: user.email,
-            name: user.user_metadata?.name || user.user_metadata?.full_name || user.email?.split('@')[0],
-            avatar_url: user.user_metadata?.avatar_url || user.user_metadata?.picture,
+            full_name: user.user_metadata?.name || user.user_metadata?.full_name || user.email?.split('@')[0],
           })
 
         if (insertUserError) {

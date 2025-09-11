@@ -316,10 +316,18 @@ filesystem MCP - ファイルシステムアクセス用
 Desktop Commander - デスクトップ操作用
 Github MCP - GitHub連携用
 Context7 MCP - コンテキスト管理用
-serena
-Cipher
+serena MCP
+Cipher MCP
+Vercel MCP
 上記が接続されているすべてのMCPサーバーです。
 上手く活用してください。
 
 機能を実装する際は、既にその機能が実装されていないかSerenaMCPなどで確認してから行ってください。
 ClaudeCodeが忘れているだけかもしれないので。
+
+Vercelトークン
+JQmd56rPfQAMp7Wu05Wyrnqt
+
+## Google OAuth
+Google OAuth認証は有効になっています。
+認証情報はVercelの環境変数で管理されています。
