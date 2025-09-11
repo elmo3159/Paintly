@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Building Image</title>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="300"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Draw a simple house
+        ctx.fillStyle = '#8B4513'; // Brown walls
+        ctx.fillRect(50, 150, 200, 100);
+        
+        // Roof
+        ctx.fillStyle = '#654321'; // Dark brown roof
+        ctx.beginPath();
+        ctx.moveTo(40, 150);
+        ctx.lineTo(150, 80);
+        ctx.lineTo(260, 150);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Door
+        ctx.fillStyle = '#4A4A4A'; // Gray door
+        ctx.fillRect(130, 200, 40, 50);
+        
+        // Windows
+        ctx.fillStyle = '#87CEEB'; // Light blue windows
+        ctx.fillRect(80, 180, 30, 30);
+        ctx.fillRect(190, 180, 30, 30);
+        
+        // Convert to blob and download
+        canvas.toBlob(function(blob) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'test-building.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>

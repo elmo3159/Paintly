@@ -192,7 +192,7 @@ export function GenerationHistory({ customerId }: GenerationHistoryProps) {
                               size="sm"
                               variant="outline"
                               onClick={() => downloadImage(
-                                item.gemini_response.imageUrl,
+                                item.gemini_response?.imageUrl || '',
                                 `paintly_${item.id}.png`
                               )}
                             >
