@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
         model: 'gemini-2.5-flash-image-preview',
         generationConfig: {
           responseModalities: ['TEXT', 'IMAGE']
-        } as any
+        }
       })
       
       const imageParts = [
