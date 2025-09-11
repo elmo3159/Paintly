@@ -21,14 +21,14 @@ export default async function DashboardPage() {
     return null
   }
 
-  // Get user's statistics
+  // Get user's statistics - with error handling
   const [customersData, generationsData, subscriptionData] = await Promise.all([
     supabase
-      .from('customers')
+      .from('customer_pages')
       .select('id')
       .eq('user_id', user.id),
     supabase
-      .from('generation_history')
+      .from('generations')
       .select('id, created_at')
       .eq('user_id', user.id)
       .eq('status', 'completed'),
@@ -43,7 +43,7 @@ export default async function DashboardPage() {
       `)
       .eq('user_id', user.id)
       .eq('status', 'active')
-      .single()
+      .maybeSingle()
   ])
 
   const totalCustomers = customersData.data?.length || 0
