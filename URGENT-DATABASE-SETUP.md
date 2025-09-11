@@ -198,9 +198,18 @@ CREATE TRIGGER update_generations_updated_at BEFORE UPDATE ON generations
 
 2. **成功メッセージ**が表示されること
 
+## ⚠️ 重要: Plansテーブルのポリシー追加
+
+**最後にこのSQLも実行してください**（plansテーブルを全ユーザーが読める必要があります）:
+
+```sql
+-- plansテーブルはRLSを無効化（全ユーザーがプラン情報を読める必要があるため）
+ALTER TABLE plans DISABLE ROW LEVEL SECURITY;
+```
+
 ## 🔄 実行後の手順
 
-1. テーブル作成完了後、ブラウザのキャッシュをクリア
+1. すべてのSQL実行完了後、ブラウザのキャッシュをクリア
 2. `https://paintly-pearl.vercel.app/auth/signin`にアクセス
 3. Googleログインを再度試す
 
