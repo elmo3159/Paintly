@@ -12,10 +12,13 @@ import Image from 'next/image'
 interface GenerationHistoryItem {
   id: string
   created_at: string
+  completed_at: string | null
   status: 'processing' | 'completed' | 'failed'
-  prompt_details: any
-  result_image_url: string | null
-  original_image_url: string | null
+  wall_color: string | null
+  roof_color: string | null
+  door_color: string | null
+  weather: string | null
+  gemini_response: { imageUrl?: string; hasImage?: boolean } | null
   error_message: string | null
 }
 
@@ -106,9 +109,9 @@ export function GenerationHistory({ customerId }: GenerationHistoryProps) {
                     <div className="flex items-start space-x-4">
                       {/* Thumbnail */}
                       <div className="relative w-32 h-32 flex-shrink-0 bg-muted rounded-lg overflow-hidden">
-                        {item.result_image_url ? (
+                        {item.gemini_response?.imageUrl ? (
                           <Image
-                            src={item.result_image_url}
+                            src={item.gemini_response.imageUrl}
                             alt="生成画像"
                             fill
                             className="object-cover"
@@ -154,20 +157,20 @@ export function GenerationHistory({ customerId }: GenerationHistoryProps) {
                           </Badge>
                         </div>
 
-                        {item.prompt_details && (
-                          <div className="text-sm space-y-1">
-                            {item.prompt_details.wallColor !== '変更なし' && (
-                              <p>壁: {item.prompt_details.wallColor}</p>
-                            )}
-                            {item.prompt_details.roofColor !== '変更なし' && (
-                              <p>屋根: {item.prompt_details.roofColor}</p>
-                            )}
-                            {item.prompt_details.doorColor !== '変更なし' && (
-                              <p>ドア: {item.prompt_details.doorColor}</p>
-                            )}
-                            <p>天候: {item.prompt_details.weather}</p>
-                          </div>
-                        )}
+                        <div className="text-sm space-y-1">
+                          {item.wall_color && item.wall_color !== '変更なし' && (
+                            <p>壁: {item.wall_color}</p>
+                          )}
+                          {item.roof_color && item.roof_color !== '変更なし' && (
+                            <p>屋根: {item.roof_color}</p>
+                          )}
+                          {item.door_color && item.door_color !== '変更なし' && (
+                            <p>ドア: {item.door_color}</p>
+                          )}
+                          {item.weather && (
+                            <p>天候: {item.weather}</p>
+                          )}
+                        </div>
 
                         {item.error_message && (
                           <p className="text-sm text-destructive">
@@ -175,7 +178,7 @@ export function GenerationHistory({ customerId }: GenerationHistoryProps) {
                           </p>
                         )}
 
-                        {item.status === 'completed' && item.result_image_url && (
+                        {item.status === 'completed' && item.gemini_response?.imageUrl && (
                           <div className="flex space-x-2 pt-2">
                             <Button
                               size="sm"
@@ -189,7 +192,7 @@ export function GenerationHistory({ customerId }: GenerationHistoryProps) {
                               size="sm"
                               variant="outline"
                               onClick={() => downloadImage(
-                                item.result_image_url!,
+                                item.gemini_response.imageUrl,
                                 `paintly_${item.id}.png`
                               )}
                             >
@@ -224,10 +227,10 @@ export function GenerationHistory({ customerId }: GenerationHistoryProps) {
               </Button>
             </CardHeader>
             <CardContent className="space-y-4">
-              {selectedItem.result_image_url && (
+              {selectedItem.gemini_response?.imageUrl && (
                 <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted">
                   <Image
-                    src={selectedItem.result_image_url}
+                    src={selectedItem.gemini_response.imageUrl}
                     alt="生成画像"
                     fill
                     className="object-contain"
@@ -241,14 +244,23 @@ export function GenerationHistory({ customerId }: GenerationHistoryProps) {
                 <p className="text-sm">
                   <strong>ステータス:</strong> {selectedItem.status === 'completed' ? '完了' : selectedItem.status}
                 </p>
-                {selectedItem.prompt_details && (
-                  <div className="text-sm">
-                    <strong>設定内容:</strong>
-                    <pre className="mt-2 p-2 bg-muted rounded text-xs">
-                      {JSON.stringify(selectedItem.prompt_details, null, 2)}
-                    </pre>
+                <div className="text-sm">
+                  <strong>設定内容:</strong>
+                  <div className="mt-2 p-2 bg-muted rounded text-xs space-y-1">
+                    {selectedItem.wall_color && selectedItem.wall_color !== '変更なし' && (
+                      <div>壁の色: {selectedItem.wall_color}</div>
+                    )}
+                    {selectedItem.roof_color && selectedItem.roof_color !== '変更なし' && (
+                      <div>屋根の色: {selectedItem.roof_color}</div>
+                    )}
+                    {selectedItem.door_color && selectedItem.door_color !== '変更なし' && (
+                      <div>ドアの色: {selectedItem.door_color}</div>
+                    )}
+                    {selectedItem.weather && (
+                      <div>天候: {selectedItem.weather}</div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
             </CardContent>
           </Card>
