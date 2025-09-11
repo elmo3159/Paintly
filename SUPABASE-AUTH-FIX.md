@@ -17,14 +17,14 @@ SupabaseダッシュボードのSite URLが`https://paintly.app`に設定され�
 #### Site URL
 ```
 変更前: https://paintly.app
-変更後: https://paintly.vercel.app
+変更後: https://paintly-pearl.vercel.app
 ```
 
 #### Redirect URLs
 以下のURLを追加:
 ```
-https://paintly.vercel.app/**
-https://paintly.vercel.app/auth/callback
+https://paintly-pearl.vercel.app/**
+https://paintly-pearl.vercel.app/auth/callback
 ```
 
 ### 2. Google OAuth設定の確認
@@ -38,7 +38,7 @@ https://paintly.vercel.app/auth/callback
 Vercelダッシュボードで以下を確認:
 
 ```
-NEXT_PUBLIC_APP_URL=https://paintly.vercel.app
+NEXT_PUBLIC_APP_URL=https://paintly-pearl.vercel.app
 NEXT_PUBLIC_SUPABASE_URL=https://mockfjcakfzbzccabcgm.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=[既存の値]
 SUPABASE_SERVICE_ROLE_KEY=[既存の値]
@@ -55,12 +55,12 @@ GEMINI_API_KEY=[既存の値]
 ## 確認手順
 
 1. 上記の設定を完了後、ブラウザのキャッシュをクリア
-2. `https://paintly.vercel.app/auth/signin`にアクセス
+2. `https://paintly-pearl.vercel.app/auth/signin`にアクセス
 3. Googleログインボタンをクリック
-4. 正常に`https://paintly.vercel.app/dashboard`にリダイレクトされることを確認
+4. 正常に`https://paintly-pearl.vercel.app/dashboard`にリダイレクトされることを確認
 
 ## 重要な注意点
 
 - **paintly.app**は別のドメインなので使用しない
-- 正しいURLは**paintly.vercel.app**
+- 正しいURLは**paintly-pearl.vercel.app**
 - プレビューデプロイメントURL（ハッシュ付き）は使用しない

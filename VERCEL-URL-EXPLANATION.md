@@ -6,7 +6,7 @@ Vercelには2種類のURLが存在しています：
 
 ### 1. 本番環境URL（Production）
 ```
-https://paintly.vercel.app
+https://paintly-pearl.vercel.app
 ```
 - これが**正式なURL**です
 - mainブランチの最新コードがデプロイされます
@@ -14,7 +14,8 @@ https://paintly.vercel.app
 
 ### 2. プレビューデプロイURL
 ```
-https://paintly-618kxqwot-elmos-projects-cf77d205.vercel.app
+https://paintly-git-main-elmos-projects-cf77d205.vercel.app
+https://paintly-3kdam2iy6-elmos-projects-cf77d205.vercel.app
 ```
 - これは**プレビュー環境**のURL
 - 特定のコミットやブランチのデプロイメント
@@ -40,7 +41,7 @@ https://paintly-618kxqwot-elmos-projects-cf77d205.vercel.app
 
 **常にこのURLを使用してください：**
 ```
-https://paintly.vercel.app
+https://paintly-pearl.vercel.app
 ```
 
 **Vercelの「Visit」ボタンについて：**
