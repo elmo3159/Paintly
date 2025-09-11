@@ -115,10 +115,7 @@ export async function POST(request: NextRequest) {
       console.log('Number of image parts:', sideImageBase64 ? 2 : 1)
       
       const model = genAI.getGenerativeModel({ 
-        model: 'gemini-2.5-flash-image-preview',
-        generationConfig: {
-          responseModalities: ['TEXT', 'IMAGE']
-        }
+        model: 'gemini-2.5-flash-image-preview'
       })
       
       const imageParts = [
