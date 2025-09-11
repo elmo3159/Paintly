@@ -109,6 +109,11 @@ export async function POST(request: NextRequest) {
 
     // Call Gemini API
     try {
+      console.log('GEMINI_API_KEY configured:', !!process.env.GEMINI_API_KEY)
+      console.log('Starting Gemini API call with model: gemini-2.5-flash-image-preview')
+      console.log('Prompt length:', prompt.length)
+      console.log('Number of image parts:', sideImageBase64 ? 2 : 1)
+      
       const model = genAI.getGenerativeModel({ 
         model: 'gemini-2.5-flash-image-preview',
         generationConfig: {
@@ -134,8 +139,11 @@ export async function POST(request: NextRequest) {
         })
       }
 
+      console.log('Calling generateContent...')
       const result = await model.generateContent([prompt, ...imageParts])
+      console.log('Gemini API call completed, getting response...')
       const response = await result.response
+      console.log('Response object keys:', Object.keys(response))
       
       let generatedImageUrl: string | null = null
       let generatedImageData: string | null = null
@@ -209,18 +217,43 @@ export async function POST(request: NextRequest) {
 
     } catch (geminiError: any) {
       console.error('Gemini API Error:', geminiError)
+      console.error('Error details:', {
+        message: geminiError.message,
+        code: geminiError.code,
+        status: geminiError.status,
+        statusText: geminiError.statusText,
+        stack: geminiError.stack
+      })
       
-      // Update history record with error
+      // Create detailed error message
+      const errorDetails = {
+        type: 'gemini_api_error',
+        message: geminiError.message,
+        code: geminiError.code,
+        status: geminiError.status,
+        statusText: geminiError.statusText,
+        timestamp: new Date().toISOString()
+      }
+      
+      // Update history record with detailed error
       await supabase
         .from('generation_history')
         .update({
           status: 'failed',
-          error_message: geminiError.message || '画像生成に失敗しました'
+          error_message: geminiError.message || 'Gemini API呼び出しに失敗しました',
+          gemini_response: { 
+            error: errorDetails,
+            hasImage: false,
+            imageUrl: null 
+          }
         })
         .eq('id', historyRecord.id)
 
       return NextResponse.json(
-        { error: '画像生成に失敗しました' },
+        { 
+          error: 'Gemini API呼び出しに失敗しました',
+          details: geminiError.message 
+        },
         { status: 500 }
       )
     }
