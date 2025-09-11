@@ -189,14 +189,11 @@ export default async function DashboardPage() {
                   建物の写真をアップロードして色を変更
                 </p>
               </div>
-              <Button onClick={() => {
-                const sidebar = document.querySelector('[data-new-customer-btn]')
-                if (sidebar) {
-                  (sidebar as HTMLButtonElement).click()
-                }
-              }}>
-                開始
-              </Button>
+              <Link href="/customer/new">
+                <Button>
+                  開始
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>

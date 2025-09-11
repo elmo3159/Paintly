@@ -325,6 +325,8 @@ Vercel MCP
 機能を実装する際は、既にその機能が実装されていないかSerenaMCPなどで確認してから行ってください。
 ClaudeCodeが忘れているだけかもしれないので。
 
+WEB検索を活用して、最新の実装方法などを調べる事も大事です。
+
 Vercelトークン
 JQmd56rPfQAMp7Wu05Wyrnqt
 
