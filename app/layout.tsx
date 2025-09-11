@@ -29,7 +29,12 @@ export const metadata: Metadata = {
     title: 'Paintly - 塗装シミュレーションツール',
     description: '建物の塗装後の仕上がりをAIで瞬時にシミュレーション',
   },
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' }

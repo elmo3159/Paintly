@@ -14,12 +14,18 @@ import {
 import Link from 'next/link'
 
 export default async function DashboardPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  try {
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
 
-  if (!user) {
-    return null
-  }
+    if (authError) {
+      console.error('Auth error in dashboard:', authError)
+      return null
+    }
+
+    if (!user) {
+      return null
+    }
 
   // Get user's statistics - with error handling
   const [customersData, generationsData, subscriptionData] = await Promise.all([
@@ -248,4 +254,24 @@ export default async function DashboardPage() {
       </Card>
     </div>
   )
+  } catch (error) {
+    console.error('Error in dashboard:', error)
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Card className="max-w-lg w-full mx-4">
+          <CardHeader>
+            <CardTitle>エラーが発生しました</CardTitle>
+            <CardDescription>
+              ダッシュボードの読み込み中にエラーが発生しました。
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link href="/auth/signin">
+              <Button className="w-full">ログインページへ</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
 }
