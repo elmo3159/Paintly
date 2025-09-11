@@ -140,34 +140,103 @@ export async function POST(request: NextRequest) {
       }
 
       console.log('Calling generateContent...')
+      console.log('Input prompt:', prompt)
+      console.log('Number of image parts:', imageParts.length)
+      
+      // Record debug info in database
+      await supabase
+        .from('generation_history')
+        .update({
+          gemini_response: { 
+            debug: 'Starting Gemini API call',
+            prompt_length: prompt.length,
+            image_count: imageParts.length,
+            timestamp: new Date().toISOString()
+          }
+        })
+        .eq('id', historyRecord.id)
+      
       const result = await model.generateContent([prompt, ...imageParts])
       console.log('Gemini API call completed, getting response...')
       const response = await result.response
       console.log('Response object keys:', Object.keys(response))
       console.log('Full response:', JSON.stringify(response, null, 2))
       
+      // Record response info in database
+      await supabase
+        .from('generation_history')
+        .update({
+          gemini_response: { 
+            debug: 'Gemini API call completed',
+            response_keys: Object.keys(response),
+            candidates_count: response.candidates?.length || 0,
+            full_response: JSON.stringify(response),
+            timestamp: new Date().toISOString()
+          }
+        })
+        .eq('id', historyRecord.id)
+      
       let generatedImageUrl: string | null = null
       let generatedImageData: string | null = null
 
       // Process response parts to find generated image
       console.log('Number of candidates:', response.candidates?.length || 0)
+      const debugInfo = {
+        candidates_count: response.candidates?.length || 0,
+        candidates_details: [],
+        image_found: false,
+        search_process: []
+      }
+      
       for (let i = 0; i < (response.candidates || []).length; i++) {
         const candidate = response.candidates![i]
         console.log(`Candidate ${i}:`, JSON.stringify(candidate, null, 2))
         console.log(`Candidate ${i} parts count:`, candidate.content?.parts?.length || 0)
         
+        const candidateInfo = {
+          index: i,
+          parts_count: candidate.content?.parts?.length || 0,
+          parts_details: []
+        }
+        debugInfo.candidates_details.push(candidateInfo)
+        
         for (let j = 0; j < (candidate.content?.parts || []).length; j++) {
           const part = candidate.content!.parts![j]
           console.log(`Part ${j}:`, JSON.stringify(part, null, 2))
           
+          const partInfo = {
+            index: j,
+            has_inlineData: !!part.inlineData,
+            mimeType: part.inlineData?.mimeType || 'none',
+            has_text: !!part.text,
+            text_preview: part.text ? part.text.substring(0, 100) : null
+          }
+          candidateInfo.parts_details.push(partInfo)
+          debugInfo.search_process.push(`Candidate ${i}, Part ${j}: ${partInfo.mimeType}`)
+          
           if (part.inlineData && part.inlineData.mimeType?.startsWith('image/')) {
             console.log('Found image data in part:', j)
+            debugInfo.image_found = true
+            debugInfo.search_process.push(`IMAGE FOUND in Candidate ${i}, Part ${j}`)
             generatedImageData = part.inlineData.data
             break
           }
         }
         if (generatedImageData) break
       }
+      
+      // Record detailed search results in database
+      await supabase
+        .from('generation_history')
+        .update({
+          gemini_response: { 
+            debug: 'Image search completed',
+            search_results: debugInfo,
+            image_found: !!generatedImageData,
+            timestamp: new Date().toISOString()
+          }
+        })
+        .eq('id', historyRecord.id)
 
       if (generatedImageData) {
         // Convert base64 to buffer for upload
