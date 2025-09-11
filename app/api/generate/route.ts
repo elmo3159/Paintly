@@ -180,9 +180,9 @@ export async function POST(request: NextRequest) {
       console.log('Number of candidates:', response.candidates?.length || 0)
       const debugInfo = {
         candidates_count: response.candidates?.length || 0,
-        candidates_details: [],
+        candidates_details: [] as any[],
         image_found: false,
-        search_process: []
+        search_process: [] as string[]
       }
       
       for (let i = 0; i < (response.candidates || []).length; i++) {
@@ -193,7 +193,7 @@ export async function POST(request: NextRequest) {
         const candidateInfo = {
           index: i,
           parts_count: candidate.content?.parts?.length || 0,
-          parts_details: []
+          parts_details: [] as any[]
         }
         debugInfo.candidates_details.push(candidateInfo)
         
