@@ -407,7 +407,7 @@ function buildPrompt({
     '雪': 'gentle snowfall with snow accumulating on surfaces, creating a peaceful winter scene'
   }
   
-  prompt += `The scene should be set during a ${weatherDescriptions[weather] || 'pleasant day with natural lighting'}. `
+  prompt += `The scene should be set during a ${weatherDescriptions[weather as keyof typeof weatherDescriptions] || 'pleasant day with natural lighting'}. `
 
   // Add layout instructions if side-by-side is selected
   if (layoutSideBySide && hasSideImage) {
