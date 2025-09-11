@@ -64,7 +64,7 @@ export default async function DashboardPage() {
       .from('subscriptions')
       .select(`
         generation_count,
-        plans (
+        plan:plans (
           name,
           generation_limit
         )
@@ -74,11 +74,22 @@ export default async function DashboardPage() {
       .maybeSingle()
   ])
 
+  // Check for errors in queries
+  if (customersData.error) {
+    console.error('Error fetching customers:', customersData.error)
+  }
+  if (generationsData.error) {
+    console.error('Error fetching generations:', generationsData.error)
+  }
+  if (subscriptionData.error) {
+    console.error('Error fetching subscription:', subscriptionData.error)
+  }
+
   const totalCustomers = customersData.data?.length || 0
   const totalGenerations = generationsData.data?.length || 0
   const planInfo = subscriptionData.data
-  const remainingGenerations = planInfo?.plans 
-    ? (planInfo.plans as any).generation_limit - planInfo.generation_count 
+  const remainingGenerations = planInfo?.plan 
+    ? (planInfo.plan as any).generation_limit - planInfo.generation_count 
     : 0
 
   // Get recent generations
@@ -134,7 +145,7 @@ export default async function DashboardPage() {
           <CardContent>
             <div className="text-2xl font-bold">{remainingGenerations}</div>
             <p className="text-xs text-muted-foreground">
-              {planInfo?.plans ? (planInfo.plans as any).name : '無料プラン'}
+              {planInfo?.plan ? (planInfo.plan as any).name : '無料プラン'}
             </p>
           </CardContent>
         </Card>
@@ -148,7 +159,7 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {planInfo?.plans ? (planInfo.plans as any).name : '無料'}
+              {planInfo?.plan ? (planInfo.plan as any).name : '無料'}
             </div>
             {remainingGenerations === 0 && (
               <Link href="/billing">
