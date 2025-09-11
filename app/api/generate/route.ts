@@ -110,12 +110,12 @@ export async function POST(request: NextRequest) {
     // Call Gemini API
     try {
       console.log('GEMINI_API_KEY configured:', !!process.env.GEMINI_API_KEY)
-      console.log('Starting Gemini API call with model: gemini-1.5-flash')
+      console.log('Starting Gemini API call with model: gemini-2.5-flash-image-preview')
       console.log('Prompt length:', prompt.length)
       console.log('Number of image parts:', sideImageBase64 ? 2 : 1)
       
       const model = genAI.getGenerativeModel({ 
-        model: 'gemini-1.5-flash'
+        model: 'gemini-2.5-flash-image-preview'
       })
       
       const imageParts = [
