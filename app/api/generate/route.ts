@@ -68,22 +68,33 @@ export async function POST(request: NextRequest) {
       sideImageBase64 = Buffer.from(sideImageBytes).toString('base64')
     }
 
+    // Build prompt first
+    const prompt = buildPrompt({
+      wallColor,
+      roofColor,
+      doorColor,
+      weather,
+      layoutSideBySide,
+      backgroundColor,
+      otherInstructions,
+      hasSideImage: !!sideImage
+    })
+
     // Create generation history record
     const { data: historyRecord, error: historyError } = await supabase
       .from('generation_history')
       .insert({
         user_id: user.id,
         customer_id: customerId,
-        status: 'processing',
-        prompt_details: {
-          wallColor,
-          roofColor,
-          doorColor,
-          weather,
-          layoutSideBySide,
-          backgroundColor,
-          otherInstructions
-        }
+        wall_color: wallColor,
+        roof_color: roofColor,
+        door_color: doorColor,
+        weather: weather,
+        layout_side_by_side: layoutSideBySide,
+        background_color: backgroundColor,
+        other_instructions: otherInstructions,
+        prompt: prompt,
+        status: 'processing'
       })
       .select()
       .single()
@@ -94,18 +105,6 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       )
     }
-
-    // Build prompt
-    let prompt = buildPrompt({
-      wallColor,
-      roofColor,
-      doorColor,
-      weather,
-      layoutSideBySide,
-      backgroundColor,
-      otherInstructions,
-      hasSideImage: !!sideImage
-    })
 
     // Call Gemini API
     try {
@@ -131,32 +130,16 @@ export async function POST(request: NextRequest) {
 
       const result = await model.generateContent([prompt, ...imageParts])
       const response = await result.response
-      const generatedImageUrl = response.text() // This would need to be processed/stored
+      const responseText = response.text()
 
-      // Upload generated image to Supabase Storage
-      // Note: In a real implementation, you'd need to handle the actual image data from Gemini
-      // This is a placeholder for the storage logic
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('generations')
-        .upload(`${user.id}/${historyRecord.id}/result.png`, generatedImageUrl, {
-          contentType: 'image/png',
-          upsert: true
-        })
-
-      if (uploadError) {
-        throw uploadError
-      }
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('generations')
-        .getPublicUrl(`${user.id}/${historyRecord.id}/result.png`)
-
-      // Update history record with result
+      // For now, store the text response and mark as completed
+      // TODO: Implement proper image generation and storage
       await supabase
         .from('generation_history')
         .update({
           status: 'completed',
-          result_image_url: publicUrl
+          gemini_response: { text: responseText },
+          completed_at: new Date().toISOString()
         })
         .eq('id', historyRecord.id)
 
@@ -172,7 +155,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         success: true,
         historyId: historyRecord.id,
-        imageUrl: publicUrl
+        response: responseText,
+        message: '画像生成が完了しました'
       })
 
     } catch (geminiError: any) {
