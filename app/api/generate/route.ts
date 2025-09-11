@@ -144,14 +144,24 @@ export async function POST(request: NextRequest) {
       console.log('Gemini API call completed, getting response...')
       const response = await result.response
       console.log('Response object keys:', Object.keys(response))
+      console.log('Full response:', JSON.stringify(response, null, 2))
       
       let generatedImageUrl: string | null = null
       let generatedImageData: string | null = null
 
       // Process response parts to find generated image
-      for (const candidate of response.candidates || []) {
-        for (const part of candidate.content?.parts || []) {
+      console.log('Number of candidates:', response.candidates?.length || 0)
+      for (let i = 0; i < (response.candidates || []).length; i++) {
+        const candidate = response.candidates![i]
+        console.log(`Candidate ${i}:`, JSON.stringify(candidate, null, 2))
+        console.log(`Candidate ${i} parts count:`, candidate.content?.parts?.length || 0)
+        
+        for (let j = 0; j < (candidate.content?.parts || []).length; j++) {
+          const part = candidate.content!.parts![j]
+          console.log(`Part ${j}:`, JSON.stringify(part, null, 2))
+          
           if (part.inlineData && part.inlineData.mimeType?.startsWith('image/')) {
+            console.log('Found image data in part:', j)
             generatedImageData = part.inlineData.data
             break
           }
