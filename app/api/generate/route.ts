@@ -110,12 +110,12 @@ export async function POST(request: NextRequest) {
     // Call Gemini API
     try {
       console.log('GEMINI_API_KEY configured:', !!process.env.GEMINI_API_KEY)
-      console.log('Starting Gemini API call with model: gemini-2.5-flash-image-preview')
+      console.log('Starting Gemini API call with model: gemini-2.5-flash-image')
       console.log('Prompt length:', prompt.length)
       console.log('Number of image parts:', sideImageBase64 ? 2 : 1)
       
       const model = genAI.getGenerativeModel({ 
-        model: 'gemini-2.5-flash-image-preview'
+        model: 'gemini-2.5-flash-image'
       })
       
       const imageParts = [
@@ -362,65 +362,68 @@ function buildPrompt({
   otherInstructions: string
   hasSideImage: boolean
 }): string {
-  // Start with a detailed, narrative description as recommended by Gemini best practices
-  let prompt = 'Create a detailed, photorealistic image showing this building after it has been professionally painted with the specified colors. The building should maintain its original architectural structure, windows, doors, and all existing features, with only the paint colors changed according to the specifications below.\n\n'
+  // 日本語ナラティブプロンプトによる詳細で写実的な指示
+  let prompt = 'この建物を指定された色でプロフェッショナルに塗装した後の詳細で写実的な画像を生成してください。建物の元の建築構造、窓、ドア、その他すべての特徴を維持し、塗料の色のみを以下の仕様に従って変更してください。\n\n'
 
-  // Add detailed color specifications with narrative descriptions
+  // 壁色の詳細仕様
   if (wallColor !== '変更なし') {
     const color = wallColors.find(c => c.name === wallColor)
     if (color && color.code) {
-      prompt += `The exterior walls of the building should be painted in a beautiful ${wallColor} color with the following exact specifications: RGB values ${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b} (hex code ${color.hex})`
+      prompt += `建物の外壁は美しい「${wallColor}」色で塗装してください。正確な仕様：RGB値 ${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}（16進コード ${color.hex}）`
       if (color.munsell) {
-        prompt += `, Munsell value ${color.munsell}`
+        prompt += `、マンセル値 ${color.munsell}`
       }
-      prompt += `, corresponding to Japan Paint Industry color code ${color.code}. This color should be applied evenly across all wall surfaces with a smooth, professional finish.\n\n`
+      prompt += `、日本塗料工業会色番号 ${color.code}。この色をすべての壁面に均一に、滑らかでプロフェッショナルな仕上がりで塗布してください。\n\n`
     }
   }
 
   if (roofColor !== '変更なし') {
     const color = roofColors.find(c => c.name === roofColor)
     if (color && color.code) {
-      prompt += `The roof should be painted in an attractive ${roofColor} color with precise specifications: RGB ${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b} (hex ${color.hex})`
+      prompt += `屋根は魅力的な「${roofColor}」色で塗装してください。正確な仕様：RGB値 ${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}（16進コード ${color.hex}）`
       if (color.munsell) {
-        prompt += `, Munsell ${color.munsell}`
+        prompt += `、マンセル値 ${color.munsell}`
       }
-      prompt += `, Japan Paint Industry code ${color.code}. The roof color should complement the wall color beautifully while maintaining the roof's original texture and material appearance.\n\n`
+      prompt += `、日本塗料工業会色番号 ${color.code}。屋根の色は壁の色と美しく調和し、屋根の元のテクスチャと素材感を維持してください。\n\n`
     }
   }
 
   if (doorColor !== '変更なし') {
     const color = doorColors.find(c => c.name === doorColor)
     if (color && color.code) {
-      prompt += `The entrance door and any other doors should be painted in an elegant ${doorColor} color: RGB ${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b} (hex ${color.hex})`
+      prompt += `玄関ドアおよびその他のドアはエレガントな「${doorColor}」色で塗装してください。正確な仕様：RGB値 ${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}（16進コード ${color.hex}）`
       if (color.munsell) {
-        prompt += `, Munsell ${color.munsell}`
+        prompt += `、マンセル値 ${color.munsell}`
       }
-      prompt += `, Japan Paint Industry code ${color.code}. The door should have a crisp, clean finish that enhances the building's overall appearance.\n\n`
+      prompt += `、日本塗料工業会色番号 ${color.code}。ドアは鮮明で清潔な仕上がりにし、建物全体の外観を向上させてください。\n\n`
     }
   }
 
-  // Add detailed weather and environmental conditions
+  // 詳細な天候・環境条件の日本語説明
   const weatherDescriptions = {
-    '晴れ': 'bright sunny day with clear blue skies, natural sunlight casting realistic shadows on the building, creating a warm and inviting atmosphere',
-    '曇り': 'overcast day with soft, diffused lighting from cloudy skies, creating even illumination across the building surfaces',
-    '雨': 'light rain with wet surfaces reflecting light, puddles on the ground, and a fresh, clean atmosphere',
-    '雪': 'gentle snowfall with snow accumulating on surfaces, creating a peaceful winter scene'
+    '晴れ': '快晴の青空が広がる明るい晴天で、自然な太陽光が建物にリアルな影を作り出し、暖かく親しみやすい雰囲気を演出する',
+    '曇り': '雲に覆われた穏やかな曇り空で、柔らかく拡散した光が建物表面を均等に照らす',
+    '雨': '軽やかな雨が降り、濡れた表面が光を反射し、地面に水たまりができ、新鮮で清潔な雰囲気を作り出す',
+    '雪': '穏やかな雪が降り積もり、表面に雪が積もって平和な冬の情景を作り出す'
   }
   
-  prompt += `The scene should be set during a ${weatherDescriptions[weather as keyof typeof weatherDescriptions] || 'pleasant day with natural lighting'}. `
+  prompt += `シーンは${weatherDescriptions[weather as keyof typeof weatherDescriptions] || '自然な照明の心地よい日中'}に設定してください。`
 
-  // Add layout instructions if side-by-side is selected
+  // サイドバイサイドレイアウトの指示
   if (layoutSideBySide && hasSideImage) {
-    prompt += `Please create a side-by-side comparison layout with a clean ${backgroundColor} background, showing both the front view and side view of the painted building in a single professional presentation image.\n\n`
+    prompt += `清潔な${backgroundColor}色の背景で、塗装後の建物の正面図と側面図を並べて表示する、単一のプロフェッショナルなプレゼンテーション画像を作成してください。\n\n`
   }
 
-  // Add other custom instructions
+  // 顧客からの追加指示
   if (otherInstructions) {
-    prompt += `Additional specific requirements: ${otherInstructions}\n\n`
+    prompt += `追加の具体的要件：${otherInstructions}\n\n`
   }
 
-  // Add comprehensive quality and technical specifications
-  prompt += 'The final image should be a high-quality, photorealistic architectural visualization that accurately represents how the building would look after professional painting. Maintain all original architectural details, textures, landscaping, and surrounding environment. The paint should look fresh and professionally applied with appropriate sheen and finish for each surface type. The lighting should be natural and realistic, and the overall composition should be suitable for presentation to clients.'
+  // 総合的な品質と技術仕様
+  prompt += '最終画像は、プロの塗装後の建物の外観を正確に表現する高品質で写実的な建築ビジュアライゼーションにしてください。すべての元の建築詳細、テクスチャ、造園、周辺環境を維持してください。塗料は新鮮でプロフェッショナルに塗布され、各表面タイプに適した光沢と仕上がりを持つように表現してください。照明は自然でリアルに、全体の構成は顧客への提案に適したものにしてください。\n\n'
+
+  // 明示的な画像生成指示
+  prompt += 'このメッセージに対する文章での回答はいらないので、直接画像生成を開始してください。'
 
   return prompt
 }
