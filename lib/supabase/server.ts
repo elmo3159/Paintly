@@ -4,25 +4,17 @@ import { cookies } from 'next/headers'
 export async function createClient() {
   const cookieStore = await cookies()
 
-  // Return a dummy client if env vars are not set (for build time)
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    return createServerClient(
-      'https://example.supabase.co',
-      'dummy-anon-key',
-      {
-        cookies: {
-          getAll() {
-            return []
-          },
-          setAll() {},
-        },
-      }
-    )
+  // Check for required environment variables
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Missing Supabase environment variables')
   }
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {
@@ -35,6 +27,7 @@ export async function createClient() {
             })
           } catch (error) {
             // Cookie can only be modified in Server Components
+            console.error('Error setting cookies:', error)
           }
         },
       },

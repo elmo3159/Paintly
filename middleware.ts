@@ -8,8 +8,15 @@ export async function middleware(request: NextRequest) {
     },
   })
 
-  // Skip middleware if env vars are not set
+  // Skip middleware if env vars are not set - redirect to signin
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    // For protected routes, redirect to signin
+    const protectedPaths = ['/dashboard', '/customer', '/settings', '/billing']
+    const isProtectedPath = protectedPaths.some(path => request.nextUrl.pathname.startsWith(path))
+    
+    if (isProtectedPath) {
+      return NextResponse.redirect(new URL('/auth/signin', request.url))
+    }
     return response
   }
 
@@ -73,6 +80,15 @@ export async function middleware(request: NextRequest) {
   // BUT exclude /auth/callback to allow OAuth flow to complete
   if (user && request.nextUrl.pathname.startsWith('/auth/') && !request.nextUrl.pathname.startsWith('/auth/callback')) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
+  }
+
+  // Handle root path
+  if (request.nextUrl.pathname === '/') {
+    if (user) {
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    } else {
+      return NextResponse.redirect(new URL('/auth/signin', request.url))
+    }
   }
 
   return response

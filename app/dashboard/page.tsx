@@ -14,18 +14,40 @@ import {
 import Link from 'next/link'
 
 export default async function DashboardPage() {
+  let supabase
+  let user
+  
   try {
-    const supabase = await createClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    supabase = await createClient()
+  } catch (error) {
+    console.error('Failed to create Supabase client:', error)
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Card className="max-w-lg w-full mx-4">
+          <CardHeader>
+            <CardTitle>設定エラー</CardTitle>
+            <CardDescription>
+              システムの設定に問題があります。管理者にお問い合わせください。
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+    )
+  }
+
+  try {
+    const { data: { user: authUser }, error: authError } = await supabase.auth.getUser()
 
     if (authError) {
       console.error('Auth error in dashboard:', authError)
-      return null
+      throw new Error('Authentication failed')
     }
 
-    if (!user) {
-      return null
+    if (!authUser) {
+      throw new Error('User not found')
     }
+    
+    user = authUser
 
   // Get user's statistics - with error handling
   const [customersData, generationsData, subscriptionData] = await Promise.all([
