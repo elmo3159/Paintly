@@ -108,7 +108,12 @@ export async function POST(request: NextRequest) {
 
     // Call Gemini API
     try {
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-image-preview' })
+      const model = genAI.getGenerativeModel({ 
+        model: 'gemini-2.5-flash-image-preview',
+        generationConfig: {
+          responseModalities: ['Text', 'Image']
+        }
+      })
       
       const imageParts = [
         {
@@ -130,16 +135,57 @@ export async function POST(request: NextRequest) {
 
       const result = await model.generateContent([prompt, ...imageParts])
       const response = await result.response
-      const responseText = response.text()
+      
+      let generatedImageUrl: string | null = null
+      let generatedImageData: string | null = null
 
-      // For now, store the text response and mark as completed
-      // TODO: Implement proper image generation and storage
+      // Process response parts to find generated image
+      for (const candidate of response.candidates || []) {
+        for (const part of candidate.content?.parts || []) {
+          if (part.inlineData && part.inlineData.mimeType?.startsWith('image/')) {
+            generatedImageData = part.inlineData.data
+            break
+          }
+        }
+        if (generatedImageData) break
+      }
+
+      if (generatedImageData) {
+        // Convert base64 to buffer for upload
+        const imageBuffer = Buffer.from(generatedImageData, 'base64')
+        const fileName = `generated_${historyRecord.id}.png`
+        
+        // Upload to Supabase Storage
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('generations')
+          .upload(`${user.id}/${fileName}`, imageBuffer, {
+            contentType: 'image/png',
+            upsert: true
+          })
+
+        if (uploadError) {
+          console.error('Upload error:', uploadError)
+          throw uploadError
+        }
+
+        // Get public URL
+        const { data: { publicUrl } } = supabase.storage
+          .from('generations')
+          .getPublicUrl(`${user.id}/${fileName}`)
+        
+        generatedImageUrl = publicUrl
+      }
+
       await supabase
         .from('generation_history')
         .update({
-          status: 'completed',
-          gemini_response: { text: responseText },
-          completed_at: new Date().toISOString()
+          status: generatedImageUrl ? 'completed' : 'failed',
+          gemini_response: { 
+            hasImage: !!generatedImageData,
+            imageUrl: generatedImageUrl 
+          },
+          completed_at: new Date().toISOString(),
+          error_message: !generatedImageUrl ? '画像生成に失敗しました' : null
         })
         .eq('id', historyRecord.id)
 
@@ -155,8 +201,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         success: true,
         historyId: historyRecord.id,
-        response: responseText,
-        message: '画像生成が完了しました'
+        imageUrl: generatedImageUrl,
+        hasImage: !!generatedImageData,
+        message: generatedImageUrl ? '画像生成が完了しました' : '画像生成に失敗しました'
       })
 
     } catch (geminiError: any) {
