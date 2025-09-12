@@ -124,15 +124,15 @@ export async function POST(request: NextRequest) {
       })
       
       // Prepare content array for Gemini API
-      const contentParts = [prompt]
-      
-      // Add main image
-      contentParts.push({
-        inlineData: {
-          data: mainImageBase64,
-          mimeType: mainImage.type
+      const contentParts = [
+        prompt,
+        {
+          inlineData: {
+            data: mainImageBase64,
+            mimeType: mainImage.type
+          }
         }
-      })
+      ]
 
       // Add side image if provided
       if (sideImageBase64 && sideImage) {
