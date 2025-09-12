@@ -11,7 +11,10 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Check, Loader2, Sparkles, AlertCircle } from 'lucide-react'
 import { loadStripe } from '@stripe/stripe-js'
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
+// Only initialize Stripe if publishable key is provided
+const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY 
+  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+  : null
 
 export default function BillingPage() {
   const router = useRouter()
@@ -20,8 +23,11 @@ export default function BillingPage() {
   const [loading, setLoading] = useState(true)
   const [subscribing, setSubscribing] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [stripeConfigured, setStripeConfigured] = useState(true)
 
   useEffect(() => {
+    // Check if Stripe is configured
+    setStripeConfigured(!!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
     fetchCurrentPlan()
   }, [])
 
@@ -84,7 +90,7 @@ export default function BillingPage() {
       // Redirect to Stripe Checkout
       const stripe = await stripePromise
       if (!stripe) {
-        throw new Error('Stripeの初期化に失敗しました')
+        throw new Error('Stripe公開キーが設定されていません。管理者にお問い合わせください。')
       }
 
       const { error: stripeError } = await stripe.redirectToCheckout({
@@ -136,6 +142,15 @@ export default function BillingPage() {
             あなたのビジネスに最適なプランをお選びください
           </p>
         </div>
+
+        {!stripeConfigured && (
+          <Alert>
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              <strong>開発モード:</strong> Stripe決済機能は設定されていません。実際の決済を行うには管理者にお問い合わせください。
+            </AlertDescription>
+          </Alert>
+        )}
 
         {error && (
           <Alert variant="destructive">
@@ -197,7 +212,7 @@ export default function BillingPage() {
                     className="w-full"
                     variant={plan.highlighted ? 'default' : 'outline'}
                     onClick={() => handleSubscribe(plan)}
-                    disabled={subscribing === plan.id || plan.id === 'free'}
+                    disabled={subscribing === plan.id || plan.id === 'free' || !stripeConfigured}
                   >
                     {subscribing === plan.id ? (
                       <>
