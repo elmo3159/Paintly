@@ -107,28 +107,36 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Call Gemini API
+    // Call Gemini API for image generation
     try {
-      console.log('GEMINI_API_KEY configured:', !!process.env.GEMINI_API_KEY)
-      console.log('Starting Gemini API call with model: gemini-2.5-flash-image-preview')
-      console.log('Prompt length:', prompt.length)
-      console.log('Number of image parts:', sideImageBase64 ? 2 : 1)
+      // Validate API key
+      if (!process.env.GEMINI_API_KEY) {
+        throw new Error('GEMINI_API_KEY environment variable is not configured')
+      }
+      
+      console.log('🚀 Starting Gemini API call with model: gemini-2.5-flash-image-preview')
+      console.log('📝 Prompt length:', prompt.length)
+      console.log('🖼️ Input images:', sideImageBase64 ? 2 : 1)
+      console.log('🔑 API Key configured:', process.env.GEMINI_API_KEY ? 'Yes' : 'No')
       
       const model = genAI.getGenerativeModel({ 
         model: 'gemini-2.5-flash-image-preview'
       })
       
-      const imageParts = [
-        {
-          inlineData: {
-            data: mainImageBase64,
-            mimeType: mainImage.type
-          }
+      // Prepare content array for Gemini API
+      const contentParts = [prompt]
+      
+      // Add main image
+      contentParts.push({
+        inlineData: {
+          data: mainImageBase64,
+          mimeType: mainImage.type
         }
-      ]
+      })
 
+      // Add side image if provided
       if (sideImageBase64 && sideImage) {
-        imageParts.push({
+        contentParts.push({
           inlineData: {
             data: sideImageBase64,
             mimeType: sideImage.type
@@ -136,106 +144,98 @@ export async function POST(request: NextRequest) {
         })
       }
 
-      console.log('Calling generateContent...')
-      console.log('Input prompt:', prompt)
-      console.log('Number of image parts:', imageParts.length)
+      console.log('📤 Sending request to Gemini API...')
       
-      // Record debug info in database
+      // Record API call start
       await supabase
         .from('generation_history')
         .update({
           gemini_response: { 
-            debug: 'Starting Gemini API call',
+            status: 'api_call_started',
             prompt_length: prompt.length,
-            image_count: imageParts.length,
+            image_count: contentParts.length - 1,
             timestamp: new Date().toISOString()
           }
         })
         .eq('id', historyRecord.id)
       
-      const result = await model.generateContent([prompt, ...imageParts])
-      console.log('Gemini API call completed, getting response...')
+      const result = await model.generateContent(contentParts)
       const response = await result.response
-      console.log('Response object keys:', Object.keys(response))
-      console.log('Full response:', JSON.stringify(response, null, 2))
       
-      // Record response info in database
-      await supabase
-        .from('generation_history')
-        .update({
-          gemini_response: { 
-            debug: 'Gemini API call completed',
-            response_keys: Object.keys(response),
-            candidates_count: response.candidates?.length || 0,
-            full_response: JSON.stringify(response),
-            timestamp: new Date().toISOString()
-          }
-        })
-        .eq('id', historyRecord.id)
+      console.log('✅ Gemini API call completed')
+      console.log('📊 Response candidates:', response.candidates?.length || 0)
       
       let generatedImageUrl: string | null = null
       let generatedImageData: string | null = null
 
-      // Process response parts to find generated image
-      console.log('Number of candidates:', response.candidates?.length || 0)
-      const debugInfo = {
-        candidates_count: response.candidates?.length || 0,
-        candidates_details: [] as any[],
-        image_found: false,
-        search_process: [] as string[]
+      // Extract generated image from response - Enhanced error handling
+      if (response.candidates && response.candidates.length > 0) {
+        console.log(`🔍 Processing ${response.candidates.length} candidate(s)`)
+        
+        for (let i = 0; i < response.candidates.length; i++) {
+          const candidate = response.candidates[i]
+          
+          if (!candidate.content?.parts) {
+            console.log(`⚠️ Candidate ${i}: No content parts found`)
+            continue
+          }
+          
+          console.log(`📝 Candidate ${i}: Found ${candidate.content.parts.length} parts`)
+          
+          for (let j = 0; j < candidate.content.parts.length; j++) {
+            const part = candidate.content.parts[j]
+            
+            if (part.text) {
+              console.log(`📄 Part ${j}: Text response - ${part.text.substring(0, 100)}...`)
+            }
+            
+            if (part.inlineData?.data && part.inlineData.mimeType?.startsWith('image/')) {
+              console.log(`🎨 Part ${j}: Found generated image data (${part.inlineData.mimeType})`)
+              console.log(`📏 Image data size: ${(part.inlineData.data.length / 1024).toFixed(2)} KB`)
+              generatedImageData = part.inlineData.data
+              break
+            }
+          }
+          
+          if (generatedImageData) break
+        }
+        
+        if (!generatedImageData) {
+          console.log('⚠️ No image data found in any candidate')
+          
+          // Record the full response for debugging
+          await supabase
+            .from('generation_history')
+            .update({
+              gemini_response: { 
+                status: 'no_image_in_response',
+                candidates_count: response.candidates.length,
+                debug_response: JSON.stringify(response, null, 2),
+                timestamp: new Date().toISOString()
+              }
+            })
+            .eq('id', historyRecord.id)
+        }
+      } else {
+        console.log('❌ No candidates found in Gemini response')
+        
+        await supabase
+          .from('generation_history')
+          .update({
+            gemini_response: { 
+              status: 'no_candidates',
+              full_response: JSON.stringify(response, null, 2),
+              timestamp: new Date().toISOString()
+            }
+          })
+          .eq('id', historyRecord.id)
       }
       
-      for (let i = 0; i < (response.candidates || []).length; i++) {
-        const candidate = response.candidates![i]
-        console.log(`Candidate ${i}:`, JSON.stringify(candidate, null, 2))
-        console.log(`Candidate ${i} parts count:`, candidate.content?.parts?.length || 0)
-        
-        const candidateInfo = {
-          index: i,
-          parts_count: candidate.content?.parts?.length || 0,
-          parts_details: [] as any[]
-        }
-        debugInfo.candidates_details.push(candidateInfo)
-        
-        for (let j = 0; j < (candidate.content?.parts || []).length; j++) {
-          const part = candidate.content!.parts![j]
-          console.log(`Part ${j}:`, JSON.stringify(part, null, 2))
-          
-          const partInfo = {
-            index: j,
-            has_inlineData: !!part.inlineData,
-            mimeType: part.inlineData?.mimeType || 'none',
-            has_text: !!part.text,
-            text_preview: part.text ? part.text.substring(0, 100) : null
-          }
-          candidateInfo.parts_details.push(partInfo)
-          debugInfo.search_process.push(`Candidate ${i}, Part ${j}: ${partInfo.mimeType}`)
-          
-          if (part.inlineData && part.inlineData.mimeType?.startsWith('image/')) {
-            console.log('Found image data in part:', j)
-            debugInfo.image_found = true
-            debugInfo.search_process.push(`IMAGE FOUND in Candidate ${i}, Part ${j}`)
-            generatedImageData = part.inlineData.data
-            break
-          }
-        }
-        if (generatedImageData) break
-      }
-      
-      // Record detailed search results in database
-      await supabase
-        .from('generation_history')
-        .update({
-          gemini_response: { 
-            debug: 'Image search completed',
-            search_results: debugInfo,
-            image_found: !!generatedImageData,
-            timestamp: new Date().toISOString()
-          }
-        })
-        .eq('id', historyRecord.id)
+      console.log('🔍 Final image extraction result:', !!generatedImageData)
 
       if (generatedImageData) {
+        console.log('💾 Uploading generated image to storage...')
+        
         // Convert base64 to buffer for upload
         const imageBuffer = Buffer.from(generatedImageData, 'base64')
         const fileName = `generated_${historyRecord.id}.png`
@@ -249,8 +249,8 @@ export async function POST(request: NextRequest) {
           })
 
         if (uploadError) {
-          console.error('Upload error:', uploadError)
-          throw uploadError
+          console.error('❌ Upload error:', uploadError)
+          throw new Error(`画像のアップロードに失敗しました: ${uploadError.message}`)
         }
 
         // Get public URL
@@ -259,76 +259,79 @@ export async function POST(request: NextRequest) {
           .getPublicUrl(`${user.id}/${fileName}`)
         
         generatedImageUrl = publicUrl
+        console.log('✅ Image uploaded successfully:', generatedImageUrl)
+      } else {
+        console.log('⚠️ No image data found in Gemini response')
       }
 
+      // Update generation history
       await supabase
         .from('generation_history')
         .update({
           status: generatedImageUrl ? 'completed' : 'failed',
           gemini_response: { 
+            status: 'completed',
             hasImage: !!generatedImageData,
-            imageUrl: generatedImageUrl 
+            imageUrl: generatedImageUrl,
+            timestamp: new Date().toISOString()
           },
           completed_at: new Date().toISOString(),
-          error_message: !generatedImageUrl ? '画像生成に失敗しました' : null
+          error_message: !generatedImageUrl ? 'Gemini APIから画像データが返されませんでした' : null
         })
         .eq('id', historyRecord.id)
 
-      // Increment usage count
-      await supabase
-        .from('subscriptions')
-        .update({
-          generation_count: subscription ? subscription.generation_count + 1 : 1
-        })
-        .eq('user_id', user.id)
-        .eq('status', 'active')
+      // Increment usage count only if successful
+      if (generatedImageUrl) {
+        await supabase
+          .from('subscriptions')
+          .update({
+            generation_count: subscription ? subscription.generation_count + 1 : 1
+          })
+          .eq('user_id', user.id)
+          .eq('status', 'active')
+      }
 
       return NextResponse.json({
-        success: true,
+        success: !!generatedImageUrl,
         historyId: historyRecord.id,
         imageUrl: generatedImageUrl,
         hasImage: !!generatedImageData,
-        message: generatedImageUrl ? '画像生成が完了しました' : '画像生成に失敗しました'
+        message: generatedImageUrl ? '画像生成が完了しました' : 'Gemini APIから画像データが返されませんでした'
       })
 
     } catch (geminiError: any) {
-      console.error('Gemini API Error:', geminiError)
-      console.error('Error details:', {
+      console.error('❌ Gemini API Error:', geminiError.message)
+      console.error('🔍 Error details:', {
         message: geminiError.message,
         code: geminiError.code,
-        status: geminiError.status,
-        statusText: geminiError.statusText,
-        stack: geminiError.stack
+        status: geminiError.status
       })
       
-      // Create detailed error message
-      const errorDetails = {
-        type: 'gemini_api_error',
-        message: geminiError.message,
-        code: geminiError.code,
-        status: geminiError.status,
-        statusText: geminiError.statusText,
-        timestamp: new Date().toISOString()
-      }
+      const errorMessage = geminiError.message || 'Gemini API呼び出しに失敗しました'
       
-      // Update history record with detailed error
+      // Update history record with error
       await supabase
         .from('generation_history')
         .update({
           status: 'failed',
-          error_message: geminiError.message || 'Gemini API呼び出しに失敗しました',
+          error_message: errorMessage,
           gemini_response: { 
-            error: errorDetails,
+            status: 'error',
+            error: errorMessage,
             hasImage: false,
-            imageUrl: null 
-          }
+            imageUrl: null,
+            timestamp: new Date().toISOString()
+          },
+          completed_at: new Date().toISOString()
         })
         .eq('id', historyRecord.id)
 
       return NextResponse.json(
         { 
+          success: false,
           error: 'Gemini API呼び出しに失敗しました',
-          details: geminiError.message 
+          details: errorMessage,
+          historyId: historyRecord.id
         },
         { status: 500 }
       )
