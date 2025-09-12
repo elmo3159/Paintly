@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paintly - Gemini API テスト</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .result img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .info {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .endpoint {
+            font-family: 'Courier New', monospace;
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Paintly API テスト</h1>
+            <p>Gemini 2.5 Flash Image Preview APIの動作確認</p>
+        </div>
+        
+        <div class="content">
+            <div class="info">
+                <h3>📡 API エンドポイント</h3>
+                <div class="endpoint">POST /api/test-generate</div>
+                <p><strong>認証不要</strong> - このテストAPIは開発・デバッグ用です</p>
+            </div>
+            
+            <form id="testForm">
+                <div class="form-group">
+                    <label for="prompt">🎯 画像生成プロンプト</label>
+                    <textarea 
+                        id="prompt" 
+                        name="prompt" 
+                        rows="4" 
+                        placeholder="例：美しい日本の住宅の外観。青い壁、赤い屋根、茶色のドア。晴れた日の風景。"
+                        required
+                    >日本の住宅の外観を生成してください。
+青い壁（RGB: 51, 102, 204）
+赤い屋根（RGB: 204, 51, 51）  
+茶色のドア（RGB: 139, 69, 19）
+晴れた日の明るい風景でお願いします。</textarea>
+                </div>
+                
+                <button type="submit" class="button" id="submitBtn">
+                    🚀 画像生成テスト実行
+                </button>
+            </form>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Gemini APIで画像生成中...</p>
+            </div>
+            
+            <div class="result" id="result">
+                <div id="resultContent"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const form = document.getElementById('testForm');
+        const loading = document.getElementById('loading');
+        const result = document.getElementById('result');
+        const resultContent = document.getElementById('resultContent');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const prompt = document.getElementById('prompt').value;
+            
+            // Show loading
+            loading.style.display = 'block';
+            result.style.display = 'none';
+            submitBtn.disabled = true;
+            
+            try {
+                console.log('Sending request to /api/test-generate...');
+                
+                const response = await fetch('/api/test-generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        prompt: prompt
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('Response received:', data);
+                
+                // Hide loading
+                loading.style.display = 'none';
+                
+                // Show result
+                result.style.display = 'block';
+                
+                if (data.success && data.hasImage) {
+                    result.className = 'result success';
+                    resultContent.innerHTML = `
+                        <h3>✅ ${data.message}</h3>
+                        <p><strong>画像サイズ:</strong> ${data.imageSize}</p>
+                        <p><strong>候補数:</strong> ${data.candidatesCount}</p>
+                        ${data.hasText ? `<p><strong>テキスト応答:</strong> ${data.textResponse.substring(0, 200)}...</p>` : ''}
+                        <img src="data:image/png;base64,${data.imageData}" alt="Generated Image" />
+                    `;
+                } else if (data.hasText) {
+                    result.className = 'result success';
+                    resultContent.innerHTML = `
+                        <h3>📝 テキスト応答受信</h3>
+                        <p><strong>メッセージ:</strong> ${data.message}</p>
+                        <p><strong>内容:</strong> ${data.textResponse}</p>
+                        <p><em>注意: 画像データは含まれていません</em></p>
+                    `;
+                } else {
+                    result.className = 'result error';
+                    resultContent.innerHTML = `
+                        <h3>❌ エラー</h3>
+                        <p><strong>メッセージ:</strong> ${data.error || data.message}</p>
+                        ${data.details ? `<p><strong>詳細:</strong> ${data.details}</p>` : ''}
+                    `;
+                }
+            } catch (error) {
+                console.error('Request failed:', error);
+                
+                loading.style.display = 'none';
+                result.style.display = 'block';
+                result.className = 'result error';
+                resultContent.innerHTML = `
+                    <h3>❌ ネットワークエラー</h3>
+                    <p><strong>エラー:</strong> ${error.message}</p>
+                    <p>APIエンドポイントに接続できませんでした。</p>
+                `;
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

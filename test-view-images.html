@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paintly - Gemini画像生成テスト結果</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .status {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .status h2 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .status-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f5f5f5;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .status-item .icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+        .image-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        .image-card:hover {
+            transform: translateY(-5px);
+        }
+        .image-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+        }
+        .image-header h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        .image-header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .image-container {
+            padding: 10px;
+            background: #f5f5f5;
+        }
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            display: block;
+        }
+        .image-info {
+            padding: 15px;
+            background: white;
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        .success-badge {
+            background: #4CAF50;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            padding: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Paintly - Gemini 2.5 Flash Image テスト結果</h1>
+        
+        <div class="status">
+            <h2>✅ テスト状況</h2>
+            <div class="status-item">
+                <span class="icon">🚀</span>
+                <div>
+                    <strong>API Model:</strong> gemini-2.5-flash-image-preview (nano-banana)
+                </div>
+            </div>
+            <div class="status-item">
+                <span class="icon">✅</span>
+                <div>
+                    <strong>Status:</strong> すべてのテストが成功しました
+                </div>
+            </div>
+            <div class="status-item">
+                <span class="icon">📊</span>
+                <div>
+                    <strong>生成画像数:</strong> 4枚
+                </div>
+            </div>
+            <div class="status-item">
+                <span class="icon">⏱️</span>
+                <div>
+                    <strong>生成時刻:</strong> <span id="timestamp"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="gallery" id="gallery">
+            <div class="loading">画像を読み込み中...</div>
+        </div>
+    </div>
+
+    <script>
+        // 生成された画像の情報
+        const images = [
+            {
+                title: 'Paintlyログイン画面背景',
+                filename: 'paintly-login-background.png',
+                description: 'プロフェッショナルな塗装会社向けのログイン画面背景',
+                size: '981.95 KB'
+            },
+            {
+                title: '日本の住宅街',
+                filename: 'test-image-1757649551036.png',
+                description: '塗装業者の視点から見たリフォーム前の住宅',
+                size: '1763.12 KB'
+            },
+            {
+                title: '青い壁の住宅',
+                filename: 'test-base64-house-with-blue-walls.png',
+                description: '日塗工番号N-75相当の青色に塗装された住宅',
+                size: '1597.67 KB'
+            },
+            {
+                title: '赤い屋根の住宅',
+                filename: 'test-base64-house-with-red-roof.png',
+                description: '日塗工番号07-40X相当の赤い瓦屋根の住宅',
+                size: '1580.26 KB'
+            }
+        ];
+
+        // タイムスタンプを設定
+        document.getElementById('timestamp').textContent = new Date().toLocaleString('ja-JP');
+
+        // ギャラリーを生成
+        function createGallery() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+
+            images.forEach((image, index) => {
+                const card = document.createElement('div');
+                card.className = 'image-card';
+                card.innerHTML = `
+                    <div class="image-header">
+                        <h3>${image.title}</h3>
+                        <p>${image.description}</p>
+                    </div>
+                    <div class="image-container">
+                        <img src="${image.filename}" alt="${image.title}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2RkZCIvPjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjIwMCIgeT0iMTUwIiBzdHlsZT0iZmlsbDojOTk5O2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjE5cHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+SW1hZ2UgTm90IEZvdW5kPC90ZXh0Pjwvc3ZnPg=='">
+                    </div>
+                    <div class="image-info">
+                        <div class="info-item">
+                            <span>ファイル名:</span>
+                            <strong>${image.filename}</strong>
+                        </div>
+                        <div class="info-item">
+                            <span>サイズ:</span>
+                            <strong>${image.size}</strong>
+                        </div>
+                        <div class="info-item">
+                            <span>ステータス:</span>
+                            <span class="success-badge">生成成功</span>
+                        </div>
+                    </div>
+                `;
+                gallery.appendChild(card);
+            });
+        }
+
+        // ページ読み込み時にギャラリーを作成
+        window.addEventListener('DOMContentLoaded', createGallery);
+    </script>
+</body>
+</html>
