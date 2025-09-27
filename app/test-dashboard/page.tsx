@@ -96,13 +96,6 @@ export default function TestDashboardPage() {
             <div className="text-2xl font-bold">
               {planInfo?.plan ? (planInfo.plan as any).name : '無料'}
             </div>
-            {remainingGenerations === 0 && (
-              <Link href="/billing">
-                <p className="text-xs text-blue-600 hover:underline">
-                  アップグレード
-                </p>
-              </Link>
-            )}
           </CardContent>
         </Card>
       </div>
