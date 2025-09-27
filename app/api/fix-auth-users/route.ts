@@ -104,9 +104,9 @@ export async function POST() {
     
   } catch (error) {
     console.error('❌ Fix auth users error:', error)
-    return NextResponse.json({ 
-      success: false, 
-      error: error.message 
+    return NextResponse.json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
     }, { status: 500 })
   }
 }
@@ -135,8 +135,8 @@ export async function GET() {
     
   } catch (error) {
     console.error('❌ Get data error:', error)
-    return NextResponse.json({ 
-      error: error.message 
+    return NextResponse.json({
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
     }, { status: 500 })
   }
 }
