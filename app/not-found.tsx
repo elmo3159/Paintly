@@ -1,27 +1,16 @@
 'use client'
 
-import { useEffect } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { AlertCircle, RefreshCw, Home, Palette, Paintbrush, Droplet, Star } from 'lucide-react'
+import { FileQuestion, Home, Palette, Paintbrush, Droplet, Star, ArrowLeft } from 'lucide-react'
 
-export default function Error({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string }
-  reset: () => void
-}) {
-  useEffect(() => {
-    // Log the error to an error reporting service
-    console.error('Application error:', error)
-  }, [error])
-
+export default function NotFound() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background via-secondary/30 to-primary/10 relative">
       {/* 背景装飾 */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-20 w-24 h-24 opacity-5 rotate-12">
+        <div className="absolute top-20 left-20 w-32 h-32 opacity-5 rotate-12">
           <Paintbrush className="w-full h-full text-primary" />
         </div>
         <div className="absolute bottom-20 right-20 w-28 h-28 opacity-5 -rotate-12">
@@ -47,92 +36,78 @@ export default function Error({
           </div>
           <div className="space-y-3">
             <CardTitle className="text-2xl font-bold text-foreground">
-              エラーが発生しました
+              404 - ページが見つかりません
             </CardTitle>
             <CardTitle className="text-xl font-bold text-foreground">
-              申し訳ございません
+              ページが見つかりません
             </CardTitle>
             <CardDescription className="text-base leading-relaxed">
-              予期せぬエラーが発生しました。<br />
-              <span className="text-primary font-semibold">すぐに復旧</span>させていただきます。
+              お探しのページは存在しないか、<br />
+              移動した可能性があります。<br />
+              <span className="text-primary font-semibold">ホームページ</span>からお探しください。
             </CardDescription>
           </div>
         </CardHeader>
+        
         <CardContent className="space-y-6">
-          {process.env.NODE_ENV === 'development' && (
-            <div className="p-4 bg-muted/50 rounded-xl border border-destructive/20">
-              <div className="flex items-center space-x-2 mb-2">
-                <AlertCircle className="h-4 w-4 text-destructive" />
-                <span className="text-sm font-bold text-destructive">開発モード情報</span>
-              </div>
-              <p className="text-sm font-mono text-muted-foreground">
-                {error.message}
-              </p>
-              {error.digest && (
-                <p className="mt-2 text-xs text-muted-foreground">
-                  Error ID: {error.digest}
-                </p>
-              )}
-            </div>
-          )}
-
-          {/* 解決方法セクション */}
+          {/* 案内セクション */}
           <div className="p-4 rounded-xl bg-gradient-to-r from-accent/5 to-primary/5 border border-accent/20">
             <div className="flex items-center space-x-2 mb-3">
               <Palette className="h-4 w-4 text-primary animate-pulse" />
-              <span className="text-sm font-bold text-primary">解決方法</span>
+              <span className="text-sm font-bold text-primary">おすすめの操作</span>
             </div>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-center space-x-2">
                 <Star className="h-3 w-3 text-accent flex-shrink-0" />
-                <span>「再試行」ボタンをクリックしてください</span>
+                <span>ホームページに戻って、新しい画像生成を始める</span>
               </li>
               <li className="flex items-center space-x-2">
                 <Star className="h-3 w-3 text-accent flex-shrink-0" />
-                <span>ページを再読み込みして、やり直してみてください</span>
+                <span>ダッシュボードから、過去の作業を確認する</span>
               </li>
               <li className="flex items-center space-x-2">
                 <Star className="h-3 w-3 text-accent flex-shrink-0" />
-                <span>問題が続く場合は、ホームページにお戻りください</span>
+                <span>前のページに戻って、続きから作業する</span>
               </li>
             </ul>
           </div>
           
           <div className="space-y-3">
-            <Button 
-              onClick={() => reset()} 
-              className="w-full paint-button h-12 text-base font-bold shadow-lg"
-            >
-              <RefreshCw className="mr-3 h-5 w-5" />
-              再試行する
-            </Button>
+            <Link href="/">
+              <Button className="w-full paint-button h-12 text-base font-bold shadow-lg">
+                <Home className="mr-3 h-5 w-5" />
+                ホームページに戻る
+              </Button>
+            </Link>
             
             <div className="grid grid-cols-2 gap-3">
+              <Link href="/dashboard">
+                <Button 
+                  variant="outline" 
+                  className="w-full h-11 text-sm font-medium border-2 border-border hover:border-primary hover:text-primary transition-all duration-300"
+                >
+                  <Palette className="mr-2 h-4 w-4" />
+                  ダッシュボード
+                </Button>
+              </Link>
               <Button 
-                onClick={() => window.location.reload()} 
+                onClick={() => window.history.back()} 
                 variant="outline" 
                 className="h-11 text-sm font-medium border-2 border-border hover:border-accent hover:text-accent transition-all duration-300"
               >
-                <RefreshCw className="mr-2 h-4 w-4" />
-                ページを再読み込み
-              </Button>
-              <Button 
-                onClick={() => window.location.href = '/'} 
-                variant="outline" 
-                className="h-11 text-sm font-medium border-2 border-border hover:border-primary hover:text-primary transition-all duration-300"
-              >
-                <Home className="mr-2 h-4 w-4" />
-                ホームへ戻る
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                前のページに戻る
               </Button>
             </div>
           </div>
           
           <div className="text-center p-4 rounded-xl bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/10">
             <p className="text-sm text-muted-foreground mb-2">
-              問題が続く場合は、<span className="font-semibold text-primary">サポート</span>までお問い合わせください。
+              もしかすると、お探しの機能は<br />
+              <span className="font-semibold text-primary">新しい場所</span>に移動したかもしれません。
             </p>
             <p className="text-xs text-muted-foreground">
-              Paintlyチームが迅速にサポートいたします。
+              Paintlyは日々改善され、より使いやすくなっています。
             </p>
           </div>
         </CardContent>

@@ -8,7 +8,7 @@ export interface PaintColor {
 }
 
 export const wallColors: PaintColor[] = [
-  { id: 'no-change', name: '変更なし', code: '', hex: '', rgb: { r: 0, g: 0, b: 0 } },
+  { id: 'no-change', name: '変更なし', code: 'N/A', hex: 'transparent', rgb: { r: 0, g: 0, b: 0 } },
   { id: 'n90', name: 'ホワイト', code: 'N90', hex: '#E5E5E5', rgb: { r: 229, g: 229, b: 229 } },
   { id: 'n80', name: 'ライトグレー', code: 'N80', hex: '#CCCCCC', rgb: { r: 204, g: 204, b: 204 } },
   { id: 'n70', name: 'グレー', code: 'N70', hex: '#B3B3B3', rgb: { r: 179, g: 179, b: 179 } },
@@ -25,7 +25,7 @@ export const wallColors: PaintColor[] = [
 ]
 
 export const roofColors: PaintColor[] = [
-  { id: 'no-change', name: '変更なし', code: '', hex: '', rgb: { r: 0, g: 0, b: 0 } },
+  { id: 'no-change', name: '変更なし', code: 'N/A', hex: 'transparent', rgb: { r: 0, g: 0, b: 0 } },
   { id: 'n25', name: 'チャコールブラック', code: 'N25', hex: '#404040', rgb: { r: 64, g: 64, b: 64 } },
   { id: '09-20d', name: 'ブラウン', code: '09-20D', hex: '#6B4423', rgb: { r: 107, g: 68, b: 35 }, munsell: '7.5YR3/6' },
   { id: '45-20d', name: 'ダークブルー', code: '45-20D', hex: '#2C4A5F', rgb: { r: 44, g: 74, b: 95 }, munsell: '10B3/6' },
@@ -37,7 +37,7 @@ export const roofColors: PaintColor[] = [
 ]
 
 export const doorColors: PaintColor[] = [
-  { id: 'no-change', name: '変更なし', code: '', hex: '', rgb: { r: 0, g: 0, b: 0 } },
+  { id: 'no-change', name: '変更なし', code: 'N/A', hex: 'transparent', rgb: { r: 0, g: 0, b: 0 } },
   { id: '05-30d', name: 'ダークブラウン', code: '05-30D', hex: '#5C3A28', rgb: { r: 92, g: 58, b: 40 }, munsell: '5YR3/4' },
   { id: '09-40l', name: 'ライトブラウン', code: '09-40L', hex: '#A67C52', rgb: { r: 166, g: 124, b: 82 }, munsell: '7.5YR6/6' },
   { id: 'n90', name: 'ホワイト', code: 'N90', hex: '#E5E5E5', rgb: { r: 229, g: 229, b: 229 } },

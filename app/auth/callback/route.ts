@@ -3,7 +3,12 @@ import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
   try {
-    const { searchParams, origin } = new URL(request.url)
+    const { searchParams } = new URL(request.url)
+    // Use environment variable for correct redirect URL instead of request origin
+    const origin = process.env.NEXT_PUBLIC_APP_URL || new URL(request.url).origin
+    console.log('DEBUG: NEXT_PUBLIC_APP_URL =', process.env.NEXT_PUBLIC_APP_URL)
+    console.log('DEBUG: origin =', origin)
+    console.log('DEBUG: request.url =', request.url)
     const code = searchParams.get('code')
     const next = searchParams.get('next') ?? '/dashboard'
     const error = searchParams.get('error')
@@ -99,7 +104,8 @@ export async function GET(request: Request) {
     
   } catch (error) {
     console.error('Unexpected error in auth callback:', error)
-    const { origin } = new URL(request.url)
+    // Use environment variable for correct redirect URL instead of request origin
+    const origin = process.env.NEXT_PUBLIC_APP_URL || new URL(request.url).origin
     return NextResponse.redirect(`${origin}/auth/signin?error=An unexpected error occurred`)
   }
 }

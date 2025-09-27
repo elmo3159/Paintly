@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { ImageUpload } from '@/components/image-upload'
-import { ColorSelector } from '@/components/color-selector'
+import { CompactColorSelector } from '@/components/compact-color-selector'
+import { getColorById, type ColorUsage } from '@/lib/hierarchical-paint-colors'
 import { WeatherSelector } from '@/components/weather-selector'
 import { GenerationSettings } from '@/components/generation-settings'
 import { GenerationHistory } from '@/components/generation-history'
@@ -12,18 +13,20 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, Sparkles, AlertCircle } from 'lucide-react'
+import { Loader2, Sparkles, AlertCircle, Edit, Save, X } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+
 
 interface CustomerData {
   id: string
   title: string
   customer_name: string | null
-  address: string | null
-  phone: string | null
-  email: string | null
-  notes: string | null
+  customer_address: string | null
+  customer_phone: string | null
+  customer_email: string | null
+  description: string | null
 }
 
 export default function CustomerPage() {
@@ -39,36 +42,103 @@ export default function CustomerPage() {
   // Form states
   const [mainImage, setMainImage] = useState<File | null>(null)
   const [sideImage, setSideImage] = useState<File | null>(null)
-  const [wallColor, setWallColor] = useState('変更なし')
-  const [roofColor, setRoofColor] = useState('変更なし')
-  const [doorColor, setDoorColor] = useState('変更なし')
-  const [weather, setWeather] = useState('晴れ')
+  const [wallColorId, setWallColorId] = useState<string>('no-change')
+  const [roofColorId, setRoofColorId] = useState<string>('no-change')
+  const [doorColorId, setDoorColorId] = useState<string>('no-change')
+  const [weather, setWeather] = useState('変更なし')
   const [layoutSideBySide, setLayoutSideBySide] = useState(false)
   const [backgroundColor, setBackgroundColor] = useState('白')
   const [otherInstructions, setOtherInstructions] = useState('')
 
+  // Tab and auto-navigation states
+  const [activeTab, setActiveTab] = useState('generate')
+  const [latestGenerationId, setLatestGenerationId] = useState<string | null>(null)
+  const [historyRefresh, setHistoryRefresh] = useState(0)
+
   // Usage limit
   const [canGenerate, setCanGenerate] = useState(true)
   const [remainingGenerations, setRemainingGenerations] = useState(0)
+
+  // Customer info editing states
+  const [isEditing, setIsEditing] = useState(false)
+  const [isEditingTitle, setIsEditingTitle] = useState(false)
+  const titleInputRef = useRef<HTMLInputElement>(null)
+  const [editForm, setEditForm] = useState({
+    title: '',
+    customer_name: '',
+    customer_address: '',
+    customer_phone: '',
+    customer_email: '',
+    description: ''
+  })
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     fetchCustomer()
     checkUsageLimit()
   }, [customerId])
 
+  // Initialize edit form when customer data changes
+  useEffect(() => {
+    if (customer) {
+      setEditForm({
+        title: customer.title || '',
+        customer_name: customer.customer_name || '',
+        customer_address: customer.customer_address || '',
+        customer_phone: customer.customer_phone || '',
+        customer_email: customer.customer_email || '',
+        description: customer.description || ''
+      })
+    }
+  }, [customer])
+
+  // タイトル編集開始時に全選択
+  useEffect(() => {
+    if (isEditingTitle && titleInputRef.current) {
+      const input = titleInputRef.current
+      
+      // より確実な全選択実装
+      const selectAll = () => {
+        input.focus()
+        input.setSelectionRange(0, input.value.length)
+      }
+      
+      // 即座に実行
+      selectAll()
+      
+      // requestAnimationFrameで確実にDOMレンダリング後に実行
+      requestAnimationFrame(() => {
+        selectAll()
+        // さらに確実にするため追加のタイマー
+        setTimeout(selectAll, 10)
+        setTimeout(selectAll, 100)
+      })
+    }
+  }, [isEditingTitle])
+
   const fetchCustomer = async () => {
+    console.log('🔍 fetchCustomer: 開始', { customerId })
+    
+    // 認証状態を確認
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    console.log('👤 fetchCustomer: 認証状態', { user: user?.id, authError })
+    
     const { data, error } = await supabase
-      .from('customers')
+      .from('customer_pages')
       .select('*')
       .eq('id', customerId)
       .single()
 
+    console.log('📊 fetchCustomer: データベース結果', { data, error })
+
     if (error) {
-      setError('顧客情報の取得に失敗しました')
+      console.error('❌ fetchCustomer: エラー詳細', error)
+      setError(`顧客情報の取得に失敗しました: ${error.message}`)
       setLoading(false)
       return
     }
 
+    console.log('✅ fetchCustomer: 成功', data)
     setCustomer(data)
     setLoading(false)
   }
@@ -98,6 +168,91 @@ export default function CustomerPage() {
     }
   }
 
+  const handleEditCustomer = () => {
+    setIsEditing(true)
+  }
+
+  const handleCancelEdit = () => {
+    setIsEditing(false)
+    // Reset form to original values
+    if (customer) {
+      setEditForm({
+        title: customer.title || '',
+        customer_name: customer.customer_name || '',
+        customer_address: customer.customer_address || '',
+        customer_phone: customer.customer_phone || '',
+        customer_email: customer.customer_email || '',
+        description: customer.description || ''
+      })
+    }
+  }
+
+  const handleSaveCustomer = async () => {
+    setSaving(true)
+    setError(null)
+
+    try {
+      // API経由でサービスロールを使用
+      const response = await fetch(`/api/customer/${customerId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: editForm.title || null,
+          customer_name: editForm.customer_name || null,
+          customer_address: editForm.customer_address || null,
+          customer_phone: editForm.customer_phone || null,
+          customer_email: editForm.customer_email || null,
+          description: editForm.description || null
+        })
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        console.error('❌ Customer update failed:', result)
+        throw new Error(result.error || 'Update failed')
+      }
+
+      console.log('✅ Customer update successful via API')
+
+      // Update local customer state
+      setCustomer(prev => prev ? {
+        ...prev,
+        title: editForm.title || prev.title,
+        customer_name: editForm.customer_name || null,
+        customer_address: editForm.customer_address || null,
+        customer_phone: editForm.customer_phone || null,
+        customer_email: editForm.customer_email || null,
+        description: editForm.description || null
+      } : null)
+
+      setIsEditing(false)
+
+      // サイドバー更新のためのカスタムイベントを発火
+      window.dispatchEvent(new CustomEvent('customerUpdated', {
+        detail: {
+          customerId: customerId,
+          newTitle: editForm.title
+        }
+      }))
+
+    } catch (error: any) {
+      console.error('❌ Customer update failed:', error)
+      setError(`顧客情報の更新に失敗しました: ${error.message}`)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleFormChange = (field: keyof typeof editForm, value: string) => {
+    setEditForm(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
   const handleGenerate = async () => {
     if (!mainImage) {
       setError('建物の正面写真をアップロードしてください')
@@ -118,21 +273,64 @@ export default function CustomerPage() {
       formData.append('mainImage', mainImage)
       if (sideImage) formData.append('sideImage', sideImage)
       formData.append('customerId', customerId)
-      formData.append('wallColor', wallColor)
-      formData.append('roofColor', roofColor)
-      formData.append('doorColor', doorColor)
+      // Get color details from IDs
+      console.log('🎨 Color IDs Debug:', { wallColorId, roofColorId, doorColorId })
+      const wallColor = wallColorId ? getColorById(wallColorId) : null
+      const roofColor = roofColorId ? getColorById(roofColorId) : null
+      const doorColor = doorColorId ? getColorById(doorColorId) : null
+      console.log('🎨 Color Objects Debug:', { wallColor, roofColor, doorColor })
+      
+      // Send color information to API
+      formData.append('wallColor', wallColor ? `${wallColor.name} (${wallColor.code})` : '変更なし')
+      formData.append('roofColor', roofColor ? `${roofColor.name} (${roofColor.code})` : '変更なし')
+      formData.append('doorColor', doorColor ? `${doorColor.name} (${doorColor.code})` : '変更なし')
+      
+      // Send detailed color data for advanced prompts
+      if (wallColor) {
+        formData.append('wallColorData', JSON.stringify({
+          name: wallColor.name,
+          code: wallColor.code,
+          hex: wallColor.hex,
+          rgb: wallColor.rgb,
+          munsell: wallColor.munsell
+        }))
+      }
+      if (roofColor) {
+        formData.append('roofColorData', JSON.stringify({
+          name: roofColor.name,
+          code: roofColor.code,
+          hex: roofColor.hex,
+          rgb: roofColor.rgb,
+          munsell: roofColor.munsell
+        }))
+      }
+      if (doorColor) {
+        formData.append('doorColorData', JSON.stringify({
+          name: doorColor.name,
+          code: doorColor.code,
+          hex: doorColor.hex,
+          rgb: doorColor.rgb,
+          munsell: doorColor.munsell
+        }))
+      }
       formData.append('weather', weather)
       formData.append('layoutSideBySide', layoutSideBySide.toString())
       formData.append('backgroundColor', backgroundColor)
       formData.append('otherInstructions', otherInstructions)
 
       // Call generation API
+      console.log('🚀 Starting generation API call...')
       const response = await fetch('/api/generate', {
         method: 'POST',
         body: formData,
       })
 
       const result = await response.json()
+      console.log('📊 Generation API response:', { success: response.ok, result })
+      console.log('🔍 Raw result object:', result)
+      console.log('🔍 Result keys:', Object.keys(result))
+      console.log('🔍 HistoryId value:', result.historyId)
+      console.log('🔍 Result type:', typeof result)
 
       if (!response.ok) {
         throw new Error(result.error || '生成に失敗しました')
@@ -141,10 +339,23 @@ export default function CustomerPage() {
       // Refresh usage limit
       await checkUsageLimit()
 
-      // Show success message and refresh history
+      // Show success message and automatically navigate to history tab with detail view
+      console.log('✅ Generation successful, initiating auto-navigation...')
+      console.log('🎯 Setting latest generation ID:', result.historyId)
+      
       setError(null)
-      window.location.reload()
+      setLatestGenerationId(result.historyId)
+      
+      console.log('🔄 Switching to history tab...')
+      setActiveTab('history')
+      
+      console.log('♻️ Refreshing history data...')
+      setHistoryRefresh(prev => prev + 1)
+      
+      console.log('🏁 Auto-navigation setup complete')
+      
     } catch (error: any) {
+      console.error('❌ Generation failed:', error)
       setError(error.message || '生成中にエラーが発生しました')
     } finally {
       setGenerating(false)
@@ -173,13 +384,53 @@ export default function CustomerPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">{customer.title}</h1>
+        <div className="flex items-center gap-2">
+          {isEditingTitle ? (
+            <div className="flex items-center gap-2 flex-1">
+              <Input
+                ref={titleInputRef}
+                value={editForm.title}
+                onChange={(e) => handleFormChange('title', e.target.value)}
+                className="text-3xl font-bold tracking-tight h-12 text-2xl bg-transparent border-0 border-b-2 border-gray-300 rounded-none px-0 focus:border-primary"
+                onKeyPress={async (e) => {
+                  if (e.key === 'Enter') {
+                    // Enterキー押下時にもカスタムイベントを発火
+                    await handleSaveCustomer()
+                    setIsEditingTitle(false)
+                  }
+                }}
+                onBlur={async () => {
+                  // タイトルのインライン編集時にもカスタムイベントを発火
+                  await handleSaveCustomer()
+                  setIsEditingTitle(false)
+                }}
+              />
+            </div>
+          ) : (
+            <h1
+              className="text-3xl font-bold tracking-tight cursor-pointer hover:text-primary flex items-center gap-2"
+              onClick={() => {
+                setIsEditingTitle(true)
+                // 直接選択も行う
+                setTimeout(() => {
+                  if (titleInputRef.current) {
+                    titleInputRef.current.focus()
+                    titleInputRef.current.select()
+                  }
+                }, 0)
+              }}
+            >
+              {customer.title}
+              <Edit className="h-4 w-4 opacity-50" />
+            </h1>
+          )}
+        </div>
         <p className="text-muted-foreground mt-2">
           塗装シミュレーションを作成
         </p>
       </div>
 
-      <Tabs defaultValue="generate" className="space-y-4">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList>
           <TabsTrigger value="generate">シミュレーション作成</TabsTrigger>
           <TabsTrigger value="history">履歴</TabsTrigger>
@@ -224,11 +475,6 @@ export default function CustomerPage() {
                 onChange={setMainImage}
                 required
               />
-              <ImageUpload
-                label="横から見た建物の写真（オプション）"
-                onChange={setSideImage}
-                helperText="横から見た建物の写真を添付すると精度が上がります（なくてもOK）"
-              />
             </CardContent>
           </Card>
 
@@ -241,20 +487,23 @@ export default function CustomerPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <ColorSelector
+              <CompactColorSelector
+                usage="wall"
                 label="壁の色"
-                value={wallColor}
-                onChange={setWallColor}
+                selectedColorId={wallColorId}
+                onColorSelect={setWallColorId}
               />
-              <ColorSelector
+              <CompactColorSelector
+                usage="roof"
                 label="屋根の色"
-                value={roofColor}
-                onChange={setRoofColor}
+                selectedColorId={roofColorId}
+                onColorSelect={setRoofColorId}
               />
-              <ColorSelector
+              <CompactColorSelector
+                usage="door"
                 label="ドアの色"
-                value={doorColor}
-                onChange={setDoorColor}
+                selectedColorId={doorColorId}
+                onColorSelect={setDoorColorId}
               />
             </CardContent>
           </Card>
@@ -277,8 +526,10 @@ export default function CustomerPage() {
                 setLayoutSideBySide={setLayoutSideBySide}
                 backgroundColor={backgroundColor}
                 setBackgroundColor={setBackgroundColor}
-                showSideImage={!!sideImage}
+                sideImage={sideImage}
+                setSideImage={setSideImage}
               />
+
               <div className="space-y-2">
                 <Label htmlFor="other">その他の指定</Label>
                 <Textarea
@@ -319,55 +570,169 @@ export default function CustomerPage() {
               </>
             )}
           </Button>
-        </TabsContent>
-
-        <TabsContent value="history">
-          <GenerationHistory customerId={customerId} />
+        </TabsContent>        <TabsContent value="history">
+          <GenerationHistory 
+            customerId={customerId} 
+            refresh={historyRefresh}
+            autoOpenDetailId={latestGenerationId}
+          />
         </TabsContent>
 
         <TabsContent value="info">
           <Card>
-            <CardHeader>
-              <CardTitle>顧客情報</CardTitle>
-              <CardDescription>
-                この顧客の詳細情報
-              </CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <div>
+                <CardTitle>顧客情報</CardTitle>
+                <CardDescription>
+                  この顧客の詳細情報
+                </CardDescription>
+              </div>
+              <div className="flex gap-2">
+                {isEditing ? (
+                  <>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleCancelEdit}
+                      disabled={saving}
+                    >
+                      <X className="h-4 w-4 mr-1" />
+                      キャンセル
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={handleSaveCustomer}
+                      disabled={saving}
+                    >
+                      {saving ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                          保存中...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="h-4 w-4 mr-1" />
+                          保存
+                        </>
+                      )}
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleEditCustomer}
+                  >
+                    <Edit className="h-4 w-4 mr-1" />
+                    編集
+                  </Button>
+                )}
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label>タイトル</Label>
-                <p className="text-sm text-muted-foreground">{customer.title}</p>
+                <Label htmlFor="title">タイトル</Label>
+                {isEditing ? (
+                  <Input
+                    id="title"
+                    value={editForm.title}
+                    onChange={(e) => handleFormChange('title', e.target.value)}
+                    placeholder="タイトルを入力"
+                    className="mt-1"
+                  />
+                ) : (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {customer.title}
+                  </p>
+                )}
               </div>
-              {customer.customer_name && (
-                <div>
-                  <Label>顧客名</Label>
-                  <p className="text-sm text-muted-foreground">{customer.customer_name}</p>
-                </div>
-              )}
-              {customer.address && (
-                <div>
-                  <Label>住所</Label>
-                  <p className="text-sm text-muted-foreground">{customer.address}</p>
-                </div>
-              )}
-              {customer.phone && (
-                <div>
-                  <Label>電話番号</Label>
-                  <p className="text-sm text-muted-foreground">{customer.phone}</p>
-                </div>
-              )}
-              {customer.email && (
-                <div>
-                  <Label>メールアドレス</Label>
-                  <p className="text-sm text-muted-foreground">{customer.email}</p>
-                </div>
-              )}
-              {customer.notes && (
-                <div>
-                  <Label>メモ</Label>
-                  <p className="text-sm text-muted-foreground">{customer.notes}</p>
-                </div>
-              )}
+              
+              <div>
+                <Label htmlFor="customer_name">顧客名</Label>
+                {isEditing ? (
+                  <Input
+                    id="customer_name"
+                    value={editForm.customer_name}
+                    onChange={(e) => handleFormChange('customer_name', e.target.value)}
+                    placeholder="顧客名を入力"
+                    className="mt-1"
+                  />
+                ) : (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {customer.customer_name || '未入力'}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="customer_address">住所</Label>
+                {isEditing ? (
+                  <Input
+                    id="customer_address"
+                    value={editForm.customer_address}
+                    onChange={(e) => handleFormChange('customer_address', e.target.value)}
+                    placeholder="住所を入力"
+                    className="mt-1"
+                  />
+                ) : (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {customer.customer_address || '未入力'}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="customer_phone">電話番号</Label>
+                {isEditing ? (
+                  <Input
+                    id="customer_phone"
+                    value={editForm.customer_phone}
+                    onChange={(e) => handleFormChange('customer_phone', e.target.value)}
+                    placeholder="電話番号を入力"
+                    className="mt-1"
+                  />
+                ) : (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {customer.customer_phone || '未入力'}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="customer_email">メールアドレス</Label>
+                {isEditing ? (
+                  <Input
+                    id="customer_email"
+                    type="email"
+                    value={editForm.customer_email}
+                    onChange={(e) => handleFormChange('customer_email', e.target.value)}
+                    placeholder="メールアドレスを入力"
+                    className="mt-1"
+                  />
+                ) : (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {customer.customer_email || '未入力'}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="description">メモ</Label>
+                {isEditing ? (
+                  <Textarea
+                    id="description"
+                    value={editForm.description}
+                    onChange={(e) => handleFormChange('description', e.target.value)}
+                    placeholder="メモを入力"
+                    className="mt-1"
+                    rows={4}
+                  />
+                ) : (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {customer.description || '未入力'}
+                  </p>
+                )}
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

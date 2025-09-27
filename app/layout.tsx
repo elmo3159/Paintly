@@ -52,12 +52,15 @@ export default function RootLayout({
         <link rel="apple-touch-icon" sizes="180x180" href="/icon-192.png" />
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
-      <body className={inter.className}>
+      <body
+        className={`${inter.className} bg-background text-foreground`}
+        suppressHydrationWarning
+      >
         <ErrorBoundary>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
-            enableSystem
+            defaultTheme="light"
+            enableSystem={false}
             disableTransitionOnChange
           >
             {children}

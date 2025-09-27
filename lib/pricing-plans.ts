@@ -18,8 +18,7 @@ export const pricingPlans: PricingPlan[] = [
     features: [
       '生成回数: 3回まで',
       '顧客ページ: 3件まで', 
-      '画像保存期間: 7日間',
-      '基本サポート'
+      '画像保存期間: 7日間'
     ],
     generationLimit: 3,
     storageMonths: 0.25,
@@ -33,8 +32,7 @@ export const pricingPlans: PricingPlan[] = [
     features: [
       '生成回数: 30回/月',
       '顧客ページ: 無制限',
-      '画像保存期間: 1ヶ月',
-      'メールサポート'
+      '画像保存期間: 1ヶ月'
     ],
     generationLimit: 30,
     storageMonths: 1,
@@ -48,8 +46,7 @@ export const pricingPlans: PricingPlan[] = [
     features: [
       '生成回数: 100回/月',
       '顧客ページ: 無制限',
-      '画像保存期間: 3ヶ月',
-      '優先サポート'
+      '画像保存期間: 3ヶ月'
     ],
     generationLimit: 100,
     storageMonths: 3,
@@ -64,8 +61,7 @@ export const pricingPlans: PricingPlan[] = [
     features: [
       '生成回数: 300回/月',
       '顧客ページ: 無制限',
-      '画像保存期間: 6ヶ月',
-      '24時間サポート'
+      '画像保存期間: 6ヶ月'
     ],
     generationLimit: 300,
     storageMonths: 6,
@@ -79,13 +75,11 @@ export const pricingPlans: PricingPlan[] = [
     features: [
       '生成回数: 1,000回/月',
       '顧客ページ: 無制限',
-      '画像保存期間: 1年間',
-      '専任サポート',
-      '複数ユーザー対応'
+      '画像保存期間: 1年間'
     ],
     generationLimit: 1000,
     storageMonths: 12,
-    description: '複数営業担当での利用に'
+    description: '大量の営業活動に'
   }
 ]
 

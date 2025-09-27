@@ -37,8 +37,6 @@
 
 ##### 画像アップロード機能
 - 建物の正面写真アップロード（必須）
-- 横から見た建物の写真アップロード（オプション）
-  - 「横から見た建物の写真を添付すると精度が上がります（なくてもOK）」というガイドテキスト表示
 
 ##### カラー選択機能
 
@@ -61,7 +59,7 @@
 
 **天候選択**
 - ドロップダウン形式
-- 選択肢: 晴れ、曇り、雨、雪
+- 選択肢: 変更なし、晴れ、曇り、雨、雪
 
 **正面と横の写真を並べる**
 - チェックボックス形式
@@ -157,6 +155,17 @@ C:\Users\elmod\Desktop\CursorApp\Paintly\カラー一覧.pdf
 - **顧客ページ**: 無制限
 - **画像保存期間**: 1年間
 - **想定**: 複数営業担当での利用
+
+### 💎 **永久プラン**
+- **料金**: 無料（知り合い・友人限定特別版）
+- **生成回数**: 無制限
+- **顧客ページ**: 無制限
+- **画像保存期間**: 永久保存
+- **想定**: 塗装業界のプロフェッショナル向け
+- **特典**:
+  - 今後の新機能を無料で利用可能
+  - 優先サポート
+  - API制限なし
 
 
 ## 技術仕様
@@ -306,6 +315,12 @@ access-token sbp_cae2c23321261aa723b0eb620c6b046fc3eaf92a
 supabase MCP token↓
 sbp_cae2c23321261aa723b0eb620c6b046fc3eaf92a
 
+URL Configuration
+
+Site URL
+http://172.17.161.101:9090
+
+
 ## Gemini
 GEMINI_API_KEY=AIzaSyCjIYp7_X8YQMOrrFwjqR2SfTj6_3YY31w
 
@@ -333,3 +348,122 @@ JQmd56rPfQAMp7Wu05Wyrnqt
 ## Google OAuth
 Google OAuth認証は有効になっています。
 認証情報はVercelの環境変数で管理されています。
+
+### 📡 接続成功MCPサーバー機能詳細
+
+#### 🗄️ Database & Storage
+**Supabase MCP** (`@supabase/mcp-server-supabase`)
+- PostgreSQLデータベース操作（テーブル作成・更新・削除）
+- 認証・ユーザー管理
+- リアルタイムサブスクリプション
+- ストレージ機能（ファイルアップロード・管理）
+- Edge Functions実行
+- プロジェクト設定管理
+- Supabaseの設定はMCPサーバーを使って効率的に実装してください
+
+#### 💻 Development Tools
+**chunk-editor MCP** (Python 3.11環境)
+- セマンティックチャンクベースのファイル編集
+- Universal CTags利用による構造解析
+- 関数・クラス単位での効率的なコード編集
+- 安全なundo機能付き
+- LLM向けに最適化されたファイル操作
+
+**serena MCP** (`uvx serena-mcp-server`)
+- セマンティックコード検索・解析
+- シンボル参照関係の追跡
+- インテリジェントなコード編集
+- プロジェクト構造の理解と操作
+- 効率的なトークン使用量でのコード操作
+
+**Desktop Commander MCP** (`@wonderwhy-er/desktop-commander`)
+- システムターミナル制御
+- プロセス管理（実行・監視・終了）
+- ファイルシステム検索
+- diff形式でのファイル編集
+- 長時間実行コマンドの管理
+- OS全体にわたる統合操作
+
+**ripgrep MCP** (`mcp-ripgrep`)
+- 高速テキスト検索（rg使用）
+- 正規表現サポート
+- ファイルタイプフィルタリング
+- 大規模コードベース対応
+- コンテキスト行表示
+
+#### 🔍 Code Intelligence & Documentation
+**Context7 MCP** (`@upstash/context7-mcp`)
+- ライブラリ・フレームワークの最新ドキュメント取得
+- バージョン固有の情報提供
+- コード例とベストプラクティス
+- API仕様書の自動取得
+- 開発効率向上のための情報支援
+
+**Sourcegraph MCP** (`sourcegraph-mcp-server`)
+- 大規模コードベース横断検索
+- シンボル定義・参照検索
+- コードナビゲーション
+- セキュリティ脆弱性検索
+- オープンソースコード解析
+
+**GitHub MCP** (`@modelcontextprotocol/server-github`)
+- リポジトリ管理（作成・削除・設定）
+- イシュー・プルリクエスト操作
+- コミット履歴管理
+- ファイル操作（読み取り・更新）
+- ブランチ管理
+- GitHub API全般アクセス
+
+#### 🧠 AI Enhancement & Memory
+**cipher MCP** (`@byterover/cipher`)
+- AIエージェント用メモリレイヤー
+- 推論プロセスの記録・追跡
+- 学習履歴の保存・検索
+- マルチセッション間でのコンテキスト共有
+- 知識グラフ構築
+- エージェント行動パターン分析
+
+#### 🛠️ Infrastructure & Deployment
+**Vercel MCP** (Vercel API経由)
+- プロジェクトデプロイメント
+- 環境変数管理
+- ドメイン設定
+- ビルド設定・ログ確認
+- パフォーマンス監視
+- 本番環境管理
+
+**filesystem MCP** (`@modelcontextprotocol/server-filesystem`)
+- 安全なファイルシステムアクセス
+- ディレクトリ操作
+- ファイル読み取り・書き込み
+- 権限管理
+- プロジェクトフォルダ限定アクセス
+
+#### 🔧 Testing & Browser Automation
+**Playwright MCP** (`@playwright/mcp`)
+- ブラウザ自動化（Chrome・Firefox・Safari）
+- E2Eテスト実行
+- スクリーンショット・動画記録
+- フォーム操作・クリック処理
+- ネットワーク監視
+- モバイルデバイスエミュレーション
+
+#### 🔥 高効率開発のためのMCP連携パターン
+
+**パターン1: 情報収集 → 実装 → テスト**
+1. Context7 MCP: 技術情報収集
+2. serena MCP: 既存コード理解
+3. chunk-editor MCP: コード実装
+4. Playwright MCP: 動作確認
+
+**パターン2: 問題解決 → 記録**
+1. ripgrep MCP: 問題箇所検索
+2. Sourcegraph MCP: 解決策調査
+3. Desktop Commander MCP: 修正実行
+4. cipher MCP: 解決プロセス記録
+
+**パターン3: データ連携開発**
+1. Supabase MCP: DB設計
+2. GitHub MCP: APIコード管理
+3. Vercel MCP: 環境構築
+4. filesystem MCP: 設定ファイル管理

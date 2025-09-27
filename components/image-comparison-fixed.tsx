@@ -5,32 +5,29 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Download, Maximize2 } from 'lucide-react'
 
-interface ImageComparisonProps {
+interface ImageComparisonFixedProps {
   originalImage: string
   generatedImage: string
   title?: string
   allowDownload?: boolean
 }
 
-export function ImageComparison({
+export function ImageComparisonFixed({
   originalImage,
   generatedImage,
   title = 'ビフォーアフター比較',
   allowDownload = true
-}: ImageComparisonProps) {
+}: ImageComparisonFixedProps) {
   const [sliderPosition, setSliderPosition] = useState(50)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
   // デバッグ用：画像URLをログ出力
-  console.log('🖼️ ImageComparison Props Received:');
-  console.log('  🔵 originalImage:', originalImage);
-  console.log('  🟢 generatedImage:', generatedImage);
-  console.log('  📏 originalLength:', originalImage?.length);
-  console.log('  📏 generatedLength:', generatedImage?.length);
-  console.log('  ✅ hasOriginal:', !!originalImage);
-  console.log('  ✅ hasGenerated:', !!generatedImage);
+  console.log('🔥 MOBILE TOUCH FIXED - ImageComparisonFixed:')
+  console.log('  📷 originalImage URL (will show on LEFT):', originalImage)
+  console.log('  🎨 generatedImage URL (will show on RIGHT):', generatedImage)
+  console.log('  🎯 RENDERING LOGIC: Left=originalImage, Right=generatedImage')
 
   const downloadImage = async (url: string, filename: string) => {
     try {
@@ -51,7 +48,7 @@ export function ImageComparison({
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
-      document.getElementById('comparison-container')?.requestFullscreen()
+      document.getElementById('comparison-container-fixed')?.requestFullscreen()
       setIsFullscreen(true)
     } else {
       document.exitFullscreen()
@@ -105,21 +102,53 @@ export function ImageComparison({
     setIsDragging(false)
   }, [])
 
+  // ポインターイベント（統合的なアプローチ）
+  const handlePointerDown = (e: React.PointerEvent) => {
+    e.preventDefault()
+    setIsDragging(true)
+    updateSliderPosition(e.clientX)
+    // ポインターキャプチャを設定してドラッグ中も確実にイベントを受け取る
+    e.currentTarget.setPointerCapture(e.pointerId)
+  }
+
+  const handlePointerMove = useCallback((e: PointerEvent) => {
+    if (isDragging) {
+      e.preventDefault()
+      updateSliderPosition(e.clientX)
+    }
+  }, [isDragging, updateSliderPosition])
+
+  const handlePointerUp = useCallback((e: PointerEvent) => {
+    setIsDragging(false)
+    // ポインターキャプチャを解除
+    ;(e.target as Element)?.releasePointerCapture?.(e.pointerId)
+  }, [])
+
   // グローバルイベントリスナー
   useEffect(() => {
     if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove)
+      // マウスイベント
+      document.addEventListener('mousemove', handleMouseMove, { passive: false })
       document.addEventListener('mouseup', handleMouseUp)
+      
+      // タッチイベント
       document.addEventListener('touchmove', handleTouchMove, { passive: false })
       document.addEventListener('touchend', handleTouchEnd)
+      
+      // ポインターイベント
+      document.addEventListener('pointermove', handlePointerMove, { passive: false })
+      document.addEventListener('pointerup', handlePointerUp)
+
       return () => {
         document.removeEventListener('mousemove', handleMouseMove)
         document.removeEventListener('mouseup', handleMouseUp)
         document.removeEventListener('touchmove', handleTouchMove)
         document.removeEventListener('touchend', handleTouchEnd)
+        document.removeEventListener('pointermove', handlePointerMove)
+        document.removeEventListener('pointerup', handlePointerUp)
       }
     }
-  }, [isDragging, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd])
+  }, [isDragging, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd, handlePointerMove, handlePointerUp])
 
   // 画像が存在しない場合のフォールバック表示
   if (!originalImage || !generatedImage) {
@@ -142,7 +171,7 @@ export function ImageComparison({
   }
 
   return (
-    <Card id="comparison-container" className={isFullscreen ? 'fixed inset-0 z-50' : ''}>
+    <Card id="comparison-container-fixed" className={isFullscreen ? 'fixed inset-0 z-50' : ''}>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>{title}</CardTitle>
         <div className="flex space-x-2">
@@ -180,66 +209,62 @@ export function ImageComparison({
         <div className="w-full max-w-4xl mx-auto bg-gray-100 rounded-lg overflow-hidden">
           <div
             ref={containerRef}
-            className="relative w-full h-96 cursor-col-resize select-none touch-none"
+            className="relative w-full h-96 cursor-col-resize select-none bg-gray-200"
             onMouseDown={handleMouseDown}
             onTouchStart={handleTouchStart}
+            onPointerDown={handlePointerDown}
+            style={{ 
+              userSelect: 'none',
+              touchAction: 'none' // スクロールやピンチを防ぐ
+            }}
           >
-            {/* 元画像（背景全体） */}
-            <div 
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: `url(${originalImage})`,
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat'
-              }}
-            />
-            
-            {/* 生成画像（クリップマスク付き） */}
-            <div 
-              className="absolute inset-0 bg-cover bg-center"
+            {/* 🔄 FIXED: 背景全体を元画像（右側表示）に変更 */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: `url(${generatedImage})`,
                 backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center'
+              }}
+            />
+
+            {/* 🔄 FIXED: クリップマスクを生成画像（左側表示）に変更 */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url(${originalImage})`,
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
                 clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`
               }}
             />
-            
+
             {/* スライダーライン */}
-            <div 
-              className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg pointer-events-none"
+            <div
+              className="absolute top-0 bottom-0 w-1 bg-white shadow-lg pointer-events-none z-10"
               style={{ left: `${sliderPosition}%` }}
             >
-              {/* スライダーハンドル - モバイル対応大きめサイズ */}
+              {/* スライダーハンドル - モバイル対応で大きく */}
               <div
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 md:w-10 md:h-10 lg:w-8 lg:h-8 bg-white rounded-full shadow-lg border-2 border-blue-500 cursor-col-resize pointer-events-auto flex items-center justify-center"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 sm:w-10 sm:h-10 bg-white rounded-full shadow-lg border-2 border-gray-300 cursor-col-resize pointer-events-auto z-20 flex items-center justify-center"
+                style={{ 
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                  touchAction: 'none' // タッチでのスクロールを防ぐ
+                }}
+                onMouseDown={handleMouseDown}
+                onTouchStart={handleTouchStart}
+                onPointerDown={handlePointerDown}
               >
-                {/* ハンドル内の視覚的なインジケータ */}
-                <div className="w-1 h-6 bg-blue-500 rounded-full"></div>
+                <div className="w-1 h-6 bg-gray-400 rounded"></div>
               </div>
             </div>
           </div>
         </div>
         <div className="mt-4 text-center text-sm text-muted-foreground space-y-1">
-          <p className="md:hidden text-base font-medium">
-            🔵 スライダーをタッチして左右にドラッグしてください
-          </p>
-          <p className="hidden md:block">
-            スライダーを左右にドラッグして比較してください
-          </p>
-          <p className="text-xs">
+          <p>スライダーを左右にドラッグして比較してください</p>
+          <p className="text-xs font-medium">
             左側：元画像 | 右側：生成画像（アフター）
           </p>
-          <div className="flex justify-center items-center space-x-4 mt-2 text-xs">
-            <div className="flex items-center space-x-1">
-              <div className="w-3 h-3 bg-gray-400 rounded"></div>
-              <span>元画像</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <div className="w-3 h-3 bg-blue-500 rounded"></div>
-              <span>生成画像</span>
-            </div>
-          </div>
         </div>
       </CardContent>
     </Card>

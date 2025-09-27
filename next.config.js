@@ -112,8 +112,18 @@ const nextConfig = {
     NEXT_PUBLIC_APP_NAME: 'Paintly',
     NEXT_PUBLIC_APP_VERSION: '1.0.0',
   },
-  
-  output: 'standalone',
+
+  // 本番環境でのみstandaloneを使用
+  output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
+
+  // 開発時のwebpack設定
+  webpack: (config, { dev, isServer }) => {
+    if (dev && !isServer) {
+      // チャンクロード タイムアウトを延長
+      config.output.chunkLoadTimeout = 120000; // 120秒
+    }
+    return config;
+  },
 }
 
 module.exports = nextConfig

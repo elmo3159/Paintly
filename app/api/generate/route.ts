@@ -1,16 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { GoogleGenerativeAI } from '@google/generative-ai'
-import { wallColors, roofColors, doorColors } from '@/lib/paint-colors'
+import { colorPromptArray } from '@/lib/hierarchical-paint-colors'
 
 // Initialize Gemini AI with API key for image generation
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('🚀 [UPDATED] Starting POST /api/generate - Cache Refresh Test')
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
+    
+    // Create service role client for database operations that need to bypass RLS
+    const serviceSupabase = createServiceClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
+    console.log('👤 User check:', user ? `Found user: ${user.id}` : 'No user found')
     if (!user) {
       return NextResponse.json({ error: '認証が必要です' }, { status: 401 })
     }
@@ -50,6 +59,34 @@ export async function POST(request: NextRequest) {
     const weather = formData.get('weather') as string
     const layoutSideBySide = formData.get('layoutSideBySide') === 'true'
     const backgroundColor = formData.get('backgroundColor') as string
+    
+    // Parse detailed color data
+    const wallColorData = formData.get('wallColorData') ? JSON.parse(formData.get('wallColorData') as string) : null
+    const roofColorData = formData.get('roofColorData') ? JSON.parse(formData.get('roofColorData') as string) : null
+    const doorColorData = formData.get('doorColorData') ? JSON.parse(formData.get('doorColorData') as string) : null
+    
+    // 🚨 Critical Debug: Check if color data is being received
+    console.log('🚨 Color Data Reception Debug:', {
+      wallColorDataRaw: formData.get('wallColorData'),
+      roofColorDataRaw: formData.get('roofColorData'), 
+      doorColorDataRaw: formData.get('doorColorData'),
+      wallColorDataParsed: wallColorData,
+      roofColorDataParsed: roofColorData,
+      doorColorDataParsed: doorColorData,
+      wallColorDataExists: !!wallColorData
+    })
+    
+    // デバッグ: フォームデータの確認
+    console.log('🔍 Form Data Debug:', {
+      layoutSideBySide: formData.get('layoutSideBySide'),
+      layoutSideBySideBoolean: layoutSideBySide,
+      backgroundColor: backgroundColor,
+      wallColor: wallColor,
+      roofColor: roofColor,
+      doorColor: doorColor,
+      weather: weather,
+      hasSideImage: !!sideImage
+    })
     const otherInstructions = formData.get('otherInstructions') as string
 
     if (!mainImage || !customerId) {
@@ -69,30 +106,67 @@ export async function POST(request: NextRequest) {
       sideImageBase64 = Buffer.from(sideImageBytes).toString('base64')
     }
 
+    // Save original image to storage for comparison feature
+    let originalImageUrl: string | null = null
+    try {
+      const originalImageBuffer = Buffer.from(mainImageBytes)
+      const originalFileName = `original_${Date.now()}.${mainImage.type.split('/')[1]}`
+      
+      const { data: originalUploadData, error: originalUploadError } = await supabase.storage
+        .from('generated-images')
+        .upload(`${user.id}/${originalFileName}`, originalImageBuffer, {
+          contentType: mainImage.type,
+          upsert: false
+        })
+
+      if (!originalUploadError) {
+        const { data: { publicUrl } } = supabase.storage
+          .from('generated-images')
+          .getPublicUrl(`${user.id}/${originalFileName}`)
+        originalImageUrl = publicUrl
+        console.log('✅ Original image uploaded successfully:', originalImageUrl)
+      } else {
+        console.warn('⚠️ Original image upload failed:', originalUploadError.message)
+      }
+    } catch (error) {
+      console.warn('⚠️ Original image upload error:', error)
+    }
+
     // Build prompt first
     const prompt = buildPrompt({
       wallColor,
       roofColor,
       doorColor,
+      wallColorData,
+      roofColorData,
+      doorColorData,
       weather,
       layoutSideBySide,
       backgroundColor,
       otherInstructions,
       hasSideImage: !!sideImage
     })
+    
+    console.log('🔍 Generated Prompt Debug:', {
+      promptLength: prompt.length,
+      includesLayoutInstruction: prompt.includes('切り抜いて'),
+      includesSideBySide: prompt.includes('並べ'),
+      layoutSideBySide: layoutSideBySide,
+      backgroundColor: backgroundColor,
+      prompt: prompt
+    })
 
-    // Create generation history record
-    const { data: historyRecord, error: historyError } = await supabase
-      .from('generation_history')
+    // Create generation history record using service role to bypass RLS constraints
+    const { data: historyRecord, error: historyError } = await serviceSupabase
+      .from('generations')
       .insert({
         user_id: user.id,
-        customer_id: customerId,
+        customer_page_id: customerId,
+        original_image_url: originalImageUrl,
         wall_color: wallColor,
         roof_color: roofColor,
         door_color: doorColor,
         weather: weather,
-        layout_side_by_side: layoutSideBySide,
-        background_color: backgroundColor,
         other_instructions: otherInstructions,
         prompt: prompt,
         status: 'processing'
@@ -101,8 +175,21 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (historyError || !historyRecord) {
+      console.error('❌ Database insert error:', historyError)
+      console.error('Insert data was:', {
+        user_id: user.id,
+        customer_page_id: customerId,
+        original_image_url: originalImageUrl || 'placeholder',
+        wall_color: wallColor,
+        roof_color: roofColor,
+        door_color: doorColor,
+        weather: weather,
+        other_instructions: otherInstructions,
+        prompt: prompt,
+        status: 'processing'
+      })
       return NextResponse.json(
-        { error: '履歴の作成に失敗しました' },
+        { error: '履歴の作成に失敗しました', details: historyError?.message },
         { status: 500 }
       )
     }
@@ -118,8 +205,8 @@ export async function POST(request: NextRequest) {
       console.log('📝 Prompt length:', prompt.length)
       console.log('🖼️ Input images:', sideImageBase64 ? 2 : 1)
       console.log('🔑 API Key configured:', process.env.GEMINI_API_KEY ? 'Yes' : 'No')
-      
-      const model = genAI.getGenerativeModel({ 
+
+      const model = genAI.getGenerativeModel({
         model: 'gemini-2.5-flash-image-preview'
       })
       
@@ -147,10 +234,10 @@ export async function POST(request: NextRequest) {
       console.log('📤 Sending request to Gemini API...')
       
       // Record API call start
-      await supabase
-        .from('generation_history')
+      await serviceSupabase
+        .from('generations')
         .update({
-          gemini_response: { 
+          gemini_response: {
             status: 'api_call_started',
             prompt_length: prompt.length,
             image_count: contentParts.length - 1,
@@ -204,10 +291,10 @@ export async function POST(request: NextRequest) {
           console.log('⚠️ No image data found in any candidate')
           
           // Record the full response for debugging
-          await supabase
-            .from('generation_history')
+          await serviceSupabase
+            .from('generations')
             .update({
-              gemini_response: { 
+              gemini_response: {
                 status: 'no_image_in_response',
                 candidates_count: response.candidates.length,
                 debug_response: JSON.stringify(response, null, 2),
@@ -219,10 +306,10 @@ export async function POST(request: NextRequest) {
       } else {
         console.log('❌ No candidates found in Gemini response')
         
-        await supabase
-          .from('generation_history')
+        await serviceSupabase
+          .from('generations')
           .update({
-            gemini_response: { 
+            gemini_response: {
               status: 'no_candidates',
               full_response: JSON.stringify(response, null, 2),
               timestamp: new Date().toISOString()
@@ -242,7 +329,7 @@ export async function POST(request: NextRequest) {
         
         // Upload to Supabase Storage
         const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('generations')
+          .from('generated-images')
           .upload(`${user.id}/${fileName}`, imageBuffer, {
             contentType: 'image/png',
             upsert: true
@@ -255,7 +342,7 @@ export async function POST(request: NextRequest) {
 
         // Get public URL
         const { data: { publicUrl } } = supabase.storage
-          .from('generations')
+          .from('generated-images')
           .getPublicUrl(`${user.id}/${fileName}`)
         
         generatedImageUrl = publicUrl
@@ -265,14 +352,17 @@ export async function POST(request: NextRequest) {
       }
 
       // Update generation history
-      await supabase
-        .from('generation_history')
+      console.log('💾 Updating database record for generation ID:', historyRecord.id)
+      const { error: updateError } = await serviceSupabase
+        .from('generations')
         .update({
           status: generatedImageUrl ? 'completed' : 'failed',
-          gemini_response: { 
+          generated_image_url: generatedImageUrl,
+          gemini_response: {
             status: 'completed',
             hasImage: !!generatedImageData,
             imageUrl: generatedImageUrl,
+            originalImageUrl: originalImageUrl,
             timestamp: new Date().toISOString()
           },
           completed_at: new Date().toISOString(),
@@ -280,9 +370,15 @@ export async function POST(request: NextRequest) {
         })
         .eq('id', historyRecord.id)
 
+      if (updateError) {
+        console.error('❌ Database update error:', updateError)
+      } else {
+        console.log('✅ Database record updated successfully')
+      }
+
       // Increment usage count only if successful
       if (generatedImageUrl) {
-        await supabase
+        await serviceSupabase
           .from('subscriptions')
           .update({
             generation_count: subscription ? subscription.generation_count + 1 : 1
@@ -295,7 +391,9 @@ export async function POST(request: NextRequest) {
         success: !!generatedImageUrl,
         historyId: historyRecord.id,
         imageUrl: generatedImageUrl,
+        originalImageUrl: originalImageUrl,
         hasImage: !!generatedImageData,
+        prompt: prompt,
         message: generatedImageUrl ? '画像生成が完了しました' : 'Gemini APIから画像データが返されませんでした'
       })
 
@@ -310,16 +408,17 @@ export async function POST(request: NextRequest) {
       const errorMessage = geminiError.message || 'Gemini API呼び出しに失敗しました'
       
       // Update history record with error
-      await supabase
-        .from('generation_history')
+      await serviceSupabase
+        .from('generations')
         .update({
           status: 'failed',
           error_message: errorMessage,
-          gemini_response: { 
+          gemini_response: {
             status: 'error',
             error: errorMessage,
             hasImage: false,
             imageUrl: null,
+            originalImageUrl: originalImageUrl,
             timestamp: new Date().toISOString()
           },
           completed_at: new Date().toISOString()
@@ -350,6 +449,9 @@ function buildPrompt({
   wallColor,
   roofColor,
   doorColor,
+  wallColorData,
+  roofColorData,
+  doorColorData,
   weather,
   layoutSideBySide,
   backgroundColor,
@@ -359,71 +461,125 @@ function buildPrompt({
   wallColor: string
   roofColor: string
   doorColor: string
+  wallColorData: any
+  roofColorData: any
+  doorColorData: any
   weather: string
   layoutSideBySide: boolean
   backgroundColor: string
   otherInstructions: string
   hasSideImage: boolean
 }): string {
+  // 🔍 Critical Debug: Check color data before building prompt
+  console.log('🎨 BuildPrompt Color Debug:', {
+    wallColor,
+    wallColorData,
+    roofColor,
+    roofColorData,
+    doorColor,
+    doorColorData,
+    wallColorDataExists: !!wallColorData,
+    wallColorDataKeys: wallColorData ? Object.keys(wallColorData) : null
+  })
+
   // 日本語ナラティブプロンプトによる詳細で写実的な指示
   let prompt = 'この建物を指定された色でプロフェッショナルに塗装した後の詳細で写実的な画像を生成してください。建物の元の建築構造、窓、ドア、その他すべての特徴を維持し、塗料の色のみを以下の仕様に従って変更してください。\n\n'
 
   // 壁色の詳細仕様
-  if (wallColor !== '変更なし') {
-    const color = wallColors.find(c => c.name === wallColor)
-    if (color && color.code) {
-      prompt += `建物の外壁は美しい「${wallColor}」色で塗装してください。正確な仕様：RGB値 ${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}（16進コード ${color.hex}）`
-      if (color.munsell) {
-        prompt += `、マンセル値 ${color.munsell}`
-      }
-      prompt += `、日本塗料工業会色番号 ${color.code}。この色をすべての壁面に均一に、滑らかでプロフェッショナルな仕上がりで塗布してください。\n\n`
+  if (wallColor !== '変更なし' && wallColorData) {
+    prompt += `建物の外壁は美しい「${wallColorData.name}」色で塗装してください。正確な仕様：RGB値 ${wallColorData.rgb.r}, ${wallColorData.rgb.g}, ${wallColorData.rgb.b}（16進コード ${wallColorData.hex}）`
+    if (wallColorData.munsell) {
+      prompt += `、マンセル値 ${wallColorData.munsell}`
     }
+    prompt += `、日本塗料工業会色番号 ${wallColorData.code}。この色をすべての壁面に均一に、滑らかでプロフェッショナルな仕上がりで塗布してください。
+
+`
   }
 
-  if (roofColor !== '変更なし') {
-    const color = roofColors.find(c => c.name === roofColor)
-    if (color && color.code) {
-      prompt += `屋根は魅力的な「${roofColor}」色で塗装してください。正確な仕様：RGB値 ${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}（16進コード ${color.hex}）`
-      if (color.munsell) {
-        prompt += `、マンセル値 ${color.munsell}`
-      }
-      prompt += `、日本塗料工業会色番号 ${color.code}。屋根の色は壁の色と美しく調和し、屋根の元のテクスチャと素材感を維持してください。\n\n`
+  if (roofColor !== '変更なし' && roofColorData) {
+    prompt += `屋根は魅力的な「${roofColorData.name}」色で塗装してください。正確な仕様：RGB値 ${roofColorData.rgb.r}, ${roofColorData.rgb.g}, ${roofColorData.rgb.b}（16進コード ${roofColorData.hex}）`
+    if (roofColorData.munsell) {
+      prompt += `、マンセル値 ${roofColorData.munsell}`
     }
+    prompt += `、日本塗料工業会色番号 ${roofColorData.code}。屋根の色は壁の色と美しく調和し、屋根の元のテクスチャと素材感を維持してください。
+
+`
   }
 
-  if (doorColor !== '変更なし') {
-    const color = doorColors.find(c => c.name === doorColor)
-    if (color && color.code) {
-      prompt += `玄関ドアおよびその他のドアはエレガントな「${doorColor}」色で塗装してください。正確な仕様：RGB値 ${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}（16進コード ${color.hex}）`
-      if (color.munsell) {
-        prompt += `、マンセル値 ${color.munsell}`
-      }
-      prompt += `、日本塗料工業会色番号 ${color.code}。ドアは鮮明で清潔な仕上がりにし、建物全体の外観を向上させてください。\n\n`
+  if (doorColor !== '変更なし' && doorColorData) {
+    prompt += `玄関ドアおよびその他のドアはエレガントな「${doorColorData.name}」色で塗装してください。正確な仕様：RGB値 ${doorColorData.rgb.r}, ${doorColorData.rgb.g}, ${doorColorData.rgb.b}（16進コード ${doorColorData.hex}）`
+    if (doorColorData.munsell) {
+      prompt += `、マンセル値 ${doorColorData.munsell}`
     }
+    prompt += `、日本塗料工業会色番号 ${doorColorData.code}。ドアは鮮明で清潔な仕上がりにし、建物全体の外観を向上させてください。
+
+`
   }
 
   // 詳細な天候・環境条件の日本語説明
   const weatherDescriptions = {
+    '変更なし': '自然で心地よい日中の照明環境で、建物の色彩と質感が美しく映える理想的な撮影条件',
     '晴れ': '快晴の青空が広がる明るい晴天で、自然な太陽光が建物にリアルな影を作り出し、暖かく親しみやすい雰囲気を演出する',
     '曇り': '雲に覆われた穏やかな曇り空で、柔らかく拡散した光が建物表面を均等に照らす',
     '雨': '軽やかな雨が降り、濡れた表面が光を反射し、地面に水たまりができ、新鮮で清潔な雰囲気を作り出す',
     '雪': '穏やかな雪が降り積もり、表面に雪が積もって平和な冬の情景を作り出す'
   }
-  
-  prompt += `シーンは${weatherDescriptions[weather as keyof typeof weatherDescriptions] || '自然な照明の心地よい日中'}に設定してください。`
+
+  prompt += `シーンは${weatherDescriptions[weather as keyof typeof weatherDescriptions] || weatherDescriptions['変更なし']}に設定してください。`
 
   // サイドバイサイドレイアウトの指示
-  if (layoutSideBySide && hasSideImage) {
-    prompt += `清潔な${backgroundColor}色の背景で、塗装後の建物の正面図と側面図を並べて表示する、単一のプロフェッショナルなプレゼンテーション画像を作成してください。\n\n`
+  if (layoutSideBySide) {
+    const backgroundColorMap = {
+      '白': '真っ白',
+      '黒': '真っ黒',
+      '薄ピンク': '薄ピンク色'
+    }
+    const backgroundDescription = backgroundColorMap[backgroundColor as keyof typeof backgroundColorMap] || '真っ白'
+
+    // 並べて表示の場合は、切り抜きと並べて表示を最優先の指示として上書き
+    prompt = prompt.replace(
+      '最終画像は、プロの塗装後の建物の外観を正確に表現する高品質で写実的な建築ビジュアライゼーションにしてください。すべての元の建築詳細、テクスチャ、造園、周辺環境を維持してください。',
+      ''
+    )
+
+    if (hasSideImage) {
+      prompt += `
+
+【重要な指示】この建物だけを切り抜いて、背景を${backgroundDescription}にしてください。正面の建物の画像と、提供された横から見た建物の画像を1枚の画像に並べて表示してください。周辺環境は削除し、建物のみを表示してください。
+
+`
+    } else {
+      prompt += `
+
+【最重要指示】この建物だけを切り抜いて、背景を${backgroundDescription}にしてください。正面から見た建物の画像と、AIで生成した横から見た建物の画像を1枚の画像に並べて表示してください。周辺環境は削除し、建物のみを表示してください。2つの視点の建物を必ず並べて表示してください。
+
+`
+    }
+    
+    // 並べて表示の場合は天候設定を簡略化
+    prompt = prompt.replace(/シーンは.*?に設定してください。/, '')
+  } else {
+    // 通常の場合は元の指示を維持
+    prompt += '最終画像は、プロの塗装後の建物の外観を正確に表現する高品質で写実的な建築ビジュアライゼーションにしてください。すべての元の建築詳細、テクスチャ、造園、周辺環境を維持してください。'
   }
 
   // 顧客からの追加指示
   if (otherInstructions) {
-    prompt += `追加の具体的要件：${otherInstructions}\n\n`
+    prompt += `追加の具体的要件：${otherInstructions}
+
+`
   }
 
-  // 総合的な品質と技術仕様
-  prompt += '最終画像は、プロの塗装後の建物の外観を正確に表現する高品質で写実的な建築ビジュアライゼーションにしてください。すべての元の建築詳細、テクスチャ、造園、周辺環境を維持してください。塗料は新鮮でプロフェッショナルに塗布され、各表面タイプに適した光沢と仕上がりを持つように表現してください。照明は自然でリアルに、全体の構成は顧客への提案に適したものにしてください。\n\n'
+  // 総合的な品質と技術仕様（並べて表示の場合は追加しない）
+  if (!layoutSideBySide) {
+    prompt += `最終画像は、プロの塗装後の建物の外観を正確に表現する高品質で写実的な建築ビジュアライゼーションにしてください。すべての元の建築詳細、テクスチャ、造園、周辺環境を維持してください。塗料は新鮮でプロフェッショナルに塗布され、各表面タイプに適した光沢と仕上がりを持つように表現してください。照明は自然でリアルに、全体の構成は顧客への提案に適したものにしてください。
+
+`
+  } else {
+    prompt += `塗料は新鮮でプロフェッショナルに塗布され、各表面タイプに適した光沢と仕上がりを持つように表現してください。
+
+`
+  }
 
   // 明示的な画像生成指示
   prompt += 'このメッセージに対する文章での回答はいらないので、直接画像生成を開始してください。'

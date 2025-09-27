@@ -4,48 +4,50 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Paint Industry Light Theme */
+    --background: 45 20% 96%;        /* Warm off-white like primer */
+    --foreground: 25 30% 15%;        /* Deep charcoal like paint */
+    --card: 0 0% 100%;               /* Pure white like fresh paint */
+    --card-foreground: 25 30% 15%;   
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --popover-foreground: 25 30% 15%;
+    --primary: 210 95% 45%;          /* Professional painter's blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 45 40% 88%;         /* Soft cream like basecoat */
+    --secondary-foreground: 25 30% 15%;
+    --muted: 45 20% 92%;             /* Light neutral like primer */
+    --muted-foreground: 25 15% 45%;
+    --accent: 35 85% 55%;            /* Vibrant paint orange */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 45 25% 85%;
+    --input: 45 25% 85%;
+    --ring: 210 95% 45%;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    /* Paint Workshop Dark Theme */
+    --background: 25 25% 8%;         /* Dark workshop */
+    --foreground: 45 20% 92%;        /* Light primer */
+    --card: 25 20% 12%;              /* Darker surface */
+    --card-foreground: 45 20% 92%;
+    --popover: 25 20% 12%;
+    --popover-foreground: 45 20% 92%;
+    --primary: 210 85% 55%;          /* Bright painter's blue */
+    --primary-foreground: 25 25% 8%;
+    --secondary: 25 15% 18%;         /* Dark surface */
+    --secondary-foreground: 45 20% 92%;
+    --muted: 25 15% 15%;
+    --muted-foreground: 45 10% 60%;
+    --accent: 35 80% 60%;            /* Bright paint orange */
+    --accent-foreground: 25 25% 8%;
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 45 20% 92%;
+    --border: 25 15% 20%;
+    --input: 25 15% 20%;
+    --ring: 210 85% 55%;
   }
 }
 
@@ -54,6 +56,309 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    /* Force light theme with highest specificity */
+    background-color: #f8f7f4 !important;
+    color: #2d2621 !important;
+  }
+
+  /* Override CSS variables to force light theme */
+  :root {
+    --background: 45 20% 96% !important;
+    --foreground: 25 30% 15% !important;
+  }
+
+  /* Override any potential dark mode settings */
+  html {
+    color-scheme: light;
+  }
+
+  /* Ensure main content uses light background */
+  main {
+    background-color: #f8f7f4 !important;
+  }
+
+  /* Force background on all major containers */
+  div, section, article {
+    background-color: inherit;
+  }
+
+  /* Override any CSS variable usage */
+  [class*="bg-background"] {
+    background-color: #f8f7f4 !important;
+  }
+}
+
+/* Paint Industry Custom Classes */
+@layer components {
+  /* Paint Button Styles */
+  .paint-button {
+    @apply bg-gradient-to-r from-primary to-accent;
+    @apply text-primary-foreground font-bold;
+    @apply shadow-lg hover:shadow-xl;
+    @apply transform hover:scale-[1.02] active:scale-[0.98];
+    @apply transition-all duration-300 ease-out;
+    @apply border-0 rounded-lg;
+    @apply relative overflow-hidden;
+  }
+  
+  .paint-button:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+  
+  .paint-button:hover:before {
+    left: 100%;
+  }
+
+  /* Paint Card Styles */
+  .paint-card {
+    @apply bg-card border border-border/50;
+    @apply shadow-2xl hover:shadow-2xl;
+    @apply rounded-2xl overflow-hidden;
+    @apply backdrop-blur-sm;
+    @apply transition-all duration-500 ease-out;
+    @apply hover:border-primary/30;
+    position: relative;
+  }
+  
+  .paint-card:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .paint-card:hover:before {
+    opacity: 1;
+  }
+
+  /* Paint Input Styles */
+  .paint-input {
+    @apply border-2 border-border/60;
+    @apply focus:border-primary/70 focus:ring-4 focus:ring-primary/10;
+    @apply rounded-xl bg-background/50;
+    @apply transition-all duration-300 ease-out;
+    @apply backdrop-blur-sm;
+    @apply placeholder:text-muted-foreground/60;
+  }
+  
+  .paint-input:focus {
+    @apply shadow-lg shadow-primary/20;
+    transform: translateY(-1px);
+  }
+
+  /* Paint Text Styles */
+  .paint-text {
+    @apply bg-gradient-to-r from-primary via-accent to-primary;
+    @apply bg-clip-text text-transparent;
+    @apply font-bold tracking-tight;
+    background-size: 200% auto;
+    animation: paint-gradient 3s ease-in-out infinite;
+  }
+
+  /* Paint Hover Effect */
+  .paint-hover {
+    @apply transition-all duration-300 ease-out;
+    @apply hover:text-primary hover:scale-105;
+    @apply relative;
+  }
+  
+  .paint-hover:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transition: width 0.3s ease-out;
+  }
+  
+  .paint-hover:hover:before {
+    width: 100%;
+  }
+
+  /* Dashboard Specific */
+  .dashboard-header {
+    @apply bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5;
+    @apply border-b border-border/50 backdrop-blur-sm;
+  }
+
+  .customer-card {
+    @apply paint-card hover:scale-[1.02];
+    @apply cursor-pointer;
+  }
+
+  /* Form Enhancements */
+  .form-section {
+    @apply bg-gradient-to-br from-card via-card to-secondary/30;
+    @apply border border-border/50 rounded-2xl p-6;
+    @apply shadow-lg;
+  }
+
+  /* Professional Paint Workshop Feel - Bright Version */
+  .workshop-bg {
+    @apply bg-gradient-to-br from-background via-secondary/40 to-accent/10;
+    background-image:
+      /* Paint drip effects */
+      linear-gradient(90deg, transparent 0%, transparent 20%, rgba(var(--primary), 0.05) 21%, rgba(var(--primary), 0.08) 22%, transparent 23%, transparent 30%, rgba(var(--accent), 0.06) 31%, rgba(var(--accent), 0.09) 32%, transparent 33%, transparent 100%),
+      radial-gradient(circle at 25% 25%, rgba(var(--primary), 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(var(--accent), 0.08) 0%, transparent 50%);
+  }
+
+  /* Paint Drip Animation at Top */
+  .paint-drips {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(180deg,
+      rgba(var(--primary), 0.1) 0%,
+      rgba(var(--primary), 0.08) 20%,
+      rgba(var(--accent), 0.06) 40%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .paint-drips::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 15%;
+    width: 8px;
+    height: 40px;
+    background: linear-gradient(180deg, rgba(var(--primary), 0.3), transparent);
+    border-radius: 0 0 50% 50%;
+    animation: paint-drip 6s ease-in-out infinite;
+    animation-delay: 0s;
+  }
+
+  .paint-drips::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 25%;
+    width: 6px;
+    height: 35px;
+    background: linear-gradient(180deg, rgba(var(--accent), 0.3), transparent);
+    border-radius: 0 0 50% 50%;
+    animation: paint-drip 8s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+}
+
+/* Animation Keyframes */
+@keyframes paint-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes paint-drip {
+  0% { 
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  50% { 
+    opacity: 1;
+  }
+  100% { 
+    transform: translateY(10px);
+    opacity: 0;
+  }
+}
+
+/* Utility Classes */
+@layer utilities {
+  .text-paint-gradient {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+  
+  .shadow-paint {
+    box-shadow: 0 10px 30px rgba(var(--primary), 0.3), 0 0 0 1px rgba(var(--border), 0.1);
+  }
+  
+  .border-paint-gradient {
+    border-image: linear-gradient(90deg, var(--primary), var(--accent)) 1;
+  }
+}
+
+/* Customer List Scrollbar Styles */
+@layer components {
+  /* Custom scrollbar for customer list */
+  .customer-list-scroll {
+    /* Firefox scrollbar - enhanced visibility */
+    scrollbar-width: auto !important;
+    scrollbar-color: #4a5568 #e2e8f0 !important;
+    /* Force scroll to always show */
+    overflow-y: scroll !important;
+  }
+
+  /* WebKit scrollbar styles - enhanced for better visibility */
+  .customer-list-scroll::-webkit-scrollbar {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .customer-list-scroll::-webkit-scrollbar-track {
+    background: #e2e8f0 !important;
+    border-radius: 6px !important;
+    margin: 4px 0 !important;
+  }
+
+  .customer-list-scroll::-webkit-scrollbar-thumb {
+    background: #4a5568 !important;
+    border-radius: 6px !important;
+    border: 2px solid #e2e8f0 !important;
+    min-height: 40px !important;
+  }
+
+  .customer-list-scroll::-webkit-scrollbar-thumb:hover {
+    background: #2d3748 !important;
+  }
+
+  .customer-list-scroll::-webkit-scrollbar-thumb:active {
+    background: #1a202c !important;
+  }
+
+  /* Always show scrollbar corner */
+  .customer-list-scroll::-webkit-scrollbar-corner {
+    background: #e2e8f0 !important;
+  }
+}
+
+/* Fix duplicate scrollbar issue */
+@layer base {
+  /* Prevent body from having its own scrollbar */
+  html {
+    overflow-x: hidden;
+  }
+
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  /* Ensure main layout containers don't create extra scrollbars */
+  #__next {
+    overflow-x: hidden;
+  }
+
+  /* Fix any layout containers that might cause double scrollbars */
+  .layout-container {
+    overflow-x: hidden;
   }
 }

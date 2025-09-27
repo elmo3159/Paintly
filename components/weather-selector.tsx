@@ -2,7 +2,7 @@
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
-import { Cloud, CloudRain, CloudSnow, Sun } from 'lucide-react'
+import { Cloud, CloudRain, CloudSnow, Sun, CircleSlash } from 'lucide-react'
 
 interface WeatherSelectorProps {
   value: string
@@ -10,6 +10,7 @@ interface WeatherSelectorProps {
 }
 
 const weatherOptions = [
+  { value: '変更なし', label: '変更なし', icon: CircleSlash },
   { value: '晴れ', label: '晴れ', icon: Sun },
   { value: '曇り', label: '曇り', icon: Cloud },
   { value: '雨', label: '雨', icon: CloudRain },
