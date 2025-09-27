@@ -205,3 +205,4 @@ npm run test:coverage
 
 Built with ❤️ by Paintly Team# Force redeploy
 # Force redeploy - Sat Sep 27 20:19:45 JST 2025
+# 環境変数設定完了後の再デプロイ - Sun Sep 28 00:05:36 JST 2025
