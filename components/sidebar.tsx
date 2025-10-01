@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
@@ -22,6 +23,29 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
+// Client-side error reporting function
+const reportClientError = (error: Error, context: string) => {
+  if (typeof window !== 'undefined') {
+    try {
+      fetch('/api/error-reporting', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: error.message,
+          stack: error.stack,
+          context: context,
+          url: window.location.href,
+          userAgent: navigator.userAgent,
+          timestamp: new Date().toISOString(),
+          component: 'Sidebar'
+        })
+      }).catch(console.error)
+    } catch (reportError) {
+      console.error('Failed to report error:', reportError)
+    }
+  }
+}
+
 interface Customer {
   id: string
   title: string
@@ -39,7 +63,13 @@ export function Sidebar() {
   const [customers, setCustomers] = useState<Customer[]>([])
   const [planInfo, setPlanInfo] = useState<PlanInfo | null>(null)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  // レスポンシブな初期状態: デスクトップのみ開く
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth >= 768 // md breakpoint
+    }
+    return false
+  })
   const [searchTerm, setSearchTerm] = useState('')
   const [isSettingsExpanded, setIsSettingsExpanded] = useState(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
@@ -50,10 +80,9 @@ export function Sidebar() {
   // Supabaseクライアントをstableに保つ
   const supabase = useMemo(() => createClient(), [])
 
-  // 検索入力ハンドラを最適化（フォーカス維持）
+  // 検索入力ハンドラ（フォーカス問題修正）
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setSearchTerm(value)
+    setSearchTerm(e.target.value)
   }, [])
 
   // 検索クリア機能 - useCallbackで最適化
@@ -67,89 +96,169 @@ export function Sidebar() {
 
   // fetchCustomers関数をstableに保つ
   const fetchCustomers = useCallback(async () => {
-    console.log('🔍 DEBUG: fetchCustomers started')
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    try {
+      console.log('🔍 DEBUG: fetchCustomers started')
 
-    if (authError) {
-      console.error('❌ Auth error:', authError)
-      return
-    }
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
 
-    if (!user) {
-      console.log('⚠️ No user found')
-      return
-    }
+      if (authError) {
+        const error = new Error(`Authentication error: ${authError.message}`)
+        console.error('❌ Auth error:', authError)
+        reportClientError(error, 'fetchCustomers - Authentication failed')
+        return
+      }
 
-    console.log('✅ User found:', user.id)
+      if (!user) {
+        console.log('⚠️ No user found')
+        return
+      }
 
-    const { data, error } = await supabase
-      .from('customer_pages')
-      .select('id, title, created_at')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
+      console.log('✅ User found:', user.id)
 
-    console.log('📊 Customer query result:', { data, error, count: data?.length })
+      const { data, error } = await supabase
+        .from('customer_pages')
+        .select('id, title, created_at')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
 
-    if (error) {
-      console.error('❌ Error fetching customers:', error)
-      return
-    }
+      console.log('📊 Customer query result:', { data, error, count: data?.length })
 
-    if (!error && data) {
-      console.log('✅ Setting customers:', data.length, 'items')
-      setCustomers(data)
+      if (error) {
+        const fetchError = new Error(`Failed to fetch customers: ${error.message}`)
+        console.error('❌ Error fetching customers:', error)
+        reportClientError(fetchError, `fetchCustomers - Database query failed - User: ${user.id}`)
+
+        // Set empty array as fallback instead of leaving in loading state
+        setCustomers([])
+        return
+      }
+
+      if (data) {
+        console.log('✅ Setting customers:', data.length, 'items')
+        setCustomers(data)
+      } else {
+        console.log('⚠️ No customer data returned')
+        setCustomers([])
+      }
+
+    } catch (error) {
+      const fetchError = error instanceof Error ? error : new Error('Unknown error in fetchCustomers')
+      console.error('❌ Unexpected error in fetchCustomers:', fetchError)
+      reportClientError(fetchError, 'fetchCustomers - Unexpected error')
+
+      // Set empty array as fallback
+      setCustomers([])
     }
   }, [supabase])
 
   const fetchPlanInfo = useCallback(async () => {
-    const { data: { user } } = await supabase.auth.getUser()
+    try {
+      console.log('🔍 DEBUG: fetchPlanInfo started')
 
-    if (!user) {
-      return
-    }
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
 
-    const { data, error } = await supabase
-      .from('subscriptions')
-      .select(`
-        generation_count,
-        plans (
-          name,
-          generation_limit,
-          description
-        )
-      `)
-      .eq('user_id', user.id)
-      .eq('status', 'active')
-      .single()
-
-    if (error) {
-      console.error('Error fetching plan info:', error)
-      return
-    }
-
-    if (data && data.plans) {
-      const planInfo = {
-        plan_name: (data.plans as any).name,
-        generation_limit: (data.plans as any).generation_limit,
-        generation_count: data.generation_count
+      if (authError) {
+        const error = new Error(`Authentication error in fetchPlanInfo: ${authError.message}`)
+        console.error('❌ Auth error in fetchPlanInfo:', authError)
+        reportClientError(error, 'fetchPlanInfo - Authentication failed')
+        return
       }
-      setPlanInfo(planInfo)
+
+      if (!user) {
+        console.log('⚠️ No user found in fetchPlanInfo')
+        return
+      }
+
+      console.log('✅ User found in fetchPlanInfo:', user.id)
+
+      const { data, error } = await supabase
+        .from('subscriptions')
+        .select(`
+          generation_count,
+          plans (
+            name,
+            generation_limit,
+            description
+          )
+        `)
+        .eq('user_id', user.id)
+        .eq('status', 'active')
+        .single()
+
+      if (error) {
+        const planError = new Error(`Failed to fetch plan info: ${error.message}`)
+        console.error('❌ Error fetching plan info:', error)
+        reportClientError(planError, `fetchPlanInfo - Database query failed - User: ${user.id}`)
+
+        // Set fallback plan info (free plan)
+        setPlanInfo({
+          plan_name: '無料プラン',
+          generation_limit: 3,
+          generation_count: 0
+        })
+        return
+      }
+
+      if (data && data.plans) {
+        const planInfo = {
+          plan_name: (data.plans as any).name,
+          generation_limit: (data.plans as any).generation_limit,
+          generation_count: data.generation_count
+        }
+        console.log('✅ Plan info loaded successfully:', planInfo)
+        setPlanInfo(planInfo)
+      } else {
+        console.log('⚠️ No plan data returned, using fallback')
+        setPlanInfo({
+          plan_name: '無料プラン',
+          generation_limit: 3,
+          generation_count: 0
+        })
+      }
+
+    } catch (error) {
+      const planError = error instanceof Error ? error : new Error('Unknown error in fetchPlanInfo')
+      console.error('❌ Unexpected error in fetchPlanInfo:', planError)
+      reportClientError(planError, 'fetchPlanInfo - Unexpected error')
+
+      // Set fallback plan info
+      setPlanInfo({
+        plan_name: '無料プラン',
+        generation_limit: 3,
+        generation_count: 0
+      })
     }
   }, [supabase])
 
   const handleNewCustomer = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-
-    if (!user) {
-      return
-    }
-
-    const newCustomer = {
-      user_id: user.id,
-      title: `新規顧客 ${new Date().toLocaleDateString('ja-JP')}`,
-    }
-
     try {
+      console.log('🔍 DEBUG: handleNewCustomer started')
+
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+      if (authError) {
+        const error = new Error(`Authentication error in handleNewCustomer: ${authError.message}`)
+        console.error('❌ Auth error in handleNewCustomer:', authError)
+        reportClientError(error, 'handleNewCustomer - Authentication failed')
+        alert('認証エラーが発生しました。再度ログインしてください。')
+        return
+      }
+
+      if (!user) {
+        console.log('⚠️ No user found in handleNewCustomer')
+        alert('ユーザー情報が見つかりません。再度ログインしてください。')
+        return
+      }
+
+      console.log('✅ User found in handleNewCustomer:', user.id)
+
+      const newCustomer = {
+        user_id: user.id,
+        title: `新規顧客 ${new Date().toLocaleDateString('ja-JP')}`,
+      }
+
+      console.log('📝 Creating new customer:', newCustomer)
+
       const { data, error } = await supabase
         .from('customer_pages')
         .insert(newCustomer)
@@ -157,22 +266,73 @@ export function Sidebar() {
         .single()
 
       if (error) {
-        console.error('Error creating customer:', error)
+        const createError = new Error(`Failed to create customer: ${error.message}`)
+        console.error('❌ Error creating customer:', error)
+        reportClientError(createError, `handleNewCustomer - Database insert failed - User: ${user.id}`)
+        alert('顧客ページの作成に失敗しました。しばらく後に再試行してください。')
         return
       }
 
       if (data) {
+        console.log('✅ Customer created successfully:', data.id)
         setCustomers(prev => [data, ...prev])
-        window.location.href = `/customer/${data.id}`
+
+        // Navigate to the new customer page
+        try {
+          window.location.href = `/customer/${data.id}`
+        } catch (navError) {
+          const navigationError = navError instanceof Error ? navError : new Error('Navigation failed')
+          console.error('❌ Navigation error:', navigationError)
+          reportClientError(navigationError, `handleNewCustomer - Navigation failed to /customer/${data.id}`)
+          alert('ページの移動に失敗しました。手動でページをリロードしてください。')
+        }
+      } else {
+        const noDataError = new Error('Customer created but no data returned')
+        console.error('❌ No data returned after customer creation')
+        reportClientError(noDataError, 'handleNewCustomer - No data returned')
+        alert('顧客ページの作成に成功しましたが、データの取得に失敗しました。')
       }
-    } catch (catchError) {
-      console.error('Unexpected error:', catchError)
+
+    } catch (error) {
+      const customerError = error instanceof Error ? error : new Error('Unknown error in handleNewCustomer')
+      console.error('❌ Unexpected error in handleNewCustomer:', customerError)
+      reportClientError(customerError, 'handleNewCustomer - Unexpected error')
+      alert('予期しないエラーが発生しました。しばらく後に再試行してください。')
     }
   }
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    window.location.href = '/auth/signin'
+    try {
+      console.log('🔍 DEBUG: handleSignOut started')
+
+      const { error } = await supabase.auth.signOut()
+
+      if (error) {
+        const signOutError = new Error(`Sign out failed: ${error.message}`)
+        console.error('❌ Sign out error:', error)
+        reportClientError(signOutError, 'handleSignOut - Sign out failed')
+        alert('サインアウトに失敗しました。再試行してください。')
+        return
+      }
+
+      console.log('✅ Sign out successful')
+
+      // Navigate to sign in page
+      try {
+        window.location.href = '/auth/signin'
+      } catch (navError) {
+        const navigationError = navError instanceof Error ? navError : new Error('Navigation failed after sign out')
+        console.error('❌ Navigation error after sign out:', navigationError)
+        reportClientError(navigationError, 'handleSignOut - Navigation failed to /auth/signin')
+        alert('サインアウトは成功しましたが、ページの移動に失敗しました。手動でサインインページに移動してください。')
+      }
+
+    } catch (error) {
+      const signOutError = error instanceof Error ? error : new Error('Unknown error in handleSignOut')
+      console.error('❌ Unexpected error in handleSignOut:', signOutError)
+      reportClientError(signOutError, 'handleSignOut - Unexpected error')
+      alert('サインアウト中に予期しないエラーが発生しました。')
+    }
   }
 
   const closeSidebar = () => {
@@ -208,6 +368,30 @@ export function Sidebar() {
     }
   }, [fetchCustomers])
 
+  // レスポンシブ対応: ウィンドウサイズ変更時にサイドバーを自動調整
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        // モバイルビューでは自動的に閉じる
+        setIsSidebarOpen(false)
+        setIsMobileOpen(false)
+      } else {
+        // デスクトップビューでは開く
+        setIsSidebarOpen(true)
+      }
+    }
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize)
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize)
+      }
+    }
+  }, [])
+
   // 検索フィルタリング機能 - useMemoで最適化
   const filteredCustomers = useMemo(() => {
     if (!searchTerm.trim()) {
@@ -218,6 +402,7 @@ export function Sidebar() {
     )
   }, [customers, searchTerm])
 
+
   const remainingGenerations = planInfo
     ? Math.max(0, planInfo.generation_limit - planInfo.generation_count)
     : 0
@@ -226,17 +411,21 @@ export function Sidebar() {
     ? Math.min(100, (planInfo.generation_count / planInfo.generation_limit) * 100)
     : 0
 
-  const SidebarContent = () => (
+  const SidebarContent = useMemo(() => (
     <>
       <div
-        className="flex h-14 items-center justify-between border-b px-4"
+        className="flex h-14 items-center justify-center border-b px-4"
         style={{ borderColor: '#e5e5e5' }}
       >
         <Link href="/dashboard" className="flex items-center space-x-2">
-          <img 
-            src="/logo.png" 
-            alt="Paintly" 
+          <Image
+            src="/logo.png"
+            alt="Paintly"
+            width={142}
+            height={80}
+            priority={true}
             className="h-20 w-auto object-contain"
+            sizes="(max-width: 768px) 142px, 142px"
           />
         </Link>
       </div>
@@ -299,9 +488,7 @@ export function Sidebar() {
                 onChange={handleSearchChange}
                 className="w-full pl-8 pr-8 py-2 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
                 autoComplete="off"
-                onFocus={(e) => {
-                  e.target.setSelectionRange(e.target.value.length, e.target.value.length)
-                }}
+
               />
               {searchTerm && (
                 <button
@@ -319,7 +506,8 @@ export function Sidebar() {
             className="flex-1 px-4 pb-2 customer-list-scroll overflow-y-auto"
             style={{
               minHeight: 0,
-              maxHeight: 'none',
+              maxHeight: 'calc(100vh - 400px)',
+              height: 'auto',
               scrollbarWidth: 'thin',
               scrollbarColor: '#94a3b8 #e2e8f0',
               WebkitOverflowScrolling: 'touch'
@@ -426,7 +614,7 @@ export function Sidebar() {
         </div>
       </div>
     </>
-  )
+  ), [filteredCustomers, planInfo, remainingGenerations, usagePercentage, isSettingsExpanded, searchTerm, handleSearchChange, handleNewCustomer, closeSidebar, handleSignOut, pathname])
 
   if (!isSidebarOpen) {
     return (
@@ -448,13 +636,23 @@ export function Sidebar() {
         />
       )}
 
-      <div className={cn(
-        "fixed left-0 top-0 h-screen w-80 bg-white border-r z-50 transform transition-transform duration-300",
-        "md:relative md:transform-none",
-        (isMobileOpen || isSidebarOpen) ? "translate-x-0" : "-translate-x-full"
-      )}>
-        <SidebarContent />
-      </div>
+      <nav
+        className={cn(
+          "fixed left-0 top-0 h-screen w-80 bg-white/95 backdrop-blur-md border-r z-50 transform transition-transform duration-300 overflow-hidden",
+          "md:relative md:transform-none",
+          (isMobileOpen || isSidebarOpen) ? "translate-x-0" : "-translate-x-full"
+        )}
+        role="navigation"
+        aria-label="メインナビゲーション"
+        aria-hidden={!(isMobileOpen || isSidebarOpen)}
+        onKeyDown={(e) => {
+          if (e.key === 'Escape') {
+            closeSidebar()
+          }
+        }}
+      >
+        {SidebarContent}
+      </nav>
     </div>
   )
 }

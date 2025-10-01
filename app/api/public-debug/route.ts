@@ -5,7 +5,8 @@ import { createClient } from '@supabase/supabase-js'
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    const customerId = searchParams.get('customerId') || '33d3c85f-521a-4ee1-a7af-392d4f7bb997'
+    const customerId = searchParams.get('customerId') || searchParams.get('customer_id')
+    const showAll = searchParams.get('all') === 'true'
 
     // Service roleクライアントを直接作成してRLSをバイパス
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
@@ -25,14 +26,22 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    console.log('🔍 Debug API: Searching for customer_page_id:', customerId)
+    console.log('🔍 Debug API: Searching for data:', { customerId, showAll })
 
-    const { data, error } = await supabase
-      .from('generations')
-      .select('*')
-      .eq('customer_page_id', customerId)
-      .order('created_at', { ascending: false })
-      .limit(5)
+    let query = supabase.from('generations').select('*')
+    
+    if (showAll) {
+      console.log('📊 Fetching ALL generation records')
+      query = query.order('created_at', { ascending: false }).limit(20)
+    } else if (customerId) {
+      console.log('📊 Fetching records for customer:', customerId)
+      query = query.eq('customer_page_id', customerId).order('created_at', { ascending: false }).limit(5)
+    } else {
+      console.log('📊 Fetching latest records (no customer specified)')
+      query = query.order('created_at', { ascending: false }).limit(10)
+    }
+
+    const { data, error } = await query
 
     console.log('📊 Debug API result:', { 
       data: data?.length, 

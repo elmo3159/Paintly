@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import Stripe from 'stripe'
 
@@ -8,7 +8,7 @@ const stripe = process.env.STRIPE_SECRET_KEY
     })
   : null
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     if (!stripe) {
       return NextResponse.json(
@@ -45,10 +45,11 @@ export async function POST(request: NextRequest) {
     })
 
     return NextResponse.json({ url: session.url })
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error)
     console.error('Stripe Portal Error:', error)
     return NextResponse.json(
-      { error: error.message || 'ポータルセッションの作成に失敗しました' },
+      { error: errorMessage || 'ポータルセッションの作成に失敗しました' },
       { status: 500 }
     )
   }

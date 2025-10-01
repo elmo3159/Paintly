@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -73,10 +74,14 @@ export default function ResetPasswordPage() {
           </div>
           
           <div className="mb-4 flex justify-center">
-            <img 
+            <Image 
               src="/logo.png" 
               alt="Paintly" 
+              width={142}
+              height={80}
+              priority={true}
               className="h-32 w-auto object-contain"
+              sizes="(max-width: 768px) 142px, 142px"
             />
           </div>
           

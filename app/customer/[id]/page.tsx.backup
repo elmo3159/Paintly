@@ -1,0 +1,908 @@
+'use client'
+
+import { useState, useEffect, useRef } from 'react'
+import { useParams } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
+import { ImageUpload } from '@/components/image-upload'
+import { CompactColorSelector } from '@/components/compact-color-selector'
+import { getColorById, type ColorUsage } from '@/lib/hierarchical-paint-colors'
+import { WeatherSelector } from '@/components/weather-selector'
+import { GenerationSettings } from '@/components/generation-settings'
+import { GenerationHistory } from '@/components/generation-history'
+import { ImageComparisonFixed } from '@/components/image-comparison-fixed'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Loader2, Sparkles, AlertCircle, Edit, Save, X } from 'lucide-react'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { AIProviderSelector, useAIProviderSelector, type ProviderType } from '@/components/ai-provider-selector'
+
+
+interface CustomerData {
+  id: string
+  title: string
+  customer_name: string | null
+  customer_address: string | null
+  customer_phone: string | null
+  customer_email: string | null
+  description: string | null
+}
+
+export default function CustomerPage() {
+  const params = useParams()
+  const customerId = params.id as string
+  const supabase = createClient()
+
+  const [customer, setCustomer] = useState<CustomerData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [generating, setGenerating] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  
+  // Form states
+  const [mainImage, setMainImage] = useState<File | null>(null)
+  const [sideImage, setSideImage] = useState<File | null>(null)
+  const [wallColorId, setWallColorId] = useState<string>('no-change')
+  const [roofColorId, setRoofColorId] = useState<string>('no-change')
+  const [doorColorId, setDoorColorId] = useState<string>('no-change')
+  const [weather, setWeather] = useState('変更なし')
+  const [layoutSideBySide, setLayoutSideBySide] = useState(false)
+  const [backgroundColor, setBackgroundColor] = useState('白')
+  const [otherInstructions, setOtherInstructions] = useState('')
+
+  // 🆕 AIプロバイダー選択
+  const [selectedAIProvider, setSelectedAIProvider] = useState<'fal-ai' | 'gemini'>('fal-ai')
+
+  // Tab and auto-navigation states
+  const [activeTab, setActiveTab] = useState('generate')
+  const [latestGenerationId, setLatestGenerationId] = useState<string | null>(null)
+  const [historyRefresh, setHistoryRefresh] = useState(0)
+
+  // 🆕 Slider view states
+  const [showSliderView, setShowSliderView] = useState(false)
+  const [sliderData, setSliderData] = useState<{
+    generationId: string
+    originalImageUrl: string
+    generatedImageUrl: string
+    wallColor?: string
+    roofColor?: string
+    doorColor?: string
+    weather?: string
+    prompt?: string
+  } | null>(null)
+
+  // Editing state management
+  const [remainingGenerations, setRemainingGenerations] = useState<number>(3)
+  const [canGenerate, setCanGenerate] = useState(true)
+  
+  // Customer edit state
+  const [isEditing, setIsEditing] = useState(false)
+  const [isEditingTitle, setIsEditingTitle] = useState(false)
+  const titleInputRef = useRef<HTMLInputElement>(null)
+  const [editForm, setEditForm] = useState({
+    title: '',
+    customer_name: '',
+    customer_address: '',
+    customer_phone: '',
+    customer_email: '',
+    description: ''
+  })
+
+  // Save state
+  const [saving, setSaving] = useState(false)
+
+  // Load customer data on mount
+  useEffect(() => {
+    fetchCustomer()
+  }, [customerId])
+
+  // Enhanced navigation effect for automatic detail view
+  const checkForSliderNavigation = () => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const genId = urlParams.get('generation')
+    const showSlider = urlParams.get('slider') === 'true'
+    
+    console.log('🔍 URL params check:', { genId, showSlider, currentLatest: latestGenerationId })
+    
+    if (genId && showSlider) {
+      console.log('📋 Found slider navigation params, setting up...')
+      setLatestGenerationId(genId)
+      setActiveTab('history')
+      
+      // Remove URL params after processing
+      const newUrl = new URL(window.location.href)
+      newUrl.searchParams.delete('generation')
+      newUrl.searchParams.delete('slider')
+      window.history.replaceState({}, '', newUrl.toString())
+      
+      console.log('✅ URL params processed and cleaned')
+    } else if (latestGenerationId) {
+      console.log('🎯 Auto-navigation: Latest generation found, ensuring history tab')
+      setActiveTab('history')
+    }
+  }
+
+  // Auto-close slider when navigating away
+  const closeSliderView = () => {
+    setShowSliderView(false)
+    setSliderData(null)
+  }
+
+  // Enhanced effect for checking navigation on mount and updates
+  useEffect(() => {
+    checkForSliderNavigation()
+  }, [])
+
+  // Effect for handling latest generation updates
+  useEffect(() => {
+    console.log('🔄 Latest generation ID updated:', latestGenerationId)
+    if (latestGenerationId) {
+      console.log('🎯 Auto-switching to history tab for generation:', latestGenerationId)
+      setActiveTab('history')
+    }
+  }, [latestGenerationId])
+
+  // Enhanced tab change effect
+  useEffect(() => {
+    console.log('📋 Active tab changed to:', activeTab)
+    if (activeTab !== 'history') {
+      console.log('🚪 Closing slider view due to tab change')
+      closeSliderView()
+    }
+  }, [activeTab])
+
+  const fetchCustomer = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('customer_pages')
+        .select('*')
+        .eq('id', customerId)
+        .single()
+
+      if (error) throw error
+
+      setCustomer(data)
+      setEditForm({
+        title: data.title || '',
+        customer_name: data.customer_name || '',
+        customer_address: data.customer_address || '',
+        customer_phone: data.customer_phone || '',
+        customer_email: data.customer_email || '',
+        description: data.description || ''
+      })
+    } catch (error: any) {
+      setError('顧客データの読み込みに失敗しました')
+      console.error('Error fetching customer:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const checkUsageLimit = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+
+      const { data: subscription } = await supabase
+        .from('subscriptions')
+        .select(`
+          generation_count,
+          plans (
+            generation_limit
+          )
+        `)
+        .eq('user_id', user.id)
+        .eq('status', 'active')
+        .single()
+
+      if (subscription && subscription.plans) {
+        const limit = (subscription.plans as any).generation_limit
+        const used = subscription.generation_count
+        const remaining = Math.max(0, limit - used)
+        
+        setRemainingGenerations(remaining)
+        setCanGenerate(remaining > 0)
+      }
+    } catch (error) {
+      console.error('Usage limit check failed:', error)
+    }
+  }
+
+  const handleEditCustomer = () => {
+    setIsEditing(true)
+  }
+
+  const handleCancelEdit = () => {
+    setIsEditing(false)
+    if (customer) {
+      setEditForm({
+        title: customer.title || '',
+        customer_name: customer.customer_name || '',
+        customer_address: customer.customer_address || '',
+        customer_phone: customer.customer_phone || '',
+        customer_email: customer.customer_email || '',
+        description: customer.description || ''
+      })
+    }
+  }
+
+  const handleSaveCustomer = async () => {
+    setSaving(true)
+    try {
+      const { error } = await supabase
+        .from('customer_pages')
+        .update({
+          title: editForm.title,
+          customer_name: editForm.customer_name || null,
+          customer_address: editForm.customer_address || null,
+          customer_phone: editForm.customer_phone || null,
+          customer_email: editForm.customer_email || null,
+          description: editForm.description || null
+        })
+        .eq('id', customerId)
+
+      if (error) throw error
+
+      // Update local state
+      setCustomer(prev => prev ? {
+        ...prev,
+        title: editForm.title,
+        customer_name: editForm.customer_name || null,
+        customer_address: editForm.customer_address || null,
+        customer_phone: editForm.customer_phone || null,
+        customer_email: editForm.customer_email || null,
+        description: editForm.description || null
+      } : null)
+
+      setIsEditing(false)
+      setError(null)
+    } catch (error: any) {
+      setError('顧客情報の保存に失敗しました')
+      console.error('Error saving customer:', error)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleFormChange = (field: string, value: any) => {
+    setEditForm(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  const handleGenerate = async () => {
+    if (!mainImage) {
+      setError('建物の正面写真をアップロードしてください')
+      return
+    }
+
+    if (!canGenerate) {
+      setError('生成回数の上限に達しました。プランをアップグレードしてください。')
+      return
+    }
+
+    setGenerating(true)
+    setError(null)
+
+    try {
+      // Create form data
+      const formData = new FormData()
+      formData.append('mainImage', mainImage)
+      if (sideImage) formData.append('sideImage', sideImage)
+      formData.append('customerId', customerId)
+      
+      // 🆕 AIプロバイダー選択を追加
+      formData.append('aiProvider', selectedAIProvider)
+      
+      // Get color details from IDs
+      console.log('🎨 Color IDs Debug:', { wallColorId, roofColorId, doorColorId })
+      const wallColor = (wallColorId && wallColorId !== 'no-change') ? getColorById(wallColorId) : null
+      const roofColor = (roofColorId && roofColorId !== 'no-change') ? getColorById(roofColorId) : null
+      const doorColor = (doorColorId && doorColorId !== 'no-change') ? getColorById(doorColorId) : null
+      console.log('🎨 Color Objects Debug:', { wallColor, roofColor, doorColor })
+      
+      // Send color information to API
+      formData.append('wallColor', wallColor ? `${wallColor.name} (${wallColor.code})` : '変更なし')
+      formData.append('roofColor', roofColor ? `${roofColor.name} (${roofColor.code})` : '変更なし')
+      formData.append('doorColor', doorColor ? `${doorColor.name} (${doorColor.code})` : '変更なし')
+      
+      // Send detailed color data for advanced prompts
+      if (wallColor) {
+        formData.append('wallColorData', JSON.stringify({
+          name: wallColor.name,
+          code: wallColor.code,
+          hex: wallColor.hex,
+          rgb: wallColor.rgb,
+          munsell: wallColor.munsell
+        }))
+      }
+      if (roofColor) {
+        formData.append('roofColorData', JSON.stringify({
+          name: roofColor.name,
+          code: roofColor.code,
+          hex: roofColor.hex,
+          rgb: roofColor.rgb,
+          munsell: roofColor.munsell
+        }))
+      }
+      if (doorColor) {
+        formData.append('doorColorData', JSON.stringify({
+          name: doorColor.name,
+          code: doorColor.code,
+          hex: doorColor.hex,
+          rgb: doorColor.rgb,
+          munsell: doorColor.munsell
+        }))
+      }
+      formData.append('weather', weather)
+      formData.append('layoutSideBySide', layoutSideBySide.toString())
+      formData.append('backgroundColor', backgroundColor)
+      formData.append('otherInstructions', otherInstructions)
+
+      // Call generation API
+      console.log('🚀 Starting generation API call with provider:', selectedAIProvider)
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        body: formData,
+      })
+
+      const result = await response.json()
+      console.log('📊 Generation API response:', { success: response.ok, result })
+      console.log('🔍 Raw result object:', result)
+      console.log('🔍 Result keys:', Object.keys(result))
+      console.log('🔍 HistoryId value:', result.historyId)
+      console.log('🔍 Result type:', typeof result)
+
+      if (!response.ok) {
+        throw new Error(result.error || '生成に失敗しました')
+      }
+
+      // Refresh usage limit
+      await checkUsageLimit()
+
+      // Show success message and automatically navigate to history tab with detail view
+      console.log('✅ Generation successful, initiating auto-navigation...')
+      console.log('🎯 Setting latest generation ID:', result.historyId)
+      
+      setError(null)
+      setLatestGenerationId(result.historyId)
+      
+      console.log('🔄 Switching to history tab...')
+      setActiveTab('history')
+      
+      console.log('♻️ Refreshing history data...')
+      setHistoryRefresh(prev => prev + 1)
+      
+      console.log('🏁 Auto-navigation setup complete')
+      
+    } catch (error: any) {
+      console.error('❌ Generation failed:', error)
+      setError(error.message || '生成中にエラーが発生しました')
+    } finally {
+      setGenerating(false)
+    }
+  }
+
+  useEffect(() => {
+    checkUsageLimit()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex items-center space-x-2">
+          <Loader2 className="h-6 w-6 animate-spin" />
+          <span>読み込み中...</span>
+        </div>
+      </div>
+    )
+  }
+
+  if (!customer) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Alert className="max-w-md">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            顧客ページが見つかりません
+          </AlertDescription>
+        </Alert>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="bg-white dark:bg-gray-800 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 py-6">
+          <div className="flex items-center justify-between">
+            {isEditingTitle ? (
+              <input
+                ref={titleInputRef}
+                value={customer.title}
+                onChange={(e) => setCustomer(prev => ({ ...prev, title: e.target.value }))}
+                className="text-3xl font-bold tracking-tight h-12 text-2xl bg-transparent border-0 border-b-2 border-gray-300 rounded-none px-0 focus:border-primary"
+                onKeyPress={async (e) => {
+                  if (e.key === 'Enter') {
+                    // Enterキー押下時にもカスタムイベントを発火
+                    await handleSaveCustomer()
+                    setIsEditingTitle(false)
+                  }
+                }}
+                onBlur={async () => {
+                  // タイトルのインライン編集時にもカスタムイベントを発火
+                  await handleSaveCustomer()
+                  setIsEditingTitle(false)
+                }}
+              />
+            ) : (
+              <h1
+                className="text-3xl font-bold tracking-tight cursor-pointer hover:text-primary flex items-center gap-2"
+                onClick={() => {
+                  setIsEditingTitle(true)
+                  // 直接選択も行う
+                  setTimeout(() => {
+                    if (titleInputRef.current) {
+                      titleInputRef.current.focus()
+                      titleInputRef.current.select()
+                    }
+                  }, 0)
+                }}
+              >
+                {customer.title}
+                <Edit className="h-4 w-4 opacity-50" />
+              </h1>
+            )}
+          </div>
+        </div>
+        <p className="text-muted-foreground mt-2">
+          塗装シミュレーションを作成
+        </p>
+      </div>
+
+      {/* 🆕 Slider View (overlays the entire content when active) */}
+      {showSliderView && sliderData && (
+        <div className="fixed inset-0 bg-background z-50 overflow-auto">
+          <div className="container mx-auto px-4 py-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold">ビフォーアフター比較</h2>
+              <Button 
+                variant="outline" 
+                onClick={closeSliderView}
+                className="flex items-center gap-2"
+              >
+                <X className="h-4 w-4" />
+                閉じる
+              </Button>
+            </div>
+            
+            <div className="space-y-6">
+              {/* Import the ImageComparisonFixed component */}
+              <div className="w-full">
+                <ImageComparisonFixed
+                  originalImage={sliderData.originalImageUrl}
+                  generatedImage={sliderData.generatedImageUrl}
+                  title="スライダーで比較"
+                  allowDownload={true}
+                />
+              </div>
+              
+              {/* Generation details */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>生成設定</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  {sliderData.wallColor && sliderData.wallColor !== '変更なし' && (
+                    <p><strong>壁の色:</strong> {sliderData.wallColor}</p>
+                  )}
+                  {sliderData.roofColor && sliderData.roofColor !== '変更なし' && (
+                    <p><strong>屋根の色:</strong> {sliderData.roofColor}</p>
+                  )}
+                  {sliderData.doorColor && sliderData.doorColor !== '変更なし' && (
+                    <p><strong>ドアの色:</strong> {sliderData.doorColor}</p>
+                  )}
+                  {sliderData.weather && (
+                    <p><strong>天候:</strong> {sliderData.weather}</p>
+                  )}
+                </CardContent>
+              </Card>
+              
+              {/* Back to tabs button */}
+              <div className="flex justify-center">
+                <Button 
+                  onClick={closeSliderView}
+                  variant="outline"
+                  size="lg"
+                >
+                  タブビューに戻る
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="generate">シミュレーション作成</TabsTrigger>
+          <TabsTrigger value="history">履歴</TabsTrigger>
+          <TabsTrigger value="info">顧客情報</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="generate" className="space-y-6">
+          {/* Usage Alert */}
+          {remainingGenerations <= 3 && remainingGenerations > 0 && (
+            <Alert>
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                残り生成回数: {remainingGenerations}回
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {!canGenerate && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                生成回数の上限に達しました。
+                <a href="/billing" className="underline ml-1">
+                  プランをアップグレード
+                </a>
+                してください。
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {/* Image Upload */}
+          <Card>
+            <CardHeader>
+              <CardTitle>建物の写真</CardTitle>
+              <CardDescription>
+                シミュレーションする建物の写真をアップロードしてください
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <ImageUpload
+                label="建物の正面写真（必須）"
+                onChange={setMainImage}
+                required
+              />
+            </CardContent>
+          </Card>
+
+          {/* Color Selection */}
+          <Card>
+            <CardHeader>
+              <CardTitle>色の選択</CardTitle>
+              <CardDescription>
+                変更したい部分の色を選択してください
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <CompactColorSelector
+                usage="wall"
+                label="壁の色"
+                selectedColorId={wallColorId}
+                onColorSelect={setWallColorId}
+              />
+              <CompactColorSelector
+                usage="roof"
+                label="屋根の色"
+                selectedColorId={roofColorId}
+                onColorSelect={setRoofColorId}
+              />
+              <CompactColorSelector
+                usage="door"
+                label="ドアの色"
+                selectedColorId={doorColorId}
+                onColorSelect={setDoorColorId}
+              />
+            </CardContent>
+          </Card>
+
+          {/* 🆕 AI Provider Selection */}
+          <Card>
+            <CardHeader>
+              <CardTitle>AIプロバイダー選択</CardTitle>
+              <CardDescription>
+                画像生成に使用するAIモデルを選択してください
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <input
+                    type="radio"
+                    id="fal-ai"
+                    name="aiProvider"
+                    value="fal-ai"
+                    checked={selectedAIProvider === 'fal-ai'}
+                    onChange={(e) => setSelectedAIProvider(e.target.value as 'fal-ai' | 'gemini')}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                  />
+                  <label htmlFor="fal-ai" className="flex-1 cursor-pointer">
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1">
+                        <div className="font-medium">Fal AI (Seedream 4.0)</div>
+                        <p className="text-sm text-muted-foreground">
+                          高品質な建築物画像生成に特化。安定した性能。
+                        </p>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+                
+                <div className="flex items-center space-x-3">
+                  <input
+                    type="radio"
+                    id="gemini"
+                    name="aiProvider"
+                    value="gemini"
+                    checked={selectedAIProvider === 'gemini'}
+                    onChange={(e) => setSelectedAIProvider(e.target.value as 'fal-ai' | 'gemini')}
+                    className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
+                  />
+                  <label htmlFor="gemini" className="flex-1 cursor-pointer">
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1">
+                        <div className="font-medium">Google Gemini 2.5 Flash</div>
+                        <p className="text-sm text-muted-foreground">
+                          Google最新AI。自然な質感と詳細な表現。
+                        </p>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              
+              <div className="p-3 bg-blue-50 rounded-lg">
+                <div className="text-sm text-blue-700">
+                  <p className="font-medium mb-1">プロバイダーについて</p>
+                  <ul className="space-y-1 text-xs">
+                    <li>• 各プロバイダーで生成品質や速度が異なります</li>
+                    <li>• 設定はリアルタイムで切り替え可能です</li>
+                    <li>• 現在選択中: <strong>{selectedAIProvider === 'fal-ai' ? 'Fal AI' : 'Google Gemini'}</strong></li>
+                  </ul>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Weather and Options */}
+          <Card>
+            <CardHeader>
+              <CardTitle>追加オプション</CardTitle>
+              <CardDescription>
+                シミュレーションの詳細設定
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <WeatherSelector
+                value={weather}
+                onChange={setWeather}
+              />
+              <GenerationSettings
+                layoutSideBySide={layoutSideBySide}
+                setLayoutSideBySide={setLayoutSideBySide}
+                backgroundColor={backgroundColor}
+                setBackgroundColor={setBackgroundColor}
+                sideImage={sideImage}
+                setSideImage={setSideImage}
+              />
+
+              <div className="space-y-2">
+                <Label htmlFor="other">その他の指定</Label>
+                <Textarea
+                  id="other"
+                  placeholder="その他の要望があれば入力してください（例：庭の雰囲気を明るく）"
+                  value={otherInstructions}
+                  onChange={(e) => setOtherInstructions(e.target.value)}
+                  rows={3}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Error Display */}
+          {error && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
+          {/* Generate Button */}
+          <Button
+            onClick={handleGenerate}
+            disabled={generating || !canGenerate || !mainImage}
+            size="lg"
+            className="w-full"
+          >
+            {generating ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                生成中...
+              </>
+            ) : (
+              <>
+                <Sparkles className="mr-2 h-4 w-4" />
+                シミュレーション生成
+              </>
+            )}
+          </Button>
+        </TabsContent>
+
+        <TabsContent value="history">
+          <GenerationHistory 
+            customerId={customerId} 
+            refresh={historyRefresh}
+            autoOpenDetailId={latestGenerationId}
+          />
+        </TabsContent>
+
+        <TabsContent value="info">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <div>
+                <CardTitle>顧客情報</CardTitle>
+                <CardDescription>
+                  この顧客の詳細情報
+                </CardDescription>
+              </div>
+              <div className="flex gap-2">
+                {isEditing ? (
+                  <>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleCancelEdit}
+                      disabled={saving}
+                    >
+                      <X className="h-4 w-4 mr-1" />
+                      キャンセル
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={handleSaveCustomer}
+                      disabled={saving}
+                    >
+                      {saving ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                          保存中...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="h-4 w-4 mr-1" />
+                          保存
+                        </>
+                      )}
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleEditCustomer}
+                  >
+                    <Edit className="h-4 w-4 mr-1" />
+                    編集
+                  </Button>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label htmlFor="title">タイトル</Label>
+                {isEditing ? (
+                  <Input
+                    id="title"
+                    value={editForm.title}
+                    onChange={(e) => handleFormChange('title', e.target.value)}
+                    placeholder="タイトルを入力"
+                    className="mt-1"
+                  />
+                ) : (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {customer.title}
+                  </p>
+                )}
+              </div>
+              
+              <div>
+                <Label htmlFor="customer_name">顧客名</Label>
+                {isEditing ? (
+                  <Input
+                    id="customer_name"
+                    value={editForm.customer_name}
+                    onChange={(e) => handleFormChange('customer_name', e.target.value)}
+                    placeholder="顧客名を入力"
+                    className="mt-1"
+                  />
+                ) : (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {customer.customer_name || '未入力'}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="customer_address">住所</Label>
+                {isEditing ? (
+                  <Input
+                    id="customer_address"
+                    value={editForm.customer_address}
+                    onChange={(e) => handleFormChange('customer_address', e.target.value)}
+                    placeholder="住所を入力"
+                    className="mt-1"
+                  />
+                ) : (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {customer.customer_address || '未入力'}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="customer_phone">電話番号</Label>
+                {isEditing ? (
+                  <Input
+                    id="customer_phone"
+                    value={editForm.customer_phone}
+                    onChange={(e) => handleFormChange('customer_phone', e.target.value)}
+                    placeholder="電話番号を入力"
+                    className="mt-1"
+                  />
+                ) : (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {customer.customer_phone || '未入力'}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="customer_email">メールアドレス</Label>
+                {isEditing ? (
+                  <Input
+                    id="customer_email"
+                    type="email"
+                    value={editForm.customer_email}
+                    onChange={(e) => handleFormChange('customer_email', e.target.value)}
+                    placeholder="メールアドレスを入力"
+                    className="mt-1"
+                  />
+                ) : (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {customer.customer_email || '未入力'}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="description">メモ</Label>
+                {isEditing ? (
+                  <Textarea
+                    id="description"
+                    value={editForm.description}
+                    onChange={(e) => handleFormChange('description', e.target.value)}
+                    placeholder="メモを入力"
+                    className="mt-1"
+                    rows={4}
+                  />
+                ) : (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {customer.description || '未入力'}
+                  </p>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  )
+}

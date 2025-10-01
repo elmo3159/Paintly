@@ -14,30 +14,140 @@ interface ImageUploadProps {
   helperText?: string
 }
 
+// Client-side error reporting function
+const reportClientError = (error: Error, context: string) => {
+  if (typeof window !== 'undefined') {
+    try {
+      fetch('/api/error-reporting', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: error.message,
+          stack: error.stack,
+          context: context,
+          url: window.location.href,
+          userAgent: navigator.userAgent,
+          timestamp: new Date().toISOString(),
+          component: 'ImageUpload'
+        })
+      }).catch(console.error)
+    } catch (reportError) {
+      console.error('Failed to report error:', reportError)
+    }
+  }
+}
+
 export function ImageUpload({ label, onChange, required = false, helperText }: ImageUploadProps) {
   const [preview, setPreview] = useState<string | null>(null)
   const [fileName, setFileName] = useState<string | null>(null)
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles && acceptedFiles.length > 0) {
-      const file = acceptedFiles[0]
-      
-      // Create preview
-      const reader = new FileReader()
-      reader.onload = () => {
-        setPreview(reader.result as string)
+    try {
+      if (!acceptedFiles || acceptedFiles.length === 0) {
+        console.log('No files selected or files were rejected')
+        return
       }
+
+      const file = acceptedFiles[0]
+
+      // Validate file
+      if (!file) {
+        throw new Error('Selected file is invalid')
+      }
+
+      // Validate file size (10MB limit)
+      const maxSize = 10 * 1024 * 1024 // 10MB
+      if (file.size > maxSize) {
+        throw new Error(`ファイルサイズが大きすぎます。${maxSize / (1024 * 1024)}MB以下のファイルを選択してください。`)
+      }
+
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+      if (!validTypes.includes(file.type)) {
+        throw new Error(`対応していないファイル形式です。JPEG、PNG、WebP形式のファイルを選択してください。`)
+      }
+
+      console.log('📁 Processing file:', {
+        name: file.name,
+        size: file.size,
+        type: file.type
+      })
+
+      // Create preview with enhanced error handling
+      const reader = new FileReader()
+
+      reader.onload = () => {
+        try {
+          const result = reader.result as string
+          if (!result) {
+            throw new Error('ファイルの読み込みに失敗しました')
+          }
+
+          console.log('✅ File preview created successfully')
+          setPreview(result)
+          setFileName(file.name)
+          onChange(file)
+        } catch (previewError) {
+          const error = previewError instanceof Error ? previewError : new Error('Preview creation failed')
+          console.error('❌ Preview creation error:', error)
+          reportClientError(error, `File preview creation - File: ${file.name}`)
+          alert(`画像プレビューの作成に失敗しました: ${error.message}`)
+        }
+      }
+
+      reader.onerror = () => {
+        const error = new Error(`ファイルの読み込み中にエラーが発生しました: ${file.name}`)
+        console.error('❌ FileReader error:', error)
+        reportClientError(error, `FileReader error - File: ${file.name}`)
+        alert(`ファイルの読み込みに失敗しました: ${error.message}`)
+      }
+
+      reader.onabort = () => {
+        const error = new Error(`ファイルの読み込みが中断されました: ${file.name}`)
+        console.error('❌ FileReader aborted:', error)
+        reportClientError(error, `FileReader aborted - File: ${file.name}`)
+      }
+
       reader.readAsDataURL(file)
-      
-      setFileName(file.name)
-      onChange(file)
+
+    } catch (error) {
+      const fileError = error instanceof Error ? error : new Error('Unknown file processing error')
+      console.error('❌ File processing error:', fileError)
+
+      // Report error to centralized error reporting
+      reportClientError(fileError, `File processing error - Files: ${acceptedFiles?.map(f => f.name).join(', ')}`)
+
+      // Show user-friendly error message
+      alert(`ファイルの処理に失敗しました: ${fileError.message}`)
     }
   }, [onChange])
 
   const removeImage = () => {
-    setPreview(null)
-    setFileName(null)
-    onChange(null)
+    try {
+      console.log('🗑️ Removing uploaded image')
+
+      // Clean up preview URL if it's a blob URL to prevent memory leaks
+      if (preview && preview.startsWith('blob:')) {
+        window.URL.revokeObjectURL(preview)
+      }
+
+      setPreview(null)
+      setFileName(null)
+      onChange(null)
+
+      console.log('✅ Image removed successfully')
+    } catch (error) {
+      const removeError = error instanceof Error ? error : new Error('Unknown remove error')
+      console.error('❌ Error removing image:', removeError)
+
+      // Report error but don't block the operation
+      reportClientError(removeError, 'Image removal error')
+
+      // Still try to clear state even if there was an error
+      setPreview(null)
+      setFileName(null)
+      onChange(null)
+    }
   }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -46,7 +156,48 @@ export function ImageUpload({ label, onChange, required = false, helperText }: I
       'image/*': ['.jpeg', '.jpg', '.png', '.webp']
     },
     maxFiles: 1,
-    multiple: false
+    multiple: false,
+    onDropRejected: (fileRejections) => {
+      try {
+        console.log('📋 Files rejected:', fileRejections)
+
+        const errors = fileRejections.map(rejection => {
+          const file = rejection.file
+          const errorCodes = rejection.errors.map(err => err.code)
+
+          if (errorCodes.includes('file-too-large')) {
+            return `${file.name}: ファイルサイズが大きすぎます`
+          }
+          if (errorCodes.includes('file-invalid-type')) {
+            return `${file.name}: 対応していないファイル形式です`
+          }
+          if (errorCodes.includes('too-many-files')) {
+            return '一度に選択できるファイルは1つだけです'
+          }
+
+          return `${file.name}: ${rejection.errors.map(e => e.message).join(', ')}`
+        })
+
+        const errorMessage = errors.join('\n')
+        alert(`ファイルの選択でエラーが発生しました:\n${errorMessage}`)
+
+        // Report the rejection for analysis
+        const rejectionError = new Error(`File rejection: ${errorMessage}`)
+        reportClientError(rejectionError, `File rejection - ${fileRejections.length} files rejected`)
+
+      } catch (error) {
+        const rejectionError = error instanceof Error ? error : new Error('Unknown rejection handling error')
+        console.error('❌ Error handling file rejections:', rejectionError)
+        reportClientError(rejectionError, 'File rejection handling error')
+        alert('ファイルの処理中にエラーが発生しました')
+      }
+    },
+    onError: (error) => {
+      const dropzoneError = error instanceof Error ? error : new Error('Dropzone error')
+      console.error('❌ Dropzone error:', dropzoneError)
+      reportClientError(dropzoneError, 'Dropzone error')
+      alert(`ファイル選択機能でエラーが発生しました: ${dropzoneError.message}`)
+    }
   })
 
   return (
@@ -66,9 +217,17 @@ export function ImageUpload({ label, onChange, required = false, helperText }: I
           className={`border-2 border-dashed cursor-pointer transition-colors ${
             isDragActive ? 'border-primary bg-primary/5' : 'border-muted-foreground/25 hover:border-primary'
           }`}
+          role="button"
+          tabIndex={0}
+          aria-label={`${label}をアップロード`}
+          aria-describedby={helperText ? `${label}-helper` : undefined}
         >
           <CardContent className="flex flex-col items-center justify-center p-6">
-            <input {...getInputProps()} />
+            <input 
+              {...getInputProps()} 
+              aria-label={label}
+              aria-required={required}
+            />
             <Upload className="h-10 w-10 text-muted-foreground mb-4" />
             <p className="text-sm text-center text-muted-foreground">
               {isDragActive

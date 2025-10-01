@@ -9,7 +9,7 @@ export async function POST() {
     const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey)
     
     // 既存ユーザーIDを取得
-    const { data: existingUsers, error: checkError } = await supabaseAdmin
+    const { data: existingUsers } = await supabaseAdmin
       .from('users')
       .select('*')
       .limit(1)

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { FileQuestion, Home, Palette, Paintbrush, Droplet, Star, ArrowLeft } from 'lucide-react'
@@ -28,10 +29,13 @@ export default function NotFound() {
         <CardHeader className="text-center pb-6">
           {/* ロゴセクション */}
           <div className="flex justify-center mb-4">
-            <img 
+            <Image 
               src="/logo.png" 
               alt="Paintly" 
+              width={142}
+              height={80}
               className="h-32 w-auto object-contain"
+              sizes="(max-width: 768px) 142px, 142px"
             />
           </div>
           <div className="space-y-3">

@@ -71,7 +71,7 @@ export async function GET(request: Request) {
           const { data: freePlan, error: planError } = await supabase
             .from('plans')
             .select('id')
-            .eq('name', '無料プラン')
+            .eq('name', 'free')
             .maybeSingle()
 
           if (planError) {

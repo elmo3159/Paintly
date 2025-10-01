@@ -55,36 +55,29 @@
   * {
     @apply border-border;
   }
+
+  /* Prevent excessive scrolling in layouts with h-screen */
+  html {
+    height: 100%;
+    overflow: hidden;
+  }
+
   body {
-    /* Force light theme with highest specificity */
-    background-color: #f8f7f4 !important;
-    color: #2d2621 !important;
+    /* Let the gradient background show through */
+    color: #2d2621;
+    height: 100%;
+    overflow: hidden;
   }
 
-  /* Override CSS variables to force light theme */
+  /* Keep CSS variables for light theme */
   :root {
-    --background: 45 20% 96% !important;
-    --foreground: 25 30% 15% !important;
+    --background: 45 20% 96%;
+    --foreground: 25 30% 15%;
   }
 
-  /* Override any potential dark mode settings */
+  /* Maintain light theme preference */
   html {
     color-scheme: light;
-  }
-
-  /* Ensure main content uses light background */
-  main {
-    background-color: #f8f7f4 !important;
-  }
-
-  /* Force background on all major containers */
-  div, section, article {
-    background-color: inherit;
-  }
-
-  /* Override any CSS variable usage */
-  [class*="bg-background"] {
-    background-color: #f8f7f4 !important;
   }
 }
 
@@ -118,7 +111,7 @@
 
   /* Paint Card Styles */
   .paint-card {
-    @apply bg-card border border-border/50;
+    @apply bg-card/95 border border-border/50;
     @apply shadow-2xl hover:shadow-2xl;
     @apply rounded-2xl overflow-hidden;
     @apply backdrop-blur-sm;
@@ -202,7 +195,7 @@
 
   /* Form Enhancements */
   .form-section {
-    @apply bg-gradient-to-br from-card via-card to-secondary/30;
+    @apply bg-gradient-to-br from-card/95 via-card/95 to-secondary/30;
     @apply border border-border/50 rounded-2xl p-6;
     @apply shadow-lg;
   }
@@ -286,13 +279,91 @@
   .text-paint-gradient {
     @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
   }
-  
+
   .shadow-paint {
     box-shadow: 0 10px 30px rgba(var(--primary), 0.3), 0 0 0 1px rgba(var(--border), 0.1);
   }
-  
+
   .border-paint-gradient {
     border-image: linear-gradient(90deg, var(--primary), var(--accent)) 1;
+  }
+}
+
+/* Glass Morphism - Card Transparency for Background Visibility */
+@layer utilities {
+  /* Padding areas: 100% transparent (fully transparent) - NO BLUR for clear background */
+  [class*="bg-"]:not(.bg-primary):not(.bg-accent):not(.fixed),
+  .bg-card:not(.fixed),
+  .bg-white:not(.fixed),
+  .bg-background,
+  .bg-muted,
+  .bg-secondary,
+  .bg-gray-50,
+  .bg-gray-100,
+  .bg-orange-50,
+  .bg-orange-100,
+  .bg-green-50,
+  .bg-green-100,
+  .bg-blue-50,
+  .bg-blue-100,
+  .bg-yellow-50,
+  .bg-yellow-100,
+  .bg-red-50,
+  .bg-red-100 {
+    background-color: rgba(255, 255, 255, 0.00) !important;
+    /* backdrop-filter removed for crystal clear background visibility */
+  }
+
+  /* Content areas inside padding: 40% transparent (60% opaque) - NO BLUR on content */
+  [class*="bg-"]:not(.bg-primary):not(.bg-accent) > *,
+  .bg-card > *,
+  .bg-white > *,
+  .bg-background > *,
+  .bg-muted > *,
+  .bg-secondary > *,
+  .bg-gray-50 > *,
+  .bg-gray-100 > *,
+  .bg-orange-50 > *,
+  .bg-orange-100 > *,
+  .bg-green-50 > *,
+  .bg-green-100 > *,
+  .bg-blue-50 > *,
+  .bg-blue-100 > *,
+  .bg-yellow-50 > *,
+  .bg-yellow-100 > *,
+  .bg-red-50 > *,
+  .bg-red-100 > *,
+  /* Specific content containers */
+  [class*="p-"] > div,
+  [class*="px-"] > div,
+  [class*="py-"] > div {
+    background-color: rgba(255, 255, 255, 0.60) !important;
+    /* NO backdrop-filter to avoid blurring text */
+  }
+
+  /* Keep popover and dropdowns more opaque for readability */
+  .bg-popover,
+  [role="menu"],
+  [role="listbox"],
+  [role="dialog"] {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+  }
+
+  /* Keep primary/accent buttons visible with original colors */
+  .bg-primary {
+    background-color: hsl(210 95% 45%) !important;
+  }
+
+  .bg-accent {
+    background-color: hsl(35 85% 55%) !important;
+  }
+
+  /* Hamburger menu button: 40% opaque (60% transparent) */
+  .fixed.bg-white,
+  button.fixed.bg-white {
+    background-color: rgba(255, 255, 255, 0.4) !important;
   }
 }
 
@@ -340,25 +411,4 @@
   }
 }
 
-/* Fix duplicate scrollbar issue */
-@layer base {
-  /* Prevent body from having its own scrollbar */
-  html {
-    overflow-x: hidden;
-  }
-
-  body {
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-
-  /* Ensure main layout containers don't create extra scrollbars */
-  #__next {
-    overflow-x: hidden;
-  }
-
-  /* Fix any layout containers that might cause double scrollbars */
-  .layout-container {
-    overflow-x: hidden;
-  }
-}
+/* Fix duplicate scrollbar issue - Removed duplicate overflow rules that conflicted with h-screen layouts */

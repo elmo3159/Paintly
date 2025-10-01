@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -46,10 +47,14 @@ export default function HomePage() {
           <div className="max-w-6xl mx-auto text-center space-y-12">
             {/* ロゴとブランディング */}
             <div className="flex justify-center mb-8">
-              <img 
+              <Image 
                 src="/logo.png" 
                 alt="Paintly" 
+                width={142}
+                height={80}
+                priority={true}
                 className="h-40 w-auto object-contain"
+                sizes="(max-width: 768px) 142px, 142px"
               />
             </div>
             
@@ -60,10 +65,10 @@ export default function HomePage() {
                 塗装業界革命
               </Badge>
 
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              <h1 className="text-3xl md:text-4xl font-bold text-foreground">
                 営業成約率を劇的に向上させる<br />
                 AI塗装シミュレーション
-              </h2>
+              </h1>
               <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-4xl mx-auto">
                 建物の写真を撮るだけで、瞬時に塗装後の仕上がりを生成。<br />
                 お客様の理想を<span className="font-bold text-primary">その場で可視化</span>し、成約率を大幅にアップします。
@@ -284,10 +289,13 @@ export default function HomePage() {
           <div className="container mx-auto px-4">
             <div className="text-center space-y-6">
               <div className="flex justify-center">
-                <img 
+                <Image 
                   src="/logo.png" 
                   alt="Paintly" 
+                  width={142}
+                  height={80}
                   className="h-16 w-auto object-contain"
+                  sizes="(max-width: 768px) 142px, 142px"
                 />
               </div>
               <p className="text-muted-foreground max-w-2xl mx-auto">

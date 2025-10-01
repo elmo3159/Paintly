@@ -87,15 +87,17 @@ export async function POST(request: NextRequest) {
       message: generatedImageData ? 'テスト画像生成成功！' : 'テキスト応答のみ（画像なし）'
     })
 
-  } catch (error: any) {
-    console.error('❌ Test API Error:', error.message)
-    
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    const errorStack = error instanceof Error ? error.stack : undefined
+    console.error('❌ Test API Error:', errorMessage)
+
     return NextResponse.json(
-      { 
+      {
         success: false,
         error: 'Gemini API呼び出しに失敗しました',
-        details: error.message,
-        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        details: errorMessage,
+        stack: process.env.NODE_ENV === 'development' ? errorStack : undefined
       },
       { status: 500 }
     )

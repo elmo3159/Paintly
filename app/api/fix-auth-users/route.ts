@@ -9,7 +9,7 @@ export async function POST() {
     const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey)
     
     // auth.usersテーブルの現在の状態を確認
-    const { data: existingUsers, error: checkError } = await supabaseAdmin
+    const { data: existingUsers } = await supabaseAdmin
       .from('users')
       .select('*')
       .limit(10)
@@ -42,7 +42,7 @@ export async function POST() {
     }
     
     // customersテーブルの状態も確認
-    const { data: customers, error: customerError } = await supabaseAdmin
+    const { data: customers } = await supabaseAdmin
       .from('customers')
       .select('*')
       .limit(10)
@@ -84,7 +84,7 @@ export async function POST() {
       }
     ]
       
-      const { data: customerInsert, error: customerInsertError } = await supabaseAdmin
+      const { error: customerInsertError } = await supabaseAdmin
         .from('customers')
         .insert(testCustomers)
       

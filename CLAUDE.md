@@ -223,6 +223,15 @@ C:\Users\elmod\Desktop\CursorApp\Paintly\カラー一覧.pdf
 - 顧客ごとの管理機能を重視
 - 営業現場での即座の利用を最重要視した設計
 
+サイトをテストする際は、Paintly独自のアカウント↓
+elmodayo3159@gmail.com
+Pass:sanri3159
+こちらのアカウントを使ってください。
+
+AI生成のテストを行う場合は、
+C:\Users\elmod\Desktop\CursorApp\Paintly\Gemini_Generated_Image_yyuqo2yyuqo2yyuq.png
+こちらの画像を使ってテストしてください。
+
 ## 知見管理システム
 
 プロジェクトの知識を体系的に管理するため、`.claude`ディレクトリに知見管理システムを導入しています。
@@ -282,7 +291,8 @@ C:\Users\elmod\Desktop\CursorApp\Paintly\カラー一覧.pdf
 
 この知見管理システムにより、開発効率の向上と品質の一貫性を保ちます。
 
-WSL環境で、ClaudeCodeを使用します。
+あなたはwindows環境で起動された、ClaudeCodeです。
+WSL版のClaudeCodeではありません。
 
 私への回答は日本語で行ってください。
 
@@ -325,8 +335,9 @@ http://172.17.161.101:9090
 GEMINI_API_KEY=AIzaSyCjIYp7_X8YQMOrrFwjqR2SfTj6_3YY31w
 
 ## MCP
-Supabase MCP - データベース連携用      
+Supabase MCP - データベース連携用
 Playwright MCP - ブラウザ自動化テスト用
+Chrome DevTools MCP - リアルタイムブラウザデバッグ・パフォーマンス分析用（Google公式2025年9月リリース）
 filesystem MCP - ファイルシステムアクセス用
 Desktop Commander - デスクトップ操作用
 Github MCP - GitHub連携用
@@ -448,6 +459,16 @@ Google OAuth認証は有効になっています。
 - ネットワーク監視
 - モバイルデバイスエミュレーション
 
+**Chrome DevTools MCP** (`chrome-devtools-mcp@latest`)（🆕 Google公式2025年9月リリース）
+- リアルタイムChromeブラウザ制御・検査
+- パフォーマンストレース記録・分析
+- DOM/CSS状態のリアルタイム検査
+- JavaScript実行・コンソール出力読取
+- ネットワークリクエスト監視・分析
+- ユーザーフロー自動化
+- AI駆動デバッグ・最適化支援
+- Chrome DevTools Protocol（CDP）フル活用
+
 #### 🔥 高効率開発のためのMCP連携パターン
 
 **パターン1: 情報収集 → 実装 → テスト**
@@ -467,3 +488,162 @@ Google OAuth認証は有効になっています。
 2. GitHub MCP: APIコード管理
 3. Vercel MCP: 環境構築
 4. filesystem MCP: 設定ファイル管理
+
+#### 🎯 Chrome DevTools MCP vs Playwright MCP 使い分けガイド
+
+##### Chrome DevTools MCPを使うべき場合
+**パフォーマンス分析が必要な時**
+- ページロード時間の詳細分析（First Paint、LCP、CLS等の計測）
+- JavaScript実行時間のボトルネック特定
+- メモリリーク調査・ヒープスナップショット分析
+- レンダリング最適化（60fps維持の確認、リフロー/リペイント最小化）
+
+**高度なデバッグが必要な時**
+- ブレークポイント設定によるステップ実行デバッグ
+- JavaScript例外のリアルタイム監視
+- コンソールログの詳細分析（エラー、警告、情報の分類）
+- イベントリスナー・DOM変更の追跡
+
+**ネットワーク最適化が必要な時**
+- API呼び出しのタイミング・レスポンス時間分析
+- バンドルサイズ最適化の効果測定
+- キャッシュ戦略の検証
+- WebSocket通信のリアルタイム監視
+
+**リアルタイムインスペクションが必要な時**
+- CSS計算値の確認・動的スタイル変更
+- アクセシビリティツリーの検証
+- セキュリティヘッダーの確認
+- Service Worker/PWAの動作検証
+
+##### Playwright MCPを使うべき場合
+**E2Eテスト実行時**
+- 複数ページにまたがる操作フローのテスト
+- ユーザー認証フローの自動化
+- フォーム送信の検証
+- ファイルアップロード/ダウンロードのテスト
+
+**クロスブラウザ検証時**
+- Chrome、Firefox、Safari、Edgeでの動作確認
+- モバイルデバイスエミュレーション（iPhone、Android）
+- レスポンシブデザインの検証
+- タッチ操作のシミュレーション
+
+**視覚的検証が必要な時**
+- スクリーンショット比較による回帰テスト
+- 動画記録による操作証跡の保存
+- PDF生成機能のテスト
+- 画像差分検出
+
+**並列実行・CI/CD統合時**
+- 複数テストケースの並列実行
+- GitHub Actions/Jenkins連携
+- ヘッドレスモードでの自動テスト
+- テストレポート生成
+
+##### 両方を組み合わせるべき場合
+**包括的品質保証が必要な時**
+```javascript
+// 例：新機能リリース前の総合検証
+1. Playwright MCP: 機能テストシナリオ実行
+2. Chrome DevTools MCP: パフォーマンス計測
+3. Playwright MCP: 視覚的回帰テスト
+4. Chrome DevTools MCP: メモリリーク確認
+```
+
+**問題の原因調査時**
+```javascript
+// 例：「特定操作でアプリが重くなる」問題
+1. Playwright MCP: 問題再現手順の自動化
+2. Chrome DevTools MCP: パフォーマンストレース記録
+3. Chrome DevTools MCP: メモリ/CPU使用状況分析
+4. Playwright MCP: 修正後の動作確認
+```
+
+##### Paintlyプロジェクトでの具体的使用例
+**Chrome DevTools MCPの活用**
+- Gemini API呼び出しのレスポンス時間最適化
+- 画像生成時のメモリ使用量監視
+- モバイル端末での描画パフォーマンス向上
+- Supabase接続のネットワーク最適化
+
+**Playwright MCPの活用**
+- 顧客ページ作成フローの自動テスト
+- 色選択・プレビュー機能の検証
+- ビフォーアフタースライダーの動作確認
+- 料金プラン切り替えのE2Eテスト
+
+#### 📝 Chrome DevTools MCP セットアップと注意事項
+
+##### インストールコマンド
+```bash
+# ClaudeCodeへの追加
+claude mcp add chrome-devtools npx chrome-devtools-mcp@latest
+
+# オプション付きインストール（推奨）
+claude mcp add chrome-devtools npx chrome-devtools-mcp@latest --isolated --headless
+```
+
+##### 設定オプション
+**基本オプション**
+- `--headless`: UIなしモード（CI/CD環境向け）
+- `--isolated`: 一時的なuser-data-dirを使用（セキュリティ向上）
+- `--channel`: Chrome版選択（stable/canary/beta/dev）
+- `--browserUrl`: 既存のChromeインスタンスに接続
+- `--executablePath`: カスタムChrome実行ファイルパス指定
+
+
+
+##### トラブルシューティング
+**接続エラーが発生する場合**
+1. Chromeが最新版か確認: `google-chrome --version`
+2. ポートが使用中でないか確認: `lsof -i:9222`
+3. ファイアウォール設定確認
+4. サンドボックス無効化: `--no-sandbox` オプション追加
+
+**パフォーマンストレースが取得できない場合**
+1. DevToolsプロトコルが有効か確認
+2. 十分なメモリがあるか確認（最低2GB推奨）
+3. トレース時間を短縮（デフォルト5秒→3秒）
+
+**メモリ不足エラー**
+```javascript
+// ヒープサイズ増加
+process.env.NODE_OPTIONS = '--max-old-space-size=4096'
+```
+
+##### 実践的な使用例
+**パフォーマンス監視スクリプト**
+```javascript
+// Paintlyアプリのパフォーマンス定期監視
+const monitorPerformance = async () => {
+  // 1. ページロード時間計測
+  // 2. 画像生成APIレスポンス時間
+  // 3. メモリ使用量追跡
+  // 4. レポート生成
+}
+```
+
+**デバッグワークフロー**
+```javascript
+// 問題：「画像生成後、アプリが遅くなる」
+1. Chrome DevTools MCP: JavaScriptプロファイル開始
+2. 問題の操作を実行（画像生成）
+3. Chrome DevTools MCP: プロファイル停止・分析
+4. ボトルネック特定（例：大量のDOMノード生成）
+5. 修正実装
+6. Chrome DevTools MCP: 修正後の計測で改善確認
+```
+
+##### ベストプラクティス
+**効率的な使用方法**
+- 本番環境では`--headless`モード使用
+- 開発環境では視覚的フィードバックのため通常モード
+- パフォーマンス計測時は他のアプリケーション終了
+- トレース保存機能で比較分析を実施
+
+**セキュリティ考慮事項**
+- `--isolated`モードでクッキー・履歴の分離
+- 機密情報を含むページでは使用注意
+- 本番環境のクレデンシャルは使用しない
+- VPN環境では接続設定の調整が必要な場合あり

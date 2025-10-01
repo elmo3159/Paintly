@@ -109,7 +109,7 @@ export default function SetupPage() {
   }
 
   const checkDatabase = async () => {
-    const { error } = await supabase.from('plans').select('count').single()
+    const { error } = await supabase.from('plans').select('id').limit(1).single()
     if (error && error.code !== 'PGRST116') {
       throw new Error('データベース接続に失敗しました')
     }

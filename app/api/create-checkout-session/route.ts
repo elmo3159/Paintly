@@ -59,10 +59,11 @@ export async function POST(request: NextRequest) {
     })
 
     return NextResponse.json({ sessionId: session.id })
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error)
     console.error('Stripe Checkout Error:', error)
     return NextResponse.json(
-      { error: error.message || 'セッションの作成に失敗しました' },
+      { error: errorMessage || 'セッションの作成に失敗しました' },
       { status: 500 }
     )
   }

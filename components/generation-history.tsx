@@ -9,6 +9,30 @@ import { Badge } from '@/components/ui/badge'
 import { Loader2, Download, Eye, Calendar, Palette } from 'lucide-react'
 import Image from 'next/image'
 import { ImageComparisonFixed } from '@/components/image-comparison-fixed'
+import { ScreenReaderOnly, AccessibleButton } from '@/components/accessibility-helpers'
+
+// Client-side error reporting function
+const reportClientError = (error: Error, context: string) => {
+  if (typeof window !== 'undefined') {
+    try {
+      fetch('/api/error-reporting', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: error.message,
+          stack: error.stack,
+          context: context,
+          url: window.location.href,
+          userAgent: navigator.userAgent,
+          timestamp: new Date().toISOString(),
+          component: 'GenerationHistory'
+        })
+      }).catch(console.error)
+    } catch (reportError) {
+      console.error('Failed to report error:', reportError)
+    }
+  }
+}
 
 interface GenerationHistoryItem {
   id: string
@@ -21,43 +45,58 @@ interface GenerationHistoryItem {
   weather: string | null
   generated_image_url: string | null
   original_image_url: string | null
-  gemini_response: { imageUrl?: string; hasImage?: boolean; originalImageUrl?: string } | null
+  fal_response: { imageUrl?: string; hasImage?: boolean; originalImageUrl?: string; model?: string } | null
   error_message: string | null
   prompt: string | null
 }
 
 interface GenerationHistoryProps {
   customerId: string
-  refresh?: number
-  autoOpenDetailId?: string | null
+  onSliderView?: (data: any) => void
+  refreshTrigger?: number
+  latestGenerationId?: string | null
 }
 
-export function GenerationHistory({ customerId, refresh, autoOpenDetailId }: GenerationHistoryProps) {
+export function GenerationHistory({ customerId, onSliderView, refreshTrigger, latestGenerationId }: GenerationHistoryProps) {
   const [history, setHistory] = useState<GenerationHistoryItem[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedItem, setSelectedItem] = useState<GenerationHistoryItem | null>(null)
   const supabase = createClient()
 
   useEffect(() => {
-    fetchHistory()
-  }, [customerId, refresh])
+    const loadHistory = async () => {
+      try {
+        await fetchHistory()
+      } catch (error) {
+        console.error('❌ Unexpected error in fetchHistory:', error)
+        reportClientError(
+          error instanceof Error ? error : new Error(String(error)),
+          `useEffect fetchHistory for customer ${customerId}`
+        )
+        setHistory([])
+        setLoading(false)
+      }
+    }
+
+    loadHistory()
+  }, [customerId, refreshTrigger])
 
   // Auto-open detail view for latest generation
   useEffect(() => {
-    if (autoOpenDetailId && history.length > 0) {
-      const targetItem = history.find(item => item.id === autoOpenDetailId)
+    if (latestGenerationId && history.length > 0) {
+      const targetItem = history.find(item => item.id === latestGenerationId)
       if (targetItem) {
-        console.log('🎯 Auto-opening detail view for generation:', autoOpenDetailId)
+        console.log('🎯 Auto-opening detail view for generation:', latestGenerationId)
         setSelectedItem(targetItem)
       }
     }
-  }, [autoOpenDetailId, history])
+  }, [latestGenerationId, history])
 
   const fetchHistory = async () => {
     setLoading(true)
     console.log('🔍 Fetching history for customer ID:', customerId)
 
-    // Check current authenticated user with detailed debugging
+    // Check current authenticated user
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     console.log('👤 Current authenticated user:', { 
       user: user?.id, 
@@ -73,8 +112,6 @@ export function GenerationHistory({ customerId, refresh, autoOpenDetailId }: Gen
       return
     }
 
-    // Try the query with explicit debugging
-    console.log('🔄 Attempting Supabase query with authenticated user:', user.id)
     const { data, error } = await supabase
       .from('generations')
       .select(`
@@ -100,51 +137,49 @@ export function GenerationHistory({ customerId, refresh, autoOpenDetailId }: Gen
       queryParams: {
         table: 'generations',
         customer_page_id: customerId,
-        user_id: user.id,
-        authMethod: 'client-side-anon-key'
+        user_id: user.id
       }
     })
 
-    // 🔥 NEW: Log detailed prompt data from each item
-    if (data && data.length > 0) {
-      console.log('🎯 DETAILED PROMPT DATA ANALYSIS:')
-      data.forEach((item, index) => {
-        console.log(`--- Item ${index + 1} (ID: ${item.id}) ---`)
-        console.log('  hasPrompt:', !!item.prompt)
-        console.log('  promptLength:', item.prompt?.length || 0)
-        console.log('  promptPreview:', item.prompt?.substring(0, 50) + '...' || 'NO PROMPT')
-        console.log('  allKeys:', Object.keys(item))
-        console.log('  fullItem:', item)
-      })
-    }
-
     if (error) {
       console.error('❌ History fetch error (likely RLS blocking access):', error)
-      console.log('🔍 Error details:', {
-        message: error.message,
-        code: error.code,
-        details: error.details,
-        hint: error.hint
-      })
-      
+
+      // Report the initial error
+      reportClientError(
+        new Error(`Supabase query failed: ${error.message}`),
+        `fetchHistory for customer ${customerId}`
+      )
+
       // RLS fallback: Try using public debug API when direct DB access fails
       console.log('🔄 Attempting fallback via public debug API...')
       try {
         const fallbackResponse = await fetch(`/api/public-debug?customer_id=${customerId}`)
         const fallbackData = await fallbackResponse.json()
-        
+
         console.log('📊 Fallback API response:', fallbackData)
-        
+
         if (fallbackData.success && fallbackData.data?.generations) {
           console.log('✅ Using fallback data from public API')
           setHistory(fallbackData.data.generations)
         } else {
           console.log('⚠️ Fallback API also returned no data')
           setHistory([])
+
+          // Report fallback API failure
+          reportClientError(
+            new Error('Fallback API returned no data'),
+            `fetchHistory fallback for customer ${customerId}`
+          )
         }
       } catch (fallbackError) {
         console.error('❌ Fallback API also failed:', fallbackError)
         setHistory([])
+
+        // Report fallback API error
+        reportClientError(
+          fallbackError instanceof Error ? fallbackError : new Error(String(fallbackError)),
+          `fetchHistory fallback API error for customer ${customerId}`
+        )
       }
     } else if (!error && data) {
       console.log('✅ Setting history data from direct Supabase query:', data)
@@ -157,10 +192,7 @@ export function GenerationHistory({ customerId, refresh, autoOpenDetailId }: Gen
         const fallbackResponse = await fetch(`/api/public-debug?customer_id=${customerId}`)
         const fallbackData = await fallbackResponse.json()
         
-        console.log('📊 Fallback API response (no data case):', fallbackData)
-        
         if (fallbackData.success && fallbackData.data?.generations) {
-          console.log('✅ Using fallback data (no data case)')
           setHistory(fallbackData.data.generations)
         } else {
           setHistory([])
@@ -176,8 +208,26 @@ export function GenerationHistory({ customerId, refresh, autoOpenDetailId }: Gen
 
   const downloadImage = async (url: string, filename: string) => {
     try {
+      // Validate URL parameter
+      if (!url || typeof url !== 'string') {
+        throw new Error('Invalid URL provided for download')
+      }
+
+      console.log('🔽 Downloading image:', { url, filename })
+
       const response = await fetch(url)
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch image: ${response.status} ${response.statusText}`)
+      }
+
       const blob = await response.blob()
+
+      // Validate blob
+      if (!blob || blob.size === 0) {
+        throw new Error('Downloaded file is empty or invalid')
+      }
+
       const downloadUrl = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = downloadUrl
@@ -186,21 +236,52 @@ export function GenerationHistory({ customerId, refresh, autoOpenDetailId }: Gen
       link.click()
       document.body.removeChild(link)
       window.URL.revokeObjectURL(downloadUrl)
+
+      console.log('✅ Image downloaded successfully:', filename)
     } catch (error) {
-      console.error('Download failed:', error)
+      const downloadError = error instanceof Error ? error : new Error('Unknown download error')
+      console.error('❌ Download failed:', downloadError)
+
+      // Report error to centralized error reporting
+      reportClientError(downloadError, `downloadImage - URL: ${url}, Filename: ${filename}`)
+
+      // Show user-friendly error message
+      alert(`画像のダウンロードに失敗しました: ${downloadError.message}`)
     }
   }
 
-  // 🔥 NEW: Enhanced setSelectedItem with detailed logging
+  // Enhanced setSelectedItem with detailed logging
   const handleSetSelectedItem = (item: GenerationHistoryItem) => {
     console.log('🎯 SETTING SELECTED ITEM - Full Debug:')
     console.log('  itemId:', item.id)
     console.log('  hasPrompt:', !!item.prompt)
-    console.log('  promptLength:', item.prompt?.length || 0)
-    console.log('  promptContent:', item.prompt || 'NO PROMPT DATA')
-    console.log('  itemKeys:', Object.keys(item))
-    console.log('  fullSelectedItem:', item)
+    console.log('  generated_image_url:', item.generated_image_url)
+    console.log('  original_image_url:', item.original_image_url)
     setSelectedItem(item)
+  }
+
+  // 🆕 New function: Navigate to slider comparison view
+  const navigateToSlider = (item: GenerationHistoryItem) => {
+    console.log('🔄 Navigating to slider view for generation:', item.id)
+    
+    // Store generation data in sessionStorage for slider component
+    const sliderData = {
+      generationId: item.id,
+      originalImageUrl: item.original_image_url,
+      generatedImageUrl: item.generated_image_url,
+      wallColor: item.wall_color,
+      roofColor: item.roof_color,
+      doorColor: item.door_color,
+      weather: item.weather,
+      prompt: item.prompt,
+      customerId: customerId
+    }
+    
+    sessionStorage.setItem('sliderData', JSON.stringify(sliderData))
+    
+    // Navigate to customer page with slider view
+    // Assuming the router structure: /customer/[id] with tab parameter
+    window.location.href = `/customer/${customerId}?tab=create&view=slider&generationId=${item.id}`
   }
 
   if (loading) {
@@ -229,26 +310,26 @@ export function GenerationHistory({ customerId, refresh, autoOpenDetailId }: Gen
 
   return (
     <div className="space-y-4">
-      <Card>
+      <Card role="region" aria-labelledby="history-title">
         <CardHeader>
-          <CardTitle>生成履歴</CardTitle>
+          <CardTitle id="history-title">生成履歴</CardTitle>
           <CardDescription>
             過去に生成したシミュレーション画像
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ScrollArea className="h-[600px] pr-4">
-            <div className="space-y-4">
+          <ScrollArea className="h-[600px] pr-4" aria-label="生成履歴一覧">
+            <div className="space-y-4" role="list" aria-label="生成履歴アイテム">
               {history.map((item) => (
-                <Card key={item.id} className="overflow-hidden">
+                <Card key={item.id} className="overflow-hidden" role="listitem">
                   <CardContent className="p-4">
-                    <div className="flex items-start space-x-4">
-                      {/* Thumbnail */}
+                    <div className="flex flex-col md:flex-row items-start md:space-x-4 space-y-4 md:space-y-0">
+                      {/* Thumbnail - Fixed to use generated_image_url directly */}
                       <div className="relative w-32 h-32 flex-shrink-0 bg-muted rounded-lg overflow-hidden">
-                        {item.gemini_response?.imageUrl ? (
+                        {item.generated_image_url ? (
                           <Image
-                            src={item.gemini_response.imageUrl}
-                            alt="生成画像"
+                            src={item.generated_image_url}
+                            alt={`生成画像 - ${new Date(item.created_at).toLocaleDateString('ja-JP')}作成`}
                             fill
                             className="object-cover"
                           />
@@ -266,7 +347,7 @@ export function GenerationHistory({ customerId, refresh, autoOpenDetailId }: Gen
                       </div>
 
                       {/* Details */}
-                      <div className="flex-1 space-y-2">
+                      <div className="w-full md:flex-1 space-y-2">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -314,12 +395,25 @@ export function GenerationHistory({ customerId, refresh, autoOpenDetailId }: Gen
                           </p>
                         )}
 
-                        {item.status === 'completed' && item.gemini_response?.imageUrl && (
-                          <div className="flex space-x-2 pt-2">
+                        {/* 🆕 Enhanced action buttons with slider navigation */}
+                        {item.status === 'completed' && item.generated_image_url && (
+                          <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                            <Button
+                              size="sm"
+                              variant="default"
+                              onClick={() => navigateToSlider(item)}
+                              className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto"
+                              aria-label={`${new Date(item.created_at).toLocaleDateString('ja-JP')}の生成画像をスライダーで比較表示`}
+                            >
+                              <Eye className="h-4 w-4 mr-1" />
+                              スライダーで比較
+                            </Button>
                             <Button
                               size="sm"
                               variant="outline"
                               onClick={() => handleSetSelectedItem(item)}
+                              aria-label={`${new Date(item.created_at).toLocaleDateString('ja-JP')}の生成詳細を表示`}
+                              className="w-full sm:w-auto"
                             >
                               <Eye className="h-4 w-4 mr-1" />
                               詳細
@@ -328,9 +422,11 @@ export function GenerationHistory({ customerId, refresh, autoOpenDetailId }: Gen
                               size="sm"
                               variant="outline"
                               onClick={() => downloadImage(
-                                item.gemini_response?.imageUrl || '',
+                                item.generated_image_url || '',
                                 `paintly_${item.id}.png`
                               )}
+                              aria-label={`${new Date(item.created_at).toLocaleDateString('ja-JP')}の生成画像をダウンロード`}
+                              className="w-full sm:w-auto"
                             >
                               <Download className="h-4 w-4 mr-1" />
                               ダウンロード
@@ -347,7 +443,7 @@ export function GenerationHistory({ customerId, refresh, autoOpenDetailId }: Gen
         </CardContent>
       </Card>
 
-      {/* Detail Modal - To be implemented with a proper modal component */}
+      {/* Detail Modal - Fixed to use generated_image_url and original_image_url directly */}
       {selectedItem && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <Card className="max-w-4xl w-full max-h-[90vh] overflow-auto">
@@ -364,37 +460,14 @@ export function GenerationHistory({ customerId, refresh, autoOpenDetailId }: Gen
             </CardHeader>
             <CardContent className="space-y-4">
               {(() => {
-                // 有効な画像URLを取得（placeholder文字列を除外）
-                const validOriginalUrl = selectedItem.original_image_url &&
-                  selectedItem.original_image_url !== 'placeholder' &&
-                  selectedItem.original_image_url.startsWith('http') ?
-                  selectedItem.original_image_url :
-                  selectedItem.gemini_response?.originalImageUrl;
+                // 🔧 Fixed: Use direct URL fields instead of fal_response
+                const validOriginalUrl = selectedItem.original_image_url
+                const validGeneratedUrl = selectedItem.generated_image_url
 
-                const validGeneratedUrl = selectedItem.generated_image_url ||
-                  selectedItem.gemini_response?.imageUrl;
-
-                console.log('🔍 ImageComparison Debug - Raw URLs:');
-                console.log('  📁 rawOriginalUrl:', selectedItem.original_image_url);
-                console.log('  📁 rawGeneratedUrl:', selectedItem.generated_image_url);
-                console.log('  🤖 geminiImageUrl:', selectedItem.gemini_response?.imageUrl);
-                console.log('  🤖 geminiOriginalUrl:', selectedItem.gemini_response?.originalImageUrl);
-                console.log('🎯 Final Valid URLs:');
-                console.log('  ✅ validOriginalUrl:', validOriginalUrl);
-                console.log('  ✅ validGeneratedUrl:', validGeneratedUrl);
+                console.log('🔍 ImageComparison Debug - Fixed URLs:');
+                console.log('  📁 validOriginalUrl:', validOriginalUrl);
+                console.log('  📁 validGeneratedUrl:', validGeneratedUrl);
                 console.log('  🎮 willShowComparison:', !!(validGeneratedUrl && validOriginalUrl));
-                return null;
-              })()}
-              {(() => {
-                // デバッグ部分で定義した値を再利用
-                const validOriginalUrl = selectedItem.original_image_url &&
-                  selectedItem.original_image_url !== 'placeholder' &&
-                  selectedItem.original_image_url.startsWith('http') ?
-                  selectedItem.original_image_url :
-                  selectedItem.gemini_response?.originalImageUrl;
-
-                const validGeneratedUrl = selectedItem.generated_image_url ||
-                  selectedItem.gemini_response?.imageUrl;
 
                 if (validGeneratedUrl && validOriginalUrl) {
                   return (
@@ -420,10 +493,38 @@ export function GenerationHistory({ customerId, refresh, autoOpenDetailId }: Gen
                   return (
                     <div className="text-center p-8 text-muted-foreground">
                       <p>画像の読み込みに問題があります</p>
+                      <p className="text-xs mt-2">
+                        original_image_url: {selectedItem.original_image_url || 'なし'}<br/>
+                        generated_image_url: {selectedItem.generated_image_url || 'なし'}
+                      </p>
                     </div>
                   );
                 }
               })()}
+              
+              {/* 🆕 Enhanced action buttons in modal */}
+              <div className="flex justify-center space-x-2 pb-4">
+                <Button
+                  onClick={() => navigateToSlider(selectedItem)}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  <Eye className="h-4 w-4 mr-2" />
+                  スライダーで詳細比較
+                </Button>
+                {selectedItem.generated_image_url && (
+                  <Button
+                    variant="outline"
+                    onClick={() => downloadImage(
+                      selectedItem.generated_image_url || '',
+                      `paintly_${selectedItem.id}.png`
+                    )}
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    ダウンロード
+                  </Button>
+                )}
+              </div>
+
               <div className="space-y-2">
                 <p className="text-sm">
                   <strong>生成日時:</strong> {new Date(selectedItem.created_at).toLocaleString('ja-JP')}
@@ -449,29 +550,15 @@ export function GenerationHistory({ customerId, refresh, autoOpenDetailId }: Gen
                   </div>
                 </div>
 
-                {/* Enhanced Debug: Show generated prompt with forced logging */}
-                {(() => {
-                  console.log('🎯 FINAL Prompt Debug (in Modal):', {
-                    hasPrompt: !!selectedItem.prompt,
-                    promptLength: selectedItem.prompt?.length || 0,
-                    promptPreview: selectedItem.prompt?.substring(0, 100) || 'No prompt',
-                    fullSelectedItem: selectedItem,
-                    itemKeys: Object.keys(selectedItem),
-                    promptValue: selectedItem.prompt
-                  });
-                  return null;
-                })()}
+                {/* Prompt display */}
                 {selectedItem.prompt ? (
                   <div className="text-sm">
-                    <strong>🔍 デバッグ用プロンプト:</strong>
+                    <strong>生成プロンプト:</strong>
                     <div className="mt-2 p-3 bg-slate-100 border rounded text-xs font-mono max-h-40 overflow-y-auto">
                       <pre className="whitespace-pre-wrap break-words">
                         {selectedItem.prompt}
                       </pre>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      ※ デバッグ用：AI生成に使用された実際のプロンプト内容
-                    </p>
                   </div>
                 ) : (
                   <div className="text-sm">
@@ -479,14 +566,6 @@ export function GenerationHistory({ customerId, refresh, autoOpenDetailId }: Gen
                     <p className="text-xs text-muted-foreground mt-1">
                       このレコードにはプロンプトデータが保存されていません
                     </p>
-                    <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded text-xs">
-                      <strong>デバッグ情報:</strong>
-                      <ul className="mt-1 space-y-1">
-                        <li>• selectedItem.prompt: {String(selectedItem.prompt)}</li>
-                        <li>• typeof prompt: {typeof selectedItem.prompt}</li>
-                        <li>• Object keys: {Object.keys(selectedItem).join(', ')}</li>
-                      </ul>
-                    </div>
                   </div>
                 )}
               </div>
