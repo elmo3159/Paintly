@@ -351,13 +351,17 @@
     -webkit-backdrop-filter: blur(12px) !important;
   }
 
-  /* Keep primary/accent buttons visible with original colors */
+  /* Keep primary/accent/destructive buttons visible with original colors */
   .bg-primary {
     background-color: hsl(210 95% 45%) !important;
   }
 
   .bg-accent {
     background-color: hsl(35 85% 55%) !important;
+  }
+
+  .bg-destructive {
+    background-color: hsl(0 84% 60%) !important;
   }
 
   /* Hamburger menu button: 40% opaque (60% transparent) */
