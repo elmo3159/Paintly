@@ -3,6 +3,12 @@ import { createClient } from '@supabase/supabase-js'
 import { notificationEngine, processErrorNotification, type NotificationContext } from '@/lib/notification-engine'
 import { errorAnalyzer } from '@/lib/error-analysis'
 
+// グローバル型定義の拡張
+declare global {
+  // eslint-disable-next-line no-var
+  var errorStats: Record<string, Record<string, number>> | undefined
+}
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
