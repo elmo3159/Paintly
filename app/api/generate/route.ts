@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (subscription && subscription.plans) {
-      const plans = subscription.plans as { generation_limit: number }
+      const plans = subscription.plans as unknown as { generation_limit: number }
       const limit = plans.generation_limit
       const used = subscription.generation_count
       if (used >= limit) {
@@ -291,7 +291,7 @@ export async function POST(request: NextRequest) {
         prompt: string
       } = {
         status: result.success ? 'completed' : 'failed',
-        generated_image_url: finalImageUrl,
+        generated_image_url: finalImageUrl ?? null,
         completed_at: new Date().toISOString(),
         error_message: result.success ? null : (result.error || `${selectedProvider} APIから画像データが返されませんでした`),
         prompt: result.metadata?.prompt || `${selectedProvider} provider generated prompt`

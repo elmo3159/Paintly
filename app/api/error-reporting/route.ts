@@ -434,14 +434,15 @@ async function getActiveUserCount(): Promise<number> {
         .from('error_logs')
         .select('session_id')
         .gte('created_at', oneHourAgo)
-        .distinct()
 
       if (error) {
         console.error('❌ Failed to get active user count:', error)
         return 0
       }
 
-      return data?.length || 0
+      // JavaScriptでユニークなsession_idをカウント
+      const uniqueSessions = new Set(data?.map(item => item.session_id) || [])
+      return uniqueSessions.size
     }
 
     return 0
@@ -476,7 +477,6 @@ async function getRecentErrorRate(): Promise<number> {
         .from('error_logs')
         .select('session_id')
         .gte('created_at', oneHourAgo)
-        .distinct()
 
       if (errorQuery || sessionQuery) {
         console.error('❌ Failed to calculate error rate')
@@ -484,7 +484,9 @@ async function getRecentErrorRate(): Promise<number> {
       }
 
       const errorCount = errors?.length || 0
-      const sessionCount = sessions?.length || 1
+      // JavaScriptでユニークなsession_idをカウント
+      const uniqueSessions = new Set(sessions?.map(item => item.session_id) || [])
+      const sessionCount = uniqueSessions.size || 1
 
       return errorCount / sessionCount
     }

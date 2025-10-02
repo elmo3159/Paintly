@@ -161,7 +161,7 @@ class ErrorTracker {
               href: (event.target as any).href
             }
           }
-        }
+        })
       }
     }, true)
   }
@@ -187,8 +187,8 @@ class ErrorTracker {
   /**
    * パフォーマンス情報の取得
    */
-  private getPerformanceMetrics(): ErrorContext['performance'] | null {
-    if (typeof window === 'undefined' || !window.performance) return null
+  private getPerformanceMetrics(): ErrorContext['performance'] | undefined {
+    if (typeof window === 'undefined' || !window.performance) return undefined
 
     try {
       const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
@@ -205,7 +205,7 @@ class ErrorTracker {
       }
     } catch (error) {
       console.warn('Failed to get performance metrics:', error)
-      return null
+      return undefined
     }
   }
 

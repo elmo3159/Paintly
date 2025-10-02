@@ -3,16 +3,8 @@
  * Google Gemini 2.5 Flash model for image generation
  */
 
-import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai'
+import { GoogleGenerativeAI, GenerativeModel, Part } from '@google/generative-ai'
 import { AIProvider, GenerationParams, GenerationResult } from './types'
-
-interface GeminiContentPart {
-  text?: string
-  inlineData?: {
-    data: string
-    mimeType: string
-  }
-}
 
 export class GeminiProvider extends AIProvider {
   private genAI: GoogleGenerativeAI
@@ -141,9 +133,9 @@ export class GeminiProvider extends AIProvider {
       console.log('🚀 [Gemini] Starting image generation...')
       
       const prompt = this.buildPrompt(params)
-      
+
       // Gemini用のコンテンツ配列を構築
-      const contentParts: (string | GeminiContentPart)[] = [prompt]
+      const contentParts: (string | Part)[] = [prompt]
 
       // メイン画像を追加
       contentParts.push({

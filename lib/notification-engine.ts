@@ -411,7 +411,7 @@ class NotificationEngine {
         // 従来のロジック
         const affectedUsers = await this.getAffectedUserCount(
           errorReport.errorType,
-          conditions.userImpact.timeWindow
+          conditions.userImpact.timeWindow ?? 60
         )
         if (affectedUsers < conditions.userImpact.affectedUsers) {
           return false
