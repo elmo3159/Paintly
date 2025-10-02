@@ -1,5 +1,5 @@
 // Service Worker for Paintly PWA - Enhanced Version
-const CACHE_VERSION = '2025.1.3'
+const CACHE_VERSION = '2025.1.4'
 const STATIC_CACHE = `paintly-static-${CACHE_VERSION}`
 const DYNAMIC_CACHE = `paintly-dynamic-${CACHE_VERSION}`
 const IMAGES_CACHE = `paintly-images-${CACHE_VERSION}`
@@ -114,38 +114,58 @@ self.addEventListener('fetch', (event) => {
   }
 })
 
-// Navigation request handler - Network first strategy
+// Navigation request handler - Network first strategy without timeout
 async function handleNavigationRequest(request) {
   try {
-    // Try preloaded response first
-    const preloadResponse = await event.preloadResponse
-    if (preloadResponse) {
-      return preloadResponse
-    }
-    
-    // Try network with timeout
-    const networkResponse = await fetchWithTimeout(request, 3000)
-    
+    // Try network directly WITHOUT timeout for navigation requests
+    // Timeout causes premature offline fallback on slower connections
+    const networkResponse = await fetch(request)
+
     // Cache successful navigation responses
-    if (networkResponse.ok) {
+    if (networkResponse && networkResponse.ok) {
       const cache = await caches.open(DYNAMIC_CACHE)
       cache.put(request, networkResponse.clone())
     }
-    
+
     return networkResponse
   } catch (error) {
-    console.log('📱 Navigation offline, serving cached version')
-    
+    console.log('📱 Navigation offline, serving cached version or offline page')
+
     // Try cache first
     const cache = await caches.open(DYNAMIC_CACHE)
     const cachedResponse = await cache.match(request)
     if (cachedResponse) {
+      console.log('✅ Serving cached navigation')
       return cachedResponse
     }
-    
-    // Fallback to offline page
+
+    // Try static cache
+    const staticCache = await caches.open(STATIC_CACHE)
+    const staticMatch = await staticCache.match(request)
+    if (staticMatch) {
+      console.log('✅ Serving static cached navigation')
+      return staticMatch
+    }
+
+    // Only show offline page if truly offline (network error, not timeout)
+    console.log('⚠️ Serving offline fallback page')
     const offlineCache = await caches.open(STATIC_CACHE)
-    return await offlineCache.match(OFFLINE_URL)
+    const offlinePage = await offlineCache.match(OFFLINE_URL)
+    if (offlinePage) {
+      return offlinePage
+    }
+
+    // Last resort: return basic offline response
+    return new Response(
+      '<html><body><h1>Offline</h1><p>アプリケーションを読み込めませんでした。インターネット接続を確認してください。</p></body></html>',
+      {
+        status: 503,
+        statusText: 'Service Unavailable',
+        headers: new Headers({
+          'Content-Type': 'text/html; charset=utf-8'
+        })
+      }
+    )
   }
 }
 
