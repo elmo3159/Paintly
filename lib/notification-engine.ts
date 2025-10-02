@@ -413,7 +413,7 @@ class NotificationEngine {
           errorReport.errorType,
           conditions.userImpact.timeWindow ?? 60
         )
-        if (affectedUsers < conditions.userImpact.affectedUsers) {
+        if (affectedUsers < (conditions.userImpact.affectedUsers ?? 1)) {
           return false
         }
       }
