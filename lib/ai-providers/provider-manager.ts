@@ -27,6 +27,14 @@ export class AIProviderManager {
   }
 
   private initializeProviders(): void {
+    // 環境変数の状態をログ出力（デバッグ用）
+    console.log('🔍 [ProviderManager] Environment variables check:', {
+      FAL_KEY: process.env.FAL_KEY ? '✅ Set (length: ' + process.env.FAL_KEY.length + ')' : '❌ Not set',
+      GEMINI_API_KEY: process.env.GEMINI_API_KEY ? '✅ Set (length: ' + process.env.GEMINI_API_KEY.length + ')' : '❌ Not set',
+      NODE_ENV: process.env.NODE_ENV,
+      ALL_ENV_KEYS: Object.keys(process.env).filter(k => k.includes('API') || k.includes('KEY') || k.includes('FAL') || k.includes('GEMINI'))
+    })
+
     // 環境変数からAPIキーを取得
     const falApiKey = process.env.FAL_KEY
     const geminiApiKey = process.env.GEMINI_API_KEY
@@ -36,12 +44,12 @@ export class AIProviderManager {
       try {
         const falProvider = new FalAIProvider(falApiKey)
         this.providers.set('fal-ai', falProvider)
-        console.log('✅ [ProviderManager] Fal AI provider initialized')
+        console.log('✅ [ProviderManager] Fal AI provider initialized successfully')
       } catch (error) {
         console.error('❌ [ProviderManager] Failed to initialize Fal AI provider:', error)
       }
     } else {
-      console.warn('⚠️ [ProviderManager] FAL_KEY not found, Fal AI provider disabled')
+      console.warn('⚠️ [ProviderManager] FAL_KEY not found in environment variables, Fal AI provider disabled')
     }
 
     // Geminiプロバイダー
@@ -49,13 +57,19 @@ export class AIProviderManager {
       try {
         const geminiProvider = new GeminiProvider(geminiApiKey)
         this.providers.set('gemini', geminiProvider)
-        console.log('✅ [ProviderManager] Gemini provider initialized')
+        console.log('✅ [ProviderManager] Gemini provider initialized successfully')
       } catch (error) {
         console.error('❌ [ProviderManager] Failed to initialize Gemini provider:', error)
       }
     } else {
-      console.warn('⚠️ [ProviderManager] GEMINI_API_KEY not found, Gemini provider disabled')
+      console.warn('⚠️ [ProviderManager] GEMINI_API_KEY not found in environment variables, Gemini provider disabled')
     }
+
+    // 初期化結果のサマリー
+    console.log(`📊 [ProviderManager] Initialization complete: ${this.providers.size} provider(s) available`, {
+      providers: Array.from(this.providers.keys()),
+      currentProvider: this.currentProvider
+    })
 
     // 現在のプロバイダーが利用可能かチェック
     if (!this.providers.has(this.currentProvider)) {
@@ -65,7 +79,7 @@ export class AIProviderManager {
         this.currentProvider = availableProviders[0]
         console.log(`📍 [ProviderManager] Fallback to available provider: ${this.currentProvider}`)
       } else {
-        console.error('❌ [ProviderManager] No providers available!')
+        console.error('❌ [ProviderManager] No providers available! Please check environment variables in Vercel dashboard.')
       }
     }
   }
