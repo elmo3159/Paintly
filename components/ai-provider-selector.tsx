@@ -252,30 +252,55 @@ export function useAIProviderSelector() {
   }, [])
 
   const fetchAvailableProviders = async () => {
+    console.log('🔍 [AIProviderSelector] Starting to fetch available providers...')
     try {
+      console.log('📡 [AIProviderSelector] Calling /api/ai-providers...')
       const response = await fetch('/api/ai-providers')
+      console.log('📨 [AIProviderSelector] Response received:', {
+        ok: response.ok,
+        status: response.status,
+        statusText: response.statusText
+      })
+
       if (response.ok) {
         const data = await response.json()
-        console.log('✅ [AIProviderSelector] Fetched providers:', data)
+        console.log('✅ [AIProviderSelector] Fetched providers data:', {
+          success: data.success,
+          providersCount: data.providers?.length,
+          currentProvider: data.currentProvider,
+          fullData: data
+        })
 
         if (data.success && Array.isArray(data.providers) && data.providers.length > 0) {
           setAvailableProviders(data.providers)
           setSelectedProvider(data.currentProvider || 'fal-ai')
-          console.log(`📍 [AIProviderSelector] Set ${data.providers.length} providers, current: ${data.currentProvider}`)
+          console.log(`📍 [AIProviderSelector] Successfully set ${data.providers.length} provider(s), current: ${data.currentProvider}`)
         } else {
-          console.warn('⚠️ [AIProviderSelector] No providers available in response:', data)
+          console.warn('⚠️ [AIProviderSelector] No providers available in response:', {
+            success: data.success,
+            providers: data.providers,
+            providersLength: data.providers?.length
+          })
           setAvailableProviders([])
         }
       } else {
-        console.error('❌ [AIProviderSelector] API failed with status:', response.status)
+        console.error('❌ [AIProviderSelector] API request failed:', {
+          status: response.status,
+          statusText: response.statusText
+        })
         const errorData = await response.json().catch(() => ({}))
-        console.error('Error details:', errorData)
+        console.error('❌ [AIProviderSelector] Error response data:', errorData)
         setAvailableProviders([])
       }
     } catch (error) {
-      console.error('❌ [AIProviderSelector] Failed to fetch AI providers:', error)
+      console.error('❌ [AIProviderSelector] Exception caught while fetching providers:', {
+        error,
+        errorMessage: error instanceof Error ? error.message : String(error),
+        errorStack: error instanceof Error ? error.stack : 'No stack trace'
+      })
       setAvailableProviders([])
     } finally {
+      console.log('🏁 [AIProviderSelector] Fetch complete, isLoading = false')
       setIsLoading(false)
     }
   }
