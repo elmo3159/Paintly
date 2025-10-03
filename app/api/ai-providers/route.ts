@@ -7,6 +7,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getProviderManager, type ProviderType } from '@/lib/ai-providers'
 import { errorLogger, retryManager, withErrorHandling } from '@/lib/error-management'
 
+// Force dynamic rendering to ensure environment variables are accessible at runtime
+export const dynamic = 'force-dynamic'
+
 // GET: 利用可能なプロバイダー一覧と現在の設定を取得
 export async function GET() {
   try {

@@ -6,6 +6,9 @@ import { fal } from '@fal-ai/client'
 import { getProviderManager, type ProviderType } from '@/lib/ai-providers'
 import { errorLogger, retryManager, withErrorHandling } from '@/lib/error-management'
 
+// Force dynamic rendering to ensure environment variables are accessible at runtime
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
   try {
     console.log('🚀 [Provider Integration] Starting POST /api/generate')
