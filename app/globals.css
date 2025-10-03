@@ -322,29 +322,29 @@
   }
 
   /* Content areas inside padding: 40% transparent (60% opaque) - NO BLUR on content */
-  /* Exclude elements with inline backgroundColor to preserve color preview boxes */
-  [class*="bg-"]:not(.bg-primary):not(.bg-accent):not(.bg-destructive) > *:not([style*="backgroundColor"]),
-  .bg-card > *:not([style*="backgroundColor"]),
-  .bg-white > *:not([style*="backgroundColor"]),
-  .bg-background > *:not([style*="backgroundColor"]),
-  .bg-muted > *:not([style*="backgroundColor"]),
-  .bg-secondary > *:not([style*="backgroundColor"]),
-  .bg-gray-50 > *:not([style*="backgroundColor"]),
-  .bg-gray-100 > *:not([style*="backgroundColor"]),
-  .bg-orange-50 > *:not([style*="backgroundColor"]),
-  .bg-orange-100 > *:not([style*="backgroundColor"]),
-  .bg-green-50 > *:not([style*="backgroundColor"]),
-  .bg-green-100 > *:not([style*="backgroundColor"]),
-  .bg-blue-50 > *:not([style*="backgroundColor"]),
-  .bg-blue-100 > *:not([style*="backgroundColor"]),
-  .bg-yellow-50 > *:not([style*="backgroundColor"]),
-  .bg-yellow-100 > *:not([style*="backgroundColor"]),
-  .bg-red-50 > *:not([style*="backgroundColor"]),
-  .bg-red-100 > *:not([style*="backgroundColor"]),
+  /* Exclude elements with inline background-color to preserve color preview boxes */
+  [class*="bg-"]:not(.bg-primary):not(.bg-accent):not(.bg-destructive) > *:not([style*="background-color"]),
+  .bg-card > *:not([style*="background-color"]),
+  .bg-white > *:not([style*="background-color"]),
+  .bg-background > *:not([style*="background-color"]),
+  .bg-muted > *:not([style*="background-color"]),
+  .bg-secondary > *:not([style*="background-color"]),
+  .bg-gray-50 > *:not([style*="background-color"]),
+  .bg-gray-100 > *:not([style*="background-color"]),
+  .bg-orange-50 > *:not([style*="background-color"]),
+  .bg-orange-100 > *:not([style*="background-color"]),
+  .bg-green-50 > *:not([style*="background-color"]),
+  .bg-green-100 > *:not([style*="background-color"]),
+  .bg-blue-50 > *:not([style*="background-color"]),
+  .bg-blue-100 > *:not([style*="background-color"]),
+  .bg-yellow-50 > *:not([style*="background-color"]),
+  .bg-yellow-100 > *:not([style*="background-color"]),
+  .bg-red-50 > *:not([style*="background-color"]),
+  .bg-red-100 > *:not([style*="background-color"]),
   /* Specific content containers */
-  [class*="p-"] > div:not([style*="backgroundColor"]),
-  [class*="px-"] > div:not([style*="backgroundColor"]),
-  [class*="py-"] > div:not([style*="backgroundColor"]) {
+  [class*="p-"] > div:not([style*="background-color"]),
+  [class*="px-"] > div:not([style*="background-color"]),
+  [class*="py-"] > div:not([style*="background-color"]) {
     background-color: rgba(255, 255, 255, 0.60) !important;
     /* NO backdrop-filter to avoid blurring text */
   }
