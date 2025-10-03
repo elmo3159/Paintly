@@ -322,28 +322,29 @@
   }
 
   /* Content areas inside padding: 40% transparent (60% opaque) - NO BLUR on content */
-  [class*="bg-"]:not(.bg-primary):not(.bg-accent):not(.bg-destructive) > *,
-  .bg-card > *,
-  .bg-white > *,
-  .bg-background > *,
-  .bg-muted > *,
-  .bg-secondary > *,
-  .bg-gray-50 > *,
-  .bg-gray-100 > *,
-  .bg-orange-50 > *,
-  .bg-orange-100 > *,
-  .bg-green-50 > *,
-  .bg-green-100 > *,
-  .bg-blue-50 > *,
-  .bg-blue-100 > *,
-  .bg-yellow-50 > *,
-  .bg-yellow-100 > *,
-  .bg-red-50 > *,
-  .bg-red-100 > *,
+  /* Exclude elements with inline backgroundColor to preserve color preview boxes */
+  [class*="bg-"]:not(.bg-primary):not(.bg-accent):not(.bg-destructive) > *:not([style*="backgroundColor"]),
+  .bg-card > *:not([style*="backgroundColor"]),
+  .bg-white > *:not([style*="backgroundColor"]),
+  .bg-background > *:not([style*="backgroundColor"]),
+  .bg-muted > *:not([style*="backgroundColor"]),
+  .bg-secondary > *:not([style*="backgroundColor"]),
+  .bg-gray-50 > *:not([style*="backgroundColor"]),
+  .bg-gray-100 > *:not([style*="backgroundColor"]),
+  .bg-orange-50 > *:not([style*="backgroundColor"]),
+  .bg-orange-100 > *:not([style*="backgroundColor"]),
+  .bg-green-50 > *:not([style*="backgroundColor"]),
+  .bg-green-100 > *:not([style*="backgroundColor"]),
+  .bg-blue-50 > *:not([style*="backgroundColor"]),
+  .bg-blue-100 > *:not([style*="backgroundColor"]),
+  .bg-yellow-50 > *:not([style*="backgroundColor"]),
+  .bg-yellow-100 > *:not([style*="backgroundColor"]),
+  .bg-red-50 > *:not([style*="backgroundColor"]),
+  .bg-red-100 > *:not([style*="backgroundColor"]),
   /* Specific content containers */
-  [class*="p-"] > div,
-  [class*="px-"] > div,
-  [class*="py-"] > div {
+  [class*="p-"] > div:not([style*="backgroundColor"]),
+  [class*="px-"] > div:not([style*="backgroundColor"]),
+  [class*="py-"] > div:not([style*="backgroundColor"]) {
     background-color: rgba(255, 255, 255, 0.60) !important;
     /* NO backdrop-filter to avoid blurring text */
   }
