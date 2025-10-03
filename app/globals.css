@@ -292,9 +292,8 @@
 /* Glass Morphism - Card Transparency for Background Visibility */
 @layer utilities {
   /* Padding areas: 100% transparent (fully transparent) - NO BLUR for clear background */
-  [class*="bg-"]:not(.bg-primary):not(.bg-accent):not(.bg-destructive):not(.fixed),
+  [class*="bg-"]:not(.bg-primary):not(.bg-accent):not(.bg-destructive):not(.fixed):not([style*="backgroundColor"]):not(.bg-white):not(.bg-black):not(.bg-pink-100),
   .bg-card:not(.fixed),
-  .bg-white:not(.fixed),
   .bg-background,
   .bg-muted,
   .bg-secondary,
@@ -312,6 +311,14 @@
   .bg-red-100 {
     background-color: rgba(255, 255, 255, 0.00) !important;
     /* backdrop-filter removed for crystal clear background visibility */
+  }
+
+  /* Color preview elements - keep original colors */
+  [style*="backgroundColor"]:not(.fixed),
+  .bg-white,
+  .bg-black,
+  .bg-pink-100 {
+    /* Keep inline style colors visible for color pickers */
   }
 
   /* Content areas inside padding: 40% transparent (60% opaque) - NO BLUR on content */
