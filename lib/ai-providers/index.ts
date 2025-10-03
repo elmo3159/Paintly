@@ -14,8 +14,7 @@ export type {
 // 抽象基底クラス
 export { AIProvider } from './types'
 
-// 具体的なプロバイダー実装
-export { FalAIProvider } from './fal-provider'
+// 具体的なプロバイダー実装（Geminiのみ）
 export { GeminiProvider } from './gemini-provider'
 
 // プロバイダーマネージャー
@@ -33,16 +32,13 @@ export {
  * 環境変数をチェックして利用可能なプロバイダーを判定
  */
 export function checkAvailableProviders(): {
-  falAI: boolean
   gemini: boolean
   count: number
 } {
-  const falAI = !!process.env.FAL_KEY
   const gemini = !!process.env.GEMINI_API_KEY
   
   return {
-    falAI,
     gemini,
-    count: (falAI ? 1 : 0) + (gemini ? 1 : 0)
+    count: gemini ? 1 : 0
   }
 }

@@ -19,7 +19,7 @@ import { Loader2, Sparkles, AlertCircle, Edit, Save, X, Trash2 } from 'lucide-re
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { AIProviderSelector, useAIProviderSelector, type ProviderType } from '@/components/ai-provider-selector'
+// AIProviderSelector removed - using Gemini only
 import { EnhancedLoading } from '@/components/enhanced-loading'
 import { EnhancedError, useEnhancedError, type ErrorType } from '@/components/enhanced-error'
 import { CustomerPageSkeleton } from '@/components/skeleton-loader'
@@ -71,13 +71,7 @@ export default function CustomerPage() {
   const [deleting, setDeleting] = useState(false)
   const router = useRouter()
 
-  // AI Provider selection
-  const { 
-    selectedProvider: selectedAIProvider, 
-    availableProviders, 
-    changeProvider, 
-    isLoading: providersLoading 
-  } = useAIProviderSelector()
+  // AI Provider removed - using Gemini only
 
   // Edit form states
   const [editForm, setEditForm] = useState({
@@ -293,7 +287,7 @@ export default function CustomerPage() {
       formData.append('layoutSideBySide', layoutSideBySide.toString())
       formData.append('backgroundColor', backgroundColor)
       formData.append('otherInstructions', otherInstructions)
-      formData.append('aiProvider', selectedAIProvider)
+      formData.append('aiProvider', 'gemini') // Fixed to Gemini only
 
       // Add detailed color data
       const wallColorData = getColorById(wallColorId)
@@ -497,28 +491,7 @@ export default function CustomerPage() {
                   </CardContent>
                 </Card>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle>AIプロバイダー選択</CardTitle>
-                    <CardDescription>
-                      画像生成に使用するAIプロバイダーを選択してください
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    {providersLoading ? (
-                      <div className="flex items-center justify-center py-4">
-                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                        プロバイダー読み込み中...
-                      </div>
-                    ) : (
-                      <AIProviderSelector
-                        selectedProvider={selectedAIProvider}
-                        onProviderChange={changeProvider}
-                        availableProviders={availableProviders}
-                      />
-                    )}
-                  </CardContent>
-                </Card>
+
 
                 <Card>
                   <CardHeader>
@@ -753,7 +726,7 @@ export default function CustomerPage() {
       {/* Enhanced Loading Component */}
       <EnhancedLoading
         isVisible={generating}
-        provider={selectedAIProvider}
+        provider="gemini"
         onComplete={handleLoadingComplete}
       />
 

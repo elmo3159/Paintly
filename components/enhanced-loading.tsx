@@ -20,36 +20,6 @@ interface EnhancedLoadingProps {
 }
 
 const loadingStages: Record<string, LoadingStage[]> = {
-  'fal-ai': [
-    {
-      id: 'upload',
-      label: '画像アップロード',
-      description: '建物の画像をサーバーに送信中...',
-      icon: <Upload className="h-4 w-4" />,
-      duration: 3
-    },
-    {
-      id: 'analysis',
-      label: '画像解析',
-      description: 'AI が建物の構造を分析中...',
-      icon: <Palette className="h-4 w-4" />,
-      duration: 8
-    },
-    {
-      id: 'generation',
-      label: '画像生成',
-      description: 'Fal AI で塗装後の画像を生成中...',
-      icon: <Sparkles className="h-4 w-4" />,
-      duration: 45
-    },
-    {
-      id: 'processing',
-      label: '仕上げ処理',
-      description: '画像の最適化と保存を実行中...',
-      icon: <CheckCircle className="h-4 w-4" />,
-      duration: 5
-    }
-  ],
   'gemini': [
     {
       id: 'upload',
@@ -171,7 +141,7 @@ export function EnhancedLoading({ isVisible, provider, onComplete }: EnhancedLoa
               <h3 className="text-lg font-semibold">画像生成中</h3>
             </div>
             <p className="text-sm text-muted-foreground">
-              {provider === 'fal-ai' ? 'Fal AI' : 'Google Gemini'} で処理中...
+              Google Gemini で処理中...
             </p>
           </div>
 
@@ -256,10 +226,7 @@ export function EnhancedLoading({ isVisible, provider, onComplete }: EnhancedLoa
           {/* Tips */}
           <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
             <p className="text-sm text-blue-700 dark:text-blue-300">
-              💡 ヒント: {provider === 'fal-ai' 
-                ? '高品質な結果のため、少し時間がかかる場合があります' 
-                : 'Gemini は高速ですが、複雑な建物では時間がかかることがあります'
-              }
+              💡 ヒント: Gemini は高速ですが、複雑な建物では時間がかかることがあります
             </p>
           </div>
         </CardContent>

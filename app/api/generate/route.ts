@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createClient as createServiceClient } from '@supabase/supabase-js'
-import { fal } from '@fal-ai/client'
+// Fal AI removed - using Gemini only
 
 import { getProviderManager, type ProviderType } from '@/lib/ai-providers'
 import { errorLogger, retryManager, withErrorHandling } from '@/lib/error-management'
@@ -17,15 +17,7 @@ export async function POST(request: NextRequest) {
     const providerManager = getProviderManager()
     console.log('✅ Provider manager initialized')
 
-    // Configure Fal AI client at the beginning (backward compatibility)
-    if (!process.env.FAL_KEY) {
-      throw new Error('FAL_KEY environment variable is not configured')
-    }
-
-    fal.config({
-      credentials: process.env.FAL_KEY
-    })
-    console.log('✅ Fal AI client configured successfully')
+    // Fal AI configuration removed - using Gemini only
 
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
@@ -78,8 +70,8 @@ export async function POST(request: NextRequest) {
     const layoutSideBySide = formData.get('layoutSideBySide') === 'true'
     const backgroundColor = formData.get('backgroundColor') as string
     
-    // AIプロバイダー選択を追加（デフォルトはfal-ai）
-    const selectedProvider = (formData.get('aiProvider') as ProviderType) || 'fal-ai'
+    // Fixed to Gemini only
+    const selectedProvider: ProviderType = 'gemini'
     
     // Parse detailed color data
     const wallColorData = formData.get('wallColorData') ? JSON.parse(formData.get('wallColorData') as string) : null

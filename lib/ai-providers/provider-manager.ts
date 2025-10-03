@@ -4,10 +4,10 @@
  */
 
 import { AIProvider, GenerationParams, GenerationResult } from './types'
-import { FalAIProvider } from './fal-provider'
+// FalAIProvider removed - using Gemini only
 import { GeminiProvider } from './gemini-provider'
 
-export type ProviderType = 'fal-ai' | 'gemini'
+export type ProviderType = 'gemini'
 
 export interface ProviderConfig {
   type: ProviderType
@@ -20,7 +20,7 @@ export interface ProviderConfig {
 
 export class AIProviderManager {
   private providers: Map<ProviderType, AIProvider> = new Map()
-  private currentProvider: ProviderType = 'fal-ai' // デフォルトはFal AI
+  private currentProvider: ProviderType = 'gemini' // Gemini only
 
   constructor() {
     this.initializeProviders()
@@ -35,22 +35,8 @@ export class AIProviderManager {
       ALL_ENV_KEYS: Object.keys(process.env).filter(k => k.includes('API') || k.includes('KEY') || k.includes('FAL') || k.includes('GEMINI'))
     })
 
-    // 環境変数からAPIキーを取得
-    const falApiKey = process.env.FAL_KEY
+    // 環境変数からAPIキーを取得（Geminiのみ）
     const geminiApiKey = process.env.GEMINI_API_KEY
-
-    // Fal AIプロバイダー
-    if (falApiKey) {
-      try {
-        const falProvider = new FalAIProvider(falApiKey)
-        this.providers.set('fal-ai', falProvider)
-        console.log('✅ [ProviderManager] Fal AI provider initialized successfully')
-      } catch (error) {
-        console.error('❌ [ProviderManager] Failed to initialize Fal AI provider:', error)
-      }
-    } else {
-      console.warn('⚠️ [ProviderManager] FAL_KEY not found in environment variables, Fal AI provider disabled')
-    }
 
     // Geminiプロバイダー
     if (geminiApiKey) {
@@ -89,22 +75,6 @@ export class AIProviderManager {
    */
   getAvailableProviders(): ProviderConfig[] {
     const configs: ProviderConfig[] = [
-      {
-        type: 'fal-ai',
-        displayName: 'Fal AI (Seedream 4.0)',
-        enabled: this.providers.has('fal-ai'),
-        description: '高品質な画像生成に最適化されたAIモデル',
-        features: [
-          '高解像度出力 (1024x1024)',
-          '高速生成 (平均30-60秒)',
-          '写実的な仕上がり',
-          '建築物の細部表現に優れている'
-        ],
-        limitations: [
-          '月額利用料金が発生',
-          'インターネット接続必須'
-        ]
-      },
       {
         type: 'gemini',
         displayName: 'Google Gemini 2.5 Flash',

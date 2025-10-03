@@ -81,7 +81,7 @@ export async function GET() {
         error: 'プロバイダー情報の取得に失敗しました',
         details: errorMessage,
         providers: [],
-        currentProvider: 'fal-ai', // フォールバック
+        currentProvider: 'gemini', // フォールバック
         timestamp: new Date().toISOString(),
         errorType: 'api'
       },
@@ -108,8 +108,8 @@ export async function POST(request: NextRequest) {
       )
     }
     
-    // プロバイダー名の検証
-    const validProviders: ProviderType[] = ['fal-ai', 'gemini']
+    // プロバイダー名の検証（Geminiのみ）
+    const validProviders: ProviderType[] = ['gemini']
     if (!validProviders.includes(provider)) {
       return NextResponse.json(
         {
