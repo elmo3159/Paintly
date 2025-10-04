@@ -248,7 +248,7 @@ export function EnhancedError({
   if (!error || !isVisible) return null
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" suppressHydrationWarning>
       {/* Main Error Alert */}
       <Alert className={`${errorInfo.bgColor} border`}>
         <div className="flex items-start space-x-3">

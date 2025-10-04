@@ -13,9 +13,9 @@ export class GeminiProvider extends AIProvider {
   constructor(apiKey: string) {
     super({
       name: 'gemini',
-      displayName: 'Google Gemini 2.5 Flash',
+      displayName: 'Google Gemini 2.5 Flash Image',
       apiKey,
-      model: 'gemini-2.5-flash-image-preview',
+      model: 'gemini-2.5-flash-image',
       enabled: true
     })
 
@@ -30,9 +30,9 @@ export class GeminiProvider extends AIProvider {
   }
 
   buildPrompt(params: GenerationParams): string {
-    // 改善されたGemini用プロンプト - 色変更確実性と汚れ除去を強化
-    let prompt = '【重要】この建物を指定された色で確実にプロフェッショナル塗装した後の詳細で写実的な画像を生成してください。'
-    prompt += '元の建物の構造、形状、建築的詳細は完全に保持しながら、以下の指定通りに確実に美しく塗装してください。\n\n'
+    // Gemini 2.5 Flash Image用に最適化されたプロンプト
+    let prompt = 'Edit this building image by applying professional paint according to the specifications below. '
+    prompt += 'Maintain the exact structure, shape, and architectural details while changing only the specified colors.\n\n'
 
     // 汚れ除去と清掃の指示を追加
     prompt += '【汚れ・劣化除去指示】建物表面のあらゆる汚れ、シミ、カビ、コケ、経年劣化、変色、剥がれを完全に除去し、'
@@ -163,21 +163,43 @@ export class GeminiProvider extends AIProvider {
       console.log('✅ [Gemini] API call completed')
       console.log('📊 [Gemini] Response candidates:', response.candidates?.length || 0)
 
+      // 🔍 Enhanced debugging for Vercel deployment
+      console.log('🔍 [Gemini Debug] Full response structure:', JSON.stringify({
+        candidatesCount: response.candidates?.length,
+        hasCandidates: !!response.candidates,
+        firstCandidateExists: !!response.candidates?.[0],
+        firstCandidateContent: !!response.candidates?.[0]?.content,
+        firstCandidateParts: response.candidates?.[0]?.content?.parts?.length,
+        promptFeedback: response.promptFeedback,
+        usageMetadata: response.usageMetadata
+      }, null, 2))
+
       // 生成された画像を抽出
       let generatedImageData: string | null = null
 
       if (response.candidates?.[0]?.content?.parts) {
+        console.log('🔍 [Gemini Debug] Parts details:', response.candidates[0].content.parts.map((part, idx) => ({
+          index: idx,
+          hasText: !!part.text,
+          textPreview: part.text?.substring(0, 100),
+          hasInlineData: !!part.inlineData,
+          mimeType: part.inlineData?.mimeType,
+          dataLength: part.inlineData?.data?.length
+        })))
+
         for (const part of response.candidates[0].content.parts) {
           if (part.text) {
             console.log('📄 [Gemini] Text response received')
           }
-          
+
           if (part.inlineData?.data && part.inlineData.mimeType?.startsWith('image/')) {
             generatedImageData = part.inlineData.data
             console.log('🎨 [Gemini] Generated image found:', (generatedImageData?.length || 0 / 1024).toFixed(2), 'KB')
             break
           }
         }
+      } else {
+        console.warn('⚠️ [Gemini] No parts found in response!')
       }
 
       const processingTime = Date.now() - startTime

@@ -131,7 +131,7 @@ export function EnhancedLoading({ isVisible, provider, onComplete }: EnhancedLoa
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" suppressHydrationWarning>
       <Card className="w-full max-w-md">
         <CardContent className="p-6 space-y-6">
           {/* Header */}
