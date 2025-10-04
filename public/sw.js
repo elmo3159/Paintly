@@ -1,5 +1,5 @@
 // Service Worker for Paintly PWA - Enhanced Version
-const CACHE_VERSION = '2025.1.5'
+const CACHE_VERSION = '2025.1.6'
 const STATIC_CACHE = `paintly-static-${CACHE_VERSION}`
 const DYNAMIC_CACHE = `paintly-dynamic-${CACHE_VERSION}`
 const IMAGES_CACHE = `paintly-images-${CACHE_VERSION}`
@@ -174,7 +174,8 @@ async function handleApiRequest(request) {
   const cache = await caches.open(API_CACHE)
   
   try {
-    const networkResponse = await fetchWithTimeout(request, 8000)
+    // AI画像生成APIは15-20秒かかるため、タイムアウトを30秒に延長
+    const networkResponse = await fetchWithTimeout(request, 30000)
     
     // Cache successful GET requests
     if (networkResponse.ok && request.method === 'GET') {
