@@ -304,6 +304,13 @@ export default function CustomerPage() {
       })
 
       const result = await response.json()
+      
+      // 🔍 Debug: Log the actual API response
+      console.log('🔍 [Frontend] Full API Response:', result)
+      console.log('🔍 [Frontend] response.ok:', response.ok)
+      console.log('🔍 [Frontend] result.success:', result.success)
+      console.log('🔍 [Frontend] result.historyId:', result.historyId)
+      console.log('🔍 [Frontend] result.message:', result.message)
 
       if (!response.ok) {
         throw new Error(result.error || 'Generation failed')
