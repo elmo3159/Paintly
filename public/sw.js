@@ -1,5 +1,5 @@
 // Service Worker for Paintly PWA - Enhanced Version
-const CACHE_VERSION = '2025.1.4'
+const CACHE_VERSION = '2025.1.5'
 const STATIC_CACHE = `paintly-static-${CACHE_VERSION}`
 const DYNAMIC_CACHE = `paintly-dynamic-${CACHE_VERSION}`
 const IMAGES_CACHE = `paintly-images-${CACHE_VERSION}`
