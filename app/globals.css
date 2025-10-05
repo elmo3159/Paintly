@@ -151,7 +151,9 @@
   }
 
   html {
+    /* Safari下部バー対応: 100dvh使用（フォールバックとして100vh） */
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     color-scheme: light;
     -webkit-font-smoothing: antialiased;
@@ -993,4 +995,48 @@
   height: 4px;
   background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #10b981);
   opacity: 0.8;
+}
+
+/* ============================================
+   Safari モバイル Safe Area 対応
+   - iPhone X以降のノッチ・ホームバー対応
+   - 下部コンテンツがSafariバーに隠れない
+   ============================================ */
+@layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .pl-safe {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .pr-safe {
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* 全方向のsafe area */
+  .p-safe {
+    padding-top: env(safe-area-inset-top);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+  }
+
+  /* 組み合わせ用 */
+  .pb-safe-4 {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+
+  .pb-safe-6 {
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  }
+
+  .pb-safe-8 {
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+  }
 }

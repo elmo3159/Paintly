@@ -177,7 +177,7 @@ export default function SettingsPage() {
 
       {/* スクロール可能なメインコンテンツ */}
       <div className="flex-1 overflow-y-auto">
-        <div className="container mx-auto max-w-4xl px-4 py-8 pb-20 space-y-8">
+        <div className="container mx-auto max-w-4xl px-4 py-8 pb-safe-8 space-y-8">
           {/* ヘッダー */}
           <div className="text-center space-y-4">
             <div className="flex justify-center mb-4">

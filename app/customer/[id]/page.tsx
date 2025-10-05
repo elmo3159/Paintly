@@ -496,7 +496,7 @@ export default function CustomerPage() {
       )}
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 py-6 pb-8">
+      <div className="max-w-6xl mx-auto px-4 py-6 pb-safe-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="generation">画像生成</TabsTrigger>
