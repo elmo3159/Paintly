@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { ErrorBoundary } from '@/components/error-boundary'
-import { SkipToMain } from '@/components/accessibility-helpers'
 import { fontClassNames } from '@/lib/fonts'
 import Script from 'next/script'
 
@@ -67,14 +66,14 @@ export default function RootLayout({
         <link rel="preload" as="image" href="/logo.png" fetchPriority="high" />
       </head>
       <body
-        className={`${fontClassNames} relative h-full text-foreground`}
+        className={`${fontClassNames} relative h-screen overflow-hidden text-foreground`}
         suppressHydrationWarning
       >
         {/* ペイントドリップ背景画像 */}
         <div
           className="fixed inset-0 -z-10"
           style={{
-            backgroundImage: 'url(/bg-paint-drip.png)',
+            backgroundImage: 'url(/Paintly-haikei.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'top center',
             backgroundRepeat: 'no-repeat',
@@ -82,7 +81,6 @@ export default function RootLayout({
           }}
         />
 
-        <SkipToMain />
         <ErrorBoundary>
           <ThemeProvider
             attribute="class"

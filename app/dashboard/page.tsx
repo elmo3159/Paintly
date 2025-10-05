@@ -39,7 +39,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className="relative z-10">
+        <div className="relative z-10 text-center">
           <h1 className="text-4xl font-bold tracking-tight paint-text mb-2">ダッシュボード</h1>
           <p className="text-muted-foreground/80 mt-2 text-lg">
             Paintlyで塗装シミュレーションを管理しましょう
@@ -57,7 +57,7 @@ export default async function DashboardPage() {
           {/* クイックスタート */}
           <Card className="paint-card">
             <CardHeader>
-              <CardTitle className="paint-text text-lg sm:text-xl md:text-2xl whitespace-nowrap min-w-0">クイックスタート</CardTitle>
+              <CardTitle className="paint-text text-lg sm:text-xl md:text-2xl min-w-0">クイックスタート</CardTitle>
               <CardDescription>
                 塗装シミュレーションを開始しましょう
               </CardDescription>
@@ -66,7 +66,7 @@ export default async function DashboardPage() {
               <div className="flex items-center space-x-4 rounded-lg border p-4">
                 <Palette className="h-8 w-8 text-primary animate-pulse" />
                 <div className="flex-1">
-                  <h3 className="font-semibold text-sm sm:text-base whitespace-nowrap">新規シミュレーション</h3>
+                  <h3 className="font-semibold text-sm sm:text-base">新規シミュレーション</h3>
                   <p className="text-sm text-muted-foreground">
                     建物の写真をアップロードして色を変更
                   </p>

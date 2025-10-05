@@ -2,425 +2,995 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Google Fonts - 手書き風フォント */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ============================================
+   Paintly ネオブルータリズム × 職人デザインシステム
+   - ネオブルータリズム（2025トレンド）
+   - 手書き風・人間的タッチ
+   - 非対称レイアウト・プレイフル
+   - 日本の職人美学（Shokunin spirit）
+   ============================================ */
+
 @layer base {
   :root {
-    /* Paint Industry Light Theme */
-    --background: 45 20% 96%;        /* Warm off-white like primer */
-    --foreground: 25 30% 15%;        /* Deep charcoal like paint */
-    --card: 0 0% 100%;               /* Pure white like fresh paint */
-    --card-foreground: 25 30% 15%;   
-    --popover: 0 0% 100%;
-    --popover-foreground: 25 30% 15%;
-    --primary: 210 95% 45%;          /* Professional painter's blue */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 45 40% 88%;         /* Soft cream like basecoat */
-    --secondary-foreground: 25 30% 15%;
-    --muted: 45 20% 92%;             /* Light neutral like primer */
-    --muted-foreground: 25 15% 45%;
-    --accent: 35 85% 55%;            /* Vibrant paint orange */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 45 25% 85%;
-    --input: 45 25% 85%;
-    --ring: 210 95% 45%;
-    --radius: 0.5rem;
+    /* ===== ブランドカラー（自然で温かみのある土色系） ===== */
+    --brand-h: 18;
+    --brand-s: 68%;
+    --brand-l: 48%;
+    --brand: hsl(var(--brand-h) var(--brand-s) var(--brand-l));
+
+    /* ブランドバリエーション */
+    --brand-light: hsl(var(--brand-h) var(--brand-s) 92%);
+    --brand-medium: hsl(var(--brand-h) var(--brand-s) 70%);
+    --brand-dark: hsl(var(--brand-h) var(--brand-s) 32%);
+
+    /* ===== 背景・前景（職人的な温かみ） ===== */
+    --bg-h: 40;
+    --bg-s: 15%;
+    --bg-l: 98%;
+    --bg: hsl(var(--bg-h) var(--bg-s) var(--bg-l));
+
+    --fg-h: 210;
+    --fg-s: 15%;
+    --fg-l: 18%;
+    --fg: hsl(var(--fg-h) var(--fg-s) var(--fg-l));
+
+    /* ===== セマンティックカラー ===== */
+    --surface-h: 0;
+    --surface-s: 0%;
+    --surface-l: 100%;
+    --surface: hsl(var(--surface-h) var(--surface-s) var(--surface-l));
+
+    --border-h: 210;
+    --border-s: 10%;
+    --border-l: 90%;
+    --border: hsl(var(--border-h) var(--border-s) var(--border-l));
+
+    --muted-h: 210;
+    --muted-s: 8%;
+    --muted-l: 55%;
+    --muted: hsl(var(--muted-h) var(--muted-s) var(--muted-l));
+
+    --error-h: 4;
+    --error-s: 72%;
+    --error-l: 52%;
+    --error: hsl(var(--error-h) var(--error-s) var(--error-l));
+
+    --success-h: 145;
+    --success-s: 48%;
+    --success-l: 42%;
+    --success: hsl(var(--success-h) var(--success-s) var(--success-l));
+
+    /* ===== タイポグラフィ（より大胆なヒエラルキー） ===== */
+    --font-sans: "Noto Sans JP", "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-serif: "Noto Serif JP", "Georgia", serif;
+    --font-handwritten: "Caveat", cursive;
+
+    /* より大きな差でヒエラルキーを強調 */
+    --font-size-hero: 42px;
+    --font-size-cta: 18px;
+    --font-size-h1: 36px;
+    --font-size-h2: 28px;
+    --font-size-h3: 22px;
+    --font-size-body: 17px;
+    --font-size-small: 15px;
+    --font-size-xs: 13px;
+
+    /* ===== 角丸（自然な曲線） ===== */
+    --radius: 12px;
+    --radius-sm: 6px;
+    --radius-lg: 18px;
+
+    /* ===== シャドウ（ネオブルータリズム × 職人的） ===== */
+    --shadow-e1: 0 2px 12px rgba(0, 0, 0, 0.06);
+    --shadow-e2: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+    /* ネオブルータリズム: ハードシャドウ（ぼかしなし） */
+    --shadow-neo: 6px 6px 0 hsla(var(--brand-h), var(--brand-s), var(--brand-l), 0.2);
+    --shadow-neo-sm: 4px 4px 0 hsla(var(--brand-h), var(--brand-s), var(--brand-l), 0.15);
+    --shadow-neo-lg: 8px 8px 0 hsla(var(--brand-h), var(--brand-s), var(--brand-l), 0.25);
+    --shadow-neo-black: 6px 6px 0 rgba(0, 0, 0, 0.15);
+
+    /* ===== スペーシング（Ma - より大胆な余白） ===== */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+    --space-3xl: 64px;
+    --space-4xl: 96px;
+
+    /* 例外スペーシング */
+    --space-12: 12px;
+    --space-14: 14px;
+    --space-20: 20px;
+
+    /* ===== アニメーション（意図的で控えめ） ===== */
+    --transition-fast: 150ms ease-out;
+    --transition-base: 250ms ease-out;
+    --transition-slow: 400ms ease-out;
+
+    /* ===== レイアウト（Ma - 呼吸感のある余白） ===== */
+    --container-max: 1200px;
+    --content-max: 720px;
+    --section-gap: var(--space-4xl);
   }
 
   .dark {
-    /* Paint Workshop Dark Theme */
-    --background: 25 25% 8%;         /* Dark workshop */
-    --foreground: 45 20% 92%;        /* Light primer */
-    --card: 25 20% 12%;              /* Darker surface */
-    --card-foreground: 45 20% 92%;
-    --popover: 25 20% 12%;
-    --popover-foreground: 45 20% 92%;
-    --primary: 210 85% 55%;          /* Bright painter's blue */
-    --primary-foreground: 25 25% 8%;
-    --secondary: 25 15% 18%;         /* Dark surface */
-    --secondary-foreground: 45 20% 92%;
-    --muted: 25 15% 15%;
-    --muted-foreground: 45 10% 60%;
-    --accent: 35 80% 60%;            /* Bright paint orange */
-    --accent-foreground: 25 25% 8%;
-    --destructive: 0 75% 55%;
-    --destructive-foreground: 45 20% 92%;
-    --border: 25 15% 20%;
-    --input: 25 15% 20%;
-    --ring: 210 85% 55%;
+    --bg-h: 210;
+    --bg-s: 15%;
+    --bg-l: 12%;
+
+    --fg-h: 40;
+    --fg-s: 10%;
+    --fg-l: 92%;
+
+    --surface-h: 210;
+    --surface-s: 12%;
+    --surface-l: 16%;
+
+    --border-h: 210;
+    --border-s: 10%;
+    --border-l: 22%;
+
+    --muted-h: 210;
+    --muted-s: 6%;
+    --muted-l: 48%;
   }
 }
 
+/* ============================================
+   ベーススタイル
+   ============================================ */
 @layer base {
   * {
-    @apply border-border;
+    border-color: var(--border);
   }
 
-  /* Prevent excessive scrolling in layouts with h-screen */
   html {
-    height: 100%;
+    height: 100vh;
     overflow: hidden;
+    color-scheme: light;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    /* Let the gradient background show through */
-    color: #2d2621;
-    height: 100%;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-body);
+    line-height: 1.7;
+    color: var(--fg);
+    background: var(--bg);
     overflow: hidden;
-  }
-
-  /* Keep CSS variables for light theme */
-  :root {
-    --background: 45 20% 96%;
-    --foreground: 25 30% 15%;
-  }
-
-  /* Maintain light theme preference */
-  html {
-    color-scheme: light;
-  }
-}
-
-/* Paint Industry Custom Classes */
-@layer components {
-  /* Paint Button Styles */
-  .paint-button {
-    @apply bg-gradient-to-r from-primary to-accent;
-    @apply text-primary-foreground font-bold;
-    @apply shadow-lg hover:shadow-xl;
-    @apply transform hover:scale-[1.02] active:scale-[0.98];
-    @apply transition-all duration-300 ease-out;
-    @apply border-0 rounded-lg;
-    @apply relative overflow-hidden;
-  }
-  
-  .paint-button:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s;
-  }
-  
-  .paint-button:hover:before {
-    left: 100%;
-  }
-
-  /* Paint Card Styles */
-  .paint-card {
-    @apply bg-card/95 border border-border/50;
-    @apply shadow-2xl hover:shadow-2xl;
-    @apply rounded-2xl overflow-hidden;
-    @apply backdrop-blur-sm;
-    @apply transition-all duration-500 ease-out;
-    @apply hover:border-primary/30;
     position: relative;
   }
-  
-  .paint-card:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  
-  .paint-card:hover:before {
-    opacity: 1;
-  }
 
-  /* Paint Input Styles */
-  .paint-input {
-    @apply border-2 border-border/60;
-    @apply focus:border-primary/70 focus:ring-4 focus:ring-primary/10;
-    @apply rounded-xl bg-background/50;
-    @apply transition-all duration-300 ease-out;
-    @apply backdrop-blur-sm;
-    @apply placeholder:text-muted-foreground/60;
-  }
-  
-  .paint-input:focus {
-    @apply shadow-lg shadow-primary/20;
-    transform: translateY(-1px);
-  }
-
-  /* Paint Text Styles */
-  .paint-text {
-    @apply bg-gradient-to-r from-primary via-accent to-primary;
-    @apply bg-clip-text text-transparent;
-    @apply font-bold tracking-tight;
-    background-size: 200% auto;
-    animation: paint-gradient 3s ease-in-out infinite;
-  }
-
-  /* Paint Hover Effect */
-  .paint-hover {
-    @apply transition-all duration-300 ease-out;
-    @apply hover:text-primary hover:scale-105;
-    @apply relative;
-  }
-  
-  .paint-hover:before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-    transition: width 0.3s ease-out;
-  }
-  
-  .paint-hover:hover:before {
-    width: 100%;
-  }
-
-  /* Dashboard Specific */
-  .dashboard-header {
-    @apply bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5;
-    @apply border-b border-border/50 backdrop-blur-sm;
-  }
-
-  .customer-card {
-    @apply paint-card hover:scale-[1.02];
-    @apply cursor-pointer;
-  }
-
-  /* Form Enhancements */
-  .form-section {
-    @apply bg-gradient-to-br from-card/95 via-card/95 to-secondary/30;
-    @apply border border-border/50 rounded-2xl p-6;
-    @apply shadow-lg;
-  }
-
-  /* Professional Paint Workshop Feel - Bright Version */
-  .workshop-bg {
-    @apply bg-gradient-to-br from-background via-secondary/40 to-accent/10;
-    background-image:
-      /* Paint drip effects */
-      linear-gradient(90deg, transparent 0%, transparent 20%, rgba(var(--primary), 0.05) 21%, rgba(var(--primary), 0.08) 22%, transparent 23%, transparent 30%, rgba(var(--accent), 0.06) 31%, rgba(var(--accent), 0.09) 32%, transparent 33%, transparent 100%),
-      radial-gradient(circle at 25% 25%, rgba(var(--primary), 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 75% 75%, rgba(var(--accent), 0.08) 0%, transparent 50%);
-  }
-
-  /* Paint Drip Animation at Top */
-  .paint-drips {
+  /* 紙テクスチャ背景（人間的な質感） */
+  body::before {
+    content: "";
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    height: 60px;
-    background: linear-gradient(180deg,
-      rgba(var(--primary), 0.1) 0%,
-      rgba(var(--primary), 0.08) 20%,
-      rgba(var(--accent), 0.06) 40%,
-      transparent 100%
-    );
+    width: 100%;
+    height: 100%;
+    opacity: 0.03;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px),
+      repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px);
     pointer-events: none;
-    z-index: 0;
+    z-index: -1;
   }
 
-  .paint-drips::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 15%;
-    width: 8px;
-    height: 40px;
-    background: linear-gradient(180deg, rgba(var(--primary), 0.3), transparent);
-    border-radius: 0 0 50% 50%;
-    animation: paint-drip 6s ease-in-out infinite;
-    animation-delay: 0s;
+  /* より自然な見出しスタイル */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
   }
 
-  .paint-drips::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 25%;
-    width: 6px;
-    height: 35px;
-    background: linear-gradient(180deg, rgba(var(--accent), 0.3), transparent);
-    border-radius: 0 0 50% 50%;
-    animation: paint-drip 8s ease-in-out infinite;
-    animation-delay: 2s;
+  /* より読みやすい段落 */
+  p {
+    line-height: 1.75;
+    letter-spacing: 0.01em;
   }
 }
 
-/* Animation Keyframes */
-@keyframes paint-gradient {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-@keyframes paint-drip {
-  0% { 
-    transform: translateY(-10px);
-    opacity: 0;
-  }
-  50% { 
-    opacity: 1;
-  }
-  100% { 
-    transform: translateY(10px);
-    opacity: 0;
-  }
-}
-
-/* Utility Classes */
-@layer utilities {
-  .text-paint-gradient {
-    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
-  }
-
-  .shadow-paint {
-    box-shadow: 0 10px 30px rgba(var(--primary), 0.3), 0 0 0 1px rgba(var(--border), 0.1);
-  }
-
-  .border-paint-gradient {
-    border-image: linear-gradient(90deg, var(--primary), var(--accent)) 1;
-  }
-}
-
-/* Glass Morphism - Card Transparency for Background Visibility */
-@layer utilities {
-  /* Padding areas: 100% transparent (fully transparent) - NO BLUR for clear background */
-  [class*="bg-"]:not(.bg-primary):not(.bg-accent):not(.bg-destructive):not(.fixed):not([style*="backgroundColor"]):not(.bg-white):not(.bg-black):not(.bg-pink-100),
-  .bg-card:not(.fixed),
-  .bg-background,
-  .bg-muted,
-  .bg-secondary,
-  .bg-gray-50,
-  .bg-gray-100,
-  .bg-orange-50,
-  .bg-orange-100,
-  .bg-green-50,
-  .bg-green-100,
-  .bg-blue-50,
-  .bg-blue-100,
-  .bg-yellow-50,
-  .bg-yellow-100,
-  .bg-red-50,
-  .bg-red-100 {
-    background-color: rgba(255, 255, 255, 0.00) !important;
-    /* backdrop-filter removed for crystal clear background visibility */
-  }
-
-  /* Color preview elements - keep original colors */
-  [style*="backgroundColor"]:not(.fixed),
-  .bg-white,
-  .bg-black,
-  .bg-pink-100 {
-    /* Keep inline style colors visible for color pickers */
-  }
-
-  /* Content areas inside padding: 40% transparent (60% opaque) - NO BLUR on content */
-  /* Exclude elements with inline background-color to preserve color preview boxes */
-  [class*="bg-"]:not(.bg-primary):not(.bg-accent):not(.bg-destructive) > *:not([style*="background-color"]),
-  .bg-card > *:not([style*="background-color"]),
-  .bg-white > *:not([style*="background-color"]),
-  .bg-background > *:not([style*="background-color"]),
-  .bg-muted > *:not([style*="background-color"]),
-  .bg-secondary > *:not([style*="background-color"]),
-  .bg-gray-50 > *:not([style*="background-color"]),
-  .bg-gray-100 > *:not([style*="background-color"]),
-  .bg-orange-50 > *:not([style*="background-color"]),
-  .bg-orange-100 > *:not([style*="background-color"]),
-  .bg-green-50 > *:not([style*="background-color"]),
-  .bg-green-100 > *:not([style*="background-color"]),
-  .bg-blue-50 > *:not([style*="background-color"]),
-  .bg-blue-100 > *:not([style*="background-color"]),
-  .bg-yellow-50 > *:not([style*="background-color"]),
-  .bg-yellow-100 > *:not([style*="background-color"]),
-  .bg-red-50 > *:not([style*="background-color"]),
-  .bg-red-100 > *:not([style*="background-color"]),
-  /* Specific content containers */
-  [class*="p-"] > div:not([style*="background-color"]),
-  [class*="px-"] > div:not([style*="background-color"]),
-  [class*="py-"] > div:not([style*="background-color"]) {
-    background-color: rgba(255, 255, 255, 0.60) !important;
-    /* NO backdrop-filter to avoid blurring text */
-  }
-
-  /* Keep popover and dropdowns more opaque for readability */
-  .bg-popover,
-  [role="menu"],
-  [role="listbox"],
-  [role="dialog"] {
-    background-color: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-  }
-
-  /* Keep primary/accent/destructive buttons visible with original colors */
-  .bg-primary {
-    background-color: hsl(210 95% 45%) !important;
-  }
-
-  .bg-accent {
-    background-color: hsl(35 85% 55%) !important;
-  }
-
-  .bg-destructive {
-    background-color: hsl(0 84% 60%) !important;
-  }
-
-  /* Hamburger menu button: 40% opaque (60% transparent) */
-  .fixed.bg-white,
-  button.fixed.bg-white {
-    background-color: rgba(255, 255, 255, 0.4) !important;
-  }
-}
-
-/* Customer List Scrollbar Styles */
+/* ============================================
+   コンポーネント（ネオブルータリズム × 職人の温かみ）
+   ============================================ */
 @layer components {
-  /* Custom scrollbar for customer list */
-  .customer-list-scroll {
-    /* Firefox scrollbar - enhanced visibility */
-    scrollbar-width: auto !important;
-    scrollbar-color: #4a5568 #e2e8f0 !important;
-    /* Force scroll to always show */
-    overflow-y: scroll !important;
+  /* ===== ネオブルータリズム プライマリボタン ===== */
+  .btn-primary {
+    background: var(--brand);
+    color: white;
+    font-size: var(--font-size-cta);
+    font-weight: 700;
+    padding: var(--space-md) var(--space-xl);
+    border-radius: 0;
+    border: 3px solid hsl(var(--fg-h), var(--fg-s), var(--fg-l));
+    box-shadow: var(--shadow-neo);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
-  /* WebKit scrollbar styles - enhanced for better visibility */
-  .customer-list-scroll::-webkit-scrollbar {
-    width: 12px !important;
-    height: 12px !important;
+  .btn-primary:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: var(--shadow-neo-lg);
   }
 
-  .customer-list-scroll::-webkit-scrollbar-track {
-    background: #e2e8f0 !important;
-    border-radius: 6px !important;
-    margin: 4px 0 !important;
+  .btn-primary:active {
+    transform: translate(0, 0);
+    box-shadow: var(--shadow-neo-sm);
   }
 
-  .customer-list-scroll::-webkit-scrollbar-thumb {
-    background: #4a5568 !important;
-    border-radius: 6px !important;
-    border: 2px solid #e2e8f0 !important;
-    min-height: 40px !important;
+  /* ===== セカンダリボタン（控えめだが明確） ===== */
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--fg);
+    font-size: var(--font-size-small);
+    font-weight: 600;
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: 0;
+    border: 2px solid var(--border);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-neo-black);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
   }
 
-  .customer-list-scroll::-webkit-scrollbar-thumb:hover {
-    background: #2d3748 !important;
+  .btn-secondary:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+    border-color: var(--brand);
   }
 
-  .customer-list-scroll::-webkit-scrollbar-thumb:active {
-    background: #1a202c !important;
+  .btn-secondary:active {
+    transform: translate(0, 0);
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
   }
 
-  /* Always show scrollbar corner */
-  .customer-list-scroll::-webkit-scrollbar-corner {
-    background: #e2e8f0 !important;
+  .btn-secondary:hover {
+    border-color: var(--brand);
+    background: var(--brand-light);
+    color: var(--brand-dark);
+  }
+
+  /* ===== カード（繊細で職人的） ===== */
+  .card {
+    background: var(--surface);
+    border: 3px solid var(--border);
+    border-radius: 0;
+    box-shadow: var(--shadow-neo-black);
+    padding: var(--space-2xl);
+    transition: all var(--transition-fast);
+  }
+
+  .card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  /* 非対称回転バリエーション */
+  .card:nth-child(3n+1) {
+    transform: rotate(-0.8deg);
+  }
+
+  .card:nth-child(3n+2) {
+    transform: rotate(0.6deg);
+  }
+
+  .card:nth-child(3n+3) {
+    transform: rotate(-0.4deg);
+  }
+
+  .card:nth-child(3n+1):hover {
+    transform: rotate(-0.8deg) translate(-3px, -3px);
+  }
+
+  .card:nth-child(3n+2):hover {
+    transform: rotate(0.6deg) translate(-3px, -3px);
+  }
+
+  .card:nth-child(3n+3):hover {
+    transform: rotate(-0.4deg) translate(-3px, -3px);
+  }
+
+  .card-compact {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-e1);
+    padding: var(--space-lg);
+  }
+
+  /* ===== 入力フィールド（アクセシブルで明確） ===== */
+  .input {
+    background: var(--surface);
+    border: 3px solid var(--border);
+    border-radius: 0;
+    padding: var(--space-md) var(--space-md);
+    font-size: var(--font-size-body);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    transition: all var(--transition-fast);
+    line-height: 1.5;
+    box-shadow: var(--shadow-neo-black);
+  }
+
+  .input:focus {
+    outline: none;
+    border-color: var(--brand);
+    box-shadow: 5px 5px 0 hsla(var(--brand-h), var(--brand-s), var(--brand-l), 0.25);
+    transform: translate(-2px, -2px);
+  }
+
+  .input::placeholder {
+    color: var(--muted);
+  }
+
+  /* ===== タイポグラフィクラス ===== */
+  .text-hero {
+    font-size: var(--font-size-hero);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    color: var(--fg);
+  }
+
+  .text-h1 {
+    font-size: var(--font-size-h1);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+  }
+
+  .text-h2 {
+    font-size: var(--font-size-h2);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+    color: var(--fg);
+  }
+
+  .text-h3 {
+    font-size: var(--font-size-h3);
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--fg);
+  }
+
+  .text-body {
+    font-size: var(--font-size-body);
+    font-weight: 400;
+    line-height: 1.75;
+    color: var(--fg);
+  }
+
+  .text-small {
+    font-size: var(--font-size-small);
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .text-brand {
+    color: var(--brand);
+  }
+
+  /* ===== レイアウト（Ma - 呼吸感のある余白） ===== */
+  .container {
+    max-width: var(--container-max);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+  }
+
+  .content-max {
+    max-width: var(--content-max);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section {
+    padding-top: var(--section-gap);
+    padding-bottom: var(--section-gap);
+  }
+
+  /* Stack utilities with Ma philosophy */
+  .stack-sm > * + * {
+    margin-top: var(--space-sm);
+  }
+
+  .stack-md > * + * {
+    margin-top: var(--space-md);
+  }
+
+  .stack-lg > * + * {
+    margin-top: var(--space-lg);
+  }
+
+  .stack-xl > * + * {
+    margin-top: var(--space-xl);
+  }
+
+  .stack-2xl > * + * {
+    margin-top: var(--space-2xl);
+  }
+
+  /* ===== バッジ（控えめなアクセント） ===== */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-md);
+    background: var(--brand-light);
+    color: var(--brand-dark);
+    font-size: 20px;
+    font-weight: 600;
+    font-family: var(--font-handwritten);
+    border-radius: 0;
+    border: 2px dashed var(--brand);
+    transform: rotate(1.5deg);
+    position: relative;
+    box-shadow: 3px 3px 0 hsla(var(--brand-h), var(--brand-s), var(--brand-l), 0.15);
+  }
+
+  .badge::after {
+    content: "✨";
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    font-size: 20px;
+  }
+
+  /* ===== リンク（職人的な控えめさ） ===== */
+  .link {
+    color: var(--brand);
+    text-decoration: none;
+    position: relative;
+    transition: all var(--transition-fast);
+    font-weight: 600;
+  }
+
+  .link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 3px;
+    background: var(--brand);
+    opacity: 0.6;
+    transition: all var(--transition-fast);
+  }
+
+  .link:hover {
+    transform: translateY(-1px);
+  }
+
+  .link:hover::after {
+    opacity: 1;
+    height: 4px;
+  }
+
+  /* ===== スクロールバー（繊細） ===== */
+  .scrollbar-custom {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: var(--radius-sm);
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+    background: var(--muted);
   }
 }
 
-/* Fix duplicate scrollbar issue - Removed duplicate overflow rules that conflicted with h-screen layouts */
+/* ============================================
+   ユーティリティ
+   ============================================ */
+@layer utilities {
+  /* Spacing utilities */
+  .p-xs { padding: var(--space-xs); }
+  .p-sm { padding: var(--space-sm); }
+  .p-md { padding: var(--space-md); }
+  .p-lg { padding: var(--space-lg); }
+  .p-xl { padding: var(--space-xl); }
+  .p-2xl { padding: var(--space-2xl); }
+
+  .px-sm { padding-left: var(--space-sm); padding-right: var(--space-sm); }
+  .px-md { padding-left: var(--space-md); padding-right: var(--space-md); }
+  .px-lg { padding-left: var(--space-lg); padding-right: var(--space-lg); }
+  .px-xl { padding-left: var(--space-xl); padding-right: var(--space-xl); }
+
+  .py-sm { padding-top: var(--space-sm); padding-bottom: var(--space-sm); }
+  .py-md { padding-top: var(--space-md); padding-bottom: var(--space-md); }
+  .py-lg { padding-top: var(--space-lg); padding-bottom: var(--space-lg); }
+  .py-xl { padding-top: var(--space-xl); padding-bottom: var(--space-xl); }
+  .py-2xl { padding-top: var(--space-2xl); padding-bottom: var(--space-2xl); }
+
+  .mt-sm { margin-top: var(--space-sm); }
+  .mt-md { margin-top: var(--space-md); }
+  .mt-lg { margin-top: var(--space-lg); }
+  .mt-xl { margin-top: var(--space-xl); }
+  .mt-2xl { margin-top: var(--space-2xl); }
+
+  .mb-sm { margin-bottom: var(--space-sm); }
+  .mb-md { margin-bottom: var(--space-md); }
+  .mb-lg { margin-bottom: var(--space-lg); }
+  .mb-xl { margin-bottom: var(--space-xl); }
+  .mb-2xl { margin-bottom: var(--space-2xl); }
+
+  /* Border radius utilities */
+  .rounded { border-radius: var(--radius); }
+  .rounded-sm { border-radius: var(--radius-sm); }
+  .rounded-lg { border-radius: var(--radius-lg); }
+
+  /* Shadow utilities */
+  .shadow { box-shadow: var(--shadow-e1); }
+  .shadow-lg { box-shadow: var(--shadow-e2); }
+
+  /* Transition utilities */
+  .transition-fast { transition: all var(--transition-fast); }
+  .transition-base { transition: all var(--transition-base); }
+  .transition-slow { transition: all var(--transition-slow); }
+}
+
+/* ============================================
+   🎨 Paintly ネオブルータリズム × 手書き風デザイン
+   2025年トレンド: 人間らしさ・手書き・非AI的な温かみ
+   ============================================ */
+
+/* ===== Paintly専用クラス（ネオブルータリズム適用） ===== */
+
+/* ペイントカード - 非対称回転 + ハードシャドウ */
+.paint-card {
+  background: var(--surface);
+  border: 3px solid var(--border);
+  border-radius: 0;
+  box-shadow: var(--shadow-neo-black);
+  padding: var(--space-lg);
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+@media (min-width: 640px) {
+  .paint-card {
+    padding: var(--space-2xl);
+  }
+}
+
+.paint-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.paint-card:nth-child(odd) {
+  transform: rotate(-0.6deg);
+}
+
+.paint-card:nth-child(even) {
+  transform: rotate(0.5deg);
+}
+
+.paint-card:nth-child(odd):hover {
+  transform: rotate(-0.6deg) translate(-3px, -3px);
+}
+
+.paint-card:nth-child(even):hover {
+  transform: rotate(0.5deg) translate(-3px, -3px);
+}
+
+/* ペイントボタン - 大胆な影 + 大文字 */
+.paint-button {
+  background: var(--brand);
+  color: white;
+  font-weight: 700;
+  padding: var(--space-md) var(--space-xl);
+  border: 3px solid hsl(var(--fg-h), var(--fg-s), var(--fg-l));
+  border-radius: 0;
+  box-shadow: var(--shadow-neo);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.paint-button:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: var(--shadow-neo-lg);
+}
+
+.paint-button:active {
+  transform: translate(0, 0);
+  box-shadow: var(--shadow-neo-sm);
+}
+
+/* ペイントテキスト - 手書き風見出し */
+.paint-text {
+  font-family: var(--font-handwritten);
+  font-weight: 700;
+  color: var(--brand);
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.paint-text::after {
+  content: '';
+  position: absolute;
+  left: -8px;
+  bottom: -4px;
+  width: calc(100% + 16px);
+  height: 12px;
+  background: hsla(var(--brand-h), var(--brand-s), var(--brand-l), 0.15);
+  border-radius: 50% / 30%;
+  z-index: -1;
+  transform: rotate(-1deg);
+}
+
+/* ワークショップ背景 */
+.workshop-bg {
+  position: relative;
+  background: linear-gradient(135deg,
+    hsla(var(--surface-h), var(--surface-s), var(--surface-l), 0.95) 0%,
+    hsla(var(--bg-h), calc(var(--bg-s) * 1.1), calc(var(--bg-l) * 0.98), 0.85) 100%
+  );
+}
+
+.workshop-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(0,0,0,0.01) 10px,
+      rgba(0,0,0,0.01) 20px
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ペイントドリップ（塗料の垂れ） */
+.paint-drips {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--brand) 0%,
+    var(--brand) 20%,
+    transparent 20%,
+    transparent 25%,
+    var(--accent) 25%,
+    var(--accent) 45%,
+    transparent 45%,
+    transparent 50%,
+    var(--brand) 50%,
+    var(--brand) 70%,
+    transparent 70%,
+    transparent 75%,
+    var(--accent) 75%,
+    var(--accent) 95%,
+    transparent 95%
+  );
+}
+
+.paint-drips::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 10%;
+  width: 3px;
+  height: 20px;
+  background: var(--brand);
+  border-radius: 0 0 3px 3px;
+  opacity: 0.6;
+}
+
+/* ===== 手書き風装飾クラス（2025トレンド） ===== */
+
+/* 手書き矢印装飾 */
+.doodle-arrow {
+  position: relative;
+  padding-right: 40px;
+}
+
+.doodle-arrow::after {
+  content: '→';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) rotate(-5deg);
+  font-family: var(--font-handwritten);
+  font-size: 24px;
+  color: var(--brand);
+  opacity: 0.7;
+}
+
+/* スケッチ風下線 */
+.scribble-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.scribble-underline::after {
+  content: '';
+  position: absolute;
+  left: -4px;
+  bottom: -6px;
+  width: calc(100% + 8px);
+  height: 6px;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      var(--brand) 0px,
+      var(--brand) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+  opacity: 0.4;
+  transform: rotate(-1deg);
+}
+
+/* 有機的なブロブ背景 */
+.organic-blob {
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 640px) {
+  .organic-blob::before {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    background: hsla(var(--brand-h), var(--brand-s), var(--brand-l), 0.08);
+    border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+    z-index: -1;
+    animation: blob-morph 8s ease-in-out infinite;
+  }
+}
+
+@keyframes blob-morph {
+  0%, 100% {
+    border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+  }
+  50% {
+    border-radius: 48% 52% 68% 32% / 42% 60% 40% 58%;
+  }
+}
+
+/* スケッチ風境界線 */
+.sketch-border {
+  position: relative;
+  padding: var(--space-md);
+}
+
+.sketch-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 3px dashed var(--border);
+  border-radius: 0;
+  opacity: 0.6;
+  transform: rotate(0.5deg);
+}
+
+/* 手書き風数字（リスト用） */
+.handwritten-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--brand-light);
+  border: 2px solid var(--brand);
+  border-radius: 50%;
+  font-family: var(--font-handwritten);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--brand-dark);
+  transform: rotate(-3deg);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* 手書き風星装飾 */
+.doodle-star {
+  position: relative;
+}
+
+.doodle-star::before {
+  content: '★';
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  font-size: 24px;
+  color: var(--accent);
+  transform: rotate(15deg);
+  opacity: 0.6;
+  animation: star-twinkle 3s ease-in-out infinite;
+}
+
+@keyframes star-twinkle {
+  0%, 100% {
+    opacity: 0.6;
+    transform: rotate(15deg) scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: rotate(25deg) scale(1.1);
+  }
+}
+
+/* 落書き風チェックマーク */
+.doodle-check {
+  position: relative;
+  padding-left: 32px;
+}
+
+.doodle-check::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) rotate(-5deg);
+  font-family: var(--font-handwritten);
+  font-size: 24px;
+  color: var(--brand);
+  font-weight: 700;
+}
+
+/* 手書き風円形マーカー */
+.handwritten-circle {
+  position: relative;
+  display: inline-block;
+}
+
+.handwritten-circle::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border: 3px solid var(--brand);
+  border-radius: 50%;
+  opacity: 0.3;
+  transform: rotate(-5deg);
+}
+
+/* スクラップブック風スティッキー */
+.sticky-note {
+  background: #fef9c3;
+  border: 2px solid #fbbf24;
+  padding: var(--space-lg);
+  position: relative;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+  transform: rotate(1deg);
+  font-family: var(--font-handwritten);
+}
+
+.sticky-note::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 0 0 8px 8px;
+}
+
+/* スケッチ風吹き出し */
+.sketch-bubble {
+  position: relative;
+  background: var(--surface);
+  border: 3px solid var(--border);
+  padding: var(--space-lg);
+  margin-bottom: 24px;
+  transform: rotate(-0.5deg);
+}
+
+.sketch-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 40px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 20px 15px 0 15px;
+  border-color: var(--border) transparent transparent transparent;
+}
+
+/* 手書き風アクセント線 */
+.handwritten-accent {
+  position: relative;
+}
+
+.handwritten-accent::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--brand);
+  opacity: 0.3;
+  transform: skewY(-2deg);
+}
+
+/* ===== 2025 AI Dashboard - Gradient Cards ===== */
+/* グラデーションカード - モダンAIスタイル */
+.paint-card-gradient-blue {
+  background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 50%, #fce7f3 100%);
+  border: 3px solid rgba(59, 130, 246, 0.2);
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15), 6px 6px 0 rgba(0, 0, 0, 0.1);
+}
+
+.paint-card-gradient-purple {
+  background: linear-gradient(135deg, #f3e8ff 0%, #fae8ff 50%, #fef3c7 100%);
+  border: 3px solid rgba(168, 85, 247, 0.2);
+  box-shadow: 0 8px 32px rgba(168, 85, 247, 0.15), 6px 6px 0 rgba(0, 0, 0, 0.1);
+}
+
+.paint-card-gradient-pink {
+  background: linear-gradient(135deg, #fce7f3 0%, #fef3c7 50%, #dbeafe 100%);
+  border: 3px solid rgba(236, 72, 153, 0.2);
+  box-shadow: 0 8px 32px rgba(236, 72, 153, 0.15), 6px 6px 0 rgba(0, 0, 0, 0.1);
+}
+
+.paint-card-gradient-green {
+  background: linear-gradient(135deg, #d1fae5 0%, #dbeafe 50%, #fce7f3 100%);
+  border: 3px solid rgba(16, 185, 129, 0.2);
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.15), 6px 6px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* グラデーションカードホバー効果 */
+.paint-card-gradient-blue:hover,
+.paint-card-gradient-purple:hover,
+.paint-card-gradient-pink:hover,
+.paint-card-gradient-green:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 0 12px 48px rgba(59, 130, 246, 0.2), 10px 10px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* より鮮やかな統計カード */
+.stat-card-vibrant {
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card-vibrant::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #10b981);
+  opacity: 0.8;
+}

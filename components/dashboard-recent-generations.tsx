@@ -19,9 +19,9 @@ export async function RecentGenerations() {
     .limit(5)
 
   return (
-    <Card className="paint-card">
+    <Card className="paint-card paint-card-gradient-pink">
       <CardHeader>
-        <CardTitle className="paint-text text-lg sm:text-xl md:text-2xl whitespace-nowrap min-w-0">
+        <CardTitle className="paint-text text-lg sm:text-xl md:text-2xl min-w-0">
           最近の生成
         </CardTitle>
         <CardDescription>
@@ -36,9 +36,9 @@ export async function RecentGenerations() {
         ) : (
           <div className="space-y-2">
             {recentGenerations.map((generation) => (
-              <div key={generation.id} className="flex items-center space-x-2">
-                <Clock className="h-4 w-4 text-accent" />
-                <span className="text-sm">
+              <div key={generation.id} className="flex items-center space-x-2 p-2 rounded-lg bg-white/50 backdrop-blur-sm">
+                <Clock className="h-4 w-4 text-pink-600" />
+                <span className="text-sm font-medium">
                   {new Date(generation.created_at).toLocaleDateString('ja-JP')}
                 </span>
               </div>
