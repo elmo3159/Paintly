@@ -163,7 +163,7 @@
     font-size: var(--font-size-body);
     line-height: 1.7;
     color: var(--fg);
-    background: var(--bg);
+    /* background: var(--bg); */ /* 背景画像を表示するためコメントアウト */
     overflow: hidden;
     position: relative;
   }
