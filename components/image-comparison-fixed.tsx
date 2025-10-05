@@ -3,7 +3,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Download, Maximize2 } from 'lucide-react'
+import { Download, Maximize2, X } from 'lucide-react'
 import { ScreenReaderOnly, AccessibleButton } from '@/components/accessibility-helpers'
 
 // Client-side error reporting function
@@ -162,44 +162,26 @@ export function ImageComparisonFixed({
     }
   }
 
-  const toggleFullscreen = async () => {
-    try {
-      console.log('🔄 Toggling fullscreen mode')
+  const toggleFullscreen = () => {
+    console.log('🔄 Toggling fullscreen mode')
+    setIsFullscreen(!isFullscreen)
 
-      if (!document.fullscreenElement) {
-        const element = document.getElementById('comparison-container-fixed')
-        if (!element) {
-          throw new Error('Comparison container element not found')
-        }
-
-        if (!element.requestFullscreen) {
-          throw new Error('Fullscreen API is not supported in this browser')
-        }
-
-        await element.requestFullscreen()
-        setIsFullscreen(true)
-        console.log('✅ Entered fullscreen mode')
-      } else {
-        if (!document.exitFullscreen) {
-          throw new Error('Exit fullscreen is not supported in this browser')
-        }
-
-        await document.exitFullscreen()
-        setIsFullscreen(false)
-        console.log('✅ Exited fullscreen mode')
-      }
-    } catch (error) {
-      const fullscreenError = error instanceof Error ? error : new Error('Unknown fullscreen error')
-      console.error('❌ Fullscreen toggle failed:', fullscreenError)
-      reportClientError(fullscreenError, 'Fullscreen toggle error')
-
-      // Reset fullscreen state if operation failed
-      setIsFullscreen(false)
-
-      // Show user-friendly error message
-      alert('フルスクリーン機能の切り替えに失敗しました。ブラウザがフルスクリーンをサポートしていない可能性があります。')
+    // フルスクリーン時はスクロールを無効化
+    if (!isFullscreen) {
+      document.body.style.overflow = 'hidden'
+      console.log('✅ Entered fullscreen mode')
+    } else {
+      document.body.style.overflow = ''
+      console.log('✅ Exited fullscreen mode')
     }
   }
+
+  // フルスクリーン終了時のクリーンアップ
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [])
 
   const updateSliderPosition = useCallback((clientX: number) => {
     try {
@@ -479,10 +461,104 @@ export function ImageComparisonFixed({
     )
   }
 
+  // フルスクリーンモーダル表示
+  if (isFullscreen) {
+    return (
+      <div className="fixed inset-0 z-[9999] bg-black flex flex-col">
+        {/* 閉じるボタン - 左上 */}
+        <button
+          onClick={toggleFullscreen}
+          className="absolute top-4 left-4 z-[10000] bg-white rounded-full p-3 shadow-lg hover:bg-gray-100 transition-colors"
+          aria-label="フルスクリーンを閉じる"
+          style={{ touchAction: 'manipulation' }}
+        >
+          <X className="h-6 w-6 text-gray-900" />
+        </button>
+
+        {/* スクリーンリーダー用の説明 */}
+        <ScreenReaderOnly>
+          左上の閉じるボタンをタップしてフルスクリーンを終了できます。スライダーを左右にドラッグして画像を比較してください。
+        </ScreenReaderOnly>
+
+        {/* 全画面スライダー */}
+        <div className="flex-1 flex items-center justify-center">
+          <div
+            ref={containerRef}
+            className="relative w-full h-full cursor-col-resize select-none"
+            style={{ 
+              touchAction: 'none',
+              userSelect: 'none'
+            }}
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
+            onPointerDown={handlePointerDown}
+            onKeyDown={handleKeyDown}
+            role="slider"
+            aria-label="画像比較スライダー（フルスクリーン）"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={sliderPosition}
+            aria-valuetext={`比較位置: ${Math.round(sliderPosition)}%`}
+            tabIndex={0}
+          >
+            {/* 生成画像背景（右側） */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url(${generatedImage})`,
+                backgroundSize: 'contain',
+                backgroundPosition: 'center'
+              }}
+            />
+
+            {/* 元画像（左側・クリップマスク） */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url(${originalImage})`,
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
+                clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`
+              }}
+            />
+
+            {/* スライダーライン */}
+            <div
+              className="absolute top-0 bottom-0 w-1 bg-white shadow-lg pointer-events-none z-10"
+              style={{ left: `${sliderPosition}%` }}
+            >
+              {/* スライダーハンドル - モバイル最適化（大きめ） */}
+              <div
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-full shadow-lg border-2 border-gray-300 cursor-col-resize pointer-events-auto z-20 flex items-center justify-center"
+                style={{ 
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                  touchAction: 'none'
+                }}
+                onMouseDown={handleMouseDown}
+                onTouchStart={handleTouchStart}
+                onPointerDown={handlePointerDown}
+              >
+                <div className="w-1 h-8 bg-gray-400 rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 下部の説明テキスト */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg">
+          <p className="text-xs font-medium text-gray-900 text-center">
+            左側：元画像 | 右側：生成画像
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  // 通常表示
   return (
     <Card 
       id="comparison-container-fixed" 
-      className={isFullscreen ? 'fixed inset-0 z-50' : ''}
+      className={isFullscreen ? 'fixed inset-0 z-50 bg-white' : 'bg-white'}
       role="region"
       aria-labelledby="comparison-title"
       aria-describedby="comparison-description"
@@ -527,10 +603,10 @@ export function ImageComparisonFixed({
         <ScreenReaderOnly id="comparison-description">
           左右にドラッグまたは矢印キーで画像を比較できます。左が元画像、右が生成画像です。
         </ScreenReaderOnly>
-        <div className="w-full max-w-4xl mx-auto bg-gray-100 rounded-lg overflow-hidden">
+        <div className="w-full max-w-4xl mx-auto bg-white rounded-lg overflow-hidden border-4 border-gray-900 shadow-[4px_4px_0_0_hsl(18,68%,48%)]">
           <div
             ref={containerRef}
-            className="relative w-full h-96 cursor-col-resize select-none bg-gray-200"
+            className="relative w-full h-96 cursor-col-resize select-none bg-white"
             onMouseDown={handleMouseDown}
             onTouchStart={handleTouchStart}
             onPointerDown={handlePointerDown}
@@ -589,7 +665,7 @@ export function ImageComparisonFixed({
             </div>
           </div>
         </div>
-        <div className="mt-4 text-center text-sm text-muted-foreground space-y-1">
+        <div className="mt-4 text-center text-sm text-gray-900 space-y-1 bg-white p-4 rounded-lg border-2 border-gray-900">
           <p>スライダーを左右にドラッグして比較してください</p>
           <p className="text-xs font-medium">
             左側：元画像 | 右側：生成画像（アフター）

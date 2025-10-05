@@ -65,6 +65,7 @@ export default function CustomerPage() {
   const [isEditing, setIsEditing] = useState(false)
   const [saving, setSaving] = useState(false)
   const [isEditingTitle, setIsEditingTitle] = useState(false)
+  const [originalTitle, setOriginalTitle] = useState<string>('')
   const titleInputRef = useRef<HTMLInputElement>(null)
   
   // Delete functionality states
@@ -377,26 +378,50 @@ export default function CustomerPage() {
         <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="flex items-center justify-center">
             {isEditingTitle ? (
-              <input
-                ref={titleInputRef}
-                value={customer.title}
-                onChange={(e) => setCustomer(prev => prev ? ({ ...prev, title: e.target.value }) : null)}
-                className="text-3xl font-bold tracking-tight h-12 text-2xl bg-transparent border-0 border-b-2 border-gray-300 rounded-none px-0 focus:border-primary"
-                onKeyPress={async (e) => {
-                  if (e.key === 'Enter') {
+              <div className="flex items-center gap-1 md:gap-2 w-full max-w-2xl px-1 md:px-4">
+                <input
+                  ref={titleInputRef}
+                  value={customer.title}
+                  onChange={(e) => setCustomer(prev => prev ? ({ ...prev, title: e.target.value }) : null)}
+                  className="flex-1 text-xl md:text-2xl font-bold tracking-tight bg-transparent border-0 border-b-2 border-gray-300 rounded-none px-1 md:px-2 py-1 focus:border-primary focus:outline-none min-w-0"
+                  onKeyPress={async (e) => {
+                    if (e.key === 'Enter') {
+                      await handleSaveCustomer()
+                      setIsEditingTitle(false)
+                    }
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <Button
+                  size="sm"
+                  variant="neobrutalist"
+                  onClick={async (e) => {
+                    e.stopPropagation()
                     await handleSaveCustomer()
                     setIsEditingTitle(false)
-                  }
-                }}
-                onBlur={async () => {
-                  await handleSaveCustomer()
-                  setIsEditingTitle(false)
-                }}
-              />
+                  }}
+                  className="shrink-0 h-8 w-8 p-0"
+                >
+                  <Save className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setCustomer(prev => prev ? ({ ...prev, title: originalTitle }) : null)
+                    setIsEditingTitle(false)
+                  }}
+                  className="shrink-0 h-8 w-8 p-0"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
             ) : (
               <h1
-                className="text-3xl font-bold tracking-tight cursor-pointer hover:text-primary flex items-center gap-2 justify-center"
+                className="text-xl md:text-3xl font-bold tracking-tight cursor-pointer hover:text-primary flex items-center gap-2 justify-center px-4"
                 onClick={() => {
+                  setOriginalTitle(customer.title)
                   setIsEditingTitle(true)
                   setTimeout(() => {
                     if (titleInputRef.current) {

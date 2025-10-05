@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
-import { ErrorBoundary } from '@/components/error-boundary'
+// import { ErrorBoundary } from '@/components/error-boundary'
 import { fontClassNames } from '@/lib/fonts'
 import Script from 'next/script'
 
@@ -81,7 +81,7 @@ export default function RootLayout({
           }}
         />
 
-        <ErrorBoundary>
+        {/* <ErrorBoundary> */}
           <ThemeProvider
             attribute="class"
             defaultTheme="light"
@@ -91,7 +91,7 @@ export default function RootLayout({
             {children}
             <div id="online-status" className="fixed bottom-4 left-4 bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-lg hidden z-50" />
           </ThemeProvider>
-        </ErrorBoundary>
+        {/* </ErrorBoundary> */}
         <Script
           id="structured-data"
           type="application/ld+json"

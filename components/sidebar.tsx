@@ -63,13 +63,8 @@ export function Sidebar() {
   const [customers, setCustomers] = useState<Customer[]>([])
   const [planInfo, setPlanInfo] = useState<PlanInfo | null>(null)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
-  // レスポンシブな初期状態: デスクトップのみ開く
-  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return window.innerWidth >= 768 // md breakpoint
-    }
-    return false
-  })
+  // レスポンシブな初期状態: Hydrationエラー回避のため初期値はfalse
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [isSettingsExpanded, setIsSettingsExpanded] = useState(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
@@ -381,6 +376,9 @@ export function Sidebar() {
       }
     }
 
+    // 初回マウント時に実行してHydrationエラーを回避
+    handleResize()
+
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', handleResize)
     }
@@ -424,7 +422,7 @@ export function Sidebar() {
             width={142}
             height={80}
             priority={true}
-            className="h-20 w-auto object-contain"
+            className="h-12 w-auto object-contain"
             sizes="(max-width: 768px) 142px, 142px"
           />
         </Link>

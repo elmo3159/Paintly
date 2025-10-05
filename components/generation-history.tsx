@@ -60,7 +60,7 @@ interface GenerationHistoryProps {
 export function GenerationHistory({ customerId, onSliderView, refreshTrigger, latestGenerationId }: GenerationHistoryProps) {
   const [history, setHistory] = useState<GenerationHistoryItem[]>([])
   const [loading, setLoading] = useState(true)
-  const [selectedItem, setSelectedItem] = useState<GenerationHistoryItem | null>(null)
+  // Removed selectedItem state - using unified slider view instead
   const supabase = createClient()
 
   useEffect(() => {
@@ -81,16 +81,7 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
     loadHistory()
   }, [customerId, refreshTrigger])
 
-  // Auto-open detail view for latest generation
-  useEffect(() => {
-    if (latestGenerationId && history.length > 0) {
-      const targetItem = history.find(item => item.id === latestGenerationId)
-      if (targetItem) {
-        console.log('🎯 Auto-opening detail view for generation:', latestGenerationId)
-        setSelectedItem(targetItem)
-      }
-    }
-  }, [latestGenerationId, history])
+  // Removed auto-open detail view - using unified slider view instead
 
   const fetchHistory = async () => {
     setLoading(true)
@@ -250,15 +241,7 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
     }
   }
 
-  // Enhanced setSelectedItem with detailed logging
-  const handleSetSelectedItem = (item: GenerationHistoryItem) => {
-    console.log('🎯 SETTING SELECTED ITEM - Full Debug:')
-    console.log('  itemId:', item.id)
-    console.log('  hasPrompt:', !!item.prompt)
-    console.log('  generated_image_url:', item.generated_image_url)
-    console.log('  original_image_url:', item.original_image_url)
-    setSelectedItem(item)
-  }
+  // Removed handleSetSelectedItem - using unified slider view instead
 
   // 🆕 New function: Navigate to slider comparison view
   const navigateToSlider = (item: GenerationHistoryItem) => {
@@ -408,17 +391,7 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
                               <Eye className="h-4 w-4 mr-1" />
                               スライダーで比較
                             </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleSetSelectedItem(item)}
-                              aria-label={`${new Date(item.created_at).toLocaleDateString('ja-JP')}の生成詳細を表示`}
-                              className="w-full sm:w-auto"
-                            >
-                              <Eye className="h-4 w-4 mr-1" />
-                              詳細
-                            </Button>
-                            <Button
+<Button
                               size="sm"
                               variant="outline"
                               onClick={() => downloadImage(
@@ -443,136 +416,6 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
         </CardContent>
       </Card>
 
-      {/* Detail Modal - Fixed to use generated_image_url and original_image_url directly */}
-      {selectedItem && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <Card className="max-w-4xl w-full max-h-[90vh] overflow-auto">
-            <CardHeader>
-              <CardTitle>生成画像詳細</CardTitle>
-              <Button
-                className="absolute top-4 right-4"
-                variant="ghost"
-                size="sm"
-                onClick={() => setSelectedItem(null)}
-              >
-                ✕
-              </Button>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {(() => {
-                // 🔧 Fixed: Use direct URL fields instead of fal_response
-                const validOriginalUrl = selectedItem.original_image_url
-                const validGeneratedUrl = selectedItem.generated_image_url
-
-                console.log('🔍 ImageComparison Debug - Fixed URLs:');
-                console.log('  📁 validOriginalUrl:', validOriginalUrl);
-                console.log('  📁 validGeneratedUrl:', validGeneratedUrl);
-                console.log('  🎮 willShowComparison:', !!(validGeneratedUrl && validOriginalUrl));
-
-                if (validGeneratedUrl && validOriginalUrl) {
-                  return (
-                    <ImageComparisonFixed
-                      originalImage={validOriginalUrl}
-                      generatedImage={validGeneratedUrl}
-                      title="ビフォーアフター比較"
-                      allowDownload={true}
-                    />
-                  );
-                } else if (validGeneratedUrl) {
-                  return (
-                    <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted">
-                      <Image
-                        src={validGeneratedUrl}
-                        alt="生成画像"
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div className="text-center p-8 text-muted-foreground">
-                      <p>画像の読み込みに問題があります</p>
-                      <p className="text-xs mt-2">
-                        original_image_url: {selectedItem.original_image_url || 'なし'}<br/>
-                        generated_image_url: {selectedItem.generated_image_url || 'なし'}
-                      </p>
-                    </div>
-                  );
-                }
-              })()}
-              
-              {/* 🆕 Enhanced action buttons in modal */}
-              <div className="flex justify-center space-x-2 pb-4">
-                <Button
-                  onClick={() => navigateToSlider(selectedItem)}
-                  className="bg-blue-600 hover:bg-blue-700"
-                >
-                  <Eye className="h-4 w-4 mr-2" />
-                  スライダーで詳細比較
-                </Button>
-                {selectedItem.generated_image_url && (
-                  <Button
-                    variant="outline"
-                    onClick={() => downloadImage(
-                      selectedItem.generated_image_url || '',
-                      `paintly_${selectedItem.id}.png`
-                    )}
-                  >
-                    <Download className="h-4 w-4 mr-2" />
-                    ダウンロード
-                  </Button>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <p className="text-sm">
-                  <strong>生成日時:</strong> {new Date(selectedItem.created_at).toLocaleString('ja-JP')}
-                </p>
-                <p className="text-sm">
-                  <strong>ステータス:</strong> {selectedItem.status === 'completed' ? '完了' : selectedItem.status}
-                </p>
-                <div className="text-sm">
-                  <strong>設定内容:</strong>
-                  <div className="mt-2 p-2 bg-muted rounded text-xs space-y-1">
-                    {selectedItem.wall_color && selectedItem.wall_color !== '変更なし' && (
-                      <div>壁の色: {selectedItem.wall_color}</div>
-                    )}
-                    {selectedItem.roof_color && selectedItem.roof_color !== '変更なし' && (
-                      <div>屋根の色: {selectedItem.roof_color}</div>
-                    )}
-                    {selectedItem.door_color && selectedItem.door_color !== '変更なし' && (
-                      <div>ドアの色: {selectedItem.door_color}</div>
-                    )}
-                    {selectedItem.weather && (
-                      <div>天候: {selectedItem.weather}</div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Prompt display */}
-                {selectedItem.prompt ? (
-                  <div className="text-sm">
-                    <strong>生成プロンプト:</strong>
-                    <div className="mt-2 p-3 bg-slate-100 border rounded text-xs font-mono max-h-40 overflow-y-auto">
-                      <pre className="whitespace-pre-wrap break-words">
-                        {selectedItem.prompt}
-                      </pre>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-sm">
-                    <strong>⚠️ プロンプト情報なし:</strong>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      このレコードにはプロンプトデータが保存されていません
-                    </p>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
     </div>
   )
 }
