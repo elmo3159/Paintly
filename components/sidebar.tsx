@@ -433,37 +433,40 @@ export function Sidebar() {
       <div className="flex flex-col h-[calc(100vh-56px)] overflow-hidden">
         {/* 固定部分 - flex-shrink-0でサイズ固定 */}
         <div className="p-1 space-y-1 flex-shrink-0">
-          <button
+          <Button
             onClick={closeSidebar}
-            className="w-full flex items-center justify-center p-1 text-xs text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+            variant="neobrutalist"
+            className="w-full text-xs h-auto py-1.5"
+            size="sm"
           >
-            <X className="h-2.5 w-2.5 mr-1" />
+            <X className="h-3 w-3 mr-1.5" />
             サイドバーを閉じる
-          </button>
+          </Button>
 
-          <button
+          <Button
             onClick={handleNewCustomer}
-            className="w-full flex items-center justify-center p-1.5 text-xs bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+            variant="neobrutalist"
+            className="w-full text-xs h-auto py-2"
+            size="sm"
           >
-            <Plus className="h-2.5 w-2.5 mr-1" />
+            <Plus className="h-3 w-3 mr-1.5" />
             新規顧客ページ作成
-          </button>
+          </Button>
 
           <div className="space-y-2">
             <h4 className="text-xs font-medium text-gray-700">ナビゲーション</h4>
             <nav className="space-y-1">
-              <Link
-                href="/dashboard"
-                className={cn(
-                  "flex items-center space-x-2 px-2 py-1.5 text-sm rounded-md transition-colors",
-                  pathname === '/dashboard'
-                    ? "bg-primary text-primary-foreground"
-                    : "text-gray-600 hover:bg-gray-100"
-                )}
+              <Button
+                asChild
+                variant="neobrutalist"
+                className="w-full text-xs h-auto py-1.5 justify-start"
+                size="sm"
               >
-                <Home className="h-3 w-3" />
-                <span>ダッシュボード</span>
-              </Link>
+                <Link href="/dashboard" className="flex items-center">
+                  <Home className="h-3 w-3 mr-2" />
+                  <span>ダッシュボード</span>
+                </Link>
+              </Button>
             </nav>
           </div>
         </div>

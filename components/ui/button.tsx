@@ -18,6 +18,10 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        neobrutalist:
+          "border-2 border-gray-900 bg-white text-gray-900 shadow-[2px_2px_0_0_rgba(0,0,0,0.1)] transition-all duration-150 hover:bg-gray-50 hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[4px_4px_0_0_hsl(18,68%,48%)] font-semibold",
+        neobrutalistDestructive:
+          "border-2 border-red-900 bg-white text-red-900 shadow-[2px_2px_0_0_rgba(220,38,38,0.2)] transition-all duration-150 hover:bg-red-50 hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[4px_4px_0_0_hsl(0,84%,60%)] font-semibold",
       },
       size: {
         default: "h-10 px-4 py-2",

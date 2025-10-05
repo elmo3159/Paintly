@@ -13,7 +13,7 @@ import { ImageComparisonFixed } from '@/components/image-comparison-fixed'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-// Tabs component removed - using custom Neo-brutalist tabs
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, Sparkles, AlertCircle, Edit, Save, X, Trash2 } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
@@ -472,47 +472,15 @@ export default function CustomerPage() {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 py-6 pb-8">
-        <div className="space-y-6">
-          {/* Neo-brutalist タブスタイル */}
-          <div className="flex gap-2 border-b-4 border-black pb-2">
-            <button
-              onClick={() => setActiveTab('generation')}
-              className={cn(
-                "px-6 py-3 font-bold text-sm transition-all border-4 border-black",
-                activeTab === 'generation'
-                  ? "bg-black text-white"
-                  : "bg-white text-black hover:bg-gray-100"
-              )}
-            >
-              画像生成
-            </button>
-            <button
-              onClick={() => setActiveTab('history')}
-              className={cn(
-                "px-6 py-3 font-bold text-sm transition-all border-4 border-black",
-                activeTab === 'history'
-                  ? "bg-black text-white"
-                  : "bg-white text-black hover:bg-gray-100"
-              )}
-            >
-              履歴
-            </button>
-            <button
-              onClick={() => setActiveTab('info')}
-              className={cn(
-                "px-6 py-3 font-bold text-sm transition-all border-4 border-black",
-                activeTab === 'info'
-                  ? "bg-black text-white"
-                  : "bg-white text-black hover:bg-gray-100"
-              )}
-            >
-              顧客情報
-            </button>
-          </div>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="generation">画像生成</TabsTrigger>
+            <TabsTrigger value="history">履歴</TabsTrigger>
+            <TabsTrigger value="info">顧客情報</TabsTrigger>
+          </TabsList>
 
           {/* Generation Tab */}
-          {activeTab === 'generation' && (
-            <div className="space-y-6">
+          <TabsContent value="generation" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="space-y-6">
                 <Card className="bg-white/90 backdrop-blur-sm">
@@ -581,6 +549,7 @@ export default function CustomerPage() {
                       disabled={generating || !mainImage}
                       className="w-full"
                       size="lg"
+                      variant="neobrutalist"
                     >
                       {generating ? (
                         <>
@@ -606,21 +575,20 @@ export default function CustomerPage() {
                 />
               </div>
             </div>
-            </div>
-          )}
+        </TabsContent>
 
-          {/* History Tab */}
-          {activeTab === 'history' && (
-            <GenerationHistory
-              customerId={customerId}
-              onSliderView={openSliderView}
-              refreshTrigger={historyRefresh}
-              latestGenerationId={latestGenerationId}
-            />
-          )}
+        {/* History Tab */}
+        <TabsContent value="history">
+          <GenerationHistory
+            customerId={customerId}
+            onSliderView={openSliderView}
+            refreshTrigger={historyRefresh}
+            latestGenerationId={latestGenerationId}
+          />
+        </TabsContent>
 
-          {/* Customer Info Tab */}
-          {activeTab === 'info' && (
+        {/* Customer Info Tab */}
+        <TabsContent value="info">
             <Card className="bg-white/90 backdrop-blur-sm">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
@@ -636,6 +604,7 @@ export default function CustomerPage() {
                         onClick={handleSaveCustomer}
                         disabled={saving}
                         size="sm"
+                        variant="neobrutalist"
                       >
                         {saving ? (
                           <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -655,13 +624,13 @@ export default function CustomerPage() {
                     </>
                   ) : (
                     <>
-                      <Button onClick={handleEditCustomer} size="sm">
+                      <Button onClick={handleEditCustomer} size="sm" variant="neobrutalist">
                         <Edit className="h-4 w-4 mr-2" />
                         編集
                       </Button>
-                      <Button 
-                        onClick={handleDeleteCustomer} 
-                        variant="destructive" 
+                      <Button
+                        onClick={handleDeleteCustomer}
+                        variant="neobrutalistDestructive"
                         size="sm"
                       >
                         <Trash2 className="h-4 w-4 mr-2" />
@@ -760,8 +729,8 @@ export default function CustomerPage() {
                 </div>
               </CardContent>
             </Card>
-          )}
-        </div>
+        </TabsContent>
+      </Tabs>
       </div>
 
       {/* Enhanced Loading Component */}
