@@ -315,6 +315,8 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
                             alt={`生成画像 - ${new Date(item.created_at).toLocaleDateString('ja-JP')}作成`}
                             fill
                             className="object-cover"
+                            priority={item.id === latestGenerationId}
+                            unoptimized
                           />
                         ) : item.status === 'processing' ? (
                           <div className="flex items-center justify-center h-full">

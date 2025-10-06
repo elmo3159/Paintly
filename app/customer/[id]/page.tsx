@@ -195,6 +195,12 @@ export default function CustomerPage() {
 
       // Reload customer data
       await loadCustomer()
+
+      // Trigger sidebar update
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('customerUpdated'))
+      }
+
       setIsEditing(false)
     } catch (error: any) {
       console.error('Error saving customer:', error)
@@ -321,6 +327,9 @@ export default function CustomerPage() {
       if (result.success && result.historyId) {
         setLatestGenerationId(result.historyId)
         setHistoryRefresh(prev => prev + 1)
+
+        // Wait for history to refresh before switching tabs
+        await new Promise(resolve => setTimeout(resolve, 1000))
         setActiveTab('history')
       } else {
         throw new Error(result.message || 'Unknown error')
@@ -444,14 +453,14 @@ export default function CustomerPage() {
 
       {/* Slider View */}
       {showSliderView && sliderData && (
-        <div className="fixed inset-0 bg-background z-50 overflow-y-auto">
+        <div className="fixed inset-0 bg-white z-50 overflow-y-auto">
           <div className="container mx-auto px-4 py-6 min-h-full">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold">ビフォーアフター比較</h2>
+            <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between mb-6 -mx-4 sticky top-0 z-10 shadow-sm">
+              <h2 className="text-2xl font-bold text-gray-900">ビフォーアフター比較</h2>
               <Button
                 variant="outline"
                 onClick={closeSliderView}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 bg-white"
               >
                 <X className="h-4 w-4" />
                 閉じる
