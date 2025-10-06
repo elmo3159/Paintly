@@ -16,14 +16,6 @@ const config: Config = {
       },
     },
     extend: {
-      height: {
-        // Safari下部バー対応: dvh単位を使用
-        screen: ['100vh', '100dvh'],
-      },
-      minHeight: {
-        // Safari下部バー対応: dvh単位を使用
-        screen: ['100vh', '100dvh'],
-      },
       fontFamily: {
         sans: ['var(--font-noto-sans-jp)', 'var(--font-inter)', 'system-ui', 'sans-serif'],
         display: ['var(--font-inter)', 'system-ui', 'sans-serif'],

@@ -1003,6 +1003,18 @@
    - 下部コンテンツがSafariバーに隠れない
    ============================================ */
 @layer utilities {
+  /* Safari下部バー対応: h-screen/min-h-screenを100dvhに上書き */
+  .h-screen {
+    height: 100vh; /* フォールバック */
+    height: 100dvh; /* Safari下部バー対応 */
+  }
+
+  .min-h-screen {
+    min-height: 100vh; /* フォールバック */
+    min-height: 100dvh; /* Safari下部バー対応 */
+  }
+
+  /* Safe Area Insets */
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom);
   }
