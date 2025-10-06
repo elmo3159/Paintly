@@ -224,10 +224,9 @@ export default function CustomerPage() {
         window.dispatchEvent(new Event('customerUpdated'))
       }
 
-      // バックグラウンドで最新データを取得（500ms遅延でキャッシュ問題を回避）
-      setTimeout(() => {
-        loadCustomer()
-      }, 500)
+      // 注意：保存成功後はloadCustomer()を呼ばない
+      // 理由：Supabaseから取得したデータが楽観的更新を上書きしてしまうため
+      // データベース保存が成功している場合、楽観的更新のデータが正しい
     } catch (error: any) {
       console.error('Error saving customer:', error)
       showError(error.message || '顧客情報の保存に失敗しました', 'api')
