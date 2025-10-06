@@ -203,15 +203,27 @@ export default function CustomerPage() {
 
       if (error) throw error
 
-      // Reload customer data
-      await loadCustomer()
+      // 楽観的更新：保存した値で即座にcustomerステートを更新（視覚的な即時反映）
+      setCustomer({
+        ...customer,
+        title: customer.title,  // タイトルも明示的に含める
+        customer_name: editForm.customer_name || null,
+        customer_address: editForm.customer_address || null,
+        customer_phone: editForm.customer_phone || null,
+        customer_email: editForm.customer_email || null,
+        description: editForm.description || null
+      })
+
+      // 編集モードを終了（customerステートが既に更新されているので即座に反映）
+      setIsEditing(false)
+
+      // バックグラウンドで最新データを取得（念のため）
+      loadCustomer()
 
       // Trigger sidebar update
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new Event('customerUpdated'))
       }
-
-      setIsEditing(false)
     } catch (error: any) {
       console.error('Error saving customer:', error)
       showError(error.message || '顧客情報の保存に失敗しました', 'api')
