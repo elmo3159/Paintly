@@ -351,11 +351,15 @@ export default function CustomerPage() {
 
       if (result.success && result.historyId) {
         setLatestGenerationId(result.historyId)
-        setHistoryRefresh(prev => prev + 1)
 
-        // Wait for history to refresh before switching tabs
-        await new Promise(resolve => setTimeout(resolve, 1000))
+        // 先に履歴タブに切り替え（GenerationHistoryコンポーネントを確実にマウント）
         setActiveTab('history')
+
+        // タブ切り替え後、少し待ってから履歴をリフレッシュ
+        await new Promise(resolve => setTimeout(resolve, 300))
+
+        // 履歴コンポーネントがマウントされた状態でリフレッシュトリガーを更新
+        setHistoryRefresh(prev => prev + 1)
       } else {
         throw new Error(result.message || 'Unknown error')
       }
