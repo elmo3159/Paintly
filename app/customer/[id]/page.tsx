@@ -171,6 +171,16 @@ export default function CustomerPage() {
   }
 
   const handleEditCustomer = () => {
+    // 編集モードに入る前に、最新のcustomerデータでフォームを更新
+    if (customer) {
+      setEditForm({
+        customer_name: customer.customer_name || '',
+        customer_address: customer.customer_address || '',
+        customer_phone: customer.customer_phone || '',
+        customer_email: customer.customer_email || '',
+        description: customer.description || ''
+      })
+    }
     setIsEditing(true)
   }
 
