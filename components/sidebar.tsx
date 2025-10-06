@@ -428,7 +428,7 @@ export function Sidebar() {
         </Link>
       </div>
 
-      <div className="flex flex-col h-[calc(100vh-56px)] pb-safe-8 overflow-hidden">
+      <div className="flex flex-col h-[calc(100dvh-56px)] overflow-hidden">
         {/* 固定部分 - flex-shrink-0でサイズ固定 */}
         <div className="p-1 space-y-1 flex-shrink-0">
           <Button
@@ -507,7 +507,7 @@ export function Sidebar() {
             className="flex-1 px-4 pb-2 customer-list-scroll overflow-y-auto"
             style={{
               minHeight: 0,
-              maxHeight: 'calc(100vh - 400px)',
+              maxHeight: 'calc(100dvh - 400px)',
               height: 'auto',
               scrollbarWidth: 'thin',
               scrollbarColor: '#94a3b8 #e2e8f0',
@@ -552,7 +552,7 @@ export function Sidebar() {
         </div>
 
         {/* プラン情報 - flex-shrink-0で固定 */}
-        <div className="border-t p-2 space-y-2 flex-shrink-0" style={{ borderColor: '#e5e5e5' }}>
+        <div className="border-t p-2 pb-safe-4 space-y-2 flex-shrink-0" style={{ borderColor: '#e5e5e5' }}>
           <div className="bg-gray-50 rounded-lg p-2">
             <div className="flex items-center justify-between text-xs mb-2">
               <span className="font-medium">
