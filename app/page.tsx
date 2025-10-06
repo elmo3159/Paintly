@@ -1,28 +1,70 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { 
-  Palette, 
-  Paintbrush, 
-  Droplet, 
-  Star, 
-  Zap, 
-  TrendingUp, 
-  CheckCircle, 
-  ArrowRight, 
+import {
+  Palette,
+  Paintbrush,
+  Droplet,
+  Star,
+  Zap,
+  TrendingUp,
+  CheckCircle,
+  ArrowRight,
   Users,
   Target,
   Smartphone,
   Clock,
   Award,
-  Building2
+  Building2,
+  Loader2
 } from 'lucide-react'
 
 export default function HomePage() {
+  const router = useRouter()
+  const supabase = createClient()
+  const [isChecking, setIsChecking] = useState(true)
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+
+        if (user) {
+          // ログイン済みの場合はダッシュボードへリダイレクト
+          router.push('/dashboard')
+        } else {
+          // 未ログインの場合はランディングページを表示
+          setIsChecking(false)
+        }
+      } catch (error) {
+        console.error('Auth check error:', error)
+        // エラーが発生してもランディングページを表示
+        setIsChecking(false)
+      }
+    }
+
+    checkAuth()
+  }, [router, supabase.auth])
+
+  // 認証チェック中はローディング表示
+  if (isChecking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-primary/10">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-12 w-12 animate-spin text-primary" />
+          <p className="text-muted-foreground">読み込み中...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-primary/10 relative overflow-x-hidden">
       {/* 背景装飾 */}
