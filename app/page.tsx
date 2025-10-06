@@ -85,72 +85,63 @@ export default function HomePage() {
 
       <div className="relative z-10">
         {/* ヒーローセクション */}
-        <section className="container mx-auto px-4 pt-20 pb-32">
-          <div className="max-w-6xl mx-auto text-center space-y-12">
+        <section className="container mx-auto px-4 pt-6 pb-8">
+          <div className="max-w-6xl mx-auto text-center space-y-4">
             {/* ロゴとブランディング */}
-            <div className="flex justify-center mb-8">
-              <Image 
-                src="/logo.png" 
-                alt="Paintly" 
+            <div className="flex justify-center mb-2">
+              <Image
+                src="/logo.png"
+                alt="Paintly"
                 width={142}
                 height={80}
                 priority={true}
-                className="h-40 w-auto object-contain"
+                className="h-24 md:h-32 w-auto object-contain"
                 sizes="(max-width: 768px) 142px, 142px"
               />
             </div>
-            
-            {/* メインタイトル */}
-            <div className="space-y-6">
-              <Badge className="bg-gradient-to-r from-primary to-accent text-white border-0 px-6 py-2 text-lg font-bold shadow-lg">
-                <Star className="h-4 w-4 mr-2" />
-                塗装業界革命
-              </Badge>
 
-              <h1 className="text-2xl md:text-4xl font-bold text-foreground px-4 py-2 md:px-6 md:py-3 rounded-lg bg-white/80 backdrop-blur-sm shadow-lg inline-block">
+            {/* メインタイトル */}
+            <div className="space-y-4">
+              <h1 className="text-xl md:text-4xl font-bold text-foreground px-3 py-2 md:px-6 md:py-3 rounded-lg bg-white/80 backdrop-blur-sm shadow-lg inline-block">
                 営業成約率を劇的に向上させる<br />
-                AI塗装シミュレーション
+                塗装シミュレーション
               </h1>
 
               {/* スライダーデモ動画 */}
-              <div className="max-w-3xl mx-auto mt-8">
-                <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-3 md:p-6">
-                  <div className="relative aspect-video rounded-xl overflow-hidden shadow-lg ring-2 ring-primary/20">
-                    <video
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      className="w-full h-full object-cover"
-                    >
-                      <source src="/demo/slider-demo.mp4" type="video/mp4" />
-                      お使いのブラウザは動画に対応していません。
-                    </video>
-                  </div>
-                  <p className="text-xs md:text-sm text-muted-foreground text-center mt-3 font-medium">
-                    ✨ スライダーで簡単にビフォー・アフターを比較
-                  </p>
-                </div>
+              <div className="w-full mt-4">
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full aspect-video object-cover"
+                >
+                  <source src="/demo/slider-demo.mp4" type="video/mp4" />
+                  お使いのブラウザは動画に対応していません。
+                </video>
+                <p className="text-xs md:text-sm text-muted-foreground text-center mt-2 font-medium">
+                  ✨ スライダーで簡単にビフォー・アフターを比較
+                </p>
               </div>
 
-              <p className="text-base md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto mt-6">
+              <p className="text-sm md:text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto mt-3">
                 建物の写真を撮るだけで、瞬時に塗装後の仕上がりを生成。<br />
                 お客様の理想を<span className="font-bold text-primary">その場で可視化</span>し、成約率を大幅にアップします。
               </p>
             </div>
 
             {/* CTAボタン */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mt-4">
               <Link href="/auth/signup">
-                <Button className="paint-button text-lg md:text-xl px-10 md:px-12 py-5 md:py-6 h-auto font-bold shadow-2xl w-full sm:w-auto">
-                  <Star className="mr-2 md:mr-3 h-5 md:h-6 w-5 md:w-6" />
+                <Button className="paint-button text-base md:text-lg px-8 md:px-10 py-3 md:py-4 h-auto font-bold shadow-2xl w-full sm:w-auto">
+                  <Star className="mr-2 h-4 md:h-5 w-4 md:w-5" />
                   無料で始める
-                  <ArrowRight className="ml-2 md:ml-3 h-5 md:h-6 w-5 md:w-6" />
+                  <ArrowRight className="ml-2 h-4 md:h-5 w-4 md:w-5" />
                 </Button>
               </Link>
               <Link href="/auth/signin">
-                <Button variant="outline" className="text-lg md:text-xl px-10 md:px-12 py-5 md:py-6 h-auto font-bold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 w-full sm:w-auto">
-                  <Palette className="mr-2 md:mr-3 h-5 md:h-6 w-5 md:w-6" />
+                <Button variant="outline" className="text-base md:text-lg px-8 md:px-10 py-3 md:py-4 h-auto font-bold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 w-full sm:w-auto">
+                  <Palette className="mr-2 h-4 md:h-5 w-4 md:w-5" />
                   ログインして続ける
                 </Button>
               </Link>
