@@ -507,8 +507,6 @@ export function Sidebar() {
             className="flex-1 px-4 pb-2 customer-list-scroll overflow-y-auto"
             style={{
               minHeight: 0,
-              maxHeight: 'calc(100dvh - 400px)',
-              height: 'auto',
               scrollbarWidth: 'thin',
               scrollbarColor: '#94a3b8 #e2e8f0',
               WebkitOverflowScrolling: 'touch'
@@ -639,7 +637,7 @@ export function Sidebar() {
 
       <nav
         className={cn(
-          "fixed left-0 top-0 h-screen w-80 bg-white/95 backdrop-blur-md border-r z-50 transform transition-transform duration-300 overflow-hidden",
+          "fixed left-0 top-0 h-[100dvh] w-80 bg-white/95 backdrop-blur-md border-r z-50 transform transition-transform duration-300 overflow-hidden",
           "md:relative md:transform-none",
           (isMobileOpen || isSidebarOpen) ? "translate-x-0" : "-translate-x-full"
         )}
