@@ -83,12 +83,11 @@ export async function middleware(request: NextRequest) {
   }
 
   // Handle root path
-  if (request.nextUrl.pathname === '/') {
-    if (user) {
-      return NextResponse.redirect(new URL('/dashboard', request.url))
-    } else {
-      return NextResponse.redirect(new URL('/auth/signin', request.url))
-    }
+  // ルートパスは app/page.tsx で認証チェックを行うため、
+  // middlewareではログイン済みユーザーのみダッシュボードへリダイレクト
+  // 未ログインユーザーはランディングページを表示（app/page.tsxで処理）
+  if (request.nextUrl.pathname === '/' && user) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
   return response

@@ -107,7 +107,7 @@ export default function HomePage() {
                 塗装業界革命
               </Badge>
 
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+              <h1 className="text-3xl md:text-4xl font-bold text-foreground px-6 py-3 rounded-lg bg-white/80 backdrop-blur-sm shadow-lg inline-block">
                 営業成約率を劇的に向上させる<br />
                 AI塗装シミュレーション
               </h1>
@@ -122,7 +122,7 @@ export default function HomePage() {
               <Link href="/auth/signup">
                 <Button className="paint-button text-xl px-12 py-6 h-auto font-bold shadow-2xl">
                   <Star className="mr-3 h-6 w-6" />
-                  3回まで無料で始める
+                  無料で始める
                   <ArrowRight className="ml-3 h-6 w-6" />
                 </Button>
               </Link>
