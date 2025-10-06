@@ -465,19 +465,22 @@ export function ImageComparisonFixed({
   if (isFullscreen) {
     return (
       <div className="fixed inset-0 z-[9999] bg-black flex flex-col">
-        {/* 閉じるボタン - 左上 */}
-        <button
-          onClick={toggleFullscreen}
-          className="absolute top-4 left-4 z-[10000] bg-white rounded-full p-3 shadow-lg hover:bg-gray-100 transition-colors"
-          aria-label="フルスクリーンを閉じる"
-          style={{ touchAction: 'manipulation' }}
-        >
-          <X className="h-6 w-6 text-gray-900" />
-        </button>
+        {/* ヘッダーバー */}
+        <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+          <h2 className="text-lg font-bold text-gray-900">{title}</h2>
+          <button
+            onClick={toggleFullscreen}
+            className="bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors"
+            aria-label="フルスクリーンを閉じる"
+            style={{ touchAction: 'manipulation' }}
+          >
+            <X className="h-5 w-5 text-gray-900" />
+          </button>
+        </div>
 
         {/* スクリーンリーダー用の説明 */}
         <ScreenReaderOnly>
-          左上の閉じるボタンをタップしてフルスクリーンを終了できます。スライダーを左右にドラッグして画像を比較してください。
+          右上の閉じるボタンをタップしてフルスクリーンを終了できます。スライダーを左右にドラッグして画像を比較してください。
         </ScreenReaderOnly>
 
         {/* 全画面スライダー */}
@@ -545,7 +548,7 @@ export function ImageComparisonFixed({
         </div>
 
         {/* 下部の説明テキスト */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg">
+        <div className="absolute bottom-safe-8 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 rounded-lg shadow-lg border-2 border-gray-200">
           <p className="text-xs font-medium text-gray-900 text-center">
             左側：元画像 | 右側：生成画像
           </p>
@@ -563,9 +566,9 @@ export function ImageComparisonFixed({
       aria-labelledby="comparison-title"
       aria-describedby="comparison-description"
     >
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle id="comparison-title">{title}</CardTitle>
-        <div className="flex space-x-2">
+      <CardHeader className="bg-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+        <CardTitle id="comparison-title" className="text-base sm:text-lg">{title}</CardTitle>
+        <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"
             size="icon"

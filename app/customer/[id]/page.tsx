@@ -468,11 +468,11 @@ export default function CustomerPage() {
                 />
               </div>
 
-              <Card>
-                <CardHeader>
+              <Card className="bg-white">
+                <CardHeader className="bg-white">
                   <CardTitle>生成設定</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-2">
+                <CardContent className="bg-white space-y-2">
                   {sliderData.wallColor && sliderData.wallColor !== '変更なし' && (
                     <p><strong>壁の色:</strong> {sliderData.wallColor}</p>
                   )}

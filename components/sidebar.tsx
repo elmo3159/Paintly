@@ -428,7 +428,7 @@ export function Sidebar() {
         </Link>
       </div>
 
-      <div className="flex flex-col h-[calc(100vh-56px)] overflow-hidden">
+      <div className="flex flex-col h-[calc(100vh-56px)] pb-safe-8 overflow-hidden">
         {/* 固定部分 - flex-shrink-0でサイズ固定 */}
         <div className="p-1 space-y-1 flex-shrink-0">
           <Button
