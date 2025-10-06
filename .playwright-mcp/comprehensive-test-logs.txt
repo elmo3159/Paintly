@@ -1,0 +1,41 @@
+[CONSOLE verbose]: [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o
+[CONSOLE info]: %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[CONSOLE error]: Failed to load resource: the server responded with a status of 404 (Not Found)
+[REQUEST]: POST https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/token?grant_type=password
+[RESPONSE]: 200 https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/token?grant_type=password
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[RESPONSE]: 200 https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[RESPONSE]: 200 https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[RESPONSE]: 200 https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[RESPONSE]: 200 https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/subscriptions?select=generation_count%2Cplans%28name%2Cgeneration_limit%29&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&status=eq.active
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/customer_pages?select=id%2Ctitle%2Ccreated_at&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&order=created_at.desc
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/subscriptions?select=generation_count%2Cplans%28name%2Cgeneration_limit%29&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&status=eq.active
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/customer_pages?select=id%2Ctitle%2Ccreated_at&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&order=created_at.desc
+[RESPONSE]: 200 https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/customer_pages?select=id%2Ctitle%2Ccreated_at&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&order=created_at.desc
+[RESPONSE]: 406 https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/subscriptions?select=generation_count%2Cplans%28name%2Cgeneration_limit%29&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&status=eq.active
+[CONSOLE error]: Failed to load resource: the server responded with a status of 406 ()
+[RESPONSE]: 200 https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/customer_pages?select=id%2Ctitle%2Ccreated_at&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&order=created_at.desc
+[RESPONSE]: 406 https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/subscriptions?select=generation_count%2Cplans%28name%2Cgeneration_limit%29&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&status=eq.active
+[CONSOLE error]: Failed to load resource: the server responded with a status of 406 ()
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[RESPONSE]: 200 https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[RESPONSE]: 200 https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[RESPONSE]: 200 https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[RESPONSE]: 200 https://mockfjcakfzbzccabcgm.supabase.co/auth/v1/user
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/subscriptions?select=generation_count%2Cplans%28name%2Cgeneration_limit%29&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&status=eq.active
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/customer_pages?select=id%2Ctitle%2Ccreated_at&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&order=created_at.desc
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/subscriptions?select=generation_count%2Cplans%28name%2Cgeneration_limit%29&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&status=eq.active
+[REQUEST]: GET https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/customer_pages?select=id%2Ctitle%2Ccreated_at&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&order=created_at.desc
+[RESPONSE]: 406 https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/subscriptions?select=generation_count%2Cplans%28name%2Cgeneration_limit%29&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&status=eq.active
+[CONSOLE error]: Failed to load resource: the server responded with a status of 406 ()
+[RESPONSE]: 200 https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/customer_pages?select=id%2Ctitle%2Ccreated_at&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&order=created_at.desc
+[RESPONSE]: 406 https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/subscriptions?select=generation_count%2Cplans%28name%2Cgeneration_limit%29&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&status=eq.active
+[CONSOLE error]: Failed to load resource: the server responded with a status of 406 ()
+[RESPONSE]: 200 https://mockfjcakfzbzccabcgm.supabase.co/rest/v1/customer_pages?select=id%2Ctitle%2Ccreated_at&user_id=eq.e7078ac4-f843-4026-921d-b869ba37d335&order=created_at.desc

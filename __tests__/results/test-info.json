@@ -1,0 +1,17 @@
+{
+  "startTime": "2025-09-29T19:52:48.299Z",
+  "environment": "test",
+  "baseUrl": "http://localhost:9090",
+  "userAgent": "Paintly-E2E-Tests/1.0",
+  "browserCount": 8,
+  "projects": [
+    "chromium",
+    "firefox",
+    "webkit",
+    "Mobile Chrome",
+    "Mobile Safari",
+    "iPad",
+    "Microsoft Edge",
+    "Google Chrome"
+  ]
+}

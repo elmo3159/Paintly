@@ -1,0 +1,61 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - link "メインコンテンツに移動" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - img [ref=e7]
+        - img [ref=e12]
+        - img [ref=e19]
+        - img [ref=e22]
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - generic [ref=e27]:
+            - img [ref=e29]
+            - img [ref=e35]
+          - generic [ref=e37]:
+            - img "Paintly" [ref=e39]
+            - heading "営業の成約率を向上させる" [level=3] [ref=e40]
+            - paragraph [ref=e41]:
+              - text: 塗装シミュレーションでお客様の理想を
+              - text: 瞬時に可視化。アカウントにサインインして始めましょう。
+        - form "営業の成約率を向上させる" [ref=e42]:
+          - generic [ref=e43]:
+            - generic [ref=e44]:
+              - generic [ref=e45]:
+                - generic [ref=e46]:
+                  - img [ref=e47]
+                  - text: メールアドレス
+                - textbox "メールアドレスを入力してください" [ref=e50]
+              - generic [ref=e51]:
+                - generic [ref=e52]:
+                  - img [ref=e53]
+                  - text: パスワード
+                - textbox "パスワードを入力してください" [ref=e56]
+            - link "パスワードリセットページに移動" [ref=e58] [cursor=pointer]:
+              - /url: /auth/reset-password
+              - img [ref=e59] [cursor=pointer]
+              - text: パスワードをお忘れですか？
+          - generic [ref=e61]:
+            - button "Paintlyにサインインする" [ref=e62] [cursor=pointer]:
+              - img [ref=e63] [cursor=pointer]
+              - text: Paintlyにサインイン
+            - generic [ref=e73]: または
+            - button "Googleアカウントでサインインする" [ref=e74] [cursor=pointer]:
+              - img [ref=e75] [cursor=pointer]
+              - text: Googleで始める
+            - generic [ref=e80]:
+              - paragraph [ref=e81]: まだアカウントをお持ちではありませんか？
+              - link "新規アカウント作成ページに移動" [ref=e82] [cursor=pointer]:
+                - /url: /auth/signup
+                - img [ref=e83] [cursor=pointer]
+                - text: 今すぐ無料で始める
+                - img [ref=e87] [cursor=pointer]
+              - paragraph [ref=e89]: 3回まで無料で画像生成を試用できます
+  - button "Open Next.js Dev Tools" [ref=e95] [cursor=pointer]:
+    - img [ref=e96] [cursor=pointer]
+  - alert [ref=e99]
+```

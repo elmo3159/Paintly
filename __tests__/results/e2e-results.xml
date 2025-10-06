@@ -1,0 +1,29 @@
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="26.297367">
+<testsuite name="gemini-generation.e2e.test.ts" timestamp="2025-09-29T19:26:54.535Z" hostname="chromium" tests="1" failures="0" skipped="0" time="11.959" errors="0">
+<testcase name="Paintly - Gemini画像生成機能テスト › 指定画像を使用したGemini画像生成動作確認" classname="gemini-generation.e2e.test.ts" time="11.959">
+<system-out>
+<![CDATA[🎨 Paintly Gemini画像生成テスト開始...
+📱 Paintlyアプリケーションにアクセス...
+[Browser Console] verbose: [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o
+[Browser Console] error: Refused to execute script from 'http://localhost:9090/_next/static/css/vendors-node_modules_next_font_google_target_css-92.css?v=1759174026724' because its MIME type ('text/css') is not executable, and strict MIME type checking is enabled.
+[Browser Console] info: %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[Browser Console] log: 🛡️ Paintly Global Error Handling initialized
+[Browser Console] error: Failed to load resource: the server responded with a status of 404 (Not Found)
+[Browser Console] log: 🎨 Paintly SW registered: http://localhost:9090/
+[Browser Console] log: 🔄 Background sync supported
+🔐 認証処理...
+👤 顧客ページにアクセス...
+🖼️ テスト画像をアップロード...
+⚠️ ファイル入力要素が見つかりません
+⚠️ アップロード機能が見つかりませんでした
+🎨 色選択設定...
+🚀 Gemini画像生成実行...
+❌ 生成ボタンが見つかりません
+🔍 結果検証...
+ℹ️ 生成画像もエラーメッセージも見つかりませんでした
+🎉 Gemini画像生成機能テスト完了！
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

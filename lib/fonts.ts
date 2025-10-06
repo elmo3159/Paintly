@@ -1,4 +1,4 @@
-import { Inter, Noto_Sans_JP } from 'next/font/google'
+import { Inter, M_PLUS_Rounded_1c } from 'next/font/google'
 
 // Inter font for headings and English text
 export const inter = Inter({
@@ -9,15 +9,15 @@ export const inter = Inter({
   fallback: ['system-ui', 'arial'],
 })
 
-// Noto Sans JP for Japanese text and body content
-export const notoSansJP = Noto_Sans_JP({
+// M PLUS Rounded 1c for Japanese text - rounded, friendly appearance
+export const mPlusRounded = M_PLUS_Rounded_1c({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-noto-sans-jp',
+  variable: '--font-mplus-rounded',
   preload: true,
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['300', '400', '500', '700', '800'],
   fallback: ['system-ui', 'arial'],
 })
 
 // CSS class names for easy use
-export const fontClassNames = `${inter.variable} ${notoSansJP.variable}`
+export const fontClassNames = `${inter.variable} ${mPlusRounded.variable}`

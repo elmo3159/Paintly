@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(echo $SHELL)",
+      "Bash(npm run dev:*)",
+      "Bash(node:*)",
+      "Bash(npm --version)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(cat:*)",
+      "Bash(wsl:*)",
+      "Read(//c/Users/elmod/**)",
+      "Bash(git log:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

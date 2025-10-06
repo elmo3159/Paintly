@@ -1,0 +1,343 @@
+{
+  "config": {
+    "configFile": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/playwright.config.ts",
+    "rootDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/e2e",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/e2e/global-setup.ts",
+    "globalTeardown": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/e2e/global-teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "testSuite": "Error Management System E2E Tests",
+      "version": "1.0.0",
+      "author": "Paintly Development Team",
+      "environment": "test",
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "__tests__/results/e2e-results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "__tests__/results/e2e-results.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/results/e2e-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "testSuite": "Error Management System E2E Tests",
+          "version": "1.0.0",
+          "author": "Paintly Development Team",
+          "environment": "test",
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.e2e.test.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/results/e2e-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "testSuite": "Error Management System E2E Tests",
+          "version": "1.0.0",
+          "author": "Paintly Development Team",
+          "environment": "test",
+          "actualWorkers": 1
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.e2e.test.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/results/e2e-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "testSuite": "Error Management System E2E Tests",
+          "version": "1.0.0",
+          "author": "Paintly Development Team",
+          "environment": "test",
+          "actualWorkers": 1
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.e2e.test.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/results/e2e-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "testSuite": "Error Management System E2E Tests",
+          "version": "1.0.0",
+          "author": "Paintly Development Team",
+          "environment": "test",
+          "actualWorkers": 1
+        },
+        "id": "Mobile Chrome",
+        "name": "Mobile Chrome",
+        "testDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.e2e.test.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/results/e2e-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "testSuite": "Error Management System E2E Tests",
+          "version": "1.0.0",
+          "author": "Paintly Development Team",
+          "environment": "test",
+          "actualWorkers": 1
+        },
+        "id": "Mobile Safari",
+        "name": "Mobile Safari",
+        "testDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.e2e.test.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/results/e2e-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "testSuite": "Error Management System E2E Tests",
+          "version": "1.0.0",
+          "author": "Paintly Development Team",
+          "environment": "test",
+          "actualWorkers": 1
+        },
+        "id": "iPad",
+        "name": "iPad",
+        "testDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.e2e.test.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/results/e2e-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "testSuite": "Error Management System E2E Tests",
+          "version": "1.0.0",
+          "author": "Paintly Development Team",
+          "environment": "test",
+          "actualWorkers": 1
+        },
+        "id": "Microsoft Edge",
+        "name": "Microsoft Edge",
+        "testDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.e2e.test.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/results/e2e-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "testSuite": "Error Management System E2E Tests",
+          "version": "1.0.0",
+          "author": "Paintly Development Team",
+          "environment": "test",
+          "actualWorkers": 1
+        },
+        "id": "Google Chrome",
+        "name": "Google Chrome",
+        "testDir": "/mnt/c/Users/elmod/Desktop/CursorApp/Paintly/__tests__/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.e2e.test.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 2,
+    "webServer": {
+      "command": "npm run dev -- -p 9090",
+      "url": "http://localhost:9090",
+      "reuseExistingServer": true,
+      "timeout": 120000,
+      "stdout": "ignore",
+      "stderr": "pipe"
+    }
+  },
+  "suites": [
+    {
+      "title": "gemini-generation.e2e.test.ts",
+      "file": "gemini-generation.e2e.test.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Paintly - Gemini画像生成機能テスト",
+          "file": "gemini-generation.e2e.test.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "指定画像を使用したGemini画像生成動作確認",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11959,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🎨 Paintly Gemini画像生成テスト開始...\n"
+                        },
+                        {
+                          "text": "📱 Paintlyアプリケーションにアクセス...\n"
+                        },
+                        {
+                          "text": "[Browser Console] verbose: [DOM] Input elements should have autocomplete attributes (suggested: \"current-password\"): (More info: https://goo.gl/9p2vKq) %o\n"
+                        },
+                        {
+                          "text": "[Browser Console] error: Refused to execute script from 'http://localhost:9090/_next/static/css/vendors-node_modules_next_font_google_target_css-92.css?v=1759174026724' because its MIME type ('text/css') is not executable, and strict MIME type checking is enabled.\n"
+                        },
+                        {
+                          "text": "[Browser Console] info: %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold\n"
+                        },
+                        {
+                          "text": "[Browser Console] log: 🛡️ Paintly Global Error Handling initialized\n"
+                        },
+                        {
+                          "text": "[Browser Console] error: Failed to load resource: the server responded with a status of 404 (Not Found)\n"
+                        },
+                        {
+                          "text": "[Browser Console] log: 🎨 Paintly SW registered: http://localhost:9090/\n"
+                        },
+                        {
+                          "text": "[Browser Console] log: 🔄 Background sync supported\n"
+                        },
+                        {
+                          "text": "🔐 認証処理...\n"
+                        },
+                        {
+                          "text": "👤 顧客ページにアクセス...\n"
+                        },
+                        {
+                          "text": "🖼️ テスト画像をアップロード...\n"
+                        },
+                        {
+                          "text": "⚠️ ファイル入力要素が見つかりません\n"
+                        },
+                        {
+                          "text": "⚠️ アップロード機能が見つかりませんでした\n"
+                        },
+                        {
+                          "text": "🎨 色選択設定...\n"
+                        },
+                        {
+                          "text": "🚀 Gemini画像生成実行...\n"
+                        },
+                        {
+                          "text": "❌ 生成ボタンが見つかりません\n"
+                        },
+                        {
+                          "text": "🔍 結果検証...\n"
+                        },
+                        {
+                          "text": "ℹ️ 生成画像もエラーメッセージも見つかりませんでした\n"
+                        },
+                        {
+                          "text": "🎉 Gemini画像生成機能テスト完了！\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-29T19:27:05.372Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "975e42801ac3820aefd6-7e6326209fb4b024408f",
+              "file": "gemini-generation.e2e.test.ts",
+              "line": 10,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-09-29T19:26:52.080Z",
+    "duration": 26297.367000000002,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

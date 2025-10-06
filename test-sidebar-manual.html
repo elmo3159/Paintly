@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paintlyサイドバーテスト</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .paint-text {
+            background: linear-gradient(45deg, #2d2621, #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- サイドバー -->
+        <div id="sidebar" class="hidden md:flex h-screen w-64 flex-col border-r shadow-sm bg-white">
+            <!-- ヘッダー -->
+            <div class="flex h-14 items-center justify-between border-b px-4">
+                <a href="/dashboard" class="flex items-center space-x-2">
+                    <span class="text-xl font-bold paint-text">Paintly</span>
+                </a>
+            </div>
+
+            <div class="flex-1 overflow-hidden">
+                <!-- サイドバーを閉じるボタン -->
+                <div class="px-3 py-2 border-b">
+                    <button id="closeSidebar"
+                            class="w-full justify-start text-gray-600 hover:text-gray-900 flex items-center px-3 py-2 text-sm font-medium rounded-lg hover:bg-gray-100">
+                        <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        サイドバーを閉じる
+                    </button>
+                </div>
+
+                <!-- 新規顧客ページ作成ボタン -->
+                <div class="px-3 py-4">
+                    <button id="newCustomer"
+                            class="w-full justify-start bg-blue-600 text-white border border-blue-600 flex items-center px-3 py-2 text-sm font-medium rounded-lg hover:bg-blue-700">
+                        <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        新規顧客ページ作成
+                    </button>
+                </div>
+
+                <!-- ナビゲーション -->
+                <div class="px-3">
+                    <h4 class="mb-2 text-sm font-semibold">ナビゲーション</h4>
+                    <nav class="space-y-1">
+                        <a href="/dashboard" class="flex items-center rounded-lg px-3 py-2 text-sm font-medium hover:bg-gray-100 bg-gray-100">
+                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
+                            ダッシュボード
+                        </a>
+                        <a href="/billing" class="flex items-center rounded-lg px-3 py-2 text-sm font-medium hover:bg-gray-100">
+                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                            </svg>
+                            料金プラン
+                        </a>
+                        <a href="/settings" class="flex items-center rounded-lg px-3 py-2 text-sm font-medium hover:bg-gray-100">
+                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            設定
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- 顧客ページリスト -->
+                <div class="mt-4 px-3">
+                    <h4 class="mb-2 text-sm font-semibold">顧客ページ</h4>
+                    <div class="space-y-1">
+                        <a href="/customer/1" class="flex items-center rounded-lg px-3 py-2 text-sm hover:bg-gray-100">
+                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span class="truncate">テスト顧客 2025/01/16</span>
+                        </a>
+                        <a href="/customer/2" class="flex items-center rounded-lg px-3 py-2 text-sm hover:bg-gray-100">
+                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span class="truncate">テスト顧客 2025/01/15</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- フッター（プラン情報） -->
+            <div class="border-t p-4">
+                <div class="mb-4">
+                    <div class="mb-2 flex items-center justify-between text-sm">
+                        <span class="font-medium">無料プラン</span>
+                        <span class="text-gray-600">2回 残り</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-600 h-2 rounded-full" style="width: 33%"></div>
+                    </div>
+                    <p class="mt-1 text-xs text-gray-600">1 / 3 回使用</p>
+                </div>
+
+                <button class="w-full justify-start text-gray-600 hover:text-gray-900 flex items-center px-3 py-2 text-sm font-medium rounded-lg hover:bg-gray-100">
+                    <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                    サインアウト
+                </button>
+            </div>
+        </div>
+
+        <!-- サイドバーを開くボタン（サイドバーが閉じられている時用） -->
+        <button id="openSidebar" class="fixed left-4 top-4 z-50 hidden bg-white border border-gray-300 rounded-lg p-2 shadow-lg hover:bg-gray-50">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+
+        <!-- メインコンテンツ -->
+        <main class="flex-1 overflow-auto">
+            <div class="container mx-auto p-6 md:p-8">
+                <h1 class="text-4xl font-bold tracking-tight mb-4">テストダッシュボード</h1>
+                <p class="text-gray-600 mb-8">このページは、サイドバーコンポーネントの動作を確認するためのテストページです。</p>
+
+                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border">
+                        <h2 class="text-lg font-semibold mb-2">サイドバーテスト</h2>
+                        <p class="text-gray-600 mb-4">左側にサイドバーが表示されているか確認してください。</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✅ Paintlyロゴが表示されている</li>
+                            <li>✅ 「←サイドバーを閉じる」ボタンが表示されている</li>
+                            <li>✅ 「新規顧客ページ作成」ボタンが表示されている</li>
+                            <li>✅ ナビゲーションメニューが表示されている</li>
+                            <li>✅ 顧客ページリストが表示されている</li>
+                            <li>✅ プラン情報が表示されている</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm border">
+                        <h2 class="text-lg font-semibold mb-2">動作テスト</h2>
+                        <p class="text-gray-600 mb-4">サイドバーの動作を確認してください。</p>
+                        <button id="testClose" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mr-2">
+                            サイドバーを閉じる
+                        </button>
+                        <button id="testOpen" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                            サイドバーを開く
+                        </button>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm border">
+                        <h2 class="text-lg font-semibold mb-2">状態確認</h2>
+                        <p class="text-gray-600 mb-4">現在の状態:</p>
+                        <div id="status" class="text-sm bg-gray-100 p-3 rounded">
+                            サイドバー: <span id="sidebarStatus" class="font-semibold text-green-600">表示中</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const openBtn = document.getElementById('openSidebar');
+        const closeBtn = document.getElementById('closeSidebar');
+        const testCloseBtn = document.getElementById('testClose');
+        const testOpenBtn = document.getElementById('testOpen');
+        const statusEl = document.getElementById('sidebarStatus');
+
+        function updateStatus() {
+            const isVisible = !sidebar.classList.contains('hidden');
+            statusEl.textContent = isVisible ? '表示中' : '非表示';
+            statusEl.className = isVisible ? 'font-semibold text-green-600' : 'font-semibold text-red-600';
+        }
+
+        function closeSidebar() {
+            sidebar.classList.add('hidden');
+            openBtn.classList.remove('hidden');
+            updateStatus();
+        }
+
+        function openSidebar() {
+            sidebar.classList.remove('hidden');
+            openBtn.classList.add('hidden');
+            updateStatus();
+        }
+
+        closeBtn.addEventListener('click', closeSidebar);
+        openBtn.addEventListener('click', openSidebar);
+        testCloseBtn.addEventListener('click', closeSidebar);
+        testOpenBtn.addEventListener('click', openSidebar);
+
+        // 初期状態を設定
+        updateStatus();
+    </script>
+</body>
+</html>
