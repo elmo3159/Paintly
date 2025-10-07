@@ -128,7 +128,7 @@ export default function HomePage() {
                         <p className="text-xs md:text-sm font-semibold text-center text-foreground">現場で写真を撮る</p>
                       </div>
                       {/* 右向き矢印 */}
-                      <ArrowRight className="absolute -right-3.5 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-primary drop-shadow-lg hidden md:block" />
+                      <ArrowRight className="absolute -right-2 md:-right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 md:w-6 md:h-6 text-primary drop-shadow-lg" />
                     </div>
 
                     {/* 右上：色を選ぶ */}
@@ -139,8 +139,8 @@ export default function HomePage() {
                         </div>
                         <p className="text-xs md:text-sm font-semibold text-center text-foreground">色を選ぶ</p>
                       </div>
-                      {/* 下向き矢印（左寄り） */}
-                      <ArrowDown className="absolute left-1/4 -translate-x-1/2 -bottom-3.5 w-5 h-5 md:w-6 md:h-6 text-primary drop-shadow-lg hidden md:block" />
+                      {/* 左下向き斜め矢印 */}
+                      <ArrowDown className="absolute -left-2 md:-left-3.5 -bottom-2 md:-bottom-3.5 w-4 h-4 md:w-6 md:h-6 text-primary drop-shadow-lg rotate-45" />
                     </div>
 
                     {/* 左下：作成ボタンを押す */}
@@ -152,7 +152,7 @@ export default function HomePage() {
                         <p className="text-xs md:text-sm font-semibold text-center text-foreground">作成ボタンを押す</p>
                       </div>
                       {/* 右向き矢印 */}
-                      <ArrowRight className="absolute -right-3.5 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-primary drop-shadow-lg hidden md:block" />
+                      <ArrowRight className="absolute -right-2 md:-right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 md:w-6 md:h-6 text-primary drop-shadow-lg" />
                     </div>
 
                     {/* 右下：お客様に見せる */}
