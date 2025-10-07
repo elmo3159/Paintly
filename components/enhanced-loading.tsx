@@ -31,14 +31,14 @@ const loadingStages: Record<string, LoadingStage[]> = {
     {
       id: 'analysis',
       label: '画像解析',
-      description: 'Gemini AI が建物の特徴を理解中...',
+      description: '建物の特徴を解析中...',
       icon: <Palette className="h-4 w-4" />,
       duration: 5
     },
     {
       id: 'generation',
       label: '画像生成',
-      description: 'Google Gemini で高品質な塗装画像を生成中...',
+      description: '高品質な塗装画像を生成中...',
       icon: <Sparkles className="h-4 w-4" />,
       duration: 15
     },
@@ -138,10 +138,10 @@ export function EnhancedLoading({ isVisible, provider, onComplete }: EnhancedLoa
           <div className="text-center space-y-2">
             <div className="flex items-center justify-center space-x-2">
               <Loader2 className="h-6 w-6 animate-spin text-primary" />
-              <h3 className="text-lg font-semibold">画像生成中</h3>
+              <h3 className="text-lg font-semibold">画像を作成中</h3>
             </div>
             <p className="text-sm text-muted-foreground">
-              Google Gemini で処理中...
+              塗装シミュレーション画像を処理中...
             </p>
           </div>
 
@@ -226,7 +226,7 @@ export function EnhancedLoading({ isVisible, provider, onComplete }: EnhancedLoa
           {/* Tips */}
           <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
             <p className="text-sm text-blue-700 dark:text-blue-300">
-              💡 ヒント: Gemini は高速ですが、複雑な建物では時間がかかることがあります
+              💡 ヒント: 複雑な建物では時間がかかることがあります
             </p>
           </div>
         </CardContent>

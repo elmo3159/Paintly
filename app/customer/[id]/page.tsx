@@ -567,6 +567,9 @@ export default function CustomerPage() {
                 <Card className="bg-white/90 backdrop-blur-sm">
                   <CardHeader>
                     <CardTitle>カラー選択</CardTitle>
+                    <CardDescription className="text-xs text-muted-foreground mt-2">
+                      ※ ここで選択する色はあくまでイメージであり、実際に作成される画像の色が異なってしまう場合があることをご了承ください。
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <CompactColorSelector
@@ -617,7 +620,7 @@ export default function CustomerPage() {
                       {generating ? (
                         <>
                           <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                          生成中...
+                          画像を作成中...
                         </>
                       ) : (
                         <>
