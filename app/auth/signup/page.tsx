@@ -154,7 +154,7 @@ export default function SignUpPage() {
               width={142}
               height={80}
               priority={true}
-              className="h-32 w-auto object-contain"
+              className="h-24 md:h-28 w-auto object-contain"
               sizes="(max-width: 768px) 142px, 142px"
             />
           </div>
