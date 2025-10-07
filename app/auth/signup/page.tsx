@@ -146,20 +146,11 @@ export default function SignUpPage() {
       <div className="max-w-md mx-auto">
         <Card className="w-full paint-card relative z-10">
         <CardHeader className="space-y-4 pb-6">
-          {/* ロゴセクション */}
+          {/* Paintlyロゴ */}
           <div className="flex justify-center mb-4">
-            <div className="relative">
-              <div className="p-4 bg-gradient-to-br from-accent/20 to-primary/20 rounded-full shadow-lg">
-                <Paintbrush className="h-12 w-12 text-accent" />
-              </div>
-              <Star className="absolute -top-1 -right-1 h-6 w-6 text-primary animate-pulse" />
-            </div>
-          </div>
-          
-          <div className="mb-4 flex justify-center">
-            <Image 
-              src="/logo.png" 
-              alt="Paintly" 
+            <Image
+              src="/logo.png"
+              alt="Paintly"
               width={142}
               height={80}
               priority={true}
@@ -167,7 +158,7 @@ export default function SignUpPage() {
               sizes="(max-width: 768px) 142px, 142px"
             />
           </div>
-          
+
           <div className="text-center space-y-3">
             <CardTitle className="text-xl font-bold text-foreground">
               無料で始める塗装革命

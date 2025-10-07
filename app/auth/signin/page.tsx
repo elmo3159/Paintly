@@ -99,28 +99,20 @@ export default function SignInPage() {
       <div className="max-w-md mx-auto">
         <Card className="w-full paint-card relative z-10">
         <CardHeader className="space-y-4 pb-6">
-          {/* ロゴセクション */}
+          {/* Paintlyロゴ */}
           <div className="flex justify-center mb-4">
-            <div className="relative">
-              <div className="p-4 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full shadow-lg">
-                <Palette className="h-12 w-12 text-primary" />
-              </div>
-              <Droplet className="absolute -top-1 -right-1 h-6 w-6 text-accent animate-bounce" />
-            </div>
+            <Image
+              src="/logo.png"
+              alt="Paintly"
+              width={142}
+              height={80}
+              priority={true}
+              className="h-32 w-auto object-contain"
+              sizes="(max-width: 768px) 142px, 142px"
+            />
           </div>
-          
+
           <div className="text-center space-y-2">
-            <div className="mb-4 flex justify-center">
-              <Image 
-                src="/logo.png" 
-                alt="Paintly" 
-                width={142}
-                height={80}
-                priority={true}
-                className="h-32 w-auto object-contain"
-                sizes="(max-width: 768px) 142px, 142px"
-              />
-            </div>
             <CardTitle id="signin-title" className="text-xl font-bold text-foreground">
               営業の成約率を向上させる
             </CardTitle>
