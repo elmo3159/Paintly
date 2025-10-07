@@ -79,13 +79,13 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-full flex items-start justify-center bg-gradient-to-br from-background via-secondary/30 to-primary/10 p-2">
+    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-primary/10 p-4 py-8 md:py-12">
       {/* 背景装飾 */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-32 h-32 opacity-5 rotate-12">
+        <div className="absolute top-20 left-10 w-32 h-32 opacity-5">
           <Paintbrush className="w-full h-full text-primary" />
         </div>
-        <div className="absolute bottom-20 right-10 w-24 h-24 opacity-5 -rotate-12">
+        <div className="absolute bottom-20 right-10 w-24 h-24 opacity-5">
           <Palette className="w-full h-full text-accent" />
         </div>
         <div className="absolute top-1/2 left-1/4 w-6 h-6 opacity-20 animate-bounce text-accent">
@@ -96,7 +96,8 @@ export default function SignInPage() {
         </div>
       </div>
 
-      <Card className="w-full max-w-md paint-card relative z-10 max-h-[calc(100vh-16px)] overflow-y-auto">
+      <div className="max-w-md mx-auto">
+        <Card className="w-full paint-card relative z-10">
         <CardHeader className="space-y-4 pb-6">
           {/* ロゴセクション */}
           <div className="flex justify-center mb-4">
@@ -261,6 +262,7 @@ export default function SignInPage() {
           </CardFooter>
         </form>
       </Card>
+      </div>
     </div>
   )
 }

@@ -18,7 +18,6 @@ export default function SignUpPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [name, setName] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -47,9 +46,6 @@ export default function SignUpPage() {
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/auth/callback`,
-          data: {
-            name: name,
-          }
         }
       })
 
@@ -66,7 +62,6 @@ export default function SignUpPage() {
           .insert({
             id: authData.user.id,
             email: authData.user.email,
-            full_name: name,
           })
 
         if (dbError) {
@@ -131,13 +126,13 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-primary/10 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-primary/10 p-4 py-8 md:py-12">
       {/* 背景装飾 */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-16 right-16 w-28 h-28 opacity-5 rotate-45">
+        <div className="absolute top-16 right-16 w-28 h-28 opacity-5">
           <Palette className="w-full h-full text-accent" />
         </div>
-        <div className="absolute bottom-16 left-16 w-36 h-36 opacity-5 -rotate-12">
+        <div className="absolute bottom-16 left-16 w-36 h-36 opacity-5">
           <Paintbrush className="w-full h-full text-primary" />
         </div>
         <div className="absolute top-1/3 right-1/4 w-5 h-5 opacity-25 animate-pulse text-primary">
@@ -148,7 +143,8 @@ export default function SignUpPage() {
         </div>
       </div>
 
-      <Card className="w-full max-w-md paint-card relative z-10">
+      <div className="max-w-md mx-auto">
+        <Card className="w-full paint-card relative z-10">
         <CardHeader className="space-y-4 pb-6">
           {/* ロゴセクション */}
           <div className="flex justify-center mb-4">
@@ -205,23 +201,6 @@ export default function SignUpPage() {
             
             {/* フォームフィールド */}
             <div className="space-y-5">
-              <div className="space-y-3">
-                <Label htmlFor="name" className="text-sm font-semibold text-foreground flex items-center">
-                  <User className="h-4 w-4 mr-2 text-primary" />
-                  お名前
-                </Label>
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="例: 山田太郎"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  disabled={loading || success}
-                  className="paint-input h-12 text-base border-border/60 focus:border-primary transition-all duration-300"
-                />
-              </div>
-              
               <div className="space-y-3">
                 <Label htmlFor="email" className="text-sm font-semibold text-foreground flex items-center">
                   <Home className="h-4 w-4 mr-2 text-primary" />
@@ -350,6 +329,7 @@ export default function SignUpPage() {
           </CardFooter>
         </form>
       </Card>
+      </div>
     </div>
   )
 }
