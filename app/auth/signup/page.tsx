@@ -145,9 +145,9 @@ export default function SignUpPage() {
 
       <div className="max-w-md mx-auto">
         <Card className="w-full paint-card relative z-10">
-        <CardHeader className="space-y-4 pb-6">
+        <CardHeader className="space-y-2 pb-3">
           {/* Paintlyロゴ */}
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center mb-1">
             <Image
               src="/logo.png"
               alt="Paintly"
@@ -159,11 +159,11 @@ export default function SignUpPage() {
             />
           </div>
 
-          <div className="text-center space-y-3">
-            <CardTitle className="text-xl font-bold text-foreground">
+          <div className="text-center space-y-1">
+            <CardTitle className="text-lg md:text-xl font-bold text-foreground">
               無料で始める塗装革命
             </CardTitle>
-            <CardDescription className="text-muted-foreground leading-relaxed">
+            <CardDescription className="text-xs md:text-sm text-muted-foreground leading-relaxed">
               営業成約率を劇的に向上させる<br />
               AI塗装シミュレーション。<br />
               <span className="text-primary font-semibold">3回まで無料</span>でお試しいただけます。
@@ -171,7 +171,7 @@ export default function SignUpPage() {
           </div>
         </CardHeader>
         <form onSubmit={handleSignUp}>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-3">
             {/* アラート表示 */}
             {error && (
               <Alert variant="destructive" className="border-destructive/20 bg-destructive/5">
@@ -189,12 +189,12 @@ export default function SignUpPage() {
                 </AlertDescription>
               </Alert>
             )}
-            
+
             {/* フォームフィールド */}
-            <div className="space-y-5">
-              <div className="space-y-3">
-                <Label htmlFor="email" className="text-sm font-semibold text-foreground flex items-center">
-                  <Home className="h-4 w-4 mr-2 text-primary" />
+            <div className="space-y-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="email" className="text-xs md:text-sm font-semibold text-foreground flex items-center">
+                  <Home className="h-3.5 w-3.5 mr-1.5 text-primary" />
                   メールアドレス
                 </Label>
                 <Input
@@ -205,13 +205,13 @@ export default function SignUpPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   disabled={loading || success}
-                  className="paint-input h-12 text-base border-border/60 focus:border-primary transition-all duration-300"
+                  className="paint-input h-9 md:h-10 text-sm md:text-base border-border/60 focus:border-primary transition-all duration-300"
                 />
               </div>
-              
-              <div className="space-y-3">
-                <Label htmlFor="password" className="text-sm font-semibold text-foreground flex items-center">
-                  <Lock className="h-4 w-4 mr-2 text-primary" />
+
+              <div className="space-y-1.5">
+                <Label htmlFor="password" className="text-xs md:text-sm font-semibold text-foreground flex items-center">
+                  <Lock className="h-3.5 w-3.5 mr-1.5 text-primary" />
                   パスワード
                 </Label>
                 <Input
@@ -222,13 +222,13 @@ export default function SignUpPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   disabled={loading || success}
-                  className="paint-input h-12 text-base border-border/60 focus:border-primary transition-all duration-300"
+                  className="paint-input h-9 md:h-10 text-sm md:text-base border-border/60 focus:border-primary transition-all duration-300"
                 />
               </div>
-              
-              <div className="space-y-3">
-                <Label htmlFor="confirmPassword" className="text-sm font-semibold text-foreground flex items-center">
-                  <CheckCircle className="h-4 w-4 mr-2 text-accent" />
+
+              <div className="space-y-1.5">
+                <Label htmlFor="confirmPassword" className="text-xs md:text-sm font-semibold text-foreground flex items-center">
+                  <CheckCircle className="h-3.5 w-3.5 mr-1.5 text-accent" />
                   パスワード（確認）
                 </Label>
                 <Input
@@ -239,43 +239,42 @@ export default function SignUpPage() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                   disabled={loading || success}
-                  className="paint-input h-12 text-base border-border/60 focus:border-primary transition-all duration-300"
+                  className="paint-input h-9 md:h-10 text-sm md:text-base border-border/60 focus:border-primary transition-all duration-300"
                 />
               </div>
             </div>
 
             {/* 特典説明 */}
-            <div className="p-4 rounded-xl bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/20">
-              <div className="flex items-center space-x-2 mb-2">
-                <Star className="h-4 w-4 text-primary animate-pulse" />
-                <span className="text-sm font-bold text-primary">無料トライアル特典</span>
+            <div className="p-2 md:p-3 rounded-xl bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/10">
+              <div className="flex items-center space-x-1.5 mb-1">
+                <Star className="h-3.5 w-3.5 text-primary animate-pulse" />
+                <span className="text-xs md:text-sm font-bold text-primary">無料トライアル特典</span>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-xs text-muted-foreground leading-relaxed">
                 アカウント登録後、<span className="font-semibold text-primary">3回まで無料</span>で画像生成をお試しいただけます。
-                塗装業界での営業成約率向上を実感してください。
               </p>
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-6 pt-6">
+          <CardFooter className="flex flex-col space-y-3 pt-3">
             {/* メイン登録ボタン */}
             <Button
               type="submit"
-              className="w-full paint-button h-12 text-base font-bold shadow-lg"
+              className="w-full paint-button h-9 md:h-10 text-sm md:text-base font-bold shadow-lg"
               disabled={loading || success}
             >
               {loading ? (
                 <>
-                  <Loader2 className="mr-3 h-5 w-5 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   登録中...
                 </>
               ) : success ? (
                 <>
-                  <CheckCircle className="mr-3 h-5 w-5" />
+                  <CheckCircle className="mr-2 h-4 w-4" />
                   登録完了！
                 </>
               ) : (
                 <>
-                  <Star className="mr-3 h-5 w-5" />
+                  <Star className="mr-2 h-4 w-4" />
                   無料でPaintlyを始める
                 </>
               )}
@@ -287,7 +286,7 @@ export default function SignUpPage() {
                 <span className="w-full border-t border-border/50" />
               </div>
               <div className="relative flex justify-center text-xs uppercase font-semibold">
-                <span className="bg-background px-4 text-muted-foreground/80">または</span>
+                <span className="bg-background px-3 text-muted-foreground/80">または</span>
               </div>
             </div>
 
@@ -295,24 +294,24 @@ export default function SignUpPage() {
             <Button
               type="button"
               variant="outline"
-              className="w-full h-12 text-base font-medium border-border/60 hover:bg-secondary/50 paint-hover transition-all duration-300"
+              className="w-full h-9 md:h-10 text-sm md:text-base font-medium border-border/60 hover:bg-secondary/50 paint-hover transition-all duration-300"
               onClick={handleGoogleSignUp}
               disabled={loading || success}
             >
-              <FcGoogle className="mr-3 h-5 w-5" />
+              <FcGoogle className="mr-2 h-4 w-4" />
               Googleで簡単登録
             </Button>
 
             {/* サインインリンク */}
-            <div className="text-center p-4 rounded-xl bg-gradient-to-r from-accent/5 to-secondary/10 border border-accent/10">
-              <p className="text-sm text-muted-foreground mb-2">
+            <div className="text-center p-2 md:p-3 rounded-xl bg-gradient-to-r from-accent/5 to-secondary/10 border border-accent/10">
+              <p className="text-xs md:text-sm text-muted-foreground mb-1">
                 すでにアカウントをお持ちの方は
               </p>
               <Link
                 href="/auth/signin"
-                className="text-accent hover:text-accent/80 font-bold paint-hover inline-flex items-center text-base"
+                className="text-accent hover:text-accent/80 font-bold paint-hover inline-flex items-center text-sm md:text-base"
               >
-                <Palette className="mr-2 h-4 w-4" />
+                <Palette className="mr-1.5 h-3.5 w-3.5" />
                 サインインして始める
                 <Droplet className="ml-1 h-3 w-3 animate-bounce" />
               </Link>
