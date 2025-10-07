@@ -17,13 +17,16 @@ import {
   TrendingUp,
   CheckCircle,
   ArrowRight,
+  ArrowDown,
   Users,
   Target,
   Smartphone,
   Clock,
   Award,
   Building2,
-  Loader2
+  Loader2,
+  Camera,
+  Sparkles
 } from 'lucide-react'
 
 export default function HomePage() {
@@ -92,21 +95,78 @@ export default function HomePage() {
               </h1>
             </div>
 
-            {/* スライダーデモ動画 */}
-            <div className="w-full mt-1.5 md:mt-2">
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="w-full aspect-video object-cover"
-              >
-                <source src="/demo/slider-demo.mp4" type="video/mp4" />
-                お使いのブラウザは動画に対応していません。
-              </video>
-              <p className="text-xs md:text-sm text-muted-foreground text-center mt-1 md:mt-1.5 font-medium px-4">
-                スライダーで簡単にビフォー・アフターを比較
-              </p>
+            {/* スライダーデモ動画と使用方法 */}
+            <div className="w-full mt-2 md:mt-3 px-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-6xl mx-auto">
+                {/* 左側：スライダー動画 */}
+                <div className="space-y-2">
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full aspect-video object-cover rounded-lg shadow-lg"
+                  >
+                    <source src="/demo/slider-demo.mp4" type="video/mp4" />
+                    お使いのブラウザは動画に対応していません。
+                  </video>
+                  <p className="text-xs md:text-sm text-muted-foreground text-center font-medium">
+                    スライダーで簡単にビフォー・アフターを比較
+                  </p>
+                </div>
+
+                {/* 右側：使用方法 */}
+                <div className="space-y-2 md:space-y-3">
+                  <h3 className="text-base md:text-lg font-bold text-center text-foreground">簡単4ステップ</h3>
+                  <div className="grid grid-cols-2 gap-3 md:gap-4 relative">
+                    {/* 左上：写真を撮る */}
+                    <div className="relative bg-white/90 backdrop-blur-sm rounded-lg p-3 md:p-4 shadow-md border border-primary/20">
+                      <div className="flex flex-col items-center gap-1.5 md:gap-2">
+                        <div className="bg-primary/10 p-2 rounded-full">
+                          <Camera className="w-6 h-6 md:w-8 md:h-8 text-primary" />
+                        </div>
+                        <p className="text-xs md:text-sm font-semibold text-center text-foreground">現場で写真を撮る</p>
+                      </div>
+                      {/* 右向き矢印 */}
+                      <ArrowRight className="absolute -right-3.5 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-primary drop-shadow-lg hidden md:block" />
+                    </div>
+
+                    {/* 右上：色を選ぶ */}
+                    <div className="relative bg-white/90 backdrop-blur-sm rounded-lg p-3 md:p-4 shadow-md border border-primary/20">
+                      <div className="flex flex-col items-center gap-1.5 md:gap-2">
+                        <div className="bg-primary/10 p-2 rounded-full">
+                          <Palette className="w-6 h-6 md:w-8 md:h-8 text-primary" />
+                        </div>
+                        <p className="text-xs md:text-sm font-semibold text-center text-foreground">色を選ぶ</p>
+                      </div>
+                      {/* 下向き矢印（左寄り） */}
+                      <ArrowDown className="absolute left-1/4 -translate-x-1/2 -bottom-3.5 w-5 h-5 md:w-6 md:h-6 text-primary drop-shadow-lg hidden md:block" />
+                    </div>
+
+                    {/* 左下：作成ボタンを押す */}
+                    <div className="relative bg-white/90 backdrop-blur-sm rounded-lg p-3 md:p-4 shadow-md border border-primary/20">
+                      <div className="flex flex-col items-center gap-1.5 md:gap-2">
+                        <div className="bg-primary/10 p-2 rounded-full">
+                          <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-primary" />
+                        </div>
+                        <p className="text-xs md:text-sm font-semibold text-center text-foreground">作成ボタンを押す</p>
+                      </div>
+                      {/* 右向き矢印 */}
+                      <ArrowRight className="absolute -right-3.5 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-primary drop-shadow-lg hidden md:block" />
+                    </div>
+
+                    {/* 右下：お客様に見せる */}
+                    <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 md:p-4 shadow-md border border-primary/20">
+                      <div className="flex flex-col items-center gap-1.5 md:gap-2">
+                        <div className="bg-primary/10 p-2 rounded-full">
+                          <Users className="w-6 h-6 md:w-8 md:h-8 text-primary" />
+                        </div>
+                        <p className="text-xs md:text-sm font-semibold text-center text-foreground">お客様に見せる</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <p className="text-xs md:text-sm text-muted-foreground leading-relaxed max-w-3xl mx-auto mt-1.5 md:mt-2 px-4">
