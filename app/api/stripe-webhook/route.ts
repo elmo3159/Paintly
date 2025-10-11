@@ -42,23 +42,23 @@ export async function POST(request: NextRequest) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session
         const userId = session.metadata?.userId
-        const planId = session.metadata?.planId
+        const planSlug = session.metadata?.planId
         const customerId = session.customer as string
         const subscriptionId = session.subscription as string
 
-        if (!userId || !planId) {
+        if (!userId || !planSlug) {
           throw new Error('Missing metadata in checkout session')
         }
 
-        // Get plan details
+        // Get plan details by slug
         const { data: plan } = await supabase
           .from('plans')
           .select('*')
-          .eq('id', planId)
+          .eq('slug', planSlug)
           .single()
 
         if (!plan) {
-          throw new Error(`Plan not found: ${planId}`)
+          throw new Error(`Plan not found with slug: ${planSlug}`)
         }
 
         // Create or update subscription

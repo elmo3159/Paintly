@@ -56,42 +56,7 @@ export default function SignUpPage() {
       }
 
       if (authData?.user) {
-        // Create user record in the users table
-        const { error: dbError } = await supabase
-          .from('users')
-          .insert({
-            id: authData.user.id,
-            email: authData.user.email,
-          })
-
-        if (dbError) {
-          console.error('Error creating user record:', dbError)
-        }
-
-        // Create free plan subscription
-        const { data: plans } = await supabase
-          .from('plans')
-          .select('id')
-          .eq('name', 'free')
-          .single()
-
-        if (plans) {
-          const { error: subError } = await supabase
-            .from('subscriptions')
-            .insert({
-              user_id: authData.user.id,
-              plan_id: plans.id,
-              status: 'active',
-              current_period_start: new Date().toISOString(),
-              current_period_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-              generation_count: 0,
-            })
-
-          if (subError) {
-            console.error('Error creating subscription:', subError)
-          }
-        }
-
+        // トリガーが自動的にusersテーブルとsubscriptionsテーブルを作成します
         setSuccess(true)
         setTimeout(() => {
           router.push('/dashboard')
@@ -126,7 +91,7 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-primary/10 p-4 py-8 md:py-12">
+    <div className="min-h-screen overflow-y-auto bg-gradient-to-br from-background via-secondary/30 to-primary/10 p-4 py-8 md:py-12">
       {/* 背景装飾 */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-16 right-16 w-28 h-28 opacity-5">
@@ -282,9 +247,6 @@ export default function SignUpPage() {
 
             {/* 区切り線 */}
             <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-border/50" />
-              </div>
               <div className="relative flex justify-center text-xs uppercase font-semibold">
                 <span className="bg-background px-3 text-muted-foreground/80">または</span>
               </div>

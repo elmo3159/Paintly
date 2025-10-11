@@ -647,3 +647,7 @@ const monitorPerformance = async () => {
 - 機密情報を含むページでは使用注意
 - 本番環境のクレデンシャルは使用しない
 - VPN環境では接続設定の調整が必要な場合あり
+
+
+色選択実装用カラーネーム、コードまとめ↓
+C:\Users\elmod\Desktop\CursorApp\Paintly\docs\Color.md

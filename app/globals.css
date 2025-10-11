@@ -279,29 +279,29 @@
     box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.2);
   }
 
-  /* 非対称回転バリエーション */
+  /* 非対称回転バリエーション - 削除（まっすぐに変更） */
   .card:nth-child(3n+1) {
-    transform: rotate(-0.8deg);
+    /* transform: rotate(-0.8deg); */
   }
 
   .card:nth-child(3n+2) {
-    transform: rotate(0.6deg);
+    /* transform: rotate(0.6deg); */
   }
 
   .card:nth-child(3n+3) {
-    transform: rotate(-0.4deg);
+    /* transform: rotate(-0.4deg); */
   }
 
   .card:nth-child(3n+1):hover {
-    transform: rotate(-0.8deg) translate(-3px, -3px);
+    transform: translate(-3px, -3px);
   }
 
   .card:nth-child(3n+2):hover {
-    transform: rotate(0.6deg) translate(-3px, -3px);
+    transform: translate(-3px, -3px);
   }
 
   .card:nth-child(3n+3):hover {
-    transform: rotate(-0.4deg) translate(-3px, -3px);
+    transform: translate(-3px, -3px);
   }
 
   .card-compact {
@@ -441,7 +441,7 @@
     font-family: var(--font-handwritten);
     border-radius: 0;
     border: 2px dashed var(--brand);
-    transform: rotate(1.5deg);
+    /* transform: rotate(1.5deg); */
     position: relative;
     box-shadow: 3px 3px 0 hsla(var(--brand-h), var(--brand-s), var(--brand-l), 0.15);
   }
@@ -588,19 +588,19 @@
 }
 
 .paint-card:nth-child(odd) {
-  transform: rotate(-0.6deg);
+  /* transform: rotate(-0.6deg); */
 }
 
 .paint-card:nth-child(even) {
-  transform: rotate(0.5deg);
+  /* transform: rotate(0.5deg); */
 }
 
 .paint-card:nth-child(odd):hover {
-  transform: rotate(-0.6deg) translate(-3px, -3px);
+  transform: translate(-3px, -3px);
 }
 
 .paint-card:nth-child(even):hover {
-  transform: rotate(0.5deg) translate(-3px, -3px);
+  transform: translate(-3px, -3px);
 }
 
 /* ペイントボタン - 大胆な影 + 大文字 */
@@ -648,7 +648,7 @@
   background: hsla(var(--brand-h), var(--brand-s), var(--brand-l), 0.15);
   border-radius: 50% / 30%;
   z-index: -1;
-  transform: rotate(-1deg);
+  /* transform: rotate(-1deg); */
 }
 
 /* ワークショップ背景 */
@@ -728,7 +728,7 @@
   position: absolute;
   right: 0;
   top: 50%;
-  transform: translateY(-50%) rotate(-5deg);
+  transform: translateY(-50%);
   font-family: var(--font-handwritten);
   font-size: 24px;
   color: var(--brand);
@@ -757,7 +757,7 @@
       transparent 8px
     );
   opacity: 0.4;
-  transform: rotate(-1deg);
+  /* transform: rotate(-1deg); */
 }
 
 /* 有機的なブロブ背景 */
@@ -800,7 +800,7 @@
   border: 3px dashed var(--border);
   border-radius: 0;
   opacity: 0.6;
-  transform: rotate(0.5deg);
+  /* transform: rotate(0.5deg); */
 }
 
 /* 手書き風数字（リスト用） */
@@ -817,7 +817,7 @@
   font-size: 18px;
   font-weight: 700;
   color: var(--brand-dark);
-  transform: rotate(-3deg);
+  /* transform: rotate(-3deg); */
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -833,7 +833,7 @@
   right: -16px;
   font-size: 24px;
   color: var(--accent);
-  transform: rotate(15deg);
+  /* transform: rotate(15deg); */
   opacity: 0.6;
   animation: star-twinkle 3s ease-in-out infinite;
 }
@@ -841,11 +841,11 @@
 @keyframes star-twinkle {
   0%, 100% {
     opacity: 0.6;
-    transform: rotate(15deg) scale(1);
+    transform: scale(1);
   }
   50% {
     opacity: 0.9;
-    transform: rotate(25deg) scale(1.1);
+    transform: scale(1.1);
   }
 }
 
@@ -860,7 +860,7 @@
   position: absolute;
   left: 0;
   top: 50%;
-  transform: translateY(-50%) rotate(-5deg);
+  transform: translateY(-50%);
   font-family: var(--font-handwritten);
   font-size: 24px;
   color: var(--brand);
@@ -880,7 +880,7 @@
   border: 3px solid var(--brand);
   border-radius: 50%;
   opacity: 0.3;
-  transform: rotate(-5deg);
+  /* transform: rotate(-5deg); */
 }
 
 /* スクラップブック風スティッキー */
@@ -890,7 +890,7 @@
   padding: var(--space-lg);
   position: relative;
   box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
-  transform: rotate(1deg);
+  /* transform: rotate(1deg); */
   font-family: var(--font-handwritten);
 }
 
@@ -913,7 +913,7 @@
   border: 3px solid var(--border);
   padding: var(--space-lg);
   margin-bottom: 24px;
-  transform: rotate(-0.5deg);
+  /* transform: rotate(-0.5deg); */
 }
 
 .sketch-bubble::after {
@@ -942,7 +942,7 @@
   height: 4px;
   background: var(--brand);
   opacity: 0.3;
-  transform: skewY(-2deg);
+  /* transform: skewY(-2deg); */
 }
 
 /* ===== 2025 AI Dashboard - Gradient Cards ===== */

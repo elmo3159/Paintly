@@ -4,7 +4,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Download, Maximize2, X } from 'lucide-react'
-import { ScreenReaderOnly, AccessibleButton } from '@/components/accessibility-helpers'
+import { ScreenReaderOnly } from '@/components/accessibility-helpers'
 
 // Client-side error reporting function
 const reportClientError = (error: Error, context: string) => {

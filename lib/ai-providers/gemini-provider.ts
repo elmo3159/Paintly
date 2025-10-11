@@ -41,25 +41,41 @@ export class GeminiProvider extends AIProvider {
 
     // 色の指定（強化版 - 確実性を重視）
     if (params.wallColor !== '変更なし' && params.wallColorData) {
-      prompt += `【外壁色変更 - 必須実行】建物の外壁は必ず「${params.wallColorData.name}」色で完全に塗装してください。`
+      // 新しいWebColorシステムか古いシステムかを判定
+      const colorName = params.wallColorData.japaneseName || params.wallColorData.name
+      const rgbValue = typeof params.wallColorData.rgb === 'string'
+        ? params.wallColorData.rgb
+        : `rgb(${params.wallColorData.rgb.r}, ${params.wallColorData.rgb.g}, ${params.wallColorData.rgb.b})`
+
+      prompt += `【外壁色変更 - 必須実行】建物の外壁は必ず「${colorName}」色で完全に塗装してください。`
+      prompt += `色の指定: 色名=${colorName}, RGB=${rgbValue}, カラーコード=${params.wallColorData.hex}。`
       prompt += `絶対に塗り残しがないよう、外壁の全ての面、角、継ぎ目、隅々まで確実に${params.wallColorData.hex}のカラーコードで塗装してください。`
-      prompt += `日本塗料工業会の標準色番号${params.wallColorData.code}として規定されている色です。`
       prompt += `影になる部分、奥まった部分、建物の裏側も含めて、見える全ての外壁面を漏れなく塗装してください。`
       prompt += `従来の壁色は完全に隠し、新しい色のみが見えるようにしてください。\n\n`
     }
 
     if (params.roofColor !== '変更なし' && params.roofColorData) {
-      prompt += `【屋根色変更 - 必須実行】屋根は必ず「${params.roofColorData.name}」色で完全に塗装してください。`
+      const colorName = params.roofColorData.japaneseName || params.roofColorData.name
+      const rgbValue = typeof params.roofColorData.rgb === 'string'
+        ? params.roofColorData.rgb
+        : `rgb(${params.roofColorData.rgb.r}, ${params.roofColorData.rgb.g}, ${params.roofColorData.rgb.b})`
+
+      prompt += `【屋根色変更 - 必須実行】屋根は必ず「${colorName}」色で完全に塗装してください。`
+      prompt += `色の指定: 色名=${colorName}, RGB=${rgbValue}, カラーコード=${params.roofColorData.hex}。`
       prompt += `屋根の全ての面、瓦やスレートの一枚一枚、棟、軒先、谷部分まで確実に${params.roofColorData.hex}で塗装してください。`
-      prompt += `日本塗料工業会標準色番号${params.roofColorData.code}として認定されています。`
       prompt += `屋根材の質感を活かしながら、影になる部分や複雑な形状の部分も含めて、見える全ての屋根面を漏れなく塗装してください。`
       prompt += `従来の屋根色は完全に隠し、新しい色のみが見えるようにしてください。\n\n`
     }
 
     if (params.doorColor !== '変更なし' && params.doorColorData) {
-      prompt += `【ドア色変更 - 必須実行】建物の玄関ドア（エントランスドアのみ）は必ず「${params.doorColorData.name}」色で完全に塗装してください。`
+      const colorName = params.doorColorData.japaneseName || params.doorColorData.name
+      const rgbValue = typeof params.doorColorData.rgb === 'string'
+        ? params.doorColorData.rgb
+        : `rgb(${params.doorColorData.rgb.r}, ${params.doorColorData.rgb.g}, ${params.doorColorData.rgb.b})`
+
+      prompt += `【ドア色変更 - 必須実行】建物の玄関ドア（エントランスドアのみ）は必ず「${colorName}」色で完全に塗装してください。`
+      prompt += `色の指定: 色名=${colorName}, RGB=${rgbValue}, カラーコード=${params.doorColorData.hex}。`
       prompt += `ドアの表面、枠、パネル、隅々まで確実に${params.doorColorData.hex}で塗装してください。`
-      prompt += `日本塗料工業会の色番号${params.doorColorData.code}に準拠しています。`
       prompt += `ドア全体が均一で美しい仕上がりになるよう、従来のドア色は完全に隠してください。`
       prompt += `ドアハンドルやヒンジなどの金具は元の色を維持してください。`
       prompt += `【重要注意】窓、窓枠、雨樋、換気口、その他の建具には絶対に色を適用せず、元の色を完全に保持してください。`

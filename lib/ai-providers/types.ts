@@ -30,6 +30,9 @@ export interface ColorData {
   hex: string
   rgb: { r: number; g: number; b: number }
   munsell?: string
+  // WebColorシステム用の追加プロパティ（後方互換性のためオプショナル）
+  japaneseName?: string
+  englishName?: string
 }
 
 export interface GenerationResult {

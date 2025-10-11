@@ -199,7 +199,8 @@ export function GenerationSettings({
           <Label htmlFor="otherInstructions">その他の指定</Label>
           <Textarea
             id="otherInstructions"
-            placeholder="追加の指示や要望があれば入力してください"
+            placeholder={`追加の指示や要望があれば入力してください
+例:ベランダの壁だけを黒に変えてください。`}
             value={otherInstructions}
             onChange={(e) => handleOtherInstructionsChange(e.target.value)}
             aria-describedby="otherInstructions-help"

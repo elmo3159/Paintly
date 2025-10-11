@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from 'react'
 import { useParams, useSearchParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { ImageUpload } from '@/components/image-upload'
-import { CompactColorSelector } from '@/components/compact-color-selector'
-import { getColorById, type ColorUsage } from '@/lib/hierarchical-paint-colors'
+import { WebColorSelector } from '@/components/web-color-selector'
+import { getWebColorById, webColorToColorData } from '@/lib/web-colors'
 import { WeatherSelector } from '@/components/weather-selector'
 import { GenerationSettings } from '@/components/generation-settings'
 import { GenerationHistory } from '@/components/generation-history'
@@ -322,14 +322,35 @@ export default function CustomerPage() {
       formData.append('otherInstructions', otherInstructions)
       formData.append('aiProvider', 'gemini') // Fixed to Gemini only
 
-      // Add detailed color data
-      const wallColorData = getColorById(wallColorId)
-      const roofColorData = getColorById(roofColorId)
-      const doorColorData = getColorById(doorColorId)
+      // Add detailed color data - Convert WebColor to ColorData format
+      const wallColor = getWebColorById(wallColorId)
+      const roofColor = getWebColorById(roofColorId)
+      const doorColor = getWebColorById(doorColorId)
 
-      if (wallColorData) formData.append('wallColorData', JSON.stringify(wallColorData))
-      if (roofColorData) formData.append('roofColorData', JSON.stringify(roofColorData))
-      if (doorColorData) formData.append('doorColorData', JSON.stringify(doorColorData))
+      if (wallColor && wallColorId !== 'no-change') {
+        const convertedData = webColorToColorData(wallColor)
+        formData.append('wallColorData', JSON.stringify({
+          ...convertedData,
+          japaneseName: wallColor.japaneseName,
+          englishName: wallColor.englishName
+        }))
+      }
+      if (roofColor && roofColorId !== 'no-change') {
+        const convertedData = webColorToColorData(roofColor)
+        formData.append('roofColorData', JSON.stringify({
+          ...convertedData,
+          japaneseName: roofColor.japaneseName,
+          englishName: roofColor.englishName
+        }))
+      }
+      if (doorColor && doorColorId !== 'no-change') {
+        const convertedData = webColorToColorData(doorColor)
+        formData.append('doorColorData', JSON.stringify({
+          ...convertedData,
+          japaneseName: doorColor.japaneseName,
+          englishName: doorColor.englishName
+        }))
+      }
 
       const response = await fetch('/api/generate', {
         method: 'POST',
@@ -572,23 +593,20 @@ export default function CustomerPage() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <CompactColorSelector
+                    <WebColorSelector
                       label="壁の色"
                       selectedColorId={wallColorId}
                       onColorSelect={setWallColorId}
-                      usage="wall"
                     />
-                    <CompactColorSelector
+                    <WebColorSelector
                       label="屋根の色"
                       selectedColorId={roofColorId}
                       onColorSelect={setRoofColorId}
-                      usage="roof"
                     />
-                    <CompactColorSelector
+                    <WebColorSelector
                       label="ドアの色"
                       selectedColorId={doorColorId}
                       onColorSelect={setDoorColorId}
-                      usage="door"
                     />
                   </CardContent>
                 </Card>

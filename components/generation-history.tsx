@@ -9,7 +9,6 @@ import { Badge } from '@/components/ui/badge'
 import { Loader2, Download, Eye, Calendar, Palette } from 'lucide-react'
 import Image from 'next/image'
 import { ImageComparisonFixed } from '@/components/image-comparison-fixed'
-import { ScreenReaderOnly, AccessibleButton } from '@/components/accessibility-helpers'
 
 // Client-side error reporting function
 const reportClientError = (error: Error, context: string) => {
@@ -382,18 +381,19 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
 
                         {/* 🆕 Enhanced action buttons with slider navigation */}
                         {item.status === 'completed' && item.generated_image_url && (
-                          <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                          <div className="flex flex-col lg:flex-row gap-2 pt-2">
                             <Button
                               size="sm"
                               variant="default"
                               onClick={() => navigateToSlider(item)}
-                              className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto"
+                              className="bg-blue-600 hover:bg-blue-700 w-full lg:w-auto"
                               aria-label={`${new Date(item.created_at).toLocaleDateString('ja-JP')}の生成画像をスライダーで比較表示`}
                             >
                               <Eye className="h-4 w-4 mr-1" />
-                              スライダーで比較
+                              <span className="lg:hidden">比較</span>
+                              <span className="hidden lg:inline">スライダーで比較</span>
                             </Button>
-<Button
+                            <Button
                               size="sm"
                               variant="outline"
                               onClick={() => downloadImage(
@@ -401,10 +401,11 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
                                 `paintly_${item.id}.png`
                               )}
                               aria-label={`${new Date(item.created_at).toLocaleDateString('ja-JP')}の生成画像をダウンロード`}
-                              className="w-full sm:w-auto"
+                              className="w-full lg:w-auto"
                             >
                               <Download className="h-4 w-4 mr-1" />
-                              ダウンロード
+                              <span className="lg:hidden">DL</span>
+                              <span className="hidden lg:inline">ダウンロード</span>
                             </Button>
                           </div>
                         )}

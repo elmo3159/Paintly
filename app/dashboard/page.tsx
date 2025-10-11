@@ -25,7 +25,7 @@ export default async function DashboardPage() {
     }
 
     return (
-      <div className="space-y-8 workshop-bg">
+      <div className="space-y-8 workshop-bg px-4 sm:px-6 lg:px-8">
         {/* Paint Drips at Top */}
         <div className="paint-drips"></div>
 
@@ -53,26 +53,26 @@ export default async function DashboardPage() {
           </Suspense>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 relative z-10">
+        <div className="grid gap-6 2xl:grid-cols-2 relative z-10">
           {/* クイックスタート */}
           <Card className="paint-card">
             <CardHeader>
-              <CardTitle className="paint-text text-lg sm:text-xl md:text-2xl min-w-0">クイックスタート</CardTitle>
+              <CardTitle className="paint-text text-lg sm:text-xl md:text-2xl">クイックスタート</CardTitle>
               <CardDescription>
                 塗装シミュレーションを開始しましょう
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center space-x-4 rounded-lg border p-4">
-                <Palette className="h-8 w-8 text-primary animate-pulse" />
-                <div className="flex-1">
-                  <h3 className="font-semibold text-sm sm:text-base">新規シミュレーション</h3>
-                  <p className="text-sm text-muted-foreground">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 rounded-lg border p-4">
+                <Palette className="h-8 w-8 text-primary animate-pulse flex-shrink-0" />
+                <div className="flex-1 min-w-0 w-full sm:w-auto">
+                  <h3 className="font-semibold text-sm sm:text-base truncate">新規シミュレーション</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
                     建物の写真をアップロードして色を変更
                   </p>
                 </div>
-                <Link href="/customer/new">
-                  <Button className="paint-button">
+                <Link href="/customer/new" className="w-full sm:w-auto">
+                  <Button className="paint-button flex-shrink-0 w-full sm:w-auto">
                     開始
                   </Button>
                 </Link>
