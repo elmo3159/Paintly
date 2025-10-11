@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { ImageUpload } from '@/components/image-upload'
 import { WebColorSelector } from '@/components/web-color-selector'
 import { getWebColorById, webColorToColorData } from '@/lib/web-colors'
+import { addToColorHistory, getColorHistory } from '@/lib/color-history'
 import { WeatherSelector } from '@/components/weather-selector'
 import { GenerationSettings } from '@/components/generation-settings'
 import { GenerationHistory } from '@/components/generation-history'
@@ -24,6 +25,8 @@ import { EnhancedLoading } from '@/components/enhanced-loading'
 import { EnhancedError, useEnhancedError, type ErrorType } from '@/components/enhanced-error'
 import { CustomerPageSkeleton } from '@/components/skeleton-loader'
 import { cn } from '@/lib/utils'
+import { canGenerate, getGenerationBlockedMessage } from '@/lib/plan-warning'
+import Link from 'next/link'
 
 interface CustomerData {
   id?: string
@@ -56,6 +59,7 @@ export default function CustomerPage() {
   const [layoutSideBySide, setLayoutSideBySide] = useState(false)
   const [backgroundColor, setBackgroundColor] = useState('白')
   const [otherInstructions, setOtherInstructions] = useState('')
+  const [recentColors, setRecentColors] = useState<string[]>([])
 
   // Slider view states
   const [showSliderView, setShowSliderView] = useState(false)
@@ -88,10 +92,27 @@ export default function CustomerPage() {
   const [historyRefresh, setHistoryRefresh] = useState(0)
   const [latestGenerationId, setLatestGenerationId] = useState<string | null>(null)
 
+  // Plan info for limit checking
+  const [planInfo, setPlanInfo] = useState<{
+    plan_name: string
+    generation_limit: number
+    generation_count: number
+  } | null>(null)
+
   // Load customer data
   useEffect(() => {
     loadCustomer()
   }, [customerId])
+
+  // Load color history from localStorage
+  useEffect(() => {
+    setRecentColors(getColorHistory())
+  }, [])
+
+  // Load plan info for limit checking
+  useEffect(() => {
+    loadPlanInfo()
+  }, [])
 
   // Handle URL parameters for slider view
   useEffect(() => {
@@ -134,6 +155,56 @@ export default function CustomerPage() {
     } catch (error: any) {
       console.error('Error loading slider data:', error)
       showError('スライダーデータの読み込みに失敗しました', 'api')
+    }
+  }
+
+  const loadPlanInfo = async () => {
+    try {
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+      
+      if (authError || !user) {
+        console.error('Auth error in loadPlanInfo:', authError)
+        return
+      }
+
+      const { data, error } = await supabase
+        .from('subscriptions')
+        .select(`
+          generation_count,
+          plans (
+            name,
+            generation_limit,
+            description
+          )
+        `)
+        .eq('user_id', user.id)
+        .eq('status', 'active')
+        .single()
+
+      if (error) {
+        console.error('Error fetching plan info:', error)
+        setPlanInfo({
+          plan_name: '無料プラン',
+          generation_limit: 3,
+          generation_count: 0
+        })
+        return
+      }
+
+      if (data && data.plans) {
+        setPlanInfo({
+          plan_name: (data.plans as any).name,
+          generation_limit: (data.plans as any).generation_limit,
+          generation_count: data.generation_count
+        })
+      }
+    } catch (error) {
+      console.error('Unexpected error in loadPlanInfo:', error)
+      setPlanInfo({
+        plan_name: '無料プラン',
+        generation_limit: 3,
+        generation_count: 0
+      })
     }
   }
   const loadCustomer = async () => {
@@ -303,6 +374,16 @@ export default function CustomerPage() {
     if (!mainImage) {
       showError('メイン画像を選択してください', 'validation')
       return
+    }
+
+    // プラン上限チェック
+    if (planInfo) {
+      const remaining = Math.max(0, planInfo.generation_limit - planInfo.generation_count)
+      if (!canGenerate(remaining)) {
+        const message = getGenerationBlockedMessage(planInfo.plan_name)
+        showError(message, 'quota')
+        return
+      }
     }
 
     setGenerating(true)
@@ -596,17 +677,32 @@ export default function CustomerPage() {
                     <WebColorSelector
                       label="壁の色"
                       selectedColorId={wallColorId}
-                      onColorSelect={setWallColorId}
+                      onColorSelect={(colorId) => {
+                        setWallColorId(colorId)
+                        const updated = addToColorHistory(colorId)
+                        setRecentColors(updated)
+                      }}
+                      recentColors={recentColors}
                     />
                     <WebColorSelector
                       label="屋根の色"
                       selectedColorId={roofColorId}
-                      onColorSelect={setRoofColorId}
+                      onColorSelect={(colorId) => {
+                        setRoofColorId(colorId)
+                        const updated = addToColorHistory(colorId)
+                        setRecentColors(updated)
+                      }}
+                      recentColors={recentColors}
                     />
                     <WebColorSelector
                       label="ドアの色"
                       selectedColorId={doorColorId}
-                      onColorSelect={setDoorColorId}
+                      onColorSelect={(colorId) => {
+                        setDoorColorId(colorId)
+                        const updated = addToColorHistory(colorId)
+                        setRecentColors(updated)
+                      }}
+                      recentColors={recentColors}
                     />
                   </CardContent>
                 </Card>
@@ -630,7 +726,11 @@ export default function CustomerPage() {
                   <CardContent className="pt-6">
                     <Button
                       onClick={handleGenerate}
-                      disabled={generating || !mainImage}
+                      disabled={
+                        generating || 
+                        !mainImage || 
+                        (planInfo && !canGenerate(Math.max(0, planInfo.generation_limit - planInfo.generation_count)))
+                      }
                       className="w-full"
                       size="lg"
                       variant="neobrutalist"

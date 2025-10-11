@@ -6,7 +6,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, Download, Eye, Calendar, Palette } from 'lucide-react'
+import { Loader2, Download, Eye, Calendar, Palette, Heart, FileDown } from 'lucide-react'
+import { useFavorites } from '@/hooks/use-favorites'
+import { exportSingleGenerationToPdf, type ExportImageData } from '@/lib/pdf-export'
 import Image from 'next/image'
 import { ImageComparisonFixed } from '@/components/image-comparison-fixed'
 
@@ -61,6 +63,10 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
   const [loading, setLoading] = useState(true)
   // Removed selectedItem state - using unified slider view instead
   const supabase = createClient()
+
+  // お気に入り機能の統合
+  const generationIds = history.map(item => item.id)
+  const { favorites, loading: favoritesLoading, toggleFavorite, isFavorite } = useFavorites(generationIds)
 
   useEffect(() => {
     const loadHistory = async () => {
@@ -266,6 +272,44 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
     window.location.href = `/customer/${customerId}?tab=create&view=slider&generationId=${item.id}`
   }
 
+  // お気に入りトグルハンドラー
+  const handleToggleFavorite = async (generationId: string) => {
+    const success = await toggleFavorite(generationId)
+    if (!success) {
+      alert('お気に入りの更新に失敗しました')
+    }
+  }
+
+  // PDFエクスポートハンドラー
+  const handleExportPdf = async (item: GenerationHistoryItem) => {
+    if (!item.original_image_url || !item.generated_image_url) {
+      alert('画像が見つかりません')
+      return
+    }
+
+    try {
+      const exportData: ExportImageData = {
+        originalUrl: item.original_image_url,
+        generatedUrl: item.generated_image_url,
+        wallColor: item.wall_color,
+        roofColor: item.roof_color,
+        doorColor: item.door_color,
+        weather: item.weather,
+        createdAt: item.created_at
+      }
+
+      await exportSingleGenerationToPdf(exportData, `paintly_${item.id}.pdf`)
+      console.log('✅ PDF exported successfully')
+    } catch (error) {
+      console.error('❌ PDF export failed:', error)
+      reportClientError(
+        error instanceof Error ? error : new Error('PDF export failed'),
+        `handleExportPdf - Generation ID: ${item.id}`
+      )
+      alert('PDFのエクスポートに失敗しました')
+    }
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -395,6 +439,20 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
                             </Button>
                             <Button
                               size="sm"
+                              variant={isFavorite(item.id) ? "default" : "outline"}
+                              onClick={() => handleToggleFavorite(item.id)}
+                              disabled={favoritesLoading}
+                              className={isFavorite(item.id) ? "bg-red-500 hover:bg-red-600 w-full lg:w-auto" : "w-full lg:w-auto"}
+                              aria-label={isFavorite(item.id) ? "お気に入りから削除" : "お気に入りに追加"}
+                            >
+                              <Heart 
+                                className={`h-4 w-4 mr-1 ${isFavorite(item.id) ? 'fill-white' : ''}`}
+                              />
+                              <span className="lg:hidden">{isFavorite(item.id) ? '★' : '☆'}</span>
+                              <span className="hidden lg:inline">{isFavorite(item.id) ? 'お気に入り' : 'お気に入り'}</span>
+                            </Button>
+                            <Button
+                              size="sm"
                               variant="outline"
                               onClick={() => downloadImage(
                                 item.generated_image_url || '',
@@ -406,6 +464,17 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
                               <Download className="h-4 w-4 mr-1" />
                               <span className="lg:hidden">DL</span>
                               <span className="hidden lg:inline">ダウンロード</span>
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleExportPdf(item)}
+                              aria-label={`${new Date(item.created_at).toLocaleDateString('ja-JP')}の生成結果をPDFでエクスポート`}
+                              className="w-full lg:w-auto"
+                            >
+                              <FileDown className="h-4 w-4 mr-1" />
+                              <span className="lg:hidden">PDF</span>
+                              <span className="hidden lg:inline">PDFで保存</span>
                             </Button>
                           </div>
                         )}

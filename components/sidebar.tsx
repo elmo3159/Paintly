@@ -19,9 +19,11 @@ import {
   FileText,
   ArrowLeft,
   Search,
-  X
+  X,
+  AlertTriangle
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { getPlanWarningLevel } from '@/lib/plan-warning'
 
 // Client-side error reporting function
 const reportClientError = (error: Error, context: string) => {
@@ -409,6 +411,11 @@ export function Sidebar() {
     ? Math.min(100, (planInfo.generation_count / planInfo.generation_limit) * 100)
     : 0
 
+  // 警告レベルを計算
+  const warningInfo = planInfo
+    ? getPlanWarningLevel(remainingGenerations, planInfo.generation_limit)
+    : { level: 'safe', message: '', color: 'bg-primary', showUpgrade: false }
+
   const SidebarContent = useMemo(() => (
     <>
       <div
@@ -556,19 +563,54 @@ export function Sidebar() {
               <span className="font-medium">
                 {planInfo?.plan_name || '無料プラン'}
               </span>
-              <span className="text-gray-500">
+              <span className={cn(
+                "font-medium",
+                warningInfo.level === 'exceeded' && 'text-red-600',
+                warningInfo.level === 'critical' && 'text-orange-600',
+                warningInfo.level === 'warning' && 'text-yellow-600',
+                warningInfo.level === 'safe' && 'text-gray-500'
+              )}>
                 {remainingGenerations}回 残り
               </span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
               <div
-                className="bg-primary h-2 rounded-full transition-all duration-300"
+                className={cn(
+                  "h-2 rounded-full transition-all duration-300",
+                  warningInfo.color
+                )}
                 style={{ width: `${usagePercentage}%` }}
               />
             </div>
             <p className="text-xs text-gray-500">
               {planInfo?.generation_count || 0} / {planInfo?.generation_limit || 3} 回使用
             </p>
+
+            {/* 警告メッセージ */}
+            {warningInfo.message && (
+              <div className={cn(
+                "mt-2 p-2 rounded-md text-xs flex items-start gap-2",
+                warningInfo.level === 'exceeded' && 'bg-red-50 text-red-700',
+                warningInfo.level === 'critical' && 'bg-orange-50 text-orange-700',
+                warningInfo.level === 'warning' && 'bg-yellow-50 text-yellow-700'
+              )}>
+                <AlertTriangle className="h-3 w-3 flex-shrink-0 mt-0.5" />
+                <span>{warningInfo.message}</span>
+              </div>
+            )}
+
+            {/* アップグレードボタン */}
+            {warningInfo.showUpgrade && (
+              <Link href="/billing" className="block mt-2">
+                <Button
+                  variant="neobrutalist"
+                  size="sm"
+                  className="w-full text-xs bg-primary hover:bg-primary/90"
+                >
+                  プランをアップグレード
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* 設定メニュー */}
@@ -613,7 +655,7 @@ export function Sidebar() {
         </div>
       </div>
     </>
-  ), [filteredCustomers, planInfo, remainingGenerations, usagePercentage, isSettingsExpanded, searchTerm, handleSearchChange, handleNewCustomer, closeSidebar, handleSignOut, pathname])
+  ), [filteredCustomers, planInfo, remainingGenerations, usagePercentage, warningInfo, isSettingsExpanded, searchTerm, handleSearchChange, handleNewCustomer, closeSidebar, handleSignOut, pathname])
 
   if (!isSidebarOpen) {
     return (

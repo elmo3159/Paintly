@@ -22,13 +22,15 @@ interface WebColorSelectorProps {
   selectedColorId?: string
   onColorSelect: (colorId: string) => void
   disabled?: boolean
+  recentColors?: string[]
 }
 
 export function WebColorSelector({
   label,
   selectedColorId,
   onColorSelect,
-  disabled = false
+  disabled = false,
+  recentColors = []
 }: WebColorSelectorProps) {
   const safeSelectedColorId = selectedColorId === '' ? undefined : selectedColorId
   const [selectedCategory, setSelectedCategory] = useState<string>('none')
@@ -123,6 +125,42 @@ export function WebColorSelector({
           </Button>
         )}
       </div>
+
+      {/* 最近使った色 */}
+      {recentColors.length > 0 && (
+        <div className="space-y-2">
+          <div className="text-xs text-muted-foreground font-medium">最近使った色</div>
+          <div className="flex gap-2 flex-wrap">
+            {recentColors.map(colorId => {
+              const color = getWebColorById(colorId)
+              if (!color) return null
+
+              const isSelected = safeSelectedColorId === colorId
+
+              return (
+                <button
+                  key={colorId}
+                  onClick={() => handleColorChange(colorId)}
+                  className={`group relative w-10 h-10 rounded-full border-2 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                    isSelected
+                      ? 'border-primary ring-2 ring-primary ring-offset-2'
+                      : 'border-gray-300 hover:border-primary'
+                  }`}
+                  style={{ backgroundColor: color.hex }}
+                  title={`${color.japaneseName} (${color.englishName})`}
+                  aria-label={`${color.japaneseName}を選択`}
+                >
+                  {isSelected && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-3 h-3 bg-white rounded-full shadow-md" />
+                    </div>
+                  )}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
       {/* 選択済みの色を表示 */}
       {selectedColor && selectedColor.id !== 'no-change' && (
