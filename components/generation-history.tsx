@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Loader2, Download, Eye, Calendar, Palette, Heart, FileDown } from 'lucide-react'
 import { useFavorites } from '@/hooks/use-favorites'
 import { exportSingleGenerationToPdf, type ExportImageData } from '@/lib/pdf-export'
@@ -56,13 +57,33 @@ interface GenerationHistoryProps {
   onSliderView?: (data: any) => void
   refreshTrigger?: number
   latestGenerationId?: string | null
+  selectedIds?: string[]
+  onSelectionChange?: (ids: string[]) => void
+  enableSelection?: boolean
 }
 
-export function GenerationHistory({ customerId, onSliderView, refreshTrigger, latestGenerationId }: GenerationHistoryProps) {
+export function GenerationHistory({ customerId, onSliderView, refreshTrigger, latestGenerationId, selectedIds = [], onSelectionChange, enableSelection = false }: GenerationHistoryProps) {
   const [history, setHistory] = useState<GenerationHistoryItem[]>([])
   const [loading, setLoading] = useState(true)
   // Removed selectedItem state - using unified slider view instead
   const supabase = createClient()
+
+  // チェックボックスハンドラー
+  const handleToggleSelection = (id: string) => {
+    if (!onSelectionChange) return
+
+    if (selectedIds.includes(id)) {
+      // すでに選択されている場合は削除
+      onSelectionChange(selectedIds.filter(selectedId => selectedId !== id))
+    } else {
+      // 最大9個まで選択可能
+      if (selectedIds.length >= 9) {
+        alert('最大9個まで選択できます')
+        return
+      }
+      onSelectionChange([...selectedIds, id])
+    }
+  }
 
   // お気に入り機能の統合
   const generationIds = history.map(item => item.id)
@@ -350,6 +371,17 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
                 <Card key={item.id} className="overflow-hidden" role="listitem">
                   <CardContent className="p-4">
                     <div className="flex flex-col md:flex-row items-start md:space-x-4 space-y-4 md:space-y-0">
+                      {/* チェックボックス（選択モード時のみ表示） */}
+                      {enableSelection && (
+                        <div className="flex items-start pt-2">
+                          <Checkbox
+                            checked={selectedIds.includes(item.id)}
+                            onCheckedChange={() => handleToggleSelection(item.id)}
+                            disabled={!item.generated_image_url || item.status !== 'completed'}
+                            aria-label={`${new Date(item.created_at).toLocaleDateString('ja-JP')}の生成画像を比較用に選択`}
+                          />
+                        </div>
+                      )}
                       {/* Thumbnail - Fixed to use generated_image_url directly */}
                       <div className="relative w-32 h-32 flex-shrink-0 bg-muted rounded-lg overflow-hidden">
                         {item.generated_image_url ? (

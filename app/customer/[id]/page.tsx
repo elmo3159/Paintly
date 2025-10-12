@@ -11,6 +11,7 @@ import { WeatherSelector } from '@/components/weather-selector'
 import { GenerationSettings } from '@/components/generation-settings'
 import { GenerationHistory } from '@/components/generation-history'
 import { ImageComparisonFixed } from '@/components/image-comparison-fixed'
+import { ImageComparisonGrid } from '@/components/image-comparison-grid'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -91,6 +92,9 @@ export default function CustomerPage() {
   const [activeTab, setActiveTab] = useState('generation')
   const [historyRefresh, setHistoryRefresh] = useState(0)
   const [latestGenerationId, setLatestGenerationId] = useState<string | null>(null)
+
+  // 比較タブ用の選択されたIDs
+  const [selectedComparisonIds, setSelectedComparisonIds] = useState<string[]>([])
 
   // Plan info for limit checking
   const [planInfo, setPlanInfo] = useState<{
@@ -638,9 +642,12 @@ export default function CustomerPage() {
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 py-6 pb-safe-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="generation">画像生成</TabsTrigger>
             <TabsTrigger value="history">履歴</TabsTrigger>
+            <TabsTrigger value="comparison">
+              比較 {selectedComparisonIds.length > 0 && `(${selectedComparisonIds.length})`}
+            </TabsTrigger>
             <TabsTrigger value="info">顧客情報</TabsTrigger>
           </TabsList>
 
@@ -768,6 +775,17 @@ export default function CustomerPage() {
             onSliderView={openSliderView}
             refreshTrigger={historyRefresh}
             latestGenerationId={latestGenerationId}
+            enableSelection={activeTab === 'history'}
+            selectedIds={selectedComparisonIds}
+            onSelectionChange={setSelectedComparisonIds}
+          />
+        </TabsContent>
+
+        {/* Comparison Tab */}
+        <TabsContent value="comparison">
+          <ImageComparisonGrid
+            selectedIds={selectedComparisonIds}
+            customerId={customerId}
           />
         </TabsContent>
 
