@@ -83,28 +83,12 @@ export default function HomePage() {
             </div>
 
             {/* メインタイトル */}
-            <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold mb-5 leading-tight">
-              <span
-                className="text-white"
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-white mb-5 leading-tight"
                 style={{
-                  WebkitTextStroke: '2px #f97316',
-                  textShadow: '0 0 30px rgba(249,115,22,0.8), 0 0 60px rgba(249,115,22,0.5), 4px 4px 12px rgba(0,0,0,0.9)',
-                  filter: 'drop-shadow(0 0 10px rgba(249,115,22,0.6))'
-                }}
-              >
-                営業成約率を劇的に向上させる
-              </span>
-              <br />
-              <span
-                className="text-white"
-                style={{
-                  WebkitTextStroke: '1.5px rgba(249,115,22,0.5)',
-                  textShadow: '0 0 20px rgba(236,72,153,0.6), 4px 4px 12px rgba(0,0,0,0.9)',
-                  filter: 'drop-shadow(0 0 8px rgba(236,72,153,0.4))'
-                }}
-              >
-                塗装シミュレーション
-              </span>
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.8), -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5)'
+                }}>
+              営業成約率を劇的に向上させる<br />
+              塗装シミュレーション
             </h1>
 
             {/* キャッチフレーズ */}
