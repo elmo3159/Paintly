@@ -84,11 +84,25 @@ export default function HomePage() {
 
             {/* メインタイトル */}
             <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold mb-5 leading-tight">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 drop-shadow-[0_0_30px_rgba(249,115,22,0.8)] [text-shadow:_2px_2px_8px_rgb(0_0_0_/_80%)]" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(249,115,22,0.6)' }}>
+              <span
+                className="text-white"
+                style={{
+                  WebkitTextStroke: '2px #f97316',
+                  textShadow: '0 0 30px rgba(249,115,22,0.8), 0 0 60px rgba(249,115,22,0.5), 4px 4px 12px rgba(0,0,0,0.9)',
+                  filter: 'drop-shadow(0 0 10px rgba(249,115,22,0.6))'
+                }}
+              >
                 営業成約率を劇的に向上させる
               </span>
               <br />
-              <span className="text-white drop-shadow-[0_6px_12px_rgba(0,0,0,0.9)]" style={{ textShadow: '3px 3px 10px rgba(0,0,0,0.9), 0 0 15px rgba(0,0,0,0.5)' }}>
+              <span
+                className="text-white"
+                style={{
+                  WebkitTextStroke: '1.5px rgba(249,115,22,0.5)',
+                  textShadow: '0 0 20px rgba(236,72,153,0.6), 4px 4px 12px rgba(0,0,0,0.9)',
+                  filter: 'drop-shadow(0 0 8px rgba(236,72,153,0.4))'
+                }}
+              >
                 塗装シミュレーション
               </span>
             </h1>
