@@ -76,7 +76,7 @@ export default function HomePage() {
 
             {/* バッジ */}
             <div className="mb-3">
-              <span className="inline-flex items-center gap-2 bg-orange-500 text-white px-3 py-1.5 rounded-full text-xs md:text-sm font-bold shadow-lg">
+              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 via-pink-500 to-orange-500 bg-[length:200%_100%] animate-gradient-flow text-white px-3 py-1.5 rounded-full text-xs md:text-sm font-bold shadow-lg">
                 <Star className="h-3 w-3 md:h-4 md:w-4" />
                 一瞬で140色の高精度なシミュレーション
               </span>
@@ -100,7 +100,7 @@ export default function HomePage() {
             </div>
 
             {/* フロー比較（コンパクト版） */}
-            <div className="grid grid-cols-2 gap-3 md:gap-4 max-w-4xl mx-auto mb-4">
+            <div className="grid grid-cols-2 gap-3 md:gap-4 max-w-4xl mx-auto mb-3">
               {/* 従来 */}
               <div className="bg-white/5 backdrop-blur-sm rounded-xl p-2 md:p-3 border border-red-500/30">
                 <div className="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold mb-2 inline-block">
@@ -136,6 +136,14 @@ export default function HomePage() {
                   </span>
                 </div>
               </div>
+            </div>
+
+            {/* 説明文 */}
+            <div className="max-w-3xl mx-auto mb-4">
+              <p className="text-xs md:text-sm text-white/90 leading-relaxed">
+                現地調査などの際に建物の写真を撮影→色を選ぶだけで瞬時に塗装後の仕上がり画像が作成されます。<br />
+                <span className="text-sm md:text-base text-orange-400 font-semibold">その場でお客様に見せ、競合他社との差別化を図り</span>成約率を大幅にアップします。
+              </p>
             </div>
 
             {/* CTAボタン */}
