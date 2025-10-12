@@ -148,6 +148,125 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 第2.5画面: シンプルなフロー比較セクション */}
+      <section className="min-h-screen w-full bg-gradient-to-br from-white via-gray-50 to-slate-100 py-20 md:py-32 flex items-center">
+        <div className="max-w-6xl mx-auto px-4 md:px-8 w-full">
+          {/* セクションタイトル */}
+          <div className="text-center mb-16 md:mb-20">
+            <h2 className="text-4xl md:text-6xl font-bold mb-4 text-gray-900">
+              なぜPaintlyなのか？
+            </h2>
+            <p className="text-xl md:text-2xl text-gray-600">
+              営業フローの決定的な違い
+            </p>
+          </div>
+
+          {/* フロー比較 */}
+          <div className="grid md:grid-cols-2 gap-12 md:gap-16">
+            {/* 従来のフロー */}
+            <div className="space-y-8">
+              <div className="text-center">
+                <div className="inline-block bg-red-500 text-white px-8 py-3 rounded-full text-xl font-bold shadow-lg mb-8">
+                  従来
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-red-100">
+                  <p className="text-2xl md:text-3xl font-bold text-gray-900">持ち帰り</p>
+                </div>
+
+                <div className="flex justify-center">
+                  <ChevronRight className="w-12 h-12 text-red-400 rotate-90" />
+                </div>
+
+                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-red-100">
+                  <p className="text-2xl md:text-3xl font-bold text-gray-900">時間経過</p>
+                </div>
+
+                <div className="flex justify-center">
+                  <ChevronRight className="w-12 h-12 text-red-400 rotate-90" />
+                </div>
+
+                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-red-100">
+                  <p className="text-2xl md:text-3xl font-bold text-gray-900">熱量低下</p>
+                </div>
+
+                <div className="flex justify-center">
+                  <ChevronRight className="w-12 h-12 text-red-400 rotate-90" />
+                </div>
+
+                <div className="bg-red-500 rounded-2xl p-6 shadow-2xl border-2 border-red-600">
+                  <div className="flex items-center justify-center gap-3">
+                    <XCircle className="w-8 h-8 text-white" />
+                    <p className="text-2xl md:text-3xl font-bold text-white">失注</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Paintlyのフロー */}
+            <div className="space-y-8">
+              <div className="text-center">
+                <div className="inline-block bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-3 rounded-full text-xl font-bold shadow-lg mb-8">
+                  Paintly
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-green-100">
+                  <p className="text-2xl md:text-3xl font-bold text-gray-900">その場で感動</p>
+                </div>
+
+                <div className="flex justify-center">
+                  <ChevronRight className="w-12 h-12 text-green-400 rotate-90" />
+                </div>
+
+                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-green-100">
+                  <p className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-pink-500">
+                    熱量MAX
+                  </p>
+                </div>
+
+                <div className="flex justify-center">
+                  <ChevronRight className="w-12 h-12 text-green-400 rotate-90" />
+                </div>
+
+                <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl p-6 shadow-2xl border-2 border-green-600">
+                  <div className="flex items-center justify-center gap-3">
+                    <CheckCircle className="w-8 h-8 text-white" />
+                    <p className="text-2xl md:text-3xl font-bold text-white">即決</p>
+                  </div>
+                </div>
+
+                {/* 空のスペーサー（従来と高さを揃えるため） */}
+                <div className="opacity-0 pointer-events-none">
+                  <div className="bg-white rounded-2xl p-6">
+                    <p className="text-2xl md:text-3xl font-bold">　</p>
+                  </div>
+                  <div className="flex justify-center">
+                    <ChevronRight className="w-12 h-12" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* キャッチコピー */}
+          <div className="mt-20 text-center">
+            <div className="inline-block bg-gradient-to-r from-gray-900 to-gray-800 rounded-3xl p-8 md:p-12 shadow-2xl">
+              <p className="text-3xl md:text-5xl font-bold text-white leading-relaxed">
+                「この家に住みたい」<br />
+                <span className="text-2xl md:text-4xl text-white/80">お客様がそう思った瞬間、</span><br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400">
+                  営業は終わっている。
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 第3画面: 対比セクション */}
       <section className="min-h-screen w-full bg-gradient-to-br from-slate-50 to-gray-100 py-20 md:py-32 flex items-center">
         <div className="max-w-7xl mx-auto px-4 md:px-8 w-full">
