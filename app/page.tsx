@@ -62,7 +62,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-black/60"></div>
 
         {/* コンテンツ */}
-        <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 text-center py-8">
+        <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 text-center py-6">
           <div className="max-w-7xl mx-auto w-full space-y-4">
             {/* ロゴ */}
             <Image
@@ -71,7 +71,7 @@ export default function HomePage() {
               width={284}
               height={160}
               priority={true}
-              className="h-16 md:h-20 w-auto object-contain mx-auto mb-3"
+              className="h-24 md:h-28 w-auto object-contain mx-auto mb-3 -mt-4"
             />
 
             {/* バッジ */}
