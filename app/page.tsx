@@ -15,7 +15,9 @@ import {
   Star,
   Zap,
   TrendingUp,
+  TrendingDown,
   CheckCircle,
+  XCircle,
   ArrowRight,
   ArrowDown,
   Users,
@@ -26,7 +28,9 @@ import {
   Building2,
   Loader2,
   Camera,
-  Sparkles
+  Sparkles,
+  Heart,
+  ChevronRight
 } from 'lucide-react'
 
 export default function HomePage() {
@@ -189,6 +193,207 @@ export default function HomePage() {
                   ログインして続ける
                 </Button>
               </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* キャッチフレーズセクション */}
+        <section className="w-full bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 py-20 md:py-32 relative overflow-hidden">
+          {/* 背景装飾 */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500 rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="relative z-10 max-w-5xl mx-auto px-4 md:px-8 text-center">
+            <div className="space-y-6 md:space-y-8">
+              <p className="text-orange-400 font-bold text-base md:text-lg tracking-wider uppercase">
+                The Moment of Truth
+              </p>
+
+              <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold text-white leading-tight">
+                「この家に住みたい」
+              </h2>
+
+              <p className="text-2xl md:text-4xl lg:text-5xl font-bold text-white/90 leading-tight">
+                お客様がそう思った瞬間、<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400">
+                  営業は終わっている。
+                </span>
+              </p>
+
+              <div className="pt-6 md:pt-8">
+                <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+                  <Heart className="w-5 h-5 text-pink-400 animate-pulse" />
+                  <span className="text-white/90 text-sm md:text-base">
+                    感動が、購買決定を生む
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 対比セクション */}
+        <section className="w-full bg-gradient-to-br from-slate-50 to-gray-100 py-16 md:py-24">
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
+            <div className="text-center mb-12 md:mb-16">
+              <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4">
+                なぜ、その場で見せると成約率が上がるのか？
+              </h2>
+              <p className="text-base md:text-lg text-muted-foreground">
+                従来の営業との決定的な違い
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+              {/* 従来の営業 - Red Theme */}
+              <div className="relative">
+                <div className="absolute -top-3 -left-3 bg-red-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg z-10">
+                  従来の営業
+                </div>
+                <div className="bg-white rounded-2xl p-6 md:p-8 shadow-xl border-2 border-red-100 h-full">
+                  <div className="space-y-6 md:space-y-8">
+                    {/* Step 1: 持ち帰り */}
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                        <Clock className="w-6 h-6 text-red-600" />
+                      </div>
+                      <div className="flex-grow">
+                        <h3 className="font-bold text-lg mb-2">カタログを持ち帰り</h3>
+                        <p className="text-sm text-muted-foreground">「検討します」の一言で終了</p>
+                      </div>
+                    </div>
+
+                    {/* Arrow */}
+                    <div className="flex justify-center">
+                      <ChevronRight className="w-8 h-8 text-red-300 rotate-90" />
+                    </div>
+
+                    {/* Step 2: 時間経過 */}
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                        <TrendingDown className="w-6 h-6 text-red-600" />
+                      </div>
+                      <div className="flex-grow">
+                        <h3 className="font-bold text-lg mb-2">時間経過で熱量低下</h3>
+                        <p className="text-sm text-muted-foreground">興味が薄れ、想像力も減衰</p>
+                      </div>
+                    </div>
+
+                    {/* Arrow */}
+                    <div className="flex justify-center">
+                      <ChevronRight className="w-8 h-8 text-red-300 rotate-90" />
+                    </div>
+
+                    {/* Step 3: 競合比較 */}
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                        <Users className="w-6 h-6 text-red-600" />
+                      </div>
+                      <div className="flex-grow">
+                        <h3 className="font-bold text-lg mb-2">他社と比較検討</h3>
+                        <p className="text-sm text-muted-foreground">価格競争に巻き込まれる</p>
+                      </div>
+                    </div>
+
+                    {/* Arrow */}
+                    <div className="flex justify-center">
+                      <ChevronRight className="w-8 h-8 text-red-300 rotate-90" />
+                    </div>
+
+                    {/* Step 4: 失注 */}
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0 w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
+                        <XCircle className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-grow">
+                        <h3 className="font-bold text-lg mb-2 text-red-600">連絡がこない</h3>
+                        <p className="text-sm text-muted-foreground">成約率20〜30%</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Paintly営業 - Green Theme */}
+              <div className="relative">
+                <div className="absolute -top-3 -left-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg z-10">
+                  Paintly営業
+                </div>
+                <div className="bg-white rounded-2xl p-6 md:p-8 shadow-xl border-2 border-green-100 h-full">
+                  <div className="space-y-6 md:space-y-8">
+                    {/* Step 1: その場で撮影 */}
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <Camera className="w-6 h-6 text-green-600" />
+                      </div>
+                      <div className="flex-grow">
+                        <h3 className="font-bold text-lg mb-2">その場で建物を撮影</h3>
+                        <p className="text-sm text-muted-foreground">わずか30秒で準備完了</p>
+                      </div>
+                    </div>
+
+                    {/* Arrow */}
+                    <div className="flex justify-center">
+                      <ChevronRight className="w-8 h-8 text-green-300 rotate-90" />
+                    </div>
+
+                    {/* Step 2: 瞬時に生成 */}
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <Sparkles className="w-6 h-6 text-green-600" />
+                      </div>
+                      <div className="flex-grow">
+                        <h3 className="font-bold text-lg mb-2">AI瞬時に生成</h3>
+                        <p className="text-sm text-muted-foreground">複数パターンを即座に提案</p>
+                      </div>
+                    </div>
+
+                    {/* Arrow */}
+                    <div className="flex justify-center">
+                      <ChevronRight className="w-8 h-8 text-green-300 rotate-90" />
+                    </div>
+
+                    {/* Step 3: 感動体験 */}
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <Heart className="w-6 h-6 text-green-600" />
+                      </div>
+                      <div className="flex-grow">
+                        <h3 className="font-bold text-lg mb-2">その場で感動体験</h3>
+                        <p className="text-sm text-muted-foreground">「この色いいですね！」</p>
+                      </div>
+                    </div>
+
+                    {/* Arrow */}
+                    <div className="flex justify-center">
+                      <ChevronRight className="w-8 h-8 text-green-300 rotate-90" />
+                    </div>
+
+                    {/* Step 4: 即決成約 */}
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+                        <CheckCircle className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-grow">
+                        <h3 className="font-bold text-lg mb-2 text-green-600">熱量MAXで即決</h3>
+                        <p className="text-sm text-muted-foreground">成約率60〜80%</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 統計データ */}
+            <div className="mt-12 md:mt-16 text-center">
+              <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full shadow-xl">
+                <Sparkles className="w-5 h-5 text-white" />
+                <span className="text-white font-bold text-sm md:text-base">
+                  営業担当者の87%が「お客様の反応が変わった」と実感
+                </span>
+              </div>
             </div>
           </div>
         </section>
