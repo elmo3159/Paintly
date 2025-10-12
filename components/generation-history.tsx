@@ -65,6 +65,7 @@ interface GenerationHistoryProps {
 export function GenerationHistory({ customerId, onSliderView, refreshTrigger, latestGenerationId, selectedIds = [], onSelectionChange, enableSelection = false }: GenerationHistoryProps) {
   const [history, setHistory] = useState<GenerationHistoryItem[]>([])
   const [loading, setLoading] = useState(true)
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
   // Removed selectedItem state - using unified slider view instead
   const supabase = createClient()
 
@@ -359,15 +360,34 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
     <div className="space-y-4">
       <Card role="region" aria-labelledby="history-title">
         <CardHeader>
-          <CardTitle id="history-title">生成履歴</CardTitle>
-          <CardDescription>
-            過去に生成したシミュレーション画像
-          </CardDescription>
+          <div className="flex items-start justify-between">
+            <div className="space-y-1 flex-1">
+              <CardTitle id="history-title">生成履歴</CardTitle>
+              <CardDescription>
+                過去に生成したシミュレーション画像
+              </CardDescription>
+              {enableSelection && (
+                <p className="text-sm text-blue-600 dark:text-blue-400 mt-2 bg-blue-50 dark:bg-blue-950 p-2 rounded-md border border-blue-200 dark:border-blue-800">
+                  💡 比較タブで画像を並べて表示するには、チェックボックスで選択してください（最大9個）
+                </p>
+              )}
+            </div>
+            <Button
+              size="sm"
+              variant={showFavoritesOnly ? "default" : "outline"}
+              onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+              className={showFavoritesOnly ? "bg-red-500 hover:bg-red-600 ml-2" : "ml-2"}
+              aria-label={showFavoritesOnly ? "すべての履歴を表示" : "お気に入りのみ表示"}
+            >
+              <Heart className={`h-4 w-4 mr-1 ${showFavoritesOnly ? 'fill-white' : ''}`} />
+              {showFavoritesOnly ? 'お気に入りのみ' : 'すべて'}
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           <ScrollArea className="h-[600px] pr-4" aria-label="生成履歴一覧">
             <div className="space-y-4" role="list" aria-label="生成履歴アイテム">
-              {history.map((item) => (
+              {(showFavoritesOnly ? history.filter(item => isFavorite(item.id)) : history).map((item) => (
                 <Card key={item.id} className="overflow-hidden" role="listitem">
                   <CardContent className="p-4">
                     <div className="flex flex-col md:flex-row items-start md:space-x-4 space-y-4 md:space-y-0">
