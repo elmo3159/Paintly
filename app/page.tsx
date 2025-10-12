@@ -76,7 +76,7 @@ export default function HomePage() {
 
             {/* バッジ */}
             <div className="mb-5">
-              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 via-pink-500 to-orange-500 bg-[length:200%_100%] animate-gradient-flow text-white px-3 py-1.5 rounded-full text-xs md:text-sm font-bold shadow-lg">
+              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 via-pink-500 to-orange-500 text-white px-3 py-1.5 rounded-full text-xs md:text-sm font-bold shadow-lg">
                 <Star className="h-3 w-3 md:h-4 md:w-4" />
                 一瞬で140色の高精度なシミュレーション
               </span>
