@@ -62,8 +62,8 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-black/60"></div>
 
         {/* コンテンツ */}
-        <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 text-center py-4">
-          <div className="max-w-7xl mx-auto w-full space-y-4">
+        <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 text-center py-3">
+          <div className="max-w-7xl mx-auto w-full space-y-5">
             {/* ロゴ */}
             <Image
               src="/logo.png"
@@ -71,11 +71,11 @@ export default function HomePage() {
               width={284}
               height={160}
               priority={true}
-              className="h-24 md:h-28 w-auto object-contain mx-auto mb-3 -mt-8"
+              className="h-24 md:h-28 w-auto object-contain mx-auto mb-4 -mt-12"
             />
 
             {/* バッジ */}
-            <div className="mb-3">
+            <div className="mb-4">
               <span className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 via-pink-500 to-orange-500 bg-[length:200%_100%] animate-gradient-flow text-white px-3 py-1.5 rounded-full text-xs md:text-sm font-bold shadow-lg">
                 <Star className="h-3 w-3 md:h-4 md:w-4" />
                 一瞬で140色の高精度なシミュレーション
@@ -83,13 +83,13 @@ export default function HomePage() {
             </div>
 
             {/* メインタイトル */}
-            <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-white mb-3 leading-tight">
+            <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-white mb-4 leading-tight">
               営業成約率を劇的に向上させる<br />
               塗装シミュレーション
             </h1>
 
             {/* キャッチフレーズ */}
-            <div className="mb-4">
+            <div className="mb-5">
               <p className="text-lg md:text-3xl font-bold text-white leading-tight">
                 「この家に住みたい」<br />
                 <span className="text-sm md:text-xl text-white/90">お客様がそう思った瞬間、</span><br />
@@ -100,7 +100,7 @@ export default function HomePage() {
             </div>
 
             {/* フロー比較（コンパクト版） */}
-            <div className="grid grid-cols-2 gap-3 md:gap-4 max-w-4xl mx-auto mb-3">
+            <div className="grid grid-cols-2 gap-3 md:gap-4 max-w-4xl mx-auto mb-4">
               {/* 従来 */}
               <div className="bg-white/5 backdrop-blur-sm rounded-xl p-2 md:p-3 border border-red-500/30">
                 <div className="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold mb-2 inline-block">
@@ -139,7 +139,7 @@ export default function HomePage() {
             </div>
 
             {/* 説明文 */}
-            <div className="max-w-3xl mx-auto mb-4">
+            <div className="max-w-3xl mx-auto mb-5">
               <p className="text-xs md:text-sm text-white/90 leading-relaxed">
                 現地調査などの際に建物の写真を撮影→色を選ぶだけで瞬時に塗装後の仕上がり画像が作成されます。<br />
                 <span className="text-sm md:text-base text-orange-400 font-semibold">その場でお客様に見せ、競合他社との差別化を図り</span>成約率を大幅にアップします。
