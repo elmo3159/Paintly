@@ -67,22 +67,22 @@ export default function HomePage() {
           <Image
             src="/logo.png"
             alt="Paintly"
-            width={142}
-            height={80}
+            width={284}
+            height={160}
             priority={true}
-            className="h-16 md:h-20 w-auto object-contain mb-4"
+            className="h-20 md:h-24 w-auto object-contain mb-6"
           />
 
           {/* バッジ */}
           <div className="mb-6">
             <span className="inline-flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
               <Star className="h-4 w-4" />
-              今なら140回の無料試行が可能！
+              一瞬で140色の高精度なシミュレーション
             </span>
           </div>
 
           {/* メインタイトル */}
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
             営業成約率を劇的に向上させる<br />
             塗装シミュレーション
           </h1>
@@ -90,28 +90,23 @@ export default function HomePage() {
           {/* 説明文 */}
           <p className="text-base md:text-lg text-white/90 max-w-2xl mb-8 leading-relaxed">
             建物の写真を撮るだけで、瞬時に塗装後の仕上がりを生成。<br />
-            お客様の理想をその場で可視化し、成約率を大幅にアップします。
+            お客様の理想を<span className="text-orange-500 font-bold">その場で可視化</span>し、成約率を大幅にアップします。
           </p>
 
           {/* CTAボタン */}
           <div className="flex flex-col sm:flex-row gap-4 mb-12">
             <Link href="/auth/signup">
-              <Button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-6 text-lg font-bold shadow-2xl">
+              <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-10 py-7 text-lg font-bold shadow-[0_8px_30px_rgb(249,115,22,0.4)] hover:shadow-[0_12px_40px_rgb(249,115,22,0.5)] border-2 border-orange-400 transition-all duration-300 transform hover:scale-105">
                 <Star className="mr-2 h-5 w-5" />
                 無料で始める
               </Button>
             </Link>
             <Link href="/auth/signin">
-              <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black px-8 py-6 text-lg font-bold">
+              <Button variant="outline" className="border-3 border-white bg-white/10 backdrop-blur-sm text-white hover:bg-white hover:text-black px-10 py-7 text-lg font-bold shadow-[0_8px_30px_rgba(255,255,255,0.2)] hover:shadow-[0_12px_40px_rgba(255,255,255,0.3)] transition-all duration-300 transform hover:scale-105">
                 <Palette className="mr-2 h-5 w-5" />
                 ログインして続ける
               </Button>
             </Link>
-          </div>
-
-          {/* スクロールインジケーター */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-            <ChevronDown className="h-8 w-8 text-white/70" />
           </div>
         </div>
       </section>
