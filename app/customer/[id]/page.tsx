@@ -727,9 +727,9 @@ export default function CustomerPage() {
                     <Button
                       onClick={handleGenerate}
                       disabled={
-                        generating || 
-                        !mainImage || 
-                        (planInfo && !canGenerate(Math.max(0, planInfo.generation_limit - planInfo.generation_count)))
+                        generating ||
+                        !mainImage ||
+                        !!(planInfo && !canGenerate(Math.max(0, planInfo.generation_limit - planInfo.generation_count)))
                       }
                       className="w-full"
                       size="lg"
