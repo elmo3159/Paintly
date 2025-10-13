@@ -98,32 +98,32 @@ export default function SignInPage() {
 
       <div className="max-w-md mx-auto">
         <Card className="w-full paint-card relative z-10">
-        <CardHeader className="space-y-2 pb-3">
+        <CardHeader className="space-y-1 pb-2">
           {/* Paintlyロゴ */}
-          <div className="flex justify-center mb-1">
+          <div className="flex justify-center">
             <Image
               src="/logo.png"
               alt="Paintly"
               width={142}
               height={80}
               priority={true}
-              className="h-24 md:h-28 w-auto object-contain"
+              className="h-16 md:h-24 w-auto object-contain"
               sizes="(max-width: 768px) 142px, 142px"
             />
           </div>
 
-          <div className="text-center space-y-1">
-            <CardTitle id="signin-title" className="text-lg md:text-xl font-bold text-foreground">
+          <div className="text-center space-y-0.5">
+            <CardTitle id="signin-title" className="text-base md:text-lg font-bold text-foreground">
               営業の成約率を向上させる
             </CardTitle>
-            <CardDescription className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+            <CardDescription className="text-xs text-muted-foreground leading-tight">
               塗装シミュレーションでお客様の理想を<br />
               瞬時に可視化。アカウントにサインインして始めましょう。
             </CardDescription>
           </div>
         </CardHeader>
         <form onSubmit={handleSignIn} role="form" aria-labelledby="signin-title" aria-describedby={error ? "signin-error" : undefined}>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-2">
             {error && (
               <Alert variant="destructive" className="border-destructive/20 bg-destructive/5" role="alert" aria-live="polite">
                 <Lock className="h-4 w-4" />
