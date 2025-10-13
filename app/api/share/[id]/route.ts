@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@supabase/supabase-js'
 
 export async function GET(
   request: NextRequest,
@@ -7,7 +7,17 @@ export async function GET(
 ) {
   try {
     const { id: shareId } = await params
-    const supabase = await createClient()
+
+    // API Route用にservice_role keyを使用してクライアントを作成
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+
+    const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    })
 
     // 共有画像データを取得
     const { data: sharedImage, error: fetchError } = await supabase
@@ -61,16 +71,24 @@ export async function GET(
       const [bucketName, ...filePath] = pathParts[1].split('/')
       const fileName = filePath.join('/')
 
+      console.log('Attempting to create signed URL:', { bucketName, fileName })
+
       // 署名付きURLを生成（7日間有効）
       const { data: signedData, error: signError } = await supabase.storage
         .from(bucketName)
         .createSignedUrl(fileName, 60 * 60 * 24 * 7) // 7日間
 
       if (signError || !signedData) {
-        console.error('Error creating signed URL:', signError)
+        console.error('Error creating signed URL:', {
+          error: signError,
+          bucketName,
+          fileName,
+          url
+        })
         // エラーの場合は元のURLを使用
         signedUrls.push(url)
       } else {
+        console.log('Successfully created signed URL')
         signedUrls.push(signedData.signedUrl)
       }
     }
