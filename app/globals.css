@@ -733,8 +733,10 @@
   );
 }
 
+/* .paint-drips::after - 縦棒を削除 */
 .paint-drips::after {
-  content: '';
+  display: none !important;
+  /* content: '';
   position: absolute;
   top: 8px;
   left: 10%;
@@ -742,7 +744,7 @@
   height: 20px;
   background: var(--brand);
   border-radius: 0 0 3px 3px;
-  opacity: 0.6;
+  opacity: 0.6; */
 }
 
 /* ===== 手書き風装飾クラス（2025トレンド） ===== */
