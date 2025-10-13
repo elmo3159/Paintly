@@ -136,28 +136,28 @@ export default function SignUpPage() {
           </div>
         </CardHeader>
         <form onSubmit={handleSignUp}>
-          <CardContent className="space-y-2">
+          <CardContent className="space-y-1.5">
             {/* アラート表示 */}
             {error && (
-              <Alert variant="destructive" className="border-destructive/20 bg-destructive/5">
-                <Lock className="h-4 w-4" />
-                <AlertDescription className="text-destructive/90">
+              <Alert variant="destructive" className="border-destructive/20 bg-destructive/5 py-2">
+                <Lock className="h-3.5 w-3.5" />
+                <AlertDescription className="text-destructive/90 text-xs">
                   {error}
                 </AlertDescription>
               </Alert>
             )}
             {success && (
-              <Alert className="border-primary/20 bg-primary/5">
-                <CheckCircle className="h-4 w-4 text-primary" />
-                <AlertDescription className="text-primary/90">
+              <Alert className="border-primary/20 bg-primary/5 py-2">
+                <CheckCircle className="h-3.5 w-3.5 text-primary" />
+                <AlertDescription className="text-primary/90 text-xs">
                   🎉 アカウントが作成されました！ダッシュボードへ移動します...
                 </AlertDescription>
               </Alert>
             )}
 
             {/* フォームフィールド */}
-            <div className="space-y-2">
-              <div className="space-y-1">
+            <div className="space-y-1.5">
+              <div className="space-y-0.5">
                 <Label htmlFor="email" className="text-xs md:text-sm font-semibold text-foreground flex items-center">
                   <Home className="h-3.5 w-3.5 mr-1.5 text-primary" />
                   メールアドレス
@@ -170,11 +170,11 @@ export default function SignUpPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   disabled={loading || success}
-                  className="paint-input h-9 md:h-10 text-sm md:text-base border-border/60 focus:border-primary transition-all duration-300"
+                  className="paint-input h-8 md:h-10 text-sm md:text-base border-border/60 focus:border-primary transition-all duration-300"
                 />
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-0.5">
                 <Label htmlFor="password" className="text-xs md:text-sm font-semibold text-foreground flex items-center">
                   <Lock className="h-3.5 w-3.5 mr-1.5 text-primary" />
                   パスワード
@@ -187,11 +187,11 @@ export default function SignUpPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   disabled={loading || success}
-                  className="paint-input h-9 md:h-10 text-sm md:text-base border-border/60 focus:border-primary transition-all duration-300"
+                  className="paint-input h-8 md:h-10 text-sm md:text-base border-border/60 focus:border-primary transition-all duration-300"
                 />
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-0.5">
                 <Label htmlFor="confirmPassword" className="text-xs md:text-sm font-semibold text-foreground flex items-center">
                   <CheckCircle className="h-3.5 w-3.5 mr-1.5 text-accent" />
                   パスワード（確認）
@@ -204,27 +204,27 @@ export default function SignUpPage() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                   disabled={loading || success}
-                  className="paint-input h-9 md:h-10 text-sm md:text-base border-border/60 focus:border-primary transition-all duration-300"
+                  className="paint-input h-8 md:h-10 text-sm md:text-base border-border/60 focus:border-primary transition-all duration-300"
                 />
               </div>
             </div>
 
             {/* 特典説明 */}
-            <div className="p-2 rounded-xl bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/10">
-              <div className="flex items-center space-x-1 mb-0.5">
-                <Star className="h-3 w-3 text-primary animate-pulse" />
+            <div className="p-1.5 rounded-lg bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/10">
+              <div className="flex items-center space-x-1 mb-0">
+                <Star className="h-2.5 w-2.5 text-primary animate-pulse" />
                 <span className="text-xs font-bold text-primary">無料トライアル特典</span>
               </div>
               <p className="text-xs text-muted-foreground leading-tight">
-                アカウント登録後、<span className="font-semibold text-primary">3回まで無料</span>で画像生成をお試しいただけます。
+                登録後<span className="font-semibold text-primary">3回まで無料</span>で画像生成
               </p>
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-2 pt-2">
+          <CardFooter className="flex flex-col space-y-1.5 pt-1.5">
             {/* メイン登録ボタン */}
             <Button
               type="submit"
-              className="w-full paint-button h-9 md:h-10 text-sm md:text-base font-bold shadow-lg"
+              className="w-full paint-button h-8 md:h-10 text-sm md:text-base font-bold shadow-lg"
               disabled={loading || success}
             >
               {loading ? (
@@ -256,7 +256,7 @@ export default function SignUpPage() {
             <Button
               type="button"
               variant="outline"
-              className="w-full h-9 md:h-10 text-sm md:text-base font-medium border-border/60 hover:bg-secondary/50 paint-hover transition-all duration-300"
+              className="w-full h-8 md:h-10 text-sm md:text-base font-medium border-border/60 hover:bg-secondary/50 paint-hover transition-all duration-300"
               onClick={handleGoogleSignUp}
               disabled={loading || success}
             >
@@ -265,17 +265,17 @@ export default function SignUpPage() {
             </Button>
 
             {/* サインインリンク */}
-            <div className="text-center p-2 rounded-xl bg-gradient-to-r from-accent/5 to-secondary/10 border border-accent/10">
-              <p className="text-xs text-muted-foreground mb-0.5">
+            <div className="text-center p-1.5 rounded-lg bg-gradient-to-r from-accent/5 to-secondary/10 border border-accent/10">
+              <p className="text-xs text-muted-foreground mb-0">
                 すでにアカウントをお持ちの方は
               </p>
               <Link
                 href="/auth/signin"
-                className="text-accent hover:text-accent/80 font-bold paint-hover inline-flex items-center text-sm md:text-base"
+                className="text-accent hover:text-accent/80 font-bold paint-hover inline-flex items-center text-xs md:text-sm"
               >
-                <Palette className="mr-1.5 h-3.5 w-3.5" />
+                <Palette className="mr-1 h-3 w-3" />
                 サインインして始める
-                <Droplet className="ml-1 h-3 w-3 animate-bounce" />
+                <Droplet className="ml-1 h-2.5 w-2.5 animate-bounce" />
               </Link>
             </div>
           </CardFooter>
