@@ -63,14 +63,14 @@ export function TutorialModal() {
         <DialogPortal>
           {/* カスタムオーバーレイ - 透明度を低くしてハイライトを見やすくする */}
           <DialogOverlay className="bg-black/30" />
-          <div className={`fixed left-[50%] top-[50%] z-[100] grid w-full max-w-[600px] translate-x-[-50%] translate-y-[-50%] gap-4 border-2 border-primary/30 bg-white dark:bg-gray-900 p-6 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg overflow-y-auto ${
-            currentStepData.id === 'select-colors' ? 'max-h-[90dvh]' : 'max-h-[85dvh]'
+          <div className={`fixed left-[50%] top-[50%] z-[100] grid w-full max-w-[600px] translate-x-[-50%] translate-y-[-50%] gap-3 border-2 border-primary/30 bg-white dark:bg-gray-900 p-4 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg overflow-y-auto ${
+            currentStepData.id === 'select-colors' ? 'max-h-[80dvh]' : 'max-h-[75dvh]'
           }`}>
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-primary">
+            <DialogTitle className="text-xl md:text-2xl font-bold text-primary">
               {currentStepData.title}
             </DialogTitle>
-            <div className="space-y-2 pt-2">
+            <div className="space-y-1 pt-1">
               <div className="flex items-center justify-between text-sm text-muted-foreground">
                 <span>ステップ {currentStep + 1} / {totalSteps}</span>
                 <span>{Math.round(progressPercentage)}%</span>
@@ -91,7 +91,7 @@ export function TutorialModal() {
                   src={currentStepData.imageUrl}
                   alt={currentStepData.title}
                   className={`w-full rounded-md ${
-                    currentStepData.id === 'select-colors' ? 'max-h-64 object-contain' : ''
+                    currentStepData.id === 'select-colors' ? 'max-h-48 object-contain' : 'max-h-56 object-contain'
                   }`}
                 />
               </div>
@@ -155,7 +155,7 @@ export function TutorialModal() {
           </div>
 
           {/* ナビゲーションボタン */}
-          <div className="flex items-center justify-between gap-3 pt-4 border-t">
+          <div className="flex items-center justify-between gap-2 pt-3 border-t">
             <Button
               variant="outline"
               onClick={skipTutorial}

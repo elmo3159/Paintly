@@ -79,7 +79,7 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-dvh bg-gradient-to-br from-background via-secondary/30 to-primary/10 p-4 py-4 md:py-8 flex items-center">
+    <div className="min-h-dvh overflow-y-auto bg-gradient-to-br from-background via-secondary/30 to-primary/10 p-4 py-2 md:py-6 flex items-center">
       {/* 背景装飾 */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 left-10 w-32 h-32 opacity-5">
