@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Loader2, Download, Eye, Calendar, Palette, Heart, FileDown } from 'lucide-react'
 import { useFavorites } from '@/hooks/use-favorites'
-import { exportSingleGenerationToPdf, type ExportImageData } from '@/lib/pdf-export'
+import type { ExportImageData } from '@/lib/pdf-export-types'
 import Image from 'next/image'
 import { ImageComparisonFixed } from '@/components/image-comparison-fixed'
 
@@ -310,6 +310,9 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
     }
 
     try {
+      // jsPDF関連を動的にインポート
+      const { exportSingleGenerationToPdf } = await import('@/lib/pdf-export')
+      
       const exportData: ExportImageData = {
         originalUrl: item.original_image_url,
         generatedUrl: item.generated_image_url,
@@ -391,11 +394,11 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
             <div className="space-y-4" role="list" aria-label="生成履歴アイテム">
               {(showFavoritesOnly ? history.filter(item => isFavorite(item.id)) : history).map((item) => (
                 <Card key={item.id} className="overflow-hidden" role="listitem">
-                  <CardContent className="p-4">
-                    <div className="flex flex-col md:flex-row items-start md:space-x-4 space-y-4 md:space-y-0">
+                  <CardContent className="p-3">
+                    <div className="flex flex-col md:flex-row items-start md:space-x-4 space-y-3 md:space-y-0">
                       {/* チェックボックス（選択モード時のみ表示） */}
                       {enableSelection && (
-                        <div className="flex items-start pt-2">
+                        <div className="flex items-start pt-1.5">
                           <Checkbox
                             checked={selectedIds.includes(item.id)}
                             onCheckedChange={() => handleToggleSelection(item.id)}
@@ -405,7 +408,7 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
                         </div>
                       )}
                       {/* Thumbnail - Fixed to use generated_image_url directly */}
-                      <div className="relative w-32 h-32 flex-shrink-0 bg-muted rounded-lg overflow-hidden">
+                      <div className="relative w-24 h-24 md:w-28 md:h-28 flex-shrink-0 bg-muted rounded-lg overflow-hidden">
                         {item.generated_image_url ? (
                           <Image
                             src={item.generated_image_url}
@@ -429,7 +432,7 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
                       </div>
 
                       {/* Details */}
-                      <div className="w-full md:flex-1 space-y-2">
+                      <div className="w-full md:flex-1 space-y-1.5">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -456,30 +459,15 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
                           </Badge>
                         </div>
 
-                        <div className="text-sm space-y-1">
-                          {item.wall_color && item.wall_color !== '変更なし' && (
-                            <p>壁: {item.wall_color}</p>
-                          )}
-                          {item.roof_color && item.roof_color !== '変更なし' && (
-                            <p>屋根: {item.roof_color}</p>
-                          )}
-                          {item.door_color && item.door_color !== '変更なし' && (
-                            <p>ドア: {item.door_color}</p>
-                          )}
-                          {item.weather && (
-                            <p>天候: {item.weather}</p>
-                          )}
-                        </div>
-
                         {item.error_message && (
                           <p className="text-sm text-destructive">
                             エラー: {item.error_message}
                           </p>
                         )}
 
-                        {/* 🆕 Enhanced action buttons with slider navigation */}
+                        {/* 🆕 Enhanced action buttons with 2-column grid on mobile */}
                         {item.status === 'completed' && item.generated_image_url && (
-                          <div className="flex flex-col lg:flex-row gap-2 pt-2">
+                          <div className="grid grid-cols-2 lg:flex lg:flex-row gap-1.5 pt-1.5">
                             <Button
                               size="sm"
                               variant="default"
@@ -499,7 +487,7 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
                               className={isFavorite(item.id) ? "bg-red-500 hover:bg-red-600 w-full lg:w-auto" : "w-full lg:w-auto"}
                               aria-label={isFavorite(item.id) ? "お気に入りから削除" : "お気に入りに追加"}
                             >
-                              <Heart 
+                              <Heart
                                 className={`h-4 w-4 mr-1 ${isFavorite(item.id) ? 'fill-white' : ''}`}
                               />
                               <span className="lg:hidden">{isFavorite(item.id) ? '★' : '☆'}</span>

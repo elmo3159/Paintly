@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import dynamic from 'next/dynamic'
 import { useParams, useSearchParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { ImageUpload } from '@/components/image-upload'
@@ -9,7 +10,11 @@ import { getWebColorById, webColorToColorData } from '@/lib/web-colors'
 import { addToColorHistory, getColorHistory } from '@/lib/color-history'
 import { WeatherSelector } from '@/components/weather-selector'
 import { GenerationSettings } from '@/components/generation-settings'
-import { GenerationHistory } from '@/components/generation-history'
+// GenerationHistoryは動的インポートで使用（pdf-export問題を回避）
+const GenerationHistory = dynamic(
+  () => import('@/components/generation-history').then(mod => mod.GenerationHistory),
+  { ssr: false }
+)
 import { ImageComparisonFixed } from '@/components/image-comparison-fixed'
 import { ImageComparisonGrid } from '@/components/image-comparison-grid'
 import { Button } from '@/components/ui/button'

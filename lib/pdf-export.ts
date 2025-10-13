@@ -3,18 +3,49 @@
  * jsPDFを使用してビフォーアフター画像をPDFに出力
  */
 
-import { jsPDF } from 'jspdf'
-import { NotoSansJPRegularBase64 } from './fonts/noto-sans-jp-base64'
+// jsPDFは動的インポートで読み込みます（静的インポートだとモジュール評価時にエラーが発生するため）
 
-export interface ExportImageData {
-  originalUrl: string
-  generatedUrl: string
-  wallColor?: string | null
-  roofColor?: string | null
-  doorColor?: string | null
-  weather?: string | null
-  createdAt: string
+// フォントをキャッシュ
+let cachedFontBase64: string | null = null
+
+/**
+ * フォントを動的に読み込んでBase64に変換
+ * 初回のみダウンロードし、以降はキャッシュを使用
+ */
+async function loadFontBase64(): Promise<string> {
+  if (cachedFontBase64) {
+    return cachedFontBase64
+  }
+
+  try {
+    const response = await fetch('/fonts/NotoSansJP-Regular.ttf')
+
+    if (!response.ok) {
+      throw new Error(`Font fetch failed: ${response.status}`)
+    }
+
+    const arrayBuffer = await response.arrayBuffer()
+    const uint8Array = new Uint8Array(arrayBuffer)
+
+    // ArrayBufferをBase64に変換
+    let binary = ''
+    const len = uint8Array.byteLength
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(uint8Array[i])
+    }
+
+    cachedFontBase64 = btoa(binary)
+    console.log(`✅ Font loaded: ${(arrayBuffer.byteLength / 1024).toFixed(2)} KB`)
+
+    return cachedFontBase64
+  } catch (error) {
+    console.error('❌ Failed to load font:', error)
+    throw new Error('Failed to load Japanese font for PDF')
+  }
 }
+
+// 型定義は pdf-export-types.ts に移動
+export type { ExportImageData } from './pdf-export-types'
 
 /**
  * 画像URLをBase64に変換
@@ -72,6 +103,12 @@ export async function exportSingleGenerationToPdf(
   filename?: string
 ): Promise<void> {
   try {
+    // jsPDFを動的にインポート
+    const { jsPDF } = await import('jspdf')
+    
+    // 日本語フォントを動的に読み込み
+    const fontBase64 = await loadFontBase64()
+
     // PDF作成（A4サイズ、縦向き）
     const doc = new jsPDF({
       orientation: 'portrait',
@@ -80,9 +117,9 @@ export async function exportSingleGenerationToPdf(
     })
 
     // 日本語フォントを追加
-    doc.addFileToVFS('NotoSansJP-Regular.ttf', NotoSansJPRegularBase64)
+    doc.addFileToVFS('NotoSansJP-Regular.ttf', fontBase64)
     doc.addFont('NotoSansJP-Regular.ttf', 'NotoSansJP', 'normal')
-    doc.setFont('NotoSansJP')
+    doc.setFont('NotoSansJP', 'normal')
 
     const pageWidth = doc.internal.pageSize.getWidth()
     const pageHeight = doc.internal.pageSize.getHeight()
@@ -189,6 +226,12 @@ export async function exportMultipleGenerationsToPdf(
   filename?: string
 ): Promise<void> {
   try {
+    // jsPDFを動的にインポート
+    const { jsPDF } = await import('jspdf')
+    
+    // 日本語フォントを動的に読み込み
+    const fontBase64 = await loadFontBase64()
+
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
@@ -196,9 +239,9 @@ export async function exportMultipleGenerationsToPdf(
     })
 
     // 日本語フォントを追加
-    doc.addFileToVFS('NotoSansJP-Regular.ttf', NotoSansJPRegularBase64)
+    doc.addFileToVFS('NotoSansJP-Regular.ttf', fontBase64)
     doc.addFont('NotoSansJP-Regular.ttf', 'NotoSansJP', 'normal')
-    doc.setFont('NotoSansJP')
+    doc.setFont('NotoSansJP', 'normal')
 
     const pageWidth = doc.internal.pageSize.getWidth()
     const pageHeight = doc.internal.pageSize.getHeight()

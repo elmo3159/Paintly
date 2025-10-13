@@ -16,14 +16,24 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // URLの検証（Supabase StorageまたはGemini APIのURLのみ許可）
+    // 相対パスの場合はローカルサーバーのURLに変換
+    let fetchUrl = url
+    if (url.startsWith('/')) {
+      const host = request.headers.get('host') || 'localhost:3005'
+      const protocol = host.includes('localhost') ? 'http' : 'https'
+      fetchUrl = `${protocol}://${host}${url}`
+    }
+
+    // URLの検証（Supabase StorageまたはGemini APIまたはローカルサーバーのみ許可）
     const allowedDomains = [
       'supabase.co',
       'googleapis.com',
-      'generativelanguage.googleapis.com'
+      'generativelanguage.googleapis.com',
+      'localhost',
+      '127.0.0.1'
     ]
 
-    const urlObj = new URL(url)
+    const urlObj = new URL(fetchUrl)
     const isAllowed = allowedDomains.some(domain => urlObj.hostname.includes(domain))
 
     if (!isAllowed) {
@@ -34,7 +44,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 画像を取得
-    const response = await fetch(url, {
+    const response = await fetch(fetchUrl, {
       headers: {
         'User-Agent': 'Paintly-PDF-Export/1.0'
       }
