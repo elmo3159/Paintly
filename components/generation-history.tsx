@@ -361,28 +361,30 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
       <Card role="region" aria-labelledby="history-title">
         <CardHeader>
           <div className="flex items-start justify-between">
-            <div className="space-y-1 flex-1">
+            <div className="space-y-1">
               <CardTitle id="history-title">生成履歴</CardTitle>
               <CardDescription>
                 過去に生成したシミュレーション画像
               </CardDescription>
-              {enableSelection && (
-                <p className="text-sm text-blue-600 dark:text-blue-400 mt-2 bg-blue-50 dark:bg-blue-950 p-2 rounded-md border border-blue-200 dark:border-blue-800">
-                  💡 比較タブで画像を並べて表示するには、チェックボックスで選択してください（最大9個）
-                </p>
-              )}
             </div>
             <Button
               size="sm"
               variant={showFavoritesOnly ? "default" : "outline"}
               onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-              className={showFavoritesOnly ? "bg-red-500 hover:bg-red-600 ml-2" : "ml-2"}
+              className={showFavoritesOnly ? "bg-red-500 hover:bg-red-600 ml-2 flex-shrink-0" : "ml-2 flex-shrink-0"}
               aria-label={showFavoritesOnly ? "すべての履歴を表示" : "お気に入りのみ表示"}
             >
               <Heart className={`h-4 w-4 mr-1 ${showFavoritesOnly ? 'fill-white' : ''}`} />
               {showFavoritesOnly ? 'お気に入りのみ' : 'すべて'}
             </Button>
           </div>
+          {enableSelection && (
+            <div className="mt-3">
+              <p className="text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 p-3 rounded-md border border-blue-200 dark:border-blue-800">
+                💡 比較タブで画像を並べて表示するには、チェックボックスで選択してください（最大9個）
+              </p>
+            </div>
+          )}
         </CardHeader>
         <CardContent>
           <ScrollArea className="h-[600px] pr-4" aria-label="生成履歴一覧">
