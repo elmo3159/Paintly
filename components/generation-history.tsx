@@ -7,11 +7,12 @@ import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Loader2, Download, Eye, Calendar, Palette, Heart, FileDown } from 'lucide-react'
+import { Loader2, Download, Eye, Calendar, Palette, Heart, FileDown, QrCode } from 'lucide-react'
 import { useFavorites } from '@/hooks/use-favorites'
 import type { ExportImageData } from '@/lib/pdf-export-types'
 import Image from 'next/image'
 import { ImageComparisonFixed } from '@/components/image-comparison-fixed'
+import { QRCodeModal } from '@/components/qr-code-modal'
 
 // Client-side error reporting function
 const reportClientError = (error: Error, context: string) => {
@@ -66,6 +67,7 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
   const [history, setHistory] = useState<GenerationHistoryItem[]>([])
   const [loading, setLoading] = useState(true)
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
+  const [showQRModal, setShowQRModal] = useState(false)
   // Removed selectedItem state - using unified slider view instead
   const supabase = createClient()
 
@@ -382,10 +384,21 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
             </Button>
           </div>
           {enableSelection && (
-            <div className="mt-3">
+            <div className="mt-3 space-y-2">
               <p className="text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 p-3 rounded-md border border-blue-200 dark:border-blue-800">
                 💡 比較タブで画像を並べて表示するには、チェックボックスで選択してください（最大9個）
               </p>
+              {selectedIds.length > 0 && (
+                <Button
+                  onClick={() => setShowQRModal(true)}
+                  variant="default"
+                  size="sm"
+                  className="w-full bg-green-600 hover:bg-green-700"
+                >
+                  <QrCode className="h-4 w-4 mr-2" />
+                  選択した画像をQRコードで共有 ({selectedIds.length}枚)
+                </Button>
+              )}
             </div>
           )}
         </CardHeader>
@@ -530,6 +543,16 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
         </CardContent>
       </Card>
 
+      {/* QRコードモーダル */}
+      <QRCodeModal
+        open={showQRModal}
+        onOpenChange={setShowQRModal}
+        selectedIds={selectedIds}
+        customerPageId={customerId}
+        onSuccess={() => {
+          // QRコード生成成功後の処理（必要に応じて）
+        }}
+      />
     </div>
   )
 }
