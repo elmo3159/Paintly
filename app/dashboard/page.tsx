@@ -40,7 +40,7 @@ export default async function DashboardPage() {
         </div>
 
         <div className="relative z-10 text-center">
-          <h1 className="text-4xl font-bold tracking-tight paint-text mb-2">ダッシュボード</h1>
+          <h1 className="text-4xl font-bold tracking-tight mb-2" style={{ fontFamily: 'var(--font-handwritten)', color: 'var(--brand)' }}>ダッシュボード</h1>
           <p className="text-muted-foreground/80 mt-2 text-lg">
             Paintlyで塗装シミュレーションを管理しましょう
           </p>
@@ -57,7 +57,7 @@ export default async function DashboardPage() {
           {/* クイックスタート */}
           <Card className="paint-card">
             <CardHeader>
-              <CardTitle className="paint-text text-lg sm:text-xl md:text-2xl">クイックスタート</CardTitle>
+              <CardTitle className="text-lg sm:text-xl md:text-2xl" style={{ fontFamily: 'var(--font-handwritten)', fontWeight: 700, color: 'var(--brand)' }}>クイックスタート</CardTitle>
               <CardDescription>
                 塗装シミュレーションを開始しましょう
               </CardDescription>
@@ -88,7 +88,7 @@ export default async function DashboardPage() {
 
         <Card className="paint-card relative z-10">
           <CardHeader>
-            <CardTitle className="paint-text">使い方ガイド</CardTitle>
+            <CardTitle style={{ fontFamily: 'var(--font-handwritten)', fontWeight: 700, color: 'var(--brand)' }}>使い方ガイド</CardTitle>
             <CardDescription>
               Paintlyの基本的な使い方
             </CardDescription>
