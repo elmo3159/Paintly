@@ -637,6 +637,7 @@
   display: inline-block;
   white-space: nowrap;
   border-left: none !important; /* オレンジ色の縦棒を消す */
+  border: none !important; /* すべてのボーダーを消す */
 }
 
 /* ::beforeが存在する場合は無効化 */
@@ -644,8 +645,10 @@
   display: none !important;
 }
 
+/* ::after疑似要素も一時的に無効化してテスト */
 .paint-text::after {
-  content: '';
+  display: none !important;
+  /* content: '';
   position: absolute;
   left: -8px;
   bottom: -4px;
@@ -653,7 +656,7 @@
   height: 12px;
   background: hsla(var(--brand-h), var(--brand-s), var(--brand-l), 0.15);
   border-radius: 50% / 30%;
-  z-index: -1;
+  z-index: -1; */
   /* transform: rotate(-1deg); */
 }
 
