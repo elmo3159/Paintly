@@ -636,6 +636,12 @@
   position: relative;
   display: inline-block;
   white-space: nowrap;
+  border-left: none !important; /* オレンジ色の縦棒を消す */
+}
+
+/* ::beforeが存在する場合は無効化 */
+.paint-text::before {
+  display: none !important;
 }
 
 .paint-text::after {
