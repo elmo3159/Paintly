@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Google Fonts - 丸ゴシック・手書き風フォント */
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=M+PLUS+Rounded+1c:wght@300;400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+/* Google Fonts - 丸ゴシック・手書き風フォント・懐石デコール */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Kaisei+Decol:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@300;400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
 
 /* ============================================
    Paintly ネオブルータリズム × 職人デザインシステム
@@ -67,6 +67,7 @@
     --font-sans: "M PLUS Rounded 1c", "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     --font-serif: "Noto Serif JP", "Georgia", serif;
     --font-handwritten: "Caveat", cursive;
+    --font-kaisei: "Kaisei Decol", serif;
 
     /* より大きな差でヒエラルキーを強調 */
     --font-size-hero: 42px;
@@ -660,11 +661,11 @@
   /* transform: rotate(-1deg); */
 }
 
-/* Dashboard title - オレンジ色の縦棒を完全に消す */
+/* Dashboard title - 黒色＆Kaisei Decolフォント適用 */
 .dashboard-title {
-  font-family: var(--font-handwritten);
+  font-family: var(--font-kaisei);
   font-weight: 700;
-  color: var(--brand);
+  color: var(--fg);  /* 黒色 */
   border: none !important;
   border-left: none !important;
   position: relative;
