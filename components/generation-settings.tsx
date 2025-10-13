@@ -127,7 +127,7 @@ export function GenerationSettings({
     }
   }
   return (
-    <Card role="region" aria-labelledby="generation-settings-title">
+    <Card role="region" aria-labelledby="generation-settings-title" data-tutorial="additional-options">
       <CardHeader>
         <CardTitle id="generation-settings-title">追加設定</CardTitle>
       </CardHeader>

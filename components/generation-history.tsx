@@ -467,7 +467,7 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
 
                         {/* 🆕 Enhanced action buttons with 2-column grid on mobile */}
                         {item.status === 'completed' && item.generated_image_url && (
-                          <div className="grid grid-cols-2 lg:flex lg:flex-row gap-1.5 pt-1.5">
+                          <div className="grid grid-cols-2 lg:flex lg:flex-row gap-1.5 pt-1.5" data-tutorial="download-buttons">
                             <Button
                               size="sm"
                               variant="default"

@@ -649,7 +649,7 @@ export default function CustomerPage() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="generation">画像生成</TabsTrigger>
-            <TabsTrigger value="history">履歴</TabsTrigger>
+            <TabsTrigger value="history" data-tutorial="history-tab">履歴</TabsTrigger>
             <TabsTrigger value="comparison">
               比較 {selectedComparisonIds.length > 0 && `(${selectedComparisonIds.length})`}
             </TabsTrigger>
@@ -660,7 +660,7 @@ export default function CustomerPage() {
           <TabsContent value="generation" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="space-y-6">
-                <Card className="bg-white/90 backdrop-blur-sm">
+                <Card className="bg-white/90 backdrop-blur-sm" data-tutorial="image-upload">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Sparkles className="h-5 w-5" />
@@ -678,7 +678,7 @@ export default function CustomerPage() {
 
 
 
-                <Card className="bg-white/90 backdrop-blur-sm">
+                <Card className="bg-white/90 backdrop-blur-sm" data-tutorial="color-selector">
                   <CardHeader>
                     <CardTitle>カラー選択</CardTitle>
                     <CardDescription className="text-xs text-muted-foreground mt-2">
@@ -746,6 +746,7 @@ export default function CustomerPage() {
                       className="w-full"
                       size="lg"
                       variant="neobrutalist"
+                      data-tutorial="generate-button"
                     >
                       {generating ? (
                         <>

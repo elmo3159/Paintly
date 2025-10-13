@@ -140,6 +140,7 @@ const nextConfig = {
   output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
 
   // webpack設定の最適化
+
   webpack: (config, { dev, isServer }) => {
     // 開発モードでの最適化
     if (dev && !isServer) {

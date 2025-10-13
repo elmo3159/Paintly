@@ -230,10 +230,10 @@ export function WebColorSelector({
                 </div>
               </div>
 
-              {/* 色グリッド（4列） */}
+              {/* 色グリッド（3列） */}
               <div className="overflow-y-auto p-3" style={{ maxHeight: 'calc(70vh - 60px)' }}>
                 {currentColors.length > 0 ? (
-                  <div className="grid grid-cols-4 gap-2">
+                  <div className="grid grid-cols-3 gap-2">
                     {currentColors.map((color) => {
                       const isSelected = safeSelectedColorId === color.id
 

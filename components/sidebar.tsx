@@ -20,10 +20,12 @@ import {
   ArrowLeft,
   Search,
   X,
-  AlertTriangle
+  AlertTriangle,
+  BookOpen
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getPlanWarningLevel } from '@/lib/plan-warning'
+import { useTutorial } from '@/hooks/use-tutorial'
 
 // Client-side error reporting function
 const reportClientError = (error: Error, context: string) => {
@@ -70,6 +72,7 @@ export function Sidebar() {
   const [searchTerm, setSearchTerm] = useState('')
   const [isSettingsExpanded, setIsSettingsExpanded] = useState(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
+  const { restartTutorial } = useTutorial()
 
   // StrictMode対応: 一意なインスタンスIDを生成
   const [instanceId] = useState(() => `sidebar-${Math.random().toString(36).substr(2, 9)}`)
@@ -453,6 +456,7 @@ export function Sidebar() {
             variant="neobrutalist"
             className="w-full text-xs h-auto py-2"
             size="sm"
+            data-tutorial="create-customer-button"
           >
             <Plus className="h-3 w-3 mr-1.5" />
             新規顧客ページ作成
@@ -643,6 +647,13 @@ export function Sidebar() {
                   <span>料金プラン</span>
                 </Link>
                 <button
+                  onClick={restartTutorial}
+                  className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg transition-colors w-full text-left"
+                >
+                  <BookOpen className="h-3 w-3" />
+                  <span>チュートリアルを見る</span>
+                </button>
+                <button
                   onClick={handleSignOut}
                   className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg transition-colors w-full text-left"
                 >
@@ -655,7 +666,7 @@ export function Sidebar() {
         </div>
       </div>
     </>
-  ), [filteredCustomers, planInfo, remainingGenerations, usagePercentage, warningInfo, isSettingsExpanded, searchTerm, handleSearchChange, handleNewCustomer, closeSidebar, handleSignOut, pathname])
+  ), [filteredCustomers, planInfo, remainingGenerations, usagePercentage, warningInfo, isSettingsExpanded, searchTerm, handleSearchChange, handleNewCustomer, closeSidebar, handleSignOut, pathname, restartTutorial])
 
   if (!isSidebarOpen) {
     return (

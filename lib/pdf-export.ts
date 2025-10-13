@@ -3,6 +3,8 @@
  * jsPDFを使用してビフォーアフター画像をPDFに出力
  */
 
+import type { ExportImageData } from './pdf-export-types'
+
 // jsPDFは動的インポートで読み込みます（静的インポートだとモジュール評価時にエラーが発生するため）
 
 // フォントをキャッシュ
