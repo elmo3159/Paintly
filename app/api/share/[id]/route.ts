@@ -3,10 +3,10 @@ import { createClient } from '@/lib/supabase/server'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const shareId = params.id
+    const { id: shareId } = await params
     const supabase = await createClient()
 
     // 共有画像データを取得
