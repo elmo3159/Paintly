@@ -64,7 +64,7 @@ export function TutorialModal() {
           {/* カスタムオーバーレイ - 透明度を低くしてハイライトを見やすくする */}
           <DialogOverlay className="bg-black/30" />
           <div className={`fixed left-[50%] top-[50%] z-[100] grid w-full max-w-[600px] translate-x-[-50%] translate-y-[-50%] gap-4 border-2 border-primary/30 bg-white dark:bg-gray-900 p-6 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg overflow-y-auto ${
-            currentStepData.id === 'select-colors' ? 'max-h-[95vh]' : 'max-h-[90vh]'
+            currentStepData.id === 'select-colors' ? 'max-h-[90dvh]' : 'max-h-[85dvh]'
           }`}>
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-primary">

@@ -91,7 +91,7 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen overflow-y-auto bg-gradient-to-br from-background via-secondary/30 to-primary/10 p-4 py-8 md:py-12">
+    <div className="min-h-dvh overflow-y-auto bg-gradient-to-br from-background via-secondary/30 to-primary/10 p-4 py-4 md:py-8 flex items-center">
       {/* 背景装飾 */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-16 right-16 w-28 h-28 opacity-5">

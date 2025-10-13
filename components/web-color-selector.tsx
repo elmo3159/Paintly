@@ -193,7 +193,7 @@ export function WebColorSelector({
         {/* ドロップダウンコンテンツ */}
         {isOpen && (
           <div className="absolute z-50 w-full mt-2 bg-white dark:bg-gray-900 border rounded-lg shadow-lg overflow-hidden">
-            <div className="max-h-[70vh] overflow-hidden flex flex-col">
+            <div className="max-h-[70dvh] overflow-hidden flex flex-col">
               {/* カテゴリー横スクロール */}
               <div className="border-b bg-gray-50 dark:bg-gray-800">
                 <div
@@ -231,7 +231,7 @@ export function WebColorSelector({
               </div>
 
               {/* 色グリッド（3列） */}
-              <div className="overflow-y-auto p-3" style={{ maxHeight: 'calc(70vh - 60px)' }}>
+              <div className="overflow-y-auto p-3" style={{ maxHeight: 'calc(70dvh - 60px)' }}>
                 {currentColors.length > 0 ? (
                   <div className="grid grid-cols-3 gap-2">
                     {currentColors.map((color) => {

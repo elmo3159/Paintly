@@ -44,7 +44,7 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-primary/10 p-4">
+    <div className="min-h-dvh flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-primary/10 p-4">
       {/* 背景装飾 */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-16 left-16 w-28 h-28 opacity-5 -rotate-12">

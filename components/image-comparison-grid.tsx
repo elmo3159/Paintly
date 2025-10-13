@@ -232,7 +232,7 @@ export function ImageComparisonGrid({ selectedIds, customerId }: ImageComparison
             className="fixed inset-0 bg-black z-50 flex items-center justify-center p-4"
             onClick={() => setFullscreenIndex(null)}
           >
-            <div className="relative w-full h-full max-w-6xl max-h-[90vh]">
+            <div className="relative w-full h-full max-w-6xl max-h-[90dvh]">
               <Image
                 src={items[fullscreenIndex].generated_image_url}
                 alt={`フルスクリーン画像 ${fullscreenIndex + 1}`}

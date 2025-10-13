@@ -198,7 +198,7 @@ export function AccessibleModal({
         if (e.target === e.currentTarget) onClose()
       }}
     >
-      <div className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-full max-w-lg max-h-[85vh] overflow-auto">
+      <div className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-full max-w-lg max-h-[85dvh] overflow-auto">
         <div className="bg-background p-6 rounded-lg shadow-lg">
           <AccessibleHeading level={2} id={titleId} className="mb-4">
             {title}
