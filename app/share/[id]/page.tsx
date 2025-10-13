@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -12,7 +11,7 @@ import Link from 'next/link'
 
 interface SharedImageData {
   id: string
-  image_url: string // JSON配列（画像URLのリスト）
+  imageUrls: string[] // 署名付きURLの配列
   expires_at: string
   access_count: number
   created_at: string
@@ -21,12 +20,10 @@ interface SharedImageData {
 export default function SharePage() {
   const params = useParams()
   const shareId = params.id as string
-  const supabase = createClient()
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [sharedData, setSharedData] = useState<SharedImageData | null>(null)
-  const [imageUrls, setImageUrls] = useState<string[]>([])
   const [downloading, setDownloading] = useState(false)
 
   useEffect(() => {
@@ -37,53 +34,17 @@ export default function SharePage() {
     try {
       setLoading(true)
 
-      // 共有画像データを取得（認証不要・RLS公開ポリシー使用）
-      const { data, error: fetchError } = await supabase
-        .from('shared_images')
-        .select('*')
-        .eq('id', shareId)
-        .single()
-
-      if (fetchError) {
-        console.error('Error fetching shared image:', fetchError)
-        setError('共有リンクが見つかりません')
+      // APIエンドポイントから署名付きURLを取得
+      const response = await fetch(`/api/share/${shareId}`)
+      
+      if (!response.ok) {
+        const errorData = await response.json()
+        setError(errorData.error || '共有リンクの読み込みに失敗しました')
         return
       }
 
-      if (!data) {
-        setError('共有リンクが見つかりません')
-        return
-      }
-
-      // 有効期限チェック
-      const expiresAt = new Date(data.expires_at)
-      const now = new Date()
-      if (now > expiresAt) {
-        setError('この共有リンクは有効期限が切れています')
-        return
-      }
-
-      // 画像URLを解析
-      try {
-        const urls = JSON.parse(data.image_url)
-        if (!Array.isArray(urls) || urls.length === 0) {
-          setError('画像データが正しくありません')
-          return
-        }
-        setImageUrls(urls)
-      } catch (parseError) {
-        console.error('Error parsing image URLs:', parseError)
-        setError('画像データの解析に失敗しました')
-        return
-      }
-
+      const data: SharedImageData = await response.json()
       setSharedData(data)
-
-      // アクセスカウントを更新
-      await supabase
-        .from('shared_images')
-        .update({ access_count: data.access_count + 1 })
-        .eq('id', shareId)
 
     } catch (error) {
       console.error('Unexpected error loading shared image:', error)
@@ -93,26 +54,37 @@ export default function SharePage() {
     }
   }
 
+  const downloadImage = async (url: string, index: number) => {
+    try {
+      const response = await fetch(url)
+      if (!response.ok) {
+        throw new Error('Failed to fetch image')
+      }
+      const blob = await response.blob()
+      const downloadUrl = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = downloadUrl
+      link.download = `paintly_shared_${index + 1}.jpg`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(downloadUrl)
+    } catch (error) {
+      console.error('Download error:', error)
+      alert('ダウンロードに失敗しました')
+    }
+  }
+
   const downloadAllImages = async () => {
-    if (imageUrls.length === 0) return
+    if (!sharedData || sharedData.imageUrls.length === 0) return
 
     setDownloading(true)
     try {
-      for (let i = 0; i < imageUrls.length; i++) {
-        const url = imageUrls[i]
-        const response = await fetch(url)
-        const blob = await response.blob()
-        const downloadUrl = window.URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.href = downloadUrl
-        link.download = `paintly_shared_${i + 1}.jpg`
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-        window.URL.revokeObjectURL(downloadUrl)
-
+      for (let i = 0; i < sharedData.imageUrls.length; i++) {
+        await downloadImage(sharedData.imageUrls[i], i)
+        
         // ダウンロード間に少し遅延を入れる
-        if (i < imageUrls.length - 1) {
+        if (i < sharedData.imageUrls.length - 1) {
           await new Promise(resolve => setTimeout(resolve, 500))
         }
       }
@@ -212,7 +184,7 @@ export default function SharePage() {
               ) : (
                 <>
                   <Download className="h-4 w-4 mr-2" />
-                  すべての画像をダウンロード ({imageUrls.length}枚)
+                  すべての画像をダウンロード ({sharedData.imageUrls.length}枚)
                 </>
               )}
             </Button>
@@ -221,7 +193,7 @@ export default function SharePage() {
 
         {/* 画像ギャラリー */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {imageUrls.map((url, index) => (
+          {sharedData.imageUrls.map((url, index) => (
             <Card key={index} className="overflow-hidden">
               <CardContent className="p-4">
                 <div className="relative w-full aspect-[4/3] bg-muted rounded-lg overflow-hidden mb-3">
@@ -236,28 +208,12 @@ export default function SharePage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">
-                    画像 {index + 1} / {imageUrls.length}
+                    画像 {index + 1} / {sharedData.imageUrls.length}
                   </span>
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={async () => {
-                      try {
-                        const response = await fetch(url)
-                        const blob = await response.blob()
-                        const downloadUrl = window.URL.createObjectURL(blob)
-                        const link = document.createElement('a')
-                        link.href = downloadUrl
-                        link.download = `paintly_shared_${index + 1}.jpg`
-                        document.body.appendChild(link)
-                        link.click()
-                        document.body.removeChild(link)
-                        window.URL.revokeObjectURL(downloadUrl)
-                      } catch (error) {
-                        console.error('Download error:', error)
-                        alert('ダウンロードに失敗しました')
-                      }
-                    }}
+                    onClick={() => downloadImage(url, index)}
                   >
                     <Download className="h-4 w-4 mr-1" />
                     DL
