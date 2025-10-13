@@ -660,6 +660,27 @@
   /* transform: rotate(-1deg); */
 }
 
+/* Dashboard title - オレンジ色の縦棒を完全に消す */
+.dashboard-title {
+  font-family: var(--font-handwritten);
+  font-weight: 700;
+  color: var(--brand);
+  border: none !important;
+  border-left: none !important;
+  position: relative;
+  display: inline-block;
+}
+
+.dashboard-title::before {
+  content: none !important;
+  display: none !important;
+}
+
+.dashboard-title::after {
+  content: none !important;
+  display: none !important;
+}
+
 /* ワークショップ背景 */
 .workshop-bg {
   position: relative;

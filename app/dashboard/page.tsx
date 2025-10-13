@@ -29,18 +29,10 @@ export default async function DashboardPage() {
         {/* Paint Drips at Top */}
         <div className="paint-drips"></div>
 
-        {/* Background decoration */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 right-20 w-24 h-24 opacity-5 rotate-12">
-            <Palette className="w-full h-full text-primary" />
-          </div>
-          <div className="absolute bottom-32 left-16 w-16 h-16 opacity-5 -rotate-12">
-            <Sparkles className="w-full h-full text-accent" />
-          </div>
-        </div>
+        {/* Background decoration - 削除 */}
 
         <div className="relative z-10 text-center">
-          <h1 className="text-4xl font-bold tracking-tight mb-2" style={{ fontFamily: 'var(--font-handwritten)', color: 'var(--brand)' }}>ダッシュボード</h1>
+          <h1 className="text-4xl font-bold tracking-tight mb-2 dashboard-title">ダッシュボード</h1>
           <p className="text-muted-foreground/80 mt-2 text-lg">
             Paintlyで塗装シミュレーションを管理しましょう
           </p>
