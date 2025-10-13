@@ -156,8 +156,8 @@ export default function SignUpPage() {
             )}
 
             {/* フォームフィールド */}
-            <div className="space-y-3">
-              <div className="space-y-1.5">
+            <div className="space-y-2">
+              <div className="space-y-1">
                 <Label htmlFor="email" className="text-xs md:text-sm font-semibold text-foreground flex items-center">
                   <Home className="h-3.5 w-3.5 mr-1.5 text-primary" />
                   メールアドレス
@@ -174,7 +174,7 @@ export default function SignUpPage() {
                 />
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 <Label htmlFor="password" className="text-xs md:text-sm font-semibold text-foreground flex items-center">
                   <Lock className="h-3.5 w-3.5 mr-1.5 text-primary" />
                   パスワード
@@ -191,7 +191,7 @@ export default function SignUpPage() {
                 />
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 <Label htmlFor="confirmPassword" className="text-xs md:text-sm font-semibold text-foreground flex items-center">
                   <CheckCircle className="h-3.5 w-3.5 mr-1.5 text-accent" />
                   パスワード（確認）
@@ -210,17 +210,17 @@ export default function SignUpPage() {
             </div>
 
             {/* 特典説明 */}
-            <div className="p-2 md:p-3 rounded-xl bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/10">
-              <div className="flex items-center space-x-1.5 mb-1">
-                <Star className="h-3.5 w-3.5 text-primary animate-pulse" />
-                <span className="text-xs md:text-sm font-bold text-primary">無料トライアル特典</span>
+            <div className="p-2 rounded-xl bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/10">
+              <div className="flex items-center space-x-1 mb-0.5">
+                <Star className="h-3 w-3 text-primary animate-pulse" />
+                <span className="text-xs font-bold text-primary">無料トライアル特典</span>
               </div>
-              <p className="text-xs text-muted-foreground leading-relaxed">
+              <p className="text-xs text-muted-foreground leading-tight">
                 アカウント登録後、<span className="font-semibold text-primary">3回まで無料</span>で画像生成をお試しいただけます。
               </p>
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-3 pt-3">
+          <CardFooter className="flex flex-col space-y-2 pt-2">
             {/* メイン登録ボタン */}
             <Button
               type="submit"
@@ -265,8 +265,8 @@ export default function SignUpPage() {
             </Button>
 
             {/* サインインリンク */}
-            <div className="text-center p-2 md:p-3 rounded-xl bg-gradient-to-r from-accent/5 to-secondary/10 border border-accent/10">
-              <p className="text-xs md:text-sm text-muted-foreground mb-1">
+            <div className="text-center p-2 rounded-xl bg-gradient-to-r from-accent/5 to-secondary/10 border border-accent/10">
+              <p className="text-xs text-muted-foreground mb-0.5">
                 すでにアカウントをお持ちの方は
               </p>
               <Link
