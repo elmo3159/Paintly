@@ -63,11 +63,11 @@ export function TutorialModal() {
         <DialogPortal>
           {/* カスタムオーバーレイ - 透明度を低くしてハイライトを見やすくする */}
           <DialogOverlay className="bg-black/30" />
-          <div className={`fixed left-[50%] top-[50%] z-[100] grid w-full max-w-[600px] translate-x-[-50%] translate-y-[-50%] gap-3 border-2 border-primary/30 bg-white dark:bg-gray-900 p-4 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg overflow-y-auto ${
-            currentStepData.id === 'select-colors' ? 'max-h-[80dvh]' : 'max-h-[75dvh]'
+          <div className={`fixed left-[50%] top-[50%] z-[100] grid w-full max-w-[600px] translate-x-[-50%] translate-y-[-50%] gap-2 border-2 border-primary/30 bg-white dark:bg-gray-900 p-3 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg overflow-y-auto ${
+            currentStepData.id === 'select-colors' ? 'max-h-[70dvh]' : 'max-h-[65dvh]'
           }`}>
           <DialogHeader>
-            <DialogTitle className="text-xl md:text-2xl font-bold text-primary">
+            <DialogTitle className="text-lg md:text-xl font-bold text-primary">
               {currentStepData.title}
             </DialogTitle>
             <div className="space-y-1 pt-1">
@@ -79,19 +79,19 @@ export function TutorialModal() {
             </div>
           </DialogHeader>
 
-          <div className="space-y-6 py-4">
-            <DialogDescription className="text-base leading-relaxed text-foreground">
+          <div className="space-y-4 py-3">
+            <DialogDescription className="text-sm leading-snug text-foreground">
               {currentStepData.description}
             </DialogDescription>
 
             {/* 画像がある場合は表示 */}
             {currentStepData.imageUrl && (
-              <div className="rounded-lg border bg-muted p-4">
+              <div className="rounded-lg border bg-muted p-3">
                 <img
                   src={currentStepData.imageUrl}
                   alt={currentStepData.title}
                   className={`w-full rounded-md ${
-                    currentStepData.id === 'select-colors' ? 'max-h-48 object-contain' : 'max-h-56 object-contain'
+                    currentStepData.id === 'select-colors' ? 'max-h-40 object-contain' : 'max-h-48 object-contain'
                   }`}
                 />
               </div>
@@ -155,7 +155,7 @@ export function TutorialModal() {
           </div>
 
           {/* ナビゲーションボタン */}
-          <div className="flex items-center justify-between gap-2 pt-3 border-t">
+          <div className="flex items-center justify-between gap-2 pt-2 border-t">
             <Button
               variant="outline"
               onClick={skipTutorial}

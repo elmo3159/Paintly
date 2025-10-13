@@ -110,25 +110,25 @@ export default function SignUpPage() {
 
       <div className="max-w-md mx-auto">
         <Card className="w-full paint-card relative z-10">
-        <CardHeader className="space-y-2 pb-3">
+        <CardHeader className="space-y-1 pb-2">
           {/* Paintlyロゴ */}
-          <div className="flex justify-center mb-1">
+          <div className="flex justify-center">
             <Image
               src="/logo.png"
               alt="Paintly"
               width={142}
               height={80}
               priority={true}
-              className="h-24 md:h-28 w-auto object-contain"
+              className="h-16 md:h-24 w-auto object-contain"
               sizes="(max-width: 768px) 142px, 142px"
             />
           </div>
 
-          <div className="text-center space-y-1">
-            <CardTitle className="text-lg md:text-xl font-bold text-foreground">
+          <div className="text-center space-y-0.5">
+            <CardTitle className="text-base md:text-lg font-bold text-foreground">
               無料で始める塗装革命
             </CardTitle>
-            <CardDescription className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+            <CardDescription className="text-xs md:text-sm text-muted-foreground leading-tight">
               営業成約率を劇的に向上させる<br />
               AI塗装シミュレーション。<br />
               <span className="text-primary font-semibold">3回まで無料</span>でお試しいただけます。
@@ -136,7 +136,7 @@ export default function SignUpPage() {
           </div>
         </CardHeader>
         <form onSubmit={handleSignUp}>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-2">
             {/* アラート表示 */}
             {error && (
               <Alert variant="destructive" className="border-destructive/20 bg-destructive/5">
