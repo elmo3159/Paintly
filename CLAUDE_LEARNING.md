@@ -288,6 +288,191 @@ const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin
 
 ---
 
+## QRコード共有機能の検証とService Workerキャッシュ問題（2回目）
+
+### 問題の再発見（2025年10月14日）
+
+環境変数を修正して再デプロイ後、QRコード生成をテストしたところ、以下の症状が再発：
+
+**症状:**
+- 新しく生成されたQRコード共有URLは正しい本番ドメイン（`paintly-chi.vercel.app`）を使用
+- しかし、そのURLにブラウザでアクセスすると「予期しないエラーが発生しました」が表示
+- curlで同じAPIエンドポイントをテストすると正常にレスポンスが返る
+- ブラウザのNetwork タブで `net::ERR_FAILED` エラーが発生
+
+### 根本原因の特定
+
+**Service Workerが古いコードを再度キャッシュしていた**
+
+デプロイ後、ブラウザがページをロードすると新しいService Workerが登録される。しかし：
+1. 古いService Workerがまだアクティブな場合がある
+2. 新しいSWが登録されても、古いSWのキャッシュが残っている
+3. PWA機能により、APIリクエストが古いキャッシュを参照してしまう
+
+### 検証プロセス
+
+**1. curlでのAPI検証（成功）**
+```bash
+curl -s "https://paintly-chi.vercel.app/api/share/5fe2f54d-3090-4e16-ad2c-48e265c00899"
+# → 正常にJSON レスポンスが返る（署名付きURL含む）
+```
+
+**2. ブラウザでのアクセス（失敗）**
+- エラーメッセージ: 「予期しないエラーが発生しました」
+- Console エラー: `net::ERR_FAILED`
+
+**3. Service Worker削除（解決）**
+```javascript
+const registrations = await navigator.serviceWorker.getRegistrations();
+for (const reg of registrations) {
+  await reg.unregister();
+}
+location.reload();
+```
+
+**4. 再アクセス（成功）**
+- 共有ページが正常に表示
+- 画像2枚が表示され、ダウンロード機能も正常動作
+- アクセスカウントが正常に記録
+
+### 重要な学習ポイント
+
+#### 1. Service Workerの二段階問題
+
+**第一段階**: 開発中のキャッシュ
+- ローカル開発中に古いコードがキャッシュされる
+- → 開発時は「Disable cache」を有効にする
+
+**第二段階**: デプロイ後のキャッシュ（今回遭遇）
+- 新しいコードをデプロイしても、ユーザーのブラウザに古いSWが残る
+- → バージョニング戦略が必要
+
+#### 2. デバッグの効率的な順序（再確認）
+
+**必ずこの順序で検証する:**
+```
+1. curl/Postmanでサーバー側を検証
+   ↓
+2. サーバーが正常 → ブラウザでテスト
+   ↓
+3. ブラウザで失敗 → Service Worker/キャッシュを疑う
+   ↓
+4. Service Worker削除 → 再テスト
+```
+
+**curlで成功してブラウザで失敗 = ほぼ100% キャッシュ問題**
+
+#### 3. Next.js PWAとService Workerの管理
+
+**現在の問題点:**
+- `public/sw.js` でService Workerを登録している
+- バージョニング機能がない
+- キャッシュ戦略が明示的でない
+
+**改善すべき点:**
+```javascript
+// sw.js にバージョン番号を追加
+const CACHE_VERSION = 'v1.0.0';
+const CACHE_NAME = `paintly-cache-${CACHE_VERSION}`;
+
+// 古いキャッシュを削除
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames
+          .filter((name) => name !== CACHE_NAME)
+          .map((name) => caches.delete(name))
+      );
+    })
+  );
+});
+```
+
+#### 4. 環境変数の設定ベストプラクティス（再確認）
+
+**`NEXT_PUBLIC_*` 環境変数の特性を理解する:**
+
+- ✅ ビルド時に埋め込まれる（静的）
+- ✅ クライアント側で読み取り可能
+- ❌ ビルド後は変更不可（再デプロイが必須）
+- ❌ 動的な値に依存してはいけない
+
+**良い例:**
+```typescript
+// 明示的に本番URLを設定
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL; // 'https://paintly-chi.vercel.app'
+if (!baseUrl) throw new Error('NEXT_PUBLIC_APP_URL is required');
+```
+
+**悪い例:**
+```typescript
+// 動的な値にフォールバック（環境によって異なる値になる）
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
+```
+
+#### 5. Vercel環境変数の更新方法
+
+**Vercel API経由での更新（推奨）:**
+```bash
+# 1. 環境変数IDを取得
+curl "https://api.vercel.com/v9/projects/{projectId}/env" \
+  -H "Authorization: Bearer {token}" | jq
+
+# 2. 環境変数を更新
+curl -X PATCH "https://api.vercel.com/v10/projects/{projectId}/env/{envId}" \
+  -H "Authorization: Bearer {token}" \
+  -H "Content-Type: application/json" \
+  -d '{"value":"https://paintly-chi.vercel.app","target":["production","preview","development"]}'
+
+# 3. 再デプロイ（環境変数変更を反映）
+git commit --allow-empty -m "chore: trigger redeploy for env var update"
+git push
+```
+
+**Vercel Dashboard経由での更新:**
+1. Project Settings → Environment Variables
+2. 変更したい変数の「Edit」をクリック
+3. 値を更新して保存
+4. 「Redeploy」ボタンをクリック
+
+### 検証成功の記録
+
+**生成されたQRコード共有URL:**
+`https://paintly-chi.vercel.app/share/5fe2f54d-3090-4e16-ad2c-48e265c00899`
+
+**検証結果（すべて✅）:**
+- ✅ 正しい本番ドメインを使用
+- ✅ 共有ページが正常に表示
+- ✅ タイトル: 「塗装シミュレーション画像」
+- ✅ 作成日: 2025/10/14
+- ✅ 閲覧数: 3回（アクセスカウント機能が正常動作）
+- ✅ 有効期限: 2025/10/21まで有効
+- ✅ 画像2枚が正常に表示
+- ✅ 個別ダウンロードボタンが機能
+- ✅ 一括ダウンロードボタンが機能
+
+### 今後の対策
+
+**短期的対策（開発中）:**
+1. Chrome DevToolsで「Disable cache」を常時オン
+2. Application タブでService Workerを定期的に確認・削除
+3. デプロイ後は必ずService Workerをクリアしてテスト
+
+**長期的対策（本番環境）:**
+1. Service Workerにバージョニング機能を実装
+2. キャッシュ戦略を明示的に定義
+3. 古いキャッシュを自動削除する仕組みを追加
+4. PWA更新時のユーザー通知機能を実装
+
+**環境変数管理:**
+1. `.env.local` と Vercel環境変数を必ず同期
+2. `NEXT_PUBLIC_*` 変数は絶対に動的値にフォールバックしない
+3. 環境変数変更後は必ず再デプロイ
+4. Vercel APIを使った自動化スクリプトを検討
+
+---
+
 ## 参考資料
 
 - [Next.js 15 Migration Guide](https://nextjs.org/docs/app/building-your-application/upgrading/version-15)

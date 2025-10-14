@@ -355,6 +355,7 @@ export function Sidebar() {
   useEffect(() => {
     const emergencyHandler = () => {
       fetchCustomers()
+      fetchPlanInfo() // 画像生成完了時にプラン情報も更新
     }
 
     if (typeof window !== 'undefined') {
@@ -366,7 +367,7 @@ export function Sidebar() {
         window.removeEventListener('customerUpdated', emergencyHandler)
       }
     }
-  }, [fetchCustomers])
+  }, [fetchCustomers, fetchPlanInfo])
 
   // レスポンシブ対応: ウィンドウサイズ変更時にサイドバーを自動調整
   useEffect(() => {

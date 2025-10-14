@@ -113,9 +113,13 @@ export default function CustomerPage() {
     loadCustomer()
   }, [customerId])
 
-  // Load color history from localStorage
+  // Load color history from database
   useEffect(() => {
-    setRecentColors(getColorHistory())
+    const loadColorHistory = async () => {
+      const history = await getColorHistory()
+      setRecentColors(history)
+    }
+    loadColorHistory()
   }, [])
 
   // Load plan info for limit checking
@@ -689,9 +693,9 @@ export default function CustomerPage() {
                     <WebColorSelector
                       label="壁の色"
                       selectedColorId={wallColorId}
-                      onColorSelect={(colorId) => {
+                      onColorSelect={async (colorId) => {
                         setWallColorId(colorId)
-                        const updated = addToColorHistory(colorId)
+                        const updated = await addToColorHistory(colorId)
                         setRecentColors(updated)
                       }}
                       recentColors={recentColors}
@@ -699,9 +703,9 @@ export default function CustomerPage() {
                     <WebColorSelector
                       label="屋根の色"
                       selectedColorId={roofColorId}
-                      onColorSelect={(colorId) => {
+                      onColorSelect={async (colorId) => {
                         setRoofColorId(colorId)
-                        const updated = addToColorHistory(colorId)
+                        const updated = await addToColorHistory(colorId)
                         setRecentColors(updated)
                       }}
                       recentColors={recentColors}
@@ -709,9 +713,9 @@ export default function CustomerPage() {
                     <WebColorSelector
                       label="ドアの色"
                       selectedColorId={doorColorId}
-                      onColorSelect={(colorId) => {
+                      onColorSelect={async (colorId) => {
                         setDoorColorId(colorId)
-                        const updated = addToColorHistory(colorId)
+                        const updated = await addToColorHistory(colorId)
                         setRecentColors(updated)
                       }}
                       recentColors={recentColors}
