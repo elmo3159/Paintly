@@ -24,7 +24,6 @@ export default function SharePage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [sharedData, setSharedData] = useState<SharedImageData | null>(null)
-  const [downloading, setDownloading] = useState(false)
 
   useEffect(() => {
     loadSharedImage()
@@ -72,27 +71,6 @@ export default function SharePage() {
     } catch (error) {
       console.error('Download error:', error)
       alert('ダウンロードに失敗しました')
-    }
-  }
-
-  const downloadAllImages = async () => {
-    if (!sharedData || sharedData.imageUrls.length === 0) return
-
-    setDownloading(true)
-    try {
-      for (let i = 0; i < sharedData.imageUrls.length; i++) {
-        await downloadImage(sharedData.imageUrls[i], i)
-        
-        // ダウンロード間に少し遅延を入れる
-        if (i < sharedData.imageUrls.length - 1) {
-          await new Promise(resolve => setTimeout(resolve, 500))
-        }
-      }
-    } catch (error) {
-      console.error('Error downloading images:', error)
-      alert('画像のダウンロードに失敗しました')
-    } finally {
-      setDownloading(false)
     }
   }
 
@@ -170,30 +148,9 @@ export default function SharePage() {
                 この共有リンクは {expiresAt.toLocaleDateString('ja-JP')} まで有効です
               </AlertDescription>
             </Alert>
-            <Button
-              onClick={downloadAllImages}
-              disabled={downloading}
-              className="w-full"
-              size="lg"
-            >
-              {downloading ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  ダウンロード中...
-                </>
-              ) : (
-                <>
-                  <Download className="h-4 w-4 mr-2" />
-                  すべての画像をダウンロード ({sharedData.imageUrls.length}枚)
-                </>
-              )}
-            </Button>
-            <div className="text-center text-sm text-muted-foreground bg-blue-50 dark:bg-blue-950 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
+            <div className="text-center text-sm bg-blue-50 dark:bg-blue-950 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
               <p className="font-medium text-blue-700 dark:text-blue-300">
                 📱 スマホの場合は画像を長押しして保存してください
-              </p>
-              <p className="text-xs mt-1 text-blue-600 dark:text-blue-400">
-                ダウンロードボタンが動作しない場合の代替方法です
               </p>
             </div>
           </CardContent>
