@@ -17,12 +17,14 @@ export default function ShareLayout({
   return (
     <>
       {/* 共有ページはスクロール可能にする */}
-      <style jsx global>{`
-        html, body {
-          overflow: auto !important;
-          height: auto !important;
-        }
-      `}</style>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          html, body {
+            overflow: auto !important;
+            height: auto !important;
+          }
+        `
+      }} />
       {children}
     </>
   )
