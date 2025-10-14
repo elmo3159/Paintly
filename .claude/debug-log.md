@@ -96,6 +96,90 @@ Type 'undefined' is not assignable to type 'string'
 
 ## 解決済みの重要な問題
 
+### [2025-10-14] QRコード共有機能のダウンロードエラー
+
+### 症状
+- ブラウザでシェアページにアクセスすると「予期しないエラーが発生しました」と表示
+- APIエンドポイント (`/api/share/[id]`) が `net::ERR_FAILED` で失敗
+- curlコマンドでは正常にレスポンスを返す（ブラウザのみ失敗）
+
+### エラーメッセージ
+```
+[ERROR] Failed to load resource: net::ERR_FAILED @ https://paintly-chi.vercel.app/api/share/9f6c4340...
+TypeError: Failed to fetch
+```
+
+### 原因
+1. **Next.js 15での型変更**: `params` が Promise型に変更され、ビルドエラーが発生
+2. **Supabase署名付きURL生成失敗**: `anon key` では署名付きURLを生成できない（`service_role key` が必要）
+3. **Service Workerのキャッシュ**: 古いコードやリクエストハンドラーがキャッシュされ、新しいAPIエンドポイントへのリクエストをブロック
+
+### 解決方法
+
+#### 1. Next.js 15対応 (app/api/share/[id]/route.ts)
+```typescript
+// Before
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const shareId = params.id
+
+// After
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id: shareId } = await params
+```
+
+#### 2. 署名付きURL生成用にService Role Key使用
+```typescript
+// Before: anonキーを使用（権限不足）
+import { createClient } from '@/lib/supabase/server'
+const supabase = await createClient()
+
+// After: service_role keyを使用
+import { createClient } from '@supabase/supabase-js'
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+
+const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false
+  }
+})
+```
+
+#### 3. Service Worker削除
+```javascript
+// ブラウザコンソールで実行
+const registrations = await navigator.serviceWorker.getRegistrations();
+for (const reg of registrations) {
+  await reg.unregister();
+}
+```
+
+### テスト結果
+- ✅ 個別画像ダウンロードボタン: 正常動作
+- ✅ 一括ダウンロードボタン: 正常動作（2枚を500ms間隔で順次ダウンロード）
+- ✅ 署名付きURL: 7日間有効なトークン付きURLが生成される
+- ✅ 閲覧カウント: アクセスごとに正常にカウントアップ
+
+### 関連ファイル
+- app/api/share/[id]/route.ts
+- app/share/[id]/page.tsx
+- .env.local (SUPABASE_SERVICE_ROLE_KEY)
+
+### 学んだこと
+1. Next.js 15では動的ルートの `params` は Promise型になった
+2. Supabase署名付きURLの生成には `service_role key` が必須
+3. Service Workerは便利だが、開発中は古いキャッシュが問題を引き起こす可能性がある
+4. curlで正常でもブラウザで失敗する場合、Service Workerやキャッシュを疑う
+
+---
+
 ### [2025-01-10] Cipher MCP接続エラー
 ### 症状
 - Cipher MCPサーバーが起動しない

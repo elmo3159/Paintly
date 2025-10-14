@@ -98,8 +98,8 @@ export default function SharePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-primary/10">
-        <Card className="max-w-md w-full mx-4">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <Card className="max-w-md w-full mx-4 bg-white dark:bg-gray-800">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
             <p className="text-muted-foreground">読み込み中...</p>
@@ -111,8 +111,8 @@ export default function SharePage() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-primary/10 p-4">
-        <Card className="max-w-md w-full">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
+        <Card className="max-w-md w-full bg-white dark:bg-gray-800">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-destructive">
               <AlertCircle className="h-5 w-5" />
@@ -142,10 +142,10 @@ export default function SharePage() {
   const createdAt = new Date(sharedData.created_at)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-primary/10 py-8 px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* ヘッダー */}
-        <Card>
+        <Card className="bg-white dark:bg-gray-800">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl md:text-3xl">
               塗装シミュレーション画像
@@ -194,7 +194,7 @@ export default function SharePage() {
         {/* 画像ギャラリー */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {sharedData.imageUrls.map((url, index) => (
-            <Card key={index} className="overflow-hidden">
+            <Card key={index} className="overflow-hidden bg-white dark:bg-gray-800">
               <CardContent className="p-4">
                 <div className="relative w-full aspect-[4/3] bg-muted rounded-lg overflow-hidden mb-3">
                   <Image
@@ -225,7 +225,7 @@ export default function SharePage() {
         </div>
 
         {/* フッター */}
-        <Card>
+        <Card className="bg-white dark:bg-gray-800">
           <CardContent className="text-center py-6">
             <p className="text-sm text-muted-foreground mb-3">
               Paintlyは塗装会社向けのAIシミュレーションツールです

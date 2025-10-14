@@ -651,3 +651,16 @@ const monitorPerformance = async () => {
 
 色選択実装用カラーネーム、コードまとめ↓
 C:\Users\elmod\Desktop\CursorApp\Paintly\docs\Color.md
+
+## 🎓 重要な学習事項
+
+開発中に遭遇した重要な学習事項と注意点をまとめたドキュメントを作成しました：
+
+📖 **[CLAUDE_LEARNING.md](./CLAUDE_LEARNING.md)** - 重要な学習事項・開発上の注意点
+
+主な内容：
+- Next.js 15の破壊的変更（paramsがPromise型に）
+- Supabase権限モデル（anon key vs service_role key）
+- Service Workerのキャッシュ問題と解決方法
+- 効率的なデバッグ手順
+- Vercelデプロイメントのトラブルシューティング
