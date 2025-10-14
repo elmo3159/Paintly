@@ -1,5 +1,5 @@
 // Service Worker for Paintly PWA - Enhanced Version
-const CACHE_VERSION = '2025.1.7'
+const CACHE_VERSION = '2025.10.14'
 const STATIC_CACHE = `paintly-static-${CACHE_VERSION}`
 const DYNAMIC_CACHE = `paintly-dynamic-${CACHE_VERSION}`
 const IMAGES_CACHE = `paintly-images-${CACHE_VERSION}`
@@ -85,14 +85,15 @@ self.addEventListener('fetch', (event) => {
   const { request } = event
   const url = new URL(request.url)
 
-  // Skip service worker for OAuth, authentication, and AI generation routes
+  // Skip service worker for OAuth, authentication, AI generation, and share routes
   // これらのルートはタイムアウトなしで直接サーバーに接続する必要がある
   if (url.pathname.startsWith('/auth/callback') ||
       url.pathname.startsWith('/auth/signin') ||
       url.pathname.startsWith('/auth/signup') ||
       url.pathname.startsWith('/api/auth') ||
-      url.pathname.startsWith('/api/generate')) {
-    // OAuth認証フロー・AI画像生成APIをService Workerでインターセプトしない
+      url.pathname.startsWith('/api/generate') ||
+      url.pathname.startsWith('/api/share')) {
+    // OAuth認証フロー・AI画像生成API・共有APIをService Workerでインターセプトしない
     // タイムアウト制約なく直接サーバーに接続
     return
   }
