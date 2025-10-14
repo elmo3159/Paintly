@@ -62,11 +62,18 @@ const tutorialSteps: TutorialStep[] = [
     imageUrls: ['/tutorial/step7-history-tab.png', '/tutorial/step7-slider-comparison.png'],
   },
   {
+    id: 'qr-code-share',
+    title: 'QRコードで瞬時に共有',
+    description: '履歴タブから「QRコードで共有」ボタンをクリックすると、お客様のスマートフォンで画像を即座に見ることができるQRコードが生成されます。営業現場でその場でお客様に画像を渡すことができます。',
+    highlightElement: 'qr-share-button',
+    imageUrl: '/tutorial/step8-qr-code-share.png',
+  },
+  {
     id: 'download-pdf',
     title: 'ダウンロードとPDF出力',
     description: '生成した画像はダウンロードしたり、PDF形式で出力できます。お客様への提案資料として活用できます。',
     highlightElement: 'download-buttons',
-    imageUrl: '/tutorial/step8-download-pdf.png',
+    imageUrl: '/tutorial/step9-download-pdf.png',
   },
 ]
 

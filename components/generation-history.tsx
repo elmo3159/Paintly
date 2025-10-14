@@ -394,6 +394,7 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
                   variant="default"
                   size="sm"
                   className="w-full bg-green-600 hover:bg-green-700"
+                  data-tutorial="qr-share-button"
                 >
                   <QrCode className="h-4 w-4 mr-2" />
                   選択した画像をQRコードで共有 ({selectedIds.length}枚)

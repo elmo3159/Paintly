@@ -88,8 +88,10 @@ export function TutorialModal() {
             {currentStepData.imageUrl && (
               <div className="rounded-lg border bg-muted p-2">
                 <img
+                  key={`${currentStepData.id}-${currentStepData.imageUrl}`}
                   src={currentStepData.imageUrl}
                   alt={currentStepData.title}
+                  loading="eager"
                   className={`w-full rounded-md ${
                     currentStepData.id === 'select-colors' ? 'max-h-32 object-contain' : 'max-h-40 object-contain'
                   }`}
@@ -101,10 +103,12 @@ export function TutorialModal() {
             {currentStepData.imageUrls && currentStepData.imageUrls.length > 0 && (
               <div className="grid grid-cols-2 gap-2">
                 {currentStepData.imageUrls.map((url, index) => (
-                  <div key={index} className="rounded-lg border bg-muted p-2">
+                  <div key={`${currentStepData.id}-${index}`} className="rounded-lg border bg-muted p-2">
                     <img
+                      key={`${currentStepData.id}-img-${index}-${url}`}
                       src={url}
                       alt={`${currentStepData.title} - ${index + 1}`}
+                      loading="eager"
                       className="w-full rounded-md max-h-32 object-contain"
                     />
                   </div>
