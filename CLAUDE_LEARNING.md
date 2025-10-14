@@ -246,12 +246,55 @@ npx vercel env add VARIABLE_NAME --token YOUR_TOKEN
 
 ---
 
+## QRコード共有URL生成の問題
+
+### 問題の詳細
+QRコード共有機能で生成されるURLが、プレビュー環境のドメイン（`paintly-elmos-projects-cf77d205.vercel.app`）になってしまい、本番環境のドメイン（`paintly-chi.vercel.app`）にならない問題が発生。
+
+### 原因
+`app/api/share/create/route.ts` の111行目で、環境変数 `NEXT_PUBLIC_APP_URL` が未設定の場合、`request.nextUrl.origin` をフォールバックとして使用していた：
+
+```typescript
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin
+```
+
+`.env.local` では `NEXT_PUBLIC_APP_URL=http://localhost:3005` とローカル開発用の値が設定されており、本番環境URLが設定されていなかった。
+
+### 解決策
+1. **.env.local の更新**:
+   ```
+   NEXT_PUBLIC_APP_URL=https://paintly-chi.vercel.app
+   ```
+
+2. **Vercel環境変数の更新** (Vercel API経由):
+   ```bash
+   curl -X PATCH "https://api.vercel.com/v10/projects/{projectId}/env/{envId}" \
+     -H "Authorization: Bearer {token}" \
+     -d '{"value":"https://paintly-chi.vercel.app","target":["production","preview","development"]}'
+   ```
+
+3. **再デプロイ**: 環境変数の変更を反映させるため、コードの小さな変更をプッシュして再デプロイをトリガー
+
+### 学んだこと
+- `NEXT_PUBLIC_*` 環境変数はビルド時に埋め込まれるため、変更後は再デプロイが必須
+- `request.nextUrl.origin` は動的な値であり、プレビュー環境やブランチデプロイメントでは異なるドメインを返す
+- 本番環境URLは必ず明示的に環境変数で設定すべき
+- Vercel環境変数の更新には Vercel API (`PATCH /v10/projects/{projectId}/env/{envId}`) を使用可能
+
+### 関連ファイル
+- `app/api/share/create/route.ts` (line 111-112)
+- `.env.local`
+- Vercel環境変数設定
+
+---
+
 ## 参考資料
 
 - [Next.js 15 Migration Guide](https://nextjs.org/docs/app/building-your-application/upgrading/version-15)
 - [Supabase Storage Signed URLs](https://supabase.com/docs/guides/storage/signed-urls)
 - [Service Worker API](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
 - [Vercel Environment Variables](https://vercel.com/docs/projects/environment-variables)
+- [Vercel API - Environment Variables](https://vercel.com/docs/rest-api/endpoints/environment-variables)
 
 ---
 
