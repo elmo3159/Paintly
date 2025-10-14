@@ -390,6 +390,113 @@ const downloadAllImages = async () => {
 
 ---
 
+## [2025-10-14] 共有ページフッター修正（お客様向けUX改善）
+
+### 問題
+- フッターの「Paintlyについて詳しく見る」ボタンがLP（塗装会社向け）に遷移
+- お客様が"この家に住みたい、そう思った瞬間、営業は終わっている"等の営業向けメッセージを見てしまう可能性
+- QRコードは**お客様がその場で画像を受け取る**ためのもの
+- ログインなしで画像が見られるか不明（懸念事項）
+
+### ユーザーからの指摘
+> QRはお客様にその場で画像を受け取ってもらうためのものです。塗装会社向けのLPなので、「この家に住みたい、そう思った瞬間、営業は終わっている」などの文をお客様が目にしてしまうのはあまりよくない気がします。
+
+### 調査結果
+
+#### 1. 認証状況の確認
+- ✅ **APIは`service_role key`を使用**（`app/api/share/[id]/route.ts`）
+- ✅ **ログイン不要でアクセス可能**
+- ✅ Playwrightで実際にログアウト状態でアクセスして確認済み
+- ✅ 署名付きURL（7日間有効）で画像を配信
+
+```typescript
+// app/api/share/[id]/route.ts
+const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false
+  }
+})
+// 認証チェックなし → お客様はログイン不要でアクセス可能
+```
+
+#### 2. フッター問題の確認
+- ⚠️ 「Paintlyについて詳しく見る」ボタンが`/`（ルートページ = LP）に遷移
+- ⚠️ LPには塗装会社向けのメッセージ（営業コピー）が掲載されている
+- ⚠️ お客様がこれを見ると違和感や誤解が生じる可能性
+
+### 最終的な解決策
+
+#### フッターを最小限に簡素化
+```typescript
+// BEFORE:
+<Card className="bg-white dark:bg-gray-800">
+  <CardContent className="text-center py-6">
+    <p className="text-sm text-muted-foreground mb-3">
+      Paintlyは塗装会社向けのAIシミュレーションツールです
+    </p>
+    <Link href="/">
+      <Button variant="outline">
+        Paintlyについて詳しく見る
+      </Button>
+    </Link>
+  </CardContent>
+</Card>
+
+// AFTER:
+<Card className="bg-white dark:bg-gray-800">
+  <CardContent className="text-center py-4">
+    <p className="text-xs text-muted-foreground">
+      Powered by Paintly
+    </p>
+  </CardContent>
+</Card>
+```
+
+**変更内容**:
+- 「Paintlyは塗装会社向けの...」のテキスト削除
+- 「Paintlyについて詳しく見る」ボタン削除
+- 「Powered by Paintly」のシンプルな表記のみ
+- フォントサイズを`text-sm`→`text-xs`に縮小
+- パディングを`py-6`→`py-4`に縮小
+
+### 学んだこと
+
+1. **ユーザーペルソナの明確化**
+   - 共有ページのユーザーは「お客様（施主様）」
+   - ダッシュボードのユーザーは「塗装会社の営業担当」
+   - ペルソナが異なる場合、メッセージングも変える必要がある
+
+2. **B2B SaaSの共有機能UX**
+   - B2Bツールでも、エンドユーザー（お客様）向けの共有ページは別設計が必要
+   - 営業向けのメッセージをそのまま表示するのは不適切
+   - 「Powered by」程度のクレジット表記で十分
+
+3. **認証設計の重要性**
+   - 共有機能は認証不要でアクセス可能にする必要がある
+   - `service_role key`を使うことでRLSをバイパス
+   - 署名付きURLで時間制限付きアクセスを実現
+
+4. **QRコード共有の使用シーン**
+   - **営業シーン**: 営業担当がお客様宅を訪問
+   - **その場でQRコード提示**: お客様がスマホでスキャン
+   - **即座に画像受け取り**: ログイン不要で画像が見える
+   - **お客様体験**: クリーンでプロフェッショナルな印象
+
+### 実装の成果
+- ✅ お客様が営業向けメッセージを見ることを防止
+- ✅ 認証なしで画像閲覧可能（お客様の利便性向上）
+- ✅ シンプルなフッターで信頼感のある共有体験
+- ✅ 塗装会社のプロフェッショナルな印象を維持
+
+### デプロイメント
+- コミット: `63369a5` (フッター簡素化)
+- 本番URL: https://paintly-chi.vercel.app/share/[id]
+- デプロイ状態: ✅ 完全成功
+- 検証方法: Playwrightで認証なしアクセスを確認
+
+---
+
 ## 今後の改善予定
 - [ ] PWA対応によるオフライン機能強化
 - [ ] 画像生成プロンプトの最適化
