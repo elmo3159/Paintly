@@ -66,6 +66,7 @@ const tutorialSteps: TutorialStep[] = [
     title: 'QRコードで瞬時に共有',
     description: '履歴タブから「QRコードで共有」ボタンをクリックすると、お客様のスマートフォンで画像を即座に見ることができるQRコードが生成されます。営業現場でその場でお客様に画像を渡すことができます。',
     highlightElement: 'qr-share-button',
+    imageUrl: '/tutorial/step8-qr-code-share.png',
   },
   {
     id: 'download-pdf',
