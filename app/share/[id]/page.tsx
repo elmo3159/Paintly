@@ -188,6 +188,14 @@ export default function SharePage() {
                 </>
               )}
             </Button>
+            <div className="text-center text-sm text-muted-foreground bg-blue-50 dark:bg-blue-950 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
+              <p className="font-medium text-blue-700 dark:text-blue-300">
+                📱 スマホの場合は画像を長押しして保存してください
+              </p>
+              <p className="text-xs mt-1 text-blue-600 dark:text-blue-400">
+                ダウンロードボタンが動作しない場合の代替方法です
+              </p>
+            </div>
           </CardContent>
         </Card>
 
