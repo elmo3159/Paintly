@@ -191,15 +191,10 @@ export default function SharePage() {
 
         {/* フッター */}
         <Card className="bg-white dark:bg-gray-800">
-          <CardContent className="text-center py-6">
-            <p className="text-sm text-muted-foreground mb-3">
-              Paintlyは塗装会社向けのAIシミュレーションツールです
+          <CardContent className="text-center py-4">
+            <p className="text-xs text-muted-foreground">
+              Powered by Paintly
             </p>
-            <Link href="/">
-              <Button variant="outline">
-                Paintlyについて詳しく見る
-              </Button>
-            </Link>
           </CardContent>
         </Card>
       </div>
