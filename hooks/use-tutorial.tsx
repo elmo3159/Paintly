@@ -66,7 +66,6 @@ const tutorialSteps: TutorialStep[] = [
     title: 'QRコードで瞬時に共有',
     description: '履歴タブから「QRコードで共有」ボタンをクリックすると、お客様のスマートフォンで画像を即座に見ることができるQRコードが生成されます。営業現場でその場でお客様に画像を渡すことができます。',
     highlightElement: 'qr-share-button',
-    imageUrl: '/tutorial/step8-qr-code-share.png',
   },
   {
     id: 'download-pdf',
@@ -103,12 +102,29 @@ export function TutorialProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
   const supabase = createClient()
 
+  // チュートリアル画像のプリロード
+  useEffect(() => {
+    // すべてのチュートリアル画像を事前に読み込む
+    tutorialSteps.forEach(step => {
+      if (step.imageUrl) {
+        const img = new Image()
+        img.src = step.imageUrl
+      }
+      if (step.imageUrls) {
+        step.imageUrls.forEach(url => {
+          const img = new Image()
+          img.src = url
+        })
+      }
+    })
+  }, [])
+
   // 初回ログイン検知とチュートリアル表示判定
   useEffect(() => {
     const checkTutorialStatus = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser()
-        
+
         if (!user) {
           setIsLoading(false)
           return
