@@ -78,7 +78,7 @@ export default function LegalPage() {
               お問い合わせ
             </h2>
             <div className="ml-11 text-gray-700">
-              <p className="font-medium">メールアドレス: support@paintly.app</p>
+              <p className="font-medium">メールアドレス: sanri.3159@gmail.com</p>
               <p className="text-sm text-gray-600 mt-2">
                 ※お問い合わせへの回答には、1～3営業日程度お時間をいただく場合がございます
               </p>

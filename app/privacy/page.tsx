@@ -344,7 +344,7 @@ export default function PrivacyPage() {
               <p>本ポリシーに関するお問い合わせ、個人情報の開示等の請求は、以下の窓口までご連絡ください。</p>
               <div className="bg-gray-50 p-6 rounded-lg mt-4">
                 <p className="font-bold mb-2">Paintly 個人情報保護窓口</p>
-                <p>メールアドレス: privacy@paintly.app</p>
+                <p>メールアドレス: sanri.3159@gmail.com</p>
                 <p className="mt-2 text-sm text-gray-600">
                   ※お問い合わせへの回答には、数日～1週間程度お時間をいただく場合がございます。
                 </p>
@@ -355,7 +355,7 @@ export default function PrivacyPage() {
           {/* フッター */}
           <div className="mt-12 pt-8 border-t border-gray-200 text-center text-gray-600">
             <p>制定日: 2025年10月15日</p>
-            <p className="mt-2">Paintly運営者</p>
+            <p className="mt-2">村上 ダニエル</p>
           </div>
         </div>
 
