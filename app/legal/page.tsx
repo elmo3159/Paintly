@@ -30,7 +30,7 @@ export default function LegalPage() {
               事業者の名称
             </h2>
             <div className="ml-11 text-gray-700">
-              <p className="font-medium">Paintly運営者</p>
+              <p className="font-medium">村上 ダニエル</p>
               <p className="text-sm text-gray-600 mt-1">
                 ※個人事業主として運営しています
               </p>
@@ -272,7 +272,7 @@ export default function LegalPage() {
           {/* フッター */}
           <div className="mt-12 pt-8 border-t border-gray-200 text-center text-gray-600">
             <p>制定日: 2025年10月15日</p>
-            <p className="mt-2">Paintly運営者</p>
+            <p className="mt-2">村上 ダニエル</p>
             <p className="mt-4 text-sm">
               ご不明な点がございましたら、上記お問い合わせ先までご連絡ください
             </p>
