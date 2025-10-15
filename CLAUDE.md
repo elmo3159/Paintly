@@ -356,6 +356,12 @@ WEB検索を活用して、最新の実装方法などを調べる事も大事�
 Vercelトークン
 JQmd56rPfQAMp7Wu05Wyrnqt
 
+Stripe↓
+公開可能キー: [STRIPE_PUBLISHABLE_KEY - 環境変数で管理]
+シークレットキー: [STRIPE_SECRET_KEY - 環境変数で管理]
+
+※セキュリティ上、実際のキーはVercelの環境変数および.env.localで管理しています
+
 ## Google OAuth
 Google OAuth認証は有効になっています。
 認証情報はVercelの環境変数で管理されています。

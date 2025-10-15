@@ -18,6 +18,7 @@ export default function SignUpPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -27,6 +28,11 @@ export default function SignUpPage() {
     e.preventDefault()
     setError(null)
     setSuccess(false)
+
+    if (!agreedToTerms) {
+      setError('利用規約とプライバシーポリシーに同意してください。')
+      return
+    }
 
     if (password !== confirmPassword) {
       setError('パスワードが一致しません。')
@@ -209,6 +215,46 @@ export default function SignUpPage() {
               </div>
             </div>
 
+            {/* 利用規約への同意チェックボックス */}
+            <div className="space-y-1">
+              <div className="flex items-start space-x-2">
+                <input
+                  type="checkbox"
+                  id="agreedToTerms"
+                  checked={agreedToTerms}
+                  onChange={(e) => setAgreedToTerms(e.target.checked)}
+                  disabled={loading || success}
+                  className="mt-1 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary focus:ring-offset-0 cursor-pointer disabled:cursor-not-allowed"
+                />
+                <label
+                  htmlFor="agreedToTerms"
+                  className="text-xs text-muted-foreground leading-tight cursor-pointer"
+                >
+                  <Link
+                    href="/terms"
+                    target="_blank"
+                    className="text-primary hover:underline font-medium"
+                  >
+                    利用規約
+                  </Link>
+                  および
+                  <Link
+                    href="/privacy"
+                    target="_blank"
+                    className="text-primary hover:underline font-medium"
+                  >
+                    プライバシーポリシー
+                  </Link>
+                  に同意します
+                </label>
+              </div>
+              {!agreedToTerms && (
+                <p className="text-xs text-amber-600 ml-6">
+                  ※アカウント登録には同意が必要です
+                </p>
+              )}
+            </div>
+
             {/* 特典説明 */}
             <div className="p-1.5 rounded-lg bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/10">
               <div className="flex items-center space-x-1 mb-0">
@@ -225,7 +271,7 @@ export default function SignUpPage() {
             <Button
               type="submit"
               className="w-full paint-button h-8 md:h-10 text-sm md:text-base font-bold shadow-lg"
-              disabled={loading || success}
+              disabled={loading || success || !agreedToTerms}
             >
               {loading ? (
                 <>

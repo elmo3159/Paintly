@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Star, Palette, Loader2, CheckCircle, XCircle, ChevronRight } from 'lucide-react'
+import { LegalFooter } from '@/components/legal-footer'
 
 export default function HomePage() {
   const router = useRouter()
@@ -167,6 +168,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* フッター */}
+      <LegalFooter variant="minimal" className="bg-white/95 backdrop-blur-sm" />
     </div>
   )
 }
