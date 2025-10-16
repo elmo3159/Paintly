@@ -131,6 +131,7 @@ export default function SignUpPage() {
               width={142}
               height={80}
               priority={true}
+              fetchPriority="high"
               className="h-16 md:h-24 w-auto object-contain"
               sizes="(max-width: 768px) 142px, 142px"
             />

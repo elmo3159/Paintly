@@ -72,6 +72,7 @@ export default function HomePage() {
               width={284}
               height={160}
               priority={true}
+              fetchPriority="high"
               className="h-24 md:h-28 w-auto object-contain mx-auto mb-5 -mt-16"
             />
 

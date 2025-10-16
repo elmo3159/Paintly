@@ -40,11 +40,13 @@ export default function Error({
         <CardHeader className="text-center pb-6">
           {/* ロゴセクション */}
           <div className="flex justify-center mb-4">
-            <Image 
-              src="/logo.png" 
-              alt="Paintly" 
+            <Image
+              src="/logo.png"
+              alt="Paintly"
               width={142}
               height={80}
+              priority={true}
+              fetchPriority="high"
               className="h-32 w-auto object-contain"
               sizes="(max-width: 768px) 142px, 142px"
             />

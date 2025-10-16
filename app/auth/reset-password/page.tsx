@@ -74,12 +74,13 @@ export default function ResetPasswordPage() {
           </div>
           
           <div className="mb-4 flex justify-center">
-            <Image 
-              src="/logo.png" 
-              alt="Paintly" 
+            <Image
+              src="/logo.png"
+              alt="Paintly"
               width={142}
               height={80}
               priority={true}
+              fetchPriority="high"
               className="h-32 w-auto object-contain"
               sizes="(max-width: 768px) 142px, 142px"
             />

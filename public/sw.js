@@ -1,6 +1,6 @@
 // Service Worker for Paintly PWA - Enhanced Version
-// v3: Fixed user data caching issue - authentication APIs no longer cached
-const CACHE_VERSION = '2025.10.17-v3'
+// v4: Optimized logo.png from 5MB to 5.4KB for instant loading
+const CACHE_VERSION = '2025.10.17-v4'
 const STATIC_CACHE = `paintly-static-${CACHE_VERSION}`
 const DYNAMIC_CACHE = `paintly-dynamic-${CACHE_VERSION}`
 const IMAGES_CACHE = `paintly-images-${CACHE_VERSION}`
