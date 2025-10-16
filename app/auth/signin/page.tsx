@@ -57,25 +57,9 @@ export default function SignInPage() {
   }
 
   const handleGoogleSignIn = async () => {
-    setError(null)
-    setLoading(true)
-
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-        },
-      })
-
-      if (error) {
-        setError(error.message)
-        setLoading(false)
-      }
-    } catch (error) {
-      setError('Googleサインインに失敗しました。')
-      setLoading(false)
-    }
+    // 新規ユーザーが利用規約に同意できるよう、サインアップページにリダイレクト
+    // 既存ユーザーもサインアップページから認証可能（callbackで既存ユーザーとして処理される）
+    router.push('/auth/signup')
   }
 
   return (
