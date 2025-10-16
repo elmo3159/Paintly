@@ -708,7 +708,7 @@ export function Sidebar() {
       <nav
         style={{
           transitionProperty: 'transform, opacity, scale',
-          transitionDuration: '5000ms',
+          transitionDuration: '800ms',
           transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
         }}
         className={cn(
