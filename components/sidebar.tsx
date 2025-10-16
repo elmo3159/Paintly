@@ -21,11 +21,13 @@ import {
   Search,
   X,
   AlertTriangle,
-  BookOpen
+  BookOpen,
+  Mail
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getPlanWarningLevel } from '@/lib/plan-warning'
 import { useTutorial } from '@/hooks/use-tutorial'
+import { ContactFormModal } from '@/components/contact-form-modal'
 
 // Client-side error reporting function
 const reportClientError = (error: Error, context: string) => {
@@ -71,6 +73,7 @@ export function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [isSettingsExpanded, setIsSettingsExpanded] = useState(false)
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
   const { restartTutorial } = useTutorial()
 
@@ -655,6 +658,13 @@ export function Sidebar() {
                   <span>チュートリアルを見る</span>
                 </button>
                 <button
+                  onClick={() => setIsContactModalOpen(true)}
+                  className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg transition-colors w-full text-left"
+                >
+                  <Mail className="h-3 w-3" />
+                  <span>お問い合わせ</span>
+                </button>
+                <button
                   onClick={handleSignOut}
                   className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg transition-colors w-full text-left"
                 >
@@ -706,6 +716,12 @@ export function Sidebar() {
       >
         {SidebarContent}
       </nav>
+
+      {/* お問い合わせモーダル */}
+      <ContactFormModal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+      />
     </div>
   )
 }
