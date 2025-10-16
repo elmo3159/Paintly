@@ -531,12 +531,13 @@ export function Sidebar() {
               <div className="space-y-2">
                 {filteredCustomers.map((customer, index) => (
                   <Link
-                    key={customer.id}
+                    key={`${customer.id}-${isSidebarOpen}`}
                     href={`/customer/${customer.id}`}
                     style={{
-                      animation: filteredCustomers.length <= 50
+                      animation: (filteredCustomers.length <= 50 && isSidebarOpen)
                         ? `slideInFromLeft 0.3s ease-out ${index * 0.05}s both`
-                        : undefined
+                        : undefined,
+                      willChange: 'transform, opacity'
                     }}
                     className={cn(
                       "block p-3 rounded-lg border transition-all duration-200",
@@ -708,7 +709,7 @@ export function Sidebar() {
       <nav
         style={{
           transitionProperty: 'transform, opacity, scale',
-          transitionDuration: '800ms',
+          transitionDuration: '600ms',
           transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
         }}
         className={cn(
