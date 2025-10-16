@@ -9,7 +9,7 @@
 - グローバル展開可能な発音しやすく覚えやすい名称
 
 ### 目的
-塗装会社の営業担当者が顧客宅を訪問した際に、その場で建物の写真を撮影し、AIモデル「gemini-2.5-flash-image-preview」を使用して瞬時に塗装後の仕上がり画像を生成・提示することで、営業成約率を向上させるツール。
+塗装会社の営業担当者が顧客宅を訪問した際に、その場で建物の写真を撮影し、AIモデル「gemini-2.5-flash-image」（安定版）を使用して瞬時に塗装後の仕上がり画像を生成・提示することで、営業成約率を向上させるツール。
 
 ### 主要使用デバイス
 スマートフォン（営業現場での使用を想定）
@@ -181,7 +181,7 @@ C:\Users\elmod\Desktop\CursorApp\Paintly\カラー一覧.pdf
 
 ### バックエンド
 - **API**: Next.js API Routes または Fastify
-- **AI統合**: Google AI Studio API (gemini-2.5-flash-image-preview)
+- **AI統合**: Google AI Studio API (gemini-2.5-flash-image) - 安定版
 - **データベース**: Supabase (PostgreSQL)
 - **画像ストレージ**: Cloudflare R2 または Supabase Storage
 

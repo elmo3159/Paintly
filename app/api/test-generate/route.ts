@@ -32,8 +32,8 @@ export async function POST(request: NextRequest) {
     console.log('🧪 Test API - Starting Gemini API call')
     console.log('📝 Prompt:', prompt)
 
-    const model = genAI.getGenerativeModel({ 
-      model: 'gemini-2.5-flash-image-preview'
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-2.5-flash-image'
     })
 
     // Simple content array

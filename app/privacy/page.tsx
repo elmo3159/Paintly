@@ -184,11 +184,22 @@ export default function PrivacyPage() {
                 <li>※クレジットカード番号は当社では保存せず、Stripeが安全に処理します</li>
               </ul>
 
-              <h3 className="font-bold text-lg mt-4 mb-2">3. Fal AI（AI画像生成）</h3>
+              <h3 className="font-bold text-lg mt-4 mb-2">3. Google Gemini（AI画像生成）</h3>
               <ul className="list-disc list-inside space-y-2 ml-4">
-                <li>提供者: Fal.ai</li>
-                <li>利用目的: AI塗装シミュレーション画像の生成</li>
+                <li>提供者: Google LLC（米国）</li>
+                <li>利用目的: AI塗装シミュレーション画像の生成（Gemini 2.5 Flash Image使用）</li>
                 <li>処理されるデータ: アップロードされた建物画像、生成パラメータ</li>
+                <li>
+                  プライバシーポリシー:{' '}
+                  <a
+                    href="https://policies.google.com/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    https://policies.google.com/privacy
+                  </a>
+                </li>
               </ul>
 
               <h3 className="font-bold text-lg mt-4 mb-2">4. Vercel（ホスティング）</h3>
