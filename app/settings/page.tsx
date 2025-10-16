@@ -6,12 +6,20 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { User, Lock, CheckCircle, AlertCircle, Palette, Paintbrush, ArrowLeft, Sparkles } from 'lucide-react'
+import { User, Lock, CheckCircle, AlertCircle, Palette, Paintbrush, ArrowLeft, Sparkles, Mail, Calendar, Shield, CreditCard, Copy } from 'lucide-react'
 
 interface UserProfile {
   sales_person_name?: string
   company_name?: string
   contact_info?: string
+}
+
+interface AccountInfo {
+  email: string
+  created_at: string
+  auth_provider: string
+  user_id: string
+  plan_name?: string
 }
 
 export default function SettingsPage() {
@@ -22,6 +30,10 @@ export default function SettingsPage() {
   const [changingPassword, setChangingPassword] = useState(false)
   const [success, setSuccess] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [copiedUserId, setCopiedUserId] = useState(false)
+
+  // アカウント情報
+  const [accountInfo, setAccountInfo] = useState<AccountInfo | null>(null)
 
   // プロフィール設定
   const [profile, setProfile] = useState<UserProfile>({
@@ -48,6 +60,39 @@ export default function SettingsPage() {
       return
     }
 
+    // アカウント情報を設定
+    const authProvider = user.app_metadata?.provider || 'email'
+    const providerName = authProvider === 'google' ? 'Google' : authProvider === 'github' ? 'GitHub' : 'メール'
+
+    // プラン情報を取得
+    let planName = '無料プラン'
+    try {
+      const { data: subscriptionData } = await supabase
+        .from('subscriptions')
+        .select(`
+          plans (
+            name
+          )
+        `)
+        .eq('user_id', user.id)
+        .eq('status', 'active')
+        .single()
+
+      if (subscriptionData && subscriptionData.plans) {
+        planName = (subscriptionData.plans as any).name || '無料プラン'
+      }
+    } catch (err) {
+      console.log('Plan info load error (non-critical):', err)
+    }
+
+    setAccountInfo({
+      email: user.email || '',
+      created_at: user.created_at || '',
+      auth_provider: providerName,
+      user_id: user.id,
+      plan_name: planName
+    })
+
     // ユーザープロフィールを読み込み (エラーハンドリング強化)
     try {
       const { data: profileData, error } = await supabase
@@ -72,6 +117,14 @@ export default function SettingsPage() {
     }
 
     setLoading(false)
+  }
+
+  const copyUserId = () => {
+    if (accountInfo?.user_id) {
+      navigator.clipboard.writeText(accountInfo.user_id)
+      setCopiedUserId(true)
+      setTimeout(() => setCopiedUserId(false), 2000)
+    }
   }
 
   const handleProfileSave = async () => {
@@ -212,6 +265,104 @@ export default function SettingsPage() {
           )}
 
           <div className="grid gap-6">
+            {/* アカウント情報 */}
+            {accountInfo && (
+              <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-2xl shadow-lg overflow-hidden">
+                <div className="p-6 border-b border-gray-700">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-white/10 rounded-lg">
+                      <Mail className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold text-white">アカウント情報</h2>
+                      <p className="text-gray-300 text-sm mt-1">現在ログイン中のアカウント</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6 space-y-4">
+                  {/* メールアドレス */}
+                  <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                    <div className="flex items-center justify-between mb-2">
+                      <Label className="text-gray-300 text-sm font-medium flex items-center">
+                        <Mail className="h-4 w-4 mr-2" />
+                        メールアドレス
+                      </Label>
+                      <Shield className="h-4 w-4 text-green-400" />
+                    </div>
+                    <p className="text-white text-lg font-semibold break-all">{accountInfo.email}</p>
+                  </div>
+
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {/* 認証方法 */}
+                    <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                      <Label className="text-gray-300 text-sm font-medium flex items-center mb-2">
+                        <Shield className="h-4 w-4 mr-2" />
+                        認証方法
+                      </Label>
+                      <p className="text-white font-semibold">{accountInfo.auth_provider}</p>
+                    </div>
+
+                    {/* 現在のプラン */}
+                    <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                      <Label className="text-gray-300 text-sm font-medium flex items-center mb-2">
+                        <CreditCard className="h-4 w-4 mr-2" />
+                        現在のプラン
+                      </Label>
+                      <p className="text-white font-semibold">{accountInfo.plan_name}</p>
+                    </div>
+
+                    {/* 登録日 */}
+                    <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                      <Label className="text-gray-300 text-sm font-medium flex items-center mb-2">
+                        <Calendar className="h-4 w-4 mr-2" />
+                        登録日
+                      </Label>
+                      <p className="text-white font-semibold">
+                        {new Date(accountInfo.created_at).toLocaleDateString('ja-JP', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </p>
+                    </div>
+
+                    {/* ユーザーID */}
+                    <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                      <Label className="text-gray-300 text-sm font-medium flex items-center mb-2">
+                        <User className="h-4 w-4 mr-2" />
+                        ユーザーID
+                      </Label>
+                      <div className="flex items-center space-x-2">
+                        <p className="text-white font-mono text-xs truncate flex-1">{accountInfo.user_id.slice(0, 8)}...</p>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={copyUserId}
+                          className="text-white hover:bg-white/10 h-7 px-2"
+                          title="ユーザーIDをコピー"
+                        >
+                          {copiedUserId ? (
+                            <CheckCircle className="h-4 w-4 text-green-400" />
+                          ) : (
+                            <Copy className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-blue-500/10 border border-blue-400/20 rounded-lg p-3 mt-4">
+                    <p className="text-blue-300 text-sm flex items-start">
+                      <AlertCircle className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0" />
+                      <span>
+                        アカウント切り替え時は必ずサインアウトしてください。セキュリティのため、前のアカウントのデータは自動的にクリアされます。
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* プロフィール設定 */}
             <div className="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden">
               <div className="p-6 border-b border-gray-200">
