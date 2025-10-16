@@ -689,10 +689,10 @@ export function Sidebar() {
     return (
       <button
         onClick={openSidebar}
-        className="fixed top-4 left-4 z-50 p-2 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 hover:scale-110 animate-pulse hover:animate-none motion-reduce:animate-none"
+        className="fixed top-4 left-4 z-50 p-2 bg-white border-2 border-gray-300 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 hover:border-primary motion-reduce:transition-none"
         aria-label="サイドバーを開く"
       >
-        <Menu className="h-5 w-5 text-gray-600" />
+        <Menu className="h-5 w-5 text-gray-700" />
       </button>
     )
   }
