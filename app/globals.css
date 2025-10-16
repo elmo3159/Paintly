@@ -1243,3 +1243,29 @@
     opacity: 0.5;
   }
 }
+
+/* ============================================
+   サイドバーアニメーション（GPU加速）
+   ============================================ */
+/* スライドインアニメーション - 左から */
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* アクセシビリティ: アニメーション削減設定 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

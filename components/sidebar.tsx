@@ -529,12 +529,18 @@ export function Sidebar() {
           >
             {filteredCustomers.length > 0 ? (
               <div className="space-y-2">
-                {filteredCustomers.map((customer) => (
+                {filteredCustomers.map((customer, index) => (
                   <Link
                     key={customer.id}
                     href={`/customer/${customer.id}`}
+                    style={{
+                      animation: filteredCustomers.length <= 50
+                        ? `slideInFromLeft 0.3s ease-out ${index * 0.05}s both`
+                        : undefined
+                    }}
                     className={cn(
-                      "block p-3 rounded-lg border transition-colors",
+                      "block p-3 rounded-lg border transition-all duration-200",
+                      "hover:scale-[1.02] hover:shadow-md hover:-translate-y-0.5",
                       pathname === `/customer/${customer.id}`
                         ? "bg-primary/10 border-primary text-primary"
                         : "hover:bg-gray-50 border-gray-200"
@@ -683,7 +689,8 @@ export function Sidebar() {
     return (
       <button
         onClick={openSidebar}
-        className="fixed top-4 left-4 z-50 p-2 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+        className="fixed top-4 left-4 z-50 p-2 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 hover:scale-110 animate-pulse hover:animate-none motion-reduce:animate-none"
+        aria-label="サイドバーを開く"
       >
         <Menu className="h-5 w-5 text-gray-600" />
       </button>
@@ -694,16 +701,21 @@ export function Sidebar() {
     <div key={instanceId}>
       {(isMobileOpen || isSidebarOpen) && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300 motion-reduce:transition-none"
           onClick={closeSidebar}
         />
       )}
 
       <nav
         className={cn(
-          "fixed left-0 top-0 h-[100dvh] w-80 bg-white/95 backdrop-blur-md border-r z-50 transform transition-transform duration-300 overflow-hidden",
-          "md:relative md:transform-none",
-          (isMobileOpen || isSidebarOpen) ? "translate-x-0" : "-translate-x-full"
+          "fixed left-0 top-0 h-[100dvh] w-80 bg-white/95 backdrop-blur-xl border-r z-50 overflow-hidden",
+          "transform transition-all duration-500 ease-out",
+          "will-change-transform will-change-opacity",
+          "md:relative md:transform-none md:opacity-100 md:scale-100",
+          (isMobileOpen || isSidebarOpen)
+            ? "translate-x-0 opacity-100 scale-100"
+            : "-translate-x-full opacity-0 scale-95",
+          "motion-reduce:transition-none motion-reduce:transform-none"
         )}
         role="navigation"
         aria-label="メインナビゲーション"
