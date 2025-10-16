@@ -1,5 +1,6 @@
 // Service Worker for Paintly PWA - Enhanced Version
-const CACHE_VERSION = '2025.10.16-v2'
+// v3: Fixed user data caching issue - authentication APIs no longer cached
+const CACHE_VERSION = '2025.10.17-v3'
 const STATIC_CACHE = `paintly-static-${CACHE_VERSION}`
 const DYNAMIC_CACHE = `paintly-dynamic-${CACHE_VERSION}`
 const IMAGES_CACHE = `paintly-images-${CACHE_VERSION}`
@@ -85,16 +86,23 @@ self.addEventListener('fetch', (event) => {
   const { request } = event
   const url = new URL(request.url)
 
-  // Skip service worker for OAuth, authentication, AI generation, and share routes
-  // これらのルートはタイムアウトなしで直接サーバーに接続する必要がある
+  // Skip service worker for authentication and user-specific data routes
+  // これらのルートは認証が必要でユーザーごとに異なるデータを返すため、キャッシュしない
   if (url.pathname.startsWith('/auth/callback') ||
       url.pathname.startsWith('/auth/signin') ||
       url.pathname.startsWith('/auth/signup') ||
       url.pathname.startsWith('/api/auth') ||
       url.pathname.startsWith('/api/generate') ||
-      url.pathname.startsWith('/api/share')) {
-    // OAuth認証フロー・AI画像生成API・共有APIをService Workerでインターセプトしない
-    // タイムアウト制約なく直接サーバーに接続
+      url.pathname.startsWith('/api/share') ||
+      url.pathname.startsWith('/api/customers') ||
+      url.pathname.startsWith('/api/customer-pages') ||
+      url.pathname.startsWith('/api/generations') ||
+      url.pathname.startsWith('/api/subscriptions') ||
+      url.pathname.startsWith('/api/favorites') ||
+      url.pathname.startsWith('/api/color-history') ||
+      url.pathname.startsWith('/api/user')) {
+    // ユーザー固有データAPIをService Workerでキャッシュしない
+    // アカウント切り替え時のデータ混在を防ぐため
     return
   }
 

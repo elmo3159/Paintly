@@ -308,6 +308,30 @@ export function Sidebar() {
     try {
       console.log('🔍 DEBUG: handleSignOut started')
 
+      // 1. Clear SessionStorage to prevent data leakage
+      try {
+        sessionStorage.clear()
+        console.log('✅ SessionStorage cleared')
+      } catch (storageError) {
+        console.warn('⚠️ Failed to clear sessionStorage:', storageError)
+      }
+
+      // 2. Clear Service Worker caches to prevent cached user data
+      if ('caches' in window) {
+        try {
+          const cacheNames = await caches.keys()
+          for (const cacheName of cacheNames) {
+            if (cacheName.includes('paintly-api') || cacheName.includes('paintly-dynamic')) {
+              await caches.delete(cacheName)
+              console.log('✅ Deleted cache:', cacheName)
+            }
+          }
+        } catch (cacheError) {
+          console.warn('⚠️ Failed to clear caches:', cacheError)
+        }
+      }
+
+      // 3. Sign out from Supabase
       const { error } = await supabase.auth.signOut()
 
       if (error) {
@@ -320,7 +344,7 @@ export function Sidebar() {
 
       console.log('✅ Sign out successful')
 
-      // Navigate to sign in page
+      // 4. Force page reload to clear all React state and navigate to sign in
       try {
         window.location.href = '/auth/signin'
       } catch (navError) {
