@@ -709,13 +709,12 @@ export function Sidebar() {
       <nav
         className={cn(
           "fixed left-0 top-0 h-[100dvh] w-80 bg-white/95 backdrop-blur-xl border-r z-50 overflow-hidden",
-          "transform transition-all duration-[600ms]",
-          "will-change-transform will-change-opacity",
+          "transform will-change-transform will-change-opacity",
           "sidebar-spring-animation",
           "md:relative md:transform-none md:opacity-100 md:scale-100",
           (isMobileOpen || isSidebarOpen)
             ? "translate-x-0 opacity-100 scale-100"
-            : "-translate-x-full opacity-0 scale-95",
+            : "-translate-x-full opacity-0 scale-90",
           "motion-reduce:transition-none motion-reduce:transform-none"
         )}
         role="navigation"

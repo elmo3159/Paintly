@@ -1249,6 +1249,8 @@
    ============================================ */
 /* スプリング風イージング - 軽量でかっこいい */
 .sidebar-spring-animation {
+  transition-property: transform, opacity;
+  transition-duration: 500ms;
   transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
