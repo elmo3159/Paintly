@@ -67,7 +67,7 @@ export default function RootLayout({
         <link rel="preload" as="image" href="/logo.png" fetchPriority="high" />
       </head>
       <body
-        className={`${fontClassNames} relative h-screen overflow-hidden text-foreground`}
+        className={`${fontClassNames} relative min-h-screen text-foreground`}
         suppressHydrationWarning
       >
         {/* ペイントドリップ背景画像 */}
