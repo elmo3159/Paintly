@@ -169,9 +169,6 @@
 
   html {
     /* Safari下部バー対応: 100dvh使用（フォールバックとして100vh） */
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
     color-scheme: light;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -183,7 +180,6 @@
     line-height: 1.8; /* 行間を広げて読みやすく */
     color: var(--fg); /* #333333相当 - メイン本文 */
     background: var(--bg); /* #FAFAFA相当 */
-    overflow: hidden;
     position: relative;
   }
 

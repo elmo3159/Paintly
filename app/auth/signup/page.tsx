@@ -76,6 +76,12 @@ export default function SignUpPage() {
 
   const handleGoogleSignUp = async () => {
     setError(null)
+
+    if (!agreedToTerms) {
+      setError('利用規約とプライバシーポリシーに同意してください。')
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -304,7 +310,7 @@ export default function SignUpPage() {
               variant="outline"
               className="w-full h-8 md:h-10 text-sm md:text-base font-medium border-border/60 hover:bg-secondary/50 paint-hover transition-all duration-300"
               onClick={handleGoogleSignUp}
-              disabled={loading || success}
+              disabled={loading || success || !agreedToTerms}
             >
               <FcGoogle className="mr-2 h-4 w-4" />
               Googleで簡単登録
