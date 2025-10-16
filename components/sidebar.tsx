@@ -531,10 +531,10 @@ export function Sidebar() {
               <div className="space-y-2">
                 {filteredCustomers.map((customer, index) => (
                   <Link
-                    key={`${customer.id}-${isSidebarOpen}`}
+                    key={`${customer.id}-${isSidebarOpen || isMobileOpen}`}
                     href={`/customer/${customer.id}`}
                     style={{
-                      animation: (filteredCustomers.length <= 50 && isSidebarOpen)
+                      animation: (filteredCustomers.length <= 50 && (isSidebarOpen || isMobileOpen))
                         ? `slideInFromLeft 0.3s ease-out ${index * 0.05}s both`
                         : undefined,
                       willChange: 'transform, opacity'
@@ -684,7 +684,7 @@ export function Sidebar() {
         </div>
       </div>
     </>
-  ), [filteredCustomers, planInfo, remainingGenerations, usagePercentage, warningInfo, isSettingsExpanded, searchTerm, handleSearchChange, handleNewCustomer, closeSidebar, handleSignOut, pathname, restartTutorial])
+  ), [filteredCustomers, planInfo, remainingGenerations, usagePercentage, warningInfo, isSettingsExpanded, searchTerm, handleSearchChange, handleNewCustomer, closeSidebar, handleSignOut, pathname, restartTutorial, isSidebarOpen, isMobileOpen])
 
   return (
     <div key={instanceId}>
@@ -709,7 +709,7 @@ export function Sidebar() {
       <nav
         style={{
           transitionProperty: 'transform, opacity, scale',
-          transitionDuration: '600ms',
+          transitionDuration: '400ms',
           transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
         }}
         className={cn(
