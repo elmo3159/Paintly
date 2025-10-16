@@ -126,7 +126,7 @@ export function ContactFormModal({ isOpen, onClose }: ContactFormModalProps) {
       // スクリーンショットアップロード
       if (screenshotFile) {
         const fileExt = screenshotFile.name.split('.').pop()
-        const fileName = `inquiry-screenshots/${user.id}/${Date.now()}.${fileExt}`
+        const fileName = `${user.id}/inquiry-screenshots/${Date.now()}.${fileExt}`
 
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from('customer-images')
