@@ -685,20 +685,19 @@ export function Sidebar() {
     </>
   ), [filteredCustomers, planInfo, remainingGenerations, usagePercentage, warningInfo, isSettingsExpanded, searchTerm, handleSearchChange, handleNewCustomer, closeSidebar, handleSignOut, pathname, restartTutorial])
 
-  if (!isSidebarOpen) {
-    return (
-      <button
-        onClick={openSidebar}
-        className="fixed top-4 left-4 z-50 p-2 bg-white border-2 border-gray-300 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 hover:border-primary motion-reduce:transition-none"
-        aria-label="サイドバーを開く"
-      >
-        <Menu className="h-5 w-5 text-gray-700" />
-      </button>
-    )
-  }
-
   return (
     <div key={instanceId}>
+      {/* サイドバーを開くボタン - サイドバーが閉じている時のみ表示 */}
+      {!isSidebarOpen && (
+        <button
+          onClick={openSidebar}
+          className="fixed top-4 left-4 z-50 p-2 bg-white border-2 border-gray-300 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 hover:border-primary"
+          aria-label="サイドバーを開く"
+        >
+          <Menu className="h-5 w-5 text-gray-700" />
+        </button>
+      )}
+
       {(isMobileOpen || isSidebarOpen) && (
         <div
           className="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300 motion-reduce:transition-none"
@@ -707,15 +706,18 @@ export function Sidebar() {
       )}
 
       <nav
+        style={{
+          transitionProperty: 'transform, opacity, scale',
+          transitionDuration: '5000ms',
+          transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+        }}
         className={cn(
           "fixed left-0 top-0 h-[100dvh] w-80 bg-white/95 backdrop-blur-xl border-r z-50 overflow-hidden",
           "transform will-change-transform will-change-opacity",
-          "sidebar-spring-animation",
           "md:relative md:transform-none md:opacity-100 md:scale-100",
           (isMobileOpen || isSidebarOpen)
             ? "translate-x-0 opacity-100 scale-100"
-            : "-translate-x-full opacity-0 scale-90",
-          "motion-reduce:transition-none motion-reduce:transform-none"
+            : "-translate-x-full opacity-0 scale-90"
         )}
         role="navigation"
         aria-label="メインナビゲーション"
