@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { User, Lock, CheckCircle, AlertCircle, Palette, Paintbrush, ArrowLeft, Sparkles, Mail, Calendar, Shield, CreditCard, Copy } from 'lucide-react'
+import { MFASetup } from '@/components/mfa-setup'
 
 interface UserProfile {
   sales_person_name?: string
@@ -497,6 +498,9 @@ export default function SettingsPage() {
                 </Button>
               </div>
             </div>
+
+            {/* 2要素認証（MFA） */}
+            <MFASetup />
           </div>
         </div>
       </div>
