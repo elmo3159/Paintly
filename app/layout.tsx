@@ -6,6 +6,7 @@ import { fontClassNames } from '@/lib/fonts'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://paintly.pro'),
   title: 'Paintly - 塗装シミュレーションツール',
   description: '建物の塗装後の仕上がりをAIで瞬時にシミュレーション。営業成約率を向上させる革新的なツール。',
   keywords: '塗装,シミュレーション,AI,建築,営業ツール,外壁塗装,屋根塗装',
@@ -102,14 +103,14 @@ export default function RootLayout({
               "@graph": [
                 {
                   "@type": "Organization",
-                  "@id": "https://paintly.app/#organization",
+                  "@id": "https://paintly.pro/#organization",
                   "name": "Paintly",
                   "alternateName": "ペイントリー",
                   "description": "塗装会社向けAI塗装シミュレーションツールの開発・提供",
-                  "url": "https://paintly.app",
+                  "url": "https://paintly.pro",
                   "logo": {
                     "@type": "ImageObject",
-                    "url": "https://paintly.app/logo.png",
+                    "url": "https://paintly.pro/logo.png",
                     "width": 400,
                     "height": 200
                   },
@@ -122,19 +123,19 @@ export default function RootLayout({
                 },
                 {
                   "@type": "WebApplication",
-                  "@id": "https://paintly.app/#webapp",
+                  "@id": "https://paintly.pro/#webapp",
                   "name": "Paintly - 塗装シミュレーションツール",
                   "alternateName": "ペイントリー",
                   "description": "建物の塗装後の仕上がりをAIで瞬時にシミュレーション。営業成約率を向上させる革新的なツール。",
-                  "url": "https://paintly.app",
+                  "url": "https://paintly.pro",
                   "applicationCategory": "BusinessApplication",
                   "operatingSystem": "Web Browser, iOS, Android",
                   "browserRequirements": "HTML5, JavaScript enabled",
                   "author": {
-                    "@id": "https://paintly.app/#organization"
+                    "@id": "https://paintly.pro/#organization"
                   },
                   "publisher": {
-                    "@id": "https://paintly.app/#organization"
+                    "@id": "https://paintly.pro/#organization"
                   },
                   "offers": [
                     {
@@ -183,7 +184,7 @@ export default function RootLayout({
                     "モバイル対応",
                     "PWA対応"
                   ],
-                  "screenshot": "https://paintly.app/screenshot.png",
+                  "screenshot": "https://paintly.pro/screenshot.png",
                   "aggregateRating": {
                     "@type": "AggregateRating",
                     "ratingValue": "4.8",
@@ -194,13 +195,13 @@ export default function RootLayout({
                 },
                 {
                   "@type": "SoftwareApplication",
-                  "@id": "https://paintly.app/#software",
+                  "@id": "https://paintly.pro/#software",
                   "name": "Paintly",
                   "applicationCategory": "BusinessApplication",
                   "applicationSubCategory": "Construction & Renovation Tools",
                   "operatingSystem": "Web, iOS, Android",
-                  "downloadUrl": "https://paintly.app",
-                  "installUrl": "https://paintly.app",
+                  "downloadUrl": "https://paintly.pro",
+                  "installUrl": "https://paintly.pro",
                   "memoryRequirements": "512MB RAM",
                   "storageRequirements": "50MB",
                   "processorRequirements": "Any modern processor",
@@ -208,19 +209,19 @@ export default function RootLayout({
                   "datePublished": "2025-01-15",
                   "dateModified": "2025-01-15",
                   "author": {
-                    "@id": "https://paintly.app/#organization"
+                    "@id": "https://paintly.pro/#organization"
                   },
                   "publisher": {
-                    "@id": "https://paintly.app/#organization"
+                    "@id": "https://paintly.pro/#organization"
                   }
                 },
                 {
                   "@type": "Service",
-                  "@id": "https://paintly.app/#service",
+                  "@id": "https://paintly.pro/#service",
                   "name": "AI塗装シミュレーションサービス",
                   "description": "AI技術を活用した建物塗装の事前シミュレーションサービス",
                   "provider": {
-                    "@id": "https://paintly.app/#organization"
+                    "@id": "https://paintly.pro/#organization"
                   },
                   "serviceType": "AI Simulation Service",
                   "areaServed": {
@@ -272,17 +273,17 @@ export default function RootLayout({
                 },
                 {
                   "@type": "WebSite",
-                  "@id": "https://paintly.app/#website",
-                  "url": "https://paintly.app",
+                  "@id": "https://paintly.pro/#website",
+                  "url": "https://paintly.pro",
                   "name": "Paintly",
                   "description": "塗装シミュレーションツール - AI技術で建物の塗装後イメージを瞬時に生成",
                   "publisher": {
-                    "@id": "https://paintly.app/#organization"
+                    "@id": "https://paintly.pro/#organization"
                   },
                   "inLanguage": "ja-JP",
                   "potentialAction": {
                     "@type": "SearchAction",
-                    "target": "https://paintly.app/search?q={search_term_string}",
+                    "target": "https://paintly.pro/search?q={search_term_string}",
                     "query-input": "required name=search_term_string"
                   }
                 }

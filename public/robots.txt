@@ -1,0 +1,11 @@
+# robots.txt for Paintly (https://paintly.pro)
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /customer/
+Disallow: /share/
+
+# Sitemap
+Sitemap: https://paintly.pro/sitemap.xml
