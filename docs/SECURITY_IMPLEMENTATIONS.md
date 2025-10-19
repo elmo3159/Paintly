@@ -68,12 +68,22 @@ STRIPE_SECRET_KEY=sk_live_XXXXX... (Vercel環境変数で管理)
 ## 🚧 追加実装推奨セキュリティ機能
 
 ### 3. アカウントロックアウト（10回失敗時）
-**実装状況**: ⚠️ **部分実装（IPベースのみ）**
-**優先度**: 🔴 **高**
+**実装状況**: ✅ **完全実装済み**
+**実装日**: 2025年10月19日
 
-#### 現状
+#### 実装ファイル
+- `app/api/auth/check-account-status/route.ts` - アカウントロック状態チェックAPI
+- `app/api/auth/track-login-failure/route.ts` - ログイン失敗記録API
+- `app/api/auth/reset-login-failures/route.ts` - ログイン成功時リセットAPI
+- `app/auth/signin/page.tsx` - サインインページに統合
+- Supabaseテーブル: `public.user_security`
+
+#### 機能
 - ✅ IPベースのレート制限（10回/60秒）
-- ❌ アカウント単位のロックアウトなし
+- ✅ アカウント単位のロックアウト（10回失敗で30分ロック）
+- ✅ 残り試行回数の表示
+- ✅ ロック期限の自動解除
+- ✅ ログイン成功時の自動リセット
 
 #### 実装ガイド
 
@@ -313,10 +323,24 @@ export async function middleware(request: NextRequest) {
 ---
 
 ### 5. CAPTCHA（Google reCAPTCHA v3）
-**実装状況**: ❌ **未実装**
-**優先度**: 🟡 **中**
+**実装状況**: ✅ **完全実装済み（キー設定待ち）**
+**実装日**: 2025年10月19日
 
-#### 実装ガイド
+#### 実装ファイル
+- `components/recaptcha-provider.tsx` - reCAPTCHAプロバイダーコンポーネント
+- `app/layout.tsx` - グローバルプロバイダー統合
+- `app/api/auth/verify-recaptcha/route.ts` - サーバーサイド検証API
+- `app/auth/signin/page.tsx` - サインインページに統合
+- `app/auth/signup/page.tsx` - サインアップページに統合
+
+#### 機能
+- ✅ reCAPTCHA v3統合（バックグラウンド検証、ユーザー操作不要）
+- ✅ スコアベース検証（0.5以上で合格）
+- ✅ サーバーサイド検証API
+- ✅ エラーハンドリング
+- ⚠️ **環境変数設定が必要（下記参照）**
+
+#### セットアップ手順
 
 **ステップ1: Google reCAPTCHA v3 登録**
 1. https://www.google.com/recaptcha/admin にアクセス
@@ -503,19 +527,40 @@ export async function POST(request: NextRequest) {
 
 ## 📊 セキュリティチェックリスト更新
 
-上記の実装完了後、`STRIPE_SECURITY_CHECKLIST.md`を更新してください。
+### 実装完了済みの機能（2025年10月19日時点）
 
-### 更新箇所
-1. **質問3: 管理者画面のアクセス制限**
-   - IPアドレス制限: ✅ 実装済み → 完全実装
-   - 2要素認証: ✅ 実装済み → 完全実装
-   - アカウントロック: ❌ 未実装 → ✅ 実装済み
+1. **✅ アカウントロックアウト機能**
+   - 10回の連続ログイン失敗で30分間アカウントをロック
+   - 残り試行回数の表示
+   - 自動ロック解除
 
-2. **質問5: Webアプリケーション脆弱性対策**
-   - 脆弱性診断: ⚠️ 部分実装 → ✅ 年1回実施
+2. **✅ reCAPTCHA v3統合**
+   - サインイン・サインアップページに統合
+   - サーバーサイド検証API実装
+   - ⚠️ **環境変数設定が必要**: NEXT_PUBLIC_RECAPTCHA_SITE_KEY, RECAPTCHA_SECRET_KEY
 
-3. **質問8-1: 会員登録時のセキュリティ**
-   - CAPTCHA: ❌ 未実装 → ✅ 実装済み
+3. **✅ 2要素認証（MFA）**
+   - TOTP認証完全実装
+   - 複数デバイス登録可能
+
+### 次のステップ
+
+#### 必須：Google reCAPTCHA v3のキー取得・設定
+1. https://www.google.com/recaptcha/admin でサイト登録
+2. 以下の環境変数をVercelに追加：
+   ```
+   NEXT_PUBLIC_RECAPTCHA_SITE_KEY=取得したサイトキー
+   RECAPTCHA_SECRET_KEY=取得したシークレットキー
+   ```
+3. デプロイ後に動作確認
+
+#### 推奨：IP制限（管理画面）
+- 実装ガイド参照（上記セクション4参照）
+- 中優先度
+
+#### 推奨：外部脆弱性診断
+- 年1回の実施を推奨
+- ツール例：OWASP ZAP、Burp Suite
 
 ---
 

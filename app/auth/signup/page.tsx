@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -15,6 +16,7 @@ import { FcGoogle } from 'react-icons/fc'
 
 export default function SignUpPage() {
   const router = useRouter()
+  const { executeRecaptcha } = useGoogleReCaptcha()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -47,6 +49,26 @@ export default function SignUpPage() {
     setLoading(true)
 
     try {
+      // reCAPTCHA検証（設定されている場合のみ）
+      if (executeRecaptcha) {
+        const recaptchaToken = await executeRecaptcha('signup')
+
+        const recaptchaResponse = await fetch('/api/auth/verify-recaptcha', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: recaptchaToken, action: 'signup' })
+        })
+
+        const recaptchaData = await recaptchaResponse.json()
+
+        if (!recaptchaData.success) {
+          setError('セキュリティ検証に失敗しました。しばらく時間をおいて再試行してください。')
+          setLoading(false)
+          return
+        }
+      }
+
+      // サインアップ処理続行
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -23,10 +24,12 @@ const GoogleIcon = () => (
 
 export default function SignInPage() {
   const router = useRouter()
+  const { executeRecaptcha } = useGoogleReCaptcha()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null)
   const supabase = createClient()
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -35,18 +38,77 @@ export default function SignInPage() {
     setLoading(true)
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      // ステップ0: reCAPTCHA検証（設定されている場合のみ）
+      if (executeRecaptcha) {
+        const recaptchaToken = await executeRecaptcha('signin')
+
+        const recaptchaResponse = await fetch('/api/auth/verify-recaptcha', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: recaptchaToken, action: 'signin' })
+        })
+
+        const recaptchaData = await recaptchaResponse.json()
+
+        if (!recaptchaData.success) {
+          setError('セキュリティ検証に失敗しました。しばらく時間をおいて再試行してください。')
+          setLoading(false)
+          return
+        }
+      }
+
+      // ステップ1: アカウントロック状態をチェック
+      const checkResponse = await fetch('/api/auth/check-account-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
       })
 
-      if (error) {
-        setError(error.message)
+      const checkData = await checkResponse.json()
+
+      if (checkData.isLocked) {
+        setError(checkData.message || 'アカウントがロックされています。しばらく時間をおいて再試行してください。')
         setLoading(false)
         return
       }
 
+      // ステップ2: ログイン試行
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      if (signInError) {
+        // ステップ3: ログイン失敗を記録
+        const trackResponse = await fetch('/api/auth/track-login-failure', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        })
+
+        const trackData = await trackResponse.json()
+
+        if (trackData.isLocked) {
+          setError('ログイン試行回数が上限に達しました。アカウントが30分間ロックされました。')
+        } else if (trackData.remainingAttempts !== undefined) {
+          setRemainingAttempts(trackData.remainingAttempts)
+          setError(`メールアドレスまたはパスワードが正しくありません。残り${trackData.remainingAttempts}回の試行が可能です。`)
+        } else {
+          setError('メールアドレスまたはパスワードが正しくありません。')
+        }
+
+        setLoading(false)
+        return
+      }
+
+      // ステップ4: ログイン成功時にカウンターをリセット
       if (data?.user) {
+        await fetch('/api/auth/reset-login-failures', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: data.user.id })
+        })
+
         router.push('/dashboard')
         router.refresh()
       }
