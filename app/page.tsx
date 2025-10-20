@@ -232,9 +232,9 @@ export default function HomePage() {
                   わずか数秒で高精度シミュレーション
                 </h3>
                 <p className="text-gray-700 leading-relaxed">
-                  最新のAI技術「Gemini 2.5 Flash」を使用し、建物の写真から瞬時に塗装後のイメージを生成。<br />
-                  現地調査中にその場でお客様に複数の提案を見せることができます。<br />
-                  140色以上の実際の塗料色に対応し、色名で直感的に選択できるため、お客様とのコミュニケーションもスムーズです。
+                  最新のAI技術<strong className="font-semibold">「Gemini 2.5 Flash」</strong>を使用し、建物の写真から<strong className="font-semibold">瞬時に</strong>塗装後のイメージを生成。<br />
+                  現地調査中にその場でお客様に<strong className="font-semibold">複数の提案</strong>を見せることができます。<br />
+                  <strong className="font-semibold text-orange-600">140色以上</strong>の実際の塗料色に対応し、色名で直感的に選択できるため、お客様とのコミュニケーションもスムーズです。
                 </p>
               </div>
             </article>
@@ -249,9 +249,9 @@ export default function HomePage() {
                   スマホ1台で完結する営業活動
                 </h3>
                 <p className="text-gray-700 leading-relaxed">
-                  スマートフォン・タブレット・PCすべてに完全対応。<br />
-                  営業現場でその場で写真撮影→色選択→シミュレーション生成→お客様への提示まで、スマホ1台で完結します。<br />
-                  オフライン対応のPWA技術により、ネット環境が不安定な現場でも安定して動作します。
+                  スマートフォン・タブレット・PCすべてに<strong className="font-semibold">完全対応。</strong><br />
+                  営業現場でその場で写真撮影→色選択→シミュレーション生成→お客様への提示まで、<strong className="font-semibold text-blue-600">スマホ1台で完結</strong>します。<br />
+                  <strong className="font-semibold">オフライン対応のPWA技術</strong>により、ネット環境が不安定な現場でも安定して動作します。
                 </p>
               </div>
             </article>
@@ -266,9 +266,9 @@ export default function HomePage() {
                   顧客ごとの履歴管理で提案力アップ
                 </h3>
                 <p className="text-gray-700 leading-relaxed">
-                  顧客ページごとに生成した画像を自動保存。<br />
-                  過去の提案内容をいつでも確認でき、「前回はこの色でしたね」など具体的な会話が可能に。<br />
-                  ビフォーアフター比較機能により、お客様の意思決定をサポートし、成約率を大幅に向上させます。
+                  顧客ページごとに生成した画像を<strong className="font-semibold">自動保存。</strong><br />
+                  過去の提案内容をいつでも確認でき、「前回はこの色でしたね」など<strong className="font-semibold">具体的な会話が可能に。</strong><br />
+                  <strong className="font-semibold">ビフォーアフター比較機能</strong>により、お客様の意思決定をサポートし、<strong className="font-semibold text-purple-600">成約率を大幅に向上</strong>させます。
                 </p>
               </div>
             </article>
@@ -298,7 +298,9 @@ export default function HomePage() {
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">従来の課題</h3>
                   <p className="text-gray-700">
-                    カラー見本だけでは伝わらない。「実際に塗ったらどうなるの？」という不安から、お客様の決断が遅れ、競合他社に流れてしまう。持ち帰りで見積もりを作成している間に、お客様の熱量が下がり失注につながる。
+                    <strong className="font-semibold">カラー見本だけでは伝わらない。</strong><br />
+                    「実際に塗ったらどうなるの？」という不安から、お客様の決断が遅れ、<strong className="font-semibold text-red-600">競合他社に流れてしまう。</strong><br />
+                    持ち帰りで見積もりを作成している間に、お客様の熱量が下がり<strong className="font-semibold text-red-600">失注につながる。</strong>
                   </p>
                 </div>
               </div>
@@ -313,7 +315,9 @@ export default function HomePage() {
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">Paintlyの解決策</h3>
                   <p className="text-gray-700">
-                    その場で複数の色パターンを視覚化。「この色素敵！」というお客様の感動を逃さず、熱量が高いうちに商談を進められます。140色のリアルな塗装シミュレーションで、お客様の不安を解消し即決を促進します。
+                    <strong className="font-semibold">その場で複数の色パターンを視覚化。</strong><br />
+                    「この色素敵！」というお客様の感動を逃さず、<strong className="font-semibold text-green-600">熱量が高いうちに商談を進められます。</strong><br />
+                    <strong className="font-semibold">140色</strong>のリアルな塗装シミュレーションで、お客様の不安を解消し<strong className="font-semibold text-green-600">即決を促進</strong>します。
                   </p>
                 </div>
               </div>
@@ -409,7 +413,9 @@ export default function HomePage() {
                     建物の写真を撮影・アップロード
                   </h3>
                   <p className="text-gray-700 leading-relaxed">
-                    現地調査時にスマホで建物の正面写真を撮影。そのままアップロードするだけでOK。一戸建て、マンション、店舗など、あらゆる建物に対応しています。
+                    現地調査時にスマホで建物の正面写真を撮影。<br />
+                    そのままアップロードするだけで<strong className="font-semibold">OK。</strong><br />
+                    一戸建て、マンション、店舗など、<strong className="font-semibold">あらゆる建物に対応</strong>しています。
                   </p>
                 </div>
               </div>
@@ -455,7 +461,9 @@ export default function HomePage() {
                     AIが数秒で高精度シミュレーション
                   </h3>
                   <p className="text-gray-700 leading-relaxed">
-                    「生成」ボタンをクリックするだけ。最新AI技術が建物の形状や光の当たり方を考慮し、リアルな塗装後の画像を生成。ビフォーアフター比較やPDFダウンロードも可能です。
+                    「生成」ボタンをクリックするだけ。<br />
+                    <strong className="font-semibold">最新AI技術</strong>が建物の形状や光の当たり方を考慮し、リアルな塗装後の画像を生成。<br />
+                    <strong className="font-semibold">ビフォーアフター比較</strong>や<strong className="font-semibold">PDFダウンロード</strong>も可能です。
                   </p>
                 </div>
               </div>
@@ -640,7 +648,9 @@ export default function HomePage() {
                 <span>どのような建物に対応していますか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
-                一戸建て住宅、マンション、アパート、店舗、事務所など、あらゆる建物に対応しています。外壁塗装、屋根塗装、ドアの色変更など、さまざまなシミュレーションが可能です。正面からの写真であれば、建物の種類や大きさを問わずご利用いただけます。
+                一戸建て住宅、マンション、アパート、店舗、事務所など、<strong className="font-semibold">あらゆる建物に対応</strong>しています。<br />
+                外壁塗装、屋根塗装、ドアの色変更など、さまざまなシミュレーションが可能です。<br />
+                正面からの写真であれば、建物の種類や大きさを問わずご利用いただけます。
               </p>
             </div>
 
@@ -651,7 +661,9 @@ export default function HomePage() {
                 <span>スマートフォンで使えますか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
-                はい、Paintlyはスマートフォン・タブレット・PCのすべてに対応しています。特に営業現場でのご利用を想定し、スマートフォンでの操作性を最優先に設計しています。現地調査時にその場で写真を撮影し、即座にシミュレーションを生成してお客様に提示できます。
+                はい、Paintlyは<strong className="font-semibold">スマートフォン・タブレット・PC</strong>のすべてに対応しています。<br />
+                特に<strong className="font-semibold">営業現場でのご利用</strong>を想定し、スマートフォンでの操作性を最優先に設計しています。<br />
+                現地調査時にその場で写真を撮影し、即座にシミュレーションを生成してお客様に提示できます。
               </p>
             </div>
 
@@ -662,7 +674,9 @@ export default function HomePage() {
                 <span>商用利用は可能ですか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
-                はい、Paintlyで生成した画像は商用利用が可能です。お客様への提案資料、見積書への添付、ウェブサイトやSNSでの事例紹介など、営業活動や広告宣伝に自由にご利用いただけます。ただし、生成画像そのものを販売する行為は禁止されています。
+                はい、Paintlyで生成した画像は<strong className="font-semibold text-green-600">商用利用が可能</strong>です。<br />
+                お客様への提案資料、見積書への添付、ウェブサイトやSNSでの事例紹介など、営業活動や広告宣伝に自由にご利用いただけます。<br />
+                ただし、生成画像そのものを販売する行為は禁止されています。
               </p>
             </div>
           </div>
@@ -725,12 +739,12 @@ export default function HomePage() {
                 営業現場での即座の提案
               </h3>
               <p className="text-gray-700 leading-relaxed mb-4">
-                現地調査時に建物の写真を撮影し、その場で複数の色パターンを視覚化。<br />
-                お客様に「この色にしたらどうなるか」を実際に見ていただくことで、色見本だけでは伝わらなかった完成イメージを具体的に共有できます。
+                現地調査時に建物の写真を撮影し、<strong className="font-semibold">その場で複数の色パターンを視覚化。</strong><br />
+                お客様に「この色にしたらどうなるか」を実際に見ていただくことで、色見本だけでは伝わらなかった<strong className="font-semibold">完成イメージを具体的に共有</strong>できます。
               </p>
               <p className="text-gray-700 leading-relaxed">
-                Gemini 2.5 Flashの高速なAI処理により、わずか数秒で高精度なシミュレーション画像を生成。<br />
-                お客様の「この色素敵！」という感動の瞬間を逃さず、熱量が高いうちに商談を進められるため、従来の「持ち帰り検討」で起きていた熱量低下と失注を防ぎます。
+                <strong className="font-semibold">Gemini 2.5 Flash</strong>の高速なAI処理により、<strong className="font-semibold text-orange-600">わずか数秒で高精度なシミュレーション画像を生成。</strong><br />
+                お客様の「この色素敵！」という感動の瞬間を逃さず、<strong className="font-semibold text-green-600">熱量が高いうちに商談を進められる</strong>ため、従来の「持ち帰り検討」で起きていた<strong className="font-semibold text-red-600">熱量低下と失注を防ぎます。</strong>
               </p>
             </article>
 
@@ -745,12 +759,12 @@ export default function HomePage() {
                 色選びの不安を完全解消
               </h3>
               <p className="text-gray-700 leading-relaxed mb-4">
-                「実際に塗ったらイメージと違うのでは？」というお客様の最大の不安を、リアルなシミュレーション画像で解消。<br />
-                140色以上の実際の塗料色を色名で直感的に選択でき、お客様との共通認識を作りやすく設計されています。
+                「実際に塗ったらイメージと違うのでは？」という<strong className="font-semibold">お客様の最大の不安</strong>を、リアルなシミュレーション画像で解消。<br />
+                <strong className="font-semibold text-blue-600">140色以上</strong>の実際の塗料色を色名で直感的に選択でき、お客様との<strong className="font-semibold">共通認識を作りやすく</strong>設計されています。
               </p>
               <p className="text-gray-700 leading-relaxed">
-                建物の形状や光の当たり方までAIが考慮するため、「カラー見本と実際の仕上がりが違った」というクレームを未然に防止。<br />
-                ビフォーアフター比較機能により、現在の状態と塗装後の変化を明確に可視化し、お客様の意思決定をサポートします。
+                建物の形状や光の当たり方まで<strong className="font-semibold">AIが考慮</strong>するため、「カラー見本と実際の仕上がりが違った」という<strong className="font-semibold text-red-600">クレームを未然に防止。</strong><br />
+                <strong className="font-semibold">ビフォーアフター比較機能</strong>により、現在の状態と塗装後の変化を明確に可視化し、お客様の<strong className="font-semibold text-green-600">意思決定をサポート</strong>します。
               </p>
             </article>
 
@@ -765,12 +779,12 @@ export default function HomePage() {
                 競合他社との明確な差別化
               </h3>
               <p className="text-gray-700 leading-relaxed mb-4">
-                他社が色見本帳だけで提案している中、AI技術を使った高精度なシミュレーション画像を提示することで、圧倒的な差別化を実現。<br />
-                スマートフォン1台で完結するため、タブレットや専用機器を持ち運ぶ必要もなく、営業現場での機動力が向上します。
+                他社が色見本帳だけで提案している中、<strong className="font-semibold">AI技術を使った高精度なシミュレーション画像</strong>を提示することで、<strong className="font-semibold text-purple-600">圧倒的な差別化を実現。</strong><br />
+                <strong className="font-semibold">スマートフォン1台で完結</strong>するため、タブレットや専用機器を持ち運ぶ必要もなく、営業現場での機動力が向上します。
               </p>
               <p className="text-gray-700 leading-relaxed">
-                顧客ページごとに生成画像を自動保存する履歴管理機能により、「前回はこの色でご提案しましたね」など具体的な会話が可能に。<br />
-                お客様一人ひとりに合わせたきめ細やかな対応ができ、リピート率の向上と長期的な信頼関係構築につながります。
+                <strong className="font-semibold">顧客ページごとに生成画像を自動保存</strong>する履歴管理機能により、「前回はこの色でご提案しましたね」など<strong className="font-semibold">具体的な会話が可能に。</strong><br />
+                お客様一人ひとりに合わせた<strong className="font-semibold">きめ細やかな対応</strong>ができ、<strong className="font-semibold text-green-600">リピート率の向上と長期的な信頼関係構築</strong>につながります。
               </p>
             </article>
           </div>
@@ -784,7 +798,8 @@ export default function HomePage() {
             営業成約率を今すぐ向上させませんか？
           </h2>
           <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed">
-            無料プランで3回まで画像生成が可能。クレジットカード登録不要で、今すぐPaintlyの威力を体感してください。
+            無料プランで<strong className="font-bold">3回まで画像生成が可能。</strong><br />
+            <strong className="font-bold">クレジットカード登録不要</strong>で、今すぐPaintlyの威力を体感してください。
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/auth/signup">
