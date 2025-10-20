@@ -35,12 +35,23 @@ export default function NewCustomerPage() {
       // ユーザーのプラン情報を取得
       const { data: subscription } = await supabase
         .from('subscriptions')
-        .select('plan:plans(max_customer_pages)')
+        .select('plan_id')
         .eq('user_id', user.id)
         .single()
 
+      if (!subscription) {
+        throw new Error('プラン情報が見つかりません')
+      }
+
+      // プラン詳細を取得
+      const { data: plan } = await supabase
+        .from('plans')
+        .select('max_customer_pages')
+        .eq('id', subscription.plan_id)
+        .single()
+
       // プランの顧客ページ制限を確認
-      const maxPages = subscription?.plan?.max_customer_pages ?? -1
+      const maxPages = plan?.max_customer_pages ?? -1
 
       if (maxPages !== -1) {
         // 現在の顧客ページ数をカウント
