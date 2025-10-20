@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
-import { Star, Palette, Loader2, CheckCircle, XCircle, ChevronRight } from 'lucide-react'
+import { Star, Palette, Loader2, CheckCircle, XCircle, ChevronRight, QrCode } from 'lucide-react'
 import { LegalFooter } from '@/components/legal-footer'
 
 export default function HomePage() {
@@ -353,10 +353,10 @@ export default function HomePage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "HowTo",
-            "name": "Paintlyの使い方 - AI塗装シミュレーションの3ステップ",
-            "description": "Paintlyを使った塗装シミュレーションは、たった3ステップで完了します。初めての方でも迷わず使える、シンプルな操作フローです。",
+            "name": "Paintlyの使い方 - AI塗装シミュレーションの4ステップ",
+            "description": "Paintlyを使った塗装シミュレーションは、たった4ステップで完了します。初めての方でも迷わず使える、シンプルな操作フローです。",
             "image": `${typeof window !== 'undefined' ? window.location.origin : ''}/logo.png`,
-            "totalTime": "PT2M",
+            "totalTime": "PT3M",
             "estimatedCost": {
               "@type": "MonetaryAmount",
               "currency": "JPY",
@@ -374,7 +374,7 @@ export default function HomePage() {
                 "@type": "HowToStep",
                 "position": 2,
                 "name": "壁・屋根・ドアの色を選択",
-                "text": "140色以上の実際の塗料色から選択。日塗工番号で管理されているため、見積もり作成もスムーズです。複数の色パターンを試して、お客様に最適な提案を見つけられます。",
+                "text": "140色以上の実際の塗料色から選択。色名で管理されているため、見積もり作成もスムーズです。複数の色パターンを試して、お客様に最適な提案を見つけられます。",
                 "url": `${typeof window !== 'undefined' ? window.location.origin : ''}#step-2`
               },
               {
@@ -383,6 +383,13 @@ export default function HomePage() {
                 "name": "AIが数秒で高精度シミュレーション",
                 "text": "「生成」ボタンをクリックするだけ。最新AI技術が建物の形状や光の当たり方を考慮し、リアルな塗装後の画像を生成。ビフォーアフター比較やPDFダウンロードも可能です。",
                 "url": `${typeof window !== 'undefined' ? window.location.origin : ''}#step-3`
+              },
+              {
+                "@type": "HowToStep",
+                "position": 4,
+                "name": "QRコードでお客様のスマホに即座に共有",
+                "text": "お渡ししたい画像を選択してQRコードを生成。お客様がスマートフォンで読み込むだけで、その場で画像を保存できます。メールアドレス不要で瞬時に提案資料をお渡しできます。",
+                "url": `${typeof window !== 'undefined' ? window.location.origin : ''}#step-4`
               }
             ]
           })
@@ -394,7 +401,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              たった3ステップで完了
+              たった4ステップで完了
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               初めての方でも迷わず使える、シンプルな操作フロー
@@ -451,7 +458,7 @@ export default function HomePage() {
             </div>
 
             {/* ステップ3 */}
-            <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="flex flex-col md:flex-row items-center gap-8 mb-16">
               <div className="w-full md:w-1/2 order-2 md:order-1">
                 <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-8">
                   <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full text-white text-2xl font-bold mb-6">
@@ -470,6 +477,30 @@ export default function HomePage() {
               <div className="w-full md:w-1/2 order-1 md:order-2 flex justify-center">
                 <div className="w-48 h-48 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center">
                   <CheckCircle className="h-24 w-24 text-purple-500" />
+                </div>
+              </div>
+            </div>
+
+            {/* ステップ4: QRコードで簡単共有 */}
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="w-full md:w-1/2 flex justify-center">
+                <div className="w-48 h-48 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center">
+                  <QrCode className="h-24 w-24 text-green-500" />
+                </div>
+              </div>
+              <div className="w-full md:w-1/2">
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full text-white text-2xl font-bold mb-6">
+                    4
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    QRコードでお客様のスマホに即座に共有
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    お渡ししたい画像を選択して<strong className="font-semibold">QRコードを生成。</strong><br />
+                    お客様がスマートフォンで読み込むだけで、<strong className="font-semibold text-green-600">その場で画像を保存</strong>できます。<br />
+                    メールアドレス不要で、<strong className="font-semibold">瞬時に高品質な提案資料をお渡し</strong>できます。
+                  </p>
                 </div>
               </div>
             </div>
