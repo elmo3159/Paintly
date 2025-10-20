@@ -36,13 +36,13 @@ const faqData: FAQItem[] = [
     question: '料金はいくらですか？',
     answer: (
       <>
-        <p className="mb-3">Paintlyは複数の料金プランをご用意しています：</p>
+        <p className="mb-3">Paintlyは生成回数に応じた複数の料金プランをご用意しています：</p>
         <ul className="space-y-2 ml-4">
-          <li><strong>無料プラン:</strong> 3回まで無料（お試し用）</li>
-          <li><strong>ライトプラン:</strong> 月額2,980円 - 月30回生成</li>
-          <li><strong>スタンダードプラン:</strong> 月額5,980円 - 月100回生成</li>
-          <li><strong>プロプラン:</strong> 月額9,980円 - 月300回生成</li>
-          <li><strong>ビジネスプラン:</strong> 月額19,800円 - 月1,000回生成</li>
+          <li><strong>無料プラン:</strong> 月3回生成・顧客ページ3件まで（お試し用）</li>
+          <li><strong>ライトプラン:</strong> 月額2,980円 - 月30回生成・顧客ページ無制限</li>
+          <li><strong>スタンダードプラン:</strong> 月額5,980円 - 月100回生成・顧客ページ無制限</li>
+          <li><strong>プロプラン:</strong> 月額9,980円 - 月300回生成・顧客ページ無制限</li>
+          <li><strong>ビジネスプラン:</strong> 月額19,800円 - 月1,000回生成・顧客ページ無制限</li>
         </ul>
         <p className="mt-3">
           <Link href="/pricing" className="text-orange-600 hover:underline font-semibold">
@@ -58,7 +58,7 @@ const faqData: FAQItem[] = [
   },
   {
     question: '画像生成は何回まで可能ですか？',
-    answer: '生成回数はご契約のプランによって異なります。無料プランは3回、ライトプランは月30回、スタンダードプランは月100回、プロプランは月300回、ビジネスプランは月1,000回までご利用いただけます。生成回数は毎月1日にリセットされます。'
+    answer: '生成回数はご契約のプランによって異なります。無料プランは月3回、ライトプランは月30回、スタンダードプランは月100回、プロプランは月300回、ビジネスプランは月1,000回までご利用いただけます。生成回数は毎月1日にリセットされます。'
   },
   {
     question: 'どのような建物に対応していますか？',

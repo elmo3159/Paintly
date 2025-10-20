@@ -32,6 +32,30 @@ export default function NewCustomerPage() {
         throw new Error('認証が必要です')
       }
 
+      // ユーザーのプラン情報を取得
+      const { data: subscription } = await supabase
+        .from('subscriptions')
+        .select('plan:plans(max_customer_pages)')
+        .eq('user_id', user.id)
+        .single()
+
+      // プランの顧客ページ制限を確認
+      const maxPages = subscription?.plan?.max_customer_pages ?? -1
+
+      if (maxPages !== -1) {
+        // 現在の顧客ページ数をカウント
+        const { count } = await supabase
+          .from('customers')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', user.id)
+
+        if (count !== null && count >= maxPages) {
+          alert(`顧客ページの作成上限（${maxPages}件）に達しました。有料プランにアップグレードしてください。`)
+          setIsLoading(false)
+          return
+        }
+      }
+
       const { data, error } = await supabase
         .from('customers')
         .insert({

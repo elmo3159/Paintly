@@ -203,27 +203,6 @@ export default function PricingPage() {
                 </div>
 
                 <div className="space-y-3">
-                  <div className="flex items-center">
-                    <Check className="h-4 w-4 text-primary mr-2 flex-shrink-0" />
-                    <span className="text-sm">
-                      {plan.generation_limit === -1
-                        ? '生成回数無制限'
-                        : `月${plan.generation_limit}回の生成`}
-                    </span>
-                  </div>
-                  <div className="flex items-center">
-                    <Check className="h-4 w-4 text-primary mr-2 flex-shrink-0" />
-                    <span className="text-sm">
-                      {plan.storage_months === -1
-                        ? '永久保存'
-                        : `${plan.storage_months}ヶ月保存`}
-                    </span>
-                  </div>
-                  <div className="flex items-center">
-                    <Check className="h-4 w-4 text-primary mr-2 flex-shrink-0" />
-                    <span className="text-sm">顧客ページ無制限</span>
-                  </div>
-
                   {plan.features && plan.features.map((feature, index) => (
                     <div key={index} className="flex items-center">
                       <Check className="h-4 w-4 text-primary mr-2 flex-shrink-0" />
