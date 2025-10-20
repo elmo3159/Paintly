@@ -789,7 +789,7 @@ export default function HomePage() {
       </section>
 
       {/* フッター */}
-      <LegalFooter variant="full" className="bg-white" />
+      <LegalFooter variant="default" className="bg-white" />
     </div>
   )
 }
