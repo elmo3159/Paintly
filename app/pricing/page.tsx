@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -149,10 +150,10 @@ export default function PricingPage() {
       <div className="max-w-7xl mx-auto">
         {/* ヘッダー */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             料金プラン
           </h1>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-white">
             あなたのビジネスに最適なプランをお選びください
           </p>
         </div>
@@ -255,9 +256,17 @@ export default function PricingPage() {
         </div>
 
         {/* フッター */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-12 space-y-3">
           <p className="text-sm text-muted-foreground">
             プランはいつでも変更・キャンセル可能です
+          </p>
+          <p className="text-sm">
+            <Link
+              href="/faq"
+              className="text-primary hover:text-primary/80 underline decoration-dotted underline-offset-4 transition-colors font-medium"
+            >
+              よくある質問を見る
+            </Link>
           </p>
         </div>
       </div>
