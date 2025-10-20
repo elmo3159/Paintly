@@ -8,10 +8,18 @@ import { RecaptchaProvider } from '@/components/recaptcha-provider'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://paintly.pro'),
-  title: 'Paintly - 塗装シミュレーションツール',
-  description: '建物の塗装後の仕上がりをAIで瞬時にシミュレーション。営業成約率を向上させる革新的なツール。',
-  keywords: '塗装,シミュレーション,AI,建築,営業ツール,外壁塗装,屋根塗装',
-  authors: [{ name: 'Paintly Team' }],
+  title: {
+    default: 'Paintly - AI塗装シミュレーションツール | 営業成約率を劇的に向上',
+    template: '%s | Paintly'
+  },
+  description: '建物の写真をアップロードするだけで、AI技術を使って140色の高精度な塗装シミュレーションを瞬時に生成。塗装業者・リフォーム業者の営業活動を革新し、成約率を大幅にアップさせる次世代ツール。その場でお客様に提案、競合他社との差別化を実現します。',
+  keywords: '塗装シミュレーション,AI塗装,外壁塗装,屋根塗装,塗装業者ツール,営業支援,カラーシミュレーション,建築リフォーム,塗装見積もり,塗装提案,ビフォーアフター,塗装色選び,日塗工,建物塗装,住宅塗装',
+  authors: [
+    { name: 'Paintly Team', url: 'https://paintly.pro' },
+  ],
+  creator: 'Paintly',
+  publisher: 'Paintly',
+  category: 'Business Application',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -19,15 +27,29 @@ export const metadata: Metadata = {
     title: 'Paintly'
   },
   openGraph: {
-    title: 'Paintly - 塗装シミュレーションツール',
-    description: '建物の塗装後の仕上がりをAIで瞬時にシミュレーション',
+    title: 'Paintly - AI塗装シミュレーションツール',
+    description: '建物の写真から瞬時に塗装シミュレーションを生成。営業成約率を劇的に向上させる次世代ツール。',
     type: 'website',
     locale: 'ja_JP',
+    url: 'https://paintly.pro',
+    siteName: 'Paintly',
+    images: [
+      {
+        url: 'https://paintly.pro/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Paintly - AI塗装シミュレーションツール',
+        type: 'image/png',
+      }
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Paintly - 塗装シミュレーションツール',
-    description: '建物の塗装後の仕上がりをAIで瞬時にシミュレーション',
+    title: 'Paintly - AI塗装シミュレーションツール',
+    description: '建物の写真から瞬時に塗装シミュレーションを生成。営業成約率を劇的に向上。',
+    creator: '@Paintly',
+    site: '@Paintly',
+    images: ['https://paintly.pro/twitter-image.png'],
   },
   robots: {
     index: true,
@@ -42,6 +64,9 @@ export const metadata: Metadata = {
   },
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION,
+  },
+  alternates: {
+    canonical: 'https://paintly.pro',
   },
 }
 
@@ -187,14 +212,7 @@ export default function RootLayout({
                     "モバイル対応",
                     "PWA対応"
                   ],
-                  "screenshot": "https://paintly.pro/screenshot.png",
-                  "aggregateRating": {
-                    "@type": "AggregateRating",
-                    "ratingValue": "4.8",
-                    "reviewCount": "127",
-                    "bestRating": "5",
-                    "worstRating": "1"
-                  }
+                  "screenshot": "https://paintly.pro/screenshot.png"
                 },
                 {
                   "@type": "SoftwareApplication",
@@ -289,6 +307,105 @@ export default function RootLayout({
                     "target": "https://paintly.pro/search?q={search_term_string}",
                     "query-input": "required name=search_term_string"
                   }
+                },
+                {
+                  "@type": "LocalBusiness",
+                  "@id": "https://paintly.pro/#localbusiness",
+                  "name": "Paintly",
+                  "image": "https://paintly.pro/logo.png",
+                  "description": "塗装業者・リフォーム業者向けAI塗装シミュレーションツールの開発・提供",
+                  "url": "https://paintly.pro",
+                  "telephone": "",
+                  "priceRange": "¥0 - ¥19,800",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressCountry": "JP",
+                    "addressRegion": "日本全国"
+                  },
+                  "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 35.6762,
+                    "longitude": 139.6503
+                  },
+                  "areaServed": [
+                    {
+                      "@type": "Country",
+                      "name": "Japan"
+                    }
+                  ],
+                  "serviceType": [
+                    "塗装シミュレーション",
+                    "AI画像生成",
+                    "営業支援ツール",
+                    "建築ビジュアライゼーション"
+                  ],
+                  "hasOfferCatalog": {
+                    "@type": "OfferCatalog",
+                    "name": "Paintly料金プラン",
+                    "itemListElement": [
+                      {
+                        "@type": "Offer",
+                        "itemOffered": {
+                          "@type": "Service",
+                          "name": "無料プラン"
+                        },
+                        "price": "0",
+                        "priceCurrency": "JPY"
+                      },
+                      {
+                        "@type": "Offer",
+                        "itemOffered": {
+                          "@type": "Service",
+                          "name": "ライトプラン"
+                        },
+                        "price": "2980",
+                        "priceCurrency": "JPY"
+                      },
+                      {
+                        "@type": "Offer",
+                        "itemOffered": {
+                          "@type": "Service",
+                          "name": "スタンダードプラン"
+                        },
+                        "price": "5980",
+                        "priceCurrency": "JPY"
+                      },
+                      {
+                        "@type": "Offer",
+                        "itemOffered": {
+                          "@type": "Service",
+                          "name": "プロプラン"
+                        },
+                        "price": "9980",
+                        "priceCurrency": "JPY"
+                      },
+                      {
+                        "@type": "Offer",
+                        "itemOffered": {
+                          "@type": "Service",
+                          "name": "ビジネスプラン"
+                        },
+                        "price": "19800",
+                        "priceCurrency": "JPY"
+                      }
+                    ]
+                  },
+                  "openingHoursSpecification": [
+                    {
+                      "@type": "OpeningHoursSpecification",
+                      "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                      ],
+                      "opens": "00:00",
+                      "closes": "23:59"
+                    }
+                  ]
                 }
               ]
             })

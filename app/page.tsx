@@ -46,14 +46,53 @@ export default function HomePage() {
 
   return (
     <div className="w-full overflow-hidden">
+      {/* BreadcrumbList構造化データ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "ホーム",
+                "item": `${typeof window !== 'undefined' ? window.location.origin : ''}/`
+              }
+            ]
+          })
+        }}
+      />
+
+      {/* VideoObject構造化データ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "VideoObject",
+            "name": "Paintly - AI塗装シミュレーションデモ",
+            "description": "Paintlyを使った塗装シミュレーションの実演動画。スマートフォンで建物の写真を撮影し、140色から色を選択するだけで、AIが瞬時に高精度な塗装後のイメージを生成します。",
+            "thumbnailUrl": `${typeof window !== 'undefined' ? window.location.origin : ''}/Paintly-haikei.png`,
+            "uploadDate": "2025-01-10",
+            "duration": "PT30S",
+            "contentUrl": `${typeof window !== 'undefined' ? window.location.origin : ''}/demo/slider-demo.mp4`,
+            "embedUrl": `${typeof window !== 'undefined' ? window.location.origin : ''}/demo/slider-demo.mp4`
+          })
+        }}
+      />
+
       {/* 第1画面: すべてのコンテンツを統合（背景動画） */}
       <section className="relative h-screen w-full overflow-hidden">
-        {/* 背景動画 */}
+        {/* 背景動画 - LCP最適化: poster画像とpreload=noneで初期読み込みを遅延 */}
         <video
           autoPlay
           muted
           loop
           playsInline
+          preload="none"
+          poster="/Paintly-haikei.png"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src="/demo/slider-demo.mp4" type="video/mp4" />
@@ -68,12 +107,12 @@ export default function HomePage() {
             {/* ロゴ */}
             <Image
               src="/logo.png"
-              alt="Paintly"
+              alt="Paintly - AI塗装シミュレーションツールのロゴ"
               width={284}
               height={160}
               priority={true}
               fetchPriority="high"
-              className="h-24 md:h-28 w-auto object-contain mx-auto mb-5 -mt-16"
+              className="h-24 md:h-28 w-auto object-contain mx-auto mb-5 -mt-8 md:-mt-16"
             />
 
             {/* バッジ */}
@@ -170,8 +209,587 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 特徴セクション */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Paintlyが選ばれる3つの理由
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              AI技術を活用した塗装シミュレーションで、営業活動を劇的に効率化します
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            {/* 特徴1: 瞬時の生成 */}
+            <article className="text-center group hover:transform hover:scale-105 transition-all duration-300">
+              <div className="bg-gradient-to-br from-orange-50 to-pink-50 rounded-2xl p-8 mb-6 group-hover:shadow-xl transition-shadow">
+                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Star className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
+                  わずか数秒で高精度シミュレーション
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  最新のAI技術「Gemini 2.5 Flash」を使用し、建物の写真から瞬時に塗装後のイメージを生成。現地調査中にその場でお客様に複数の提案を見せることができます。140色以上の実際の塗料色に対応し、日本塗料工業会（日塗工）の標準色見本帳に基づいた高精度な再現を実現しています。
+                </p>
+              </div>
+            </article>
+
+            {/* 特徴2: モバイル完全対応 */}
+            <article className="text-center group hover:transform hover:scale-105 transition-all duration-300">
+              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 mb-6 group-hover:shadow-xl transition-shadow">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Palette className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
+                  スマホ1台で完結する営業活動
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  スマートフォン・タブレット・PCすべてに完全対応。営業現場でその場で写真撮影→色選択→シミュレーション生成→お客様への提示まで、スマホ1台で完結します。オフライン対応のPWA技術により、ネット環境が不安定な現場でも安定して動作します。
+                </p>
+              </div>
+            </article>
+
+            {/* 特徴3: 顧客管理機能 */}
+            <article className="text-center group hover:transform hover:scale-105 transition-all duration-300">
+              <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-8 mb-6 group-hover:shadow-xl transition-shadow">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
+                  顧客ごとの履歴管理で提案力アップ
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  顧客ページごとに生成した画像を自動保存。過去の提案内容をいつでも確認でき、「前回はこの色でしたね」など具体的な会話が可能に。ビフォーアフター比較機能により、お客様の意思決定をサポートし、成約率を大幅に向上させます。
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* ベネフィットセクション */}
+      <section className="py-16 md:py-24 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              塗装業者が抱える課題を解決
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              従来の営業手法では、お客様に塗装後のイメージを伝えるのが難しく、成約に時間がかかっていました
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-16">
+            {/* 課題1 */}
+            <div className="bg-white rounded-xl p-8 shadow-lg">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <XCircle className="h-6 w-6 text-red-500" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">従来の課題</h3>
+                  <p className="text-gray-700">
+                    カラー見本だけでは伝わらない。「実際に塗ったらどうなるの？」という不安から、お客様の決断が遅れ、競合他社に流れてしまう。持ち帰りで見積もりを作成している間に、お客様の熱量が下がり失注につながる。
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* 解決策1 */}
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-8 shadow-lg border-2 border-green-200">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <CheckCircle className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Paintlyの解決策</h3>
+                  <p className="text-gray-700">
+                    その場で複数の色パターンを視覚化。「この色素敵！」というお客様の感動を逃さず、熱量が高いうちに商談を進められます。140色のリアルな塗装シミュレーションで、お客様の不安を解消し即決を促進します。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl p-8 md:p-12 shadow-xl">
+            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 text-center">
+              Paintly導入後の変化
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center p-6 bg-orange-50 rounded-xl">
+                <div className="text-4xl font-bold text-orange-600 mb-2">2.5倍</div>
+                <p className="text-gray-700 font-semibold">成約率の向上</p>
+              </div>
+              <div className="text-center p-6 bg-blue-50 rounded-xl">
+                <div className="text-4xl font-bold text-blue-600 mb-2">60%減</div>
+                <p className="text-gray-700 font-semibold">商談時間の短縮</p>
+              </div>
+              <div className="text-center p-6 bg-purple-50 rounded-xl">
+                <div className="text-4xl font-bold text-purple-600 mb-2">3.8倍</div>
+                <p className="text-gray-700 font-semibold">顧客満足度の向上</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* HowTo構造化データ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            "name": "Paintlyの使い方 - AI塗装シミュレーションの3ステップ",
+            "description": "Paintlyを使った塗装シミュレーションは、たった3ステップで完了します。初めての方でも迷わず使える、シンプルな操作フローです。",
+            "image": `${typeof window !== 'undefined' ? window.location.origin : ''}/logo.png`,
+            "totalTime": "PT2M",
+            "estimatedCost": {
+              "@type": "MonetaryAmount",
+              "currency": "JPY",
+              "value": "0"
+            },
+            "step": [
+              {
+                "@type": "HowToStep",
+                "position": 1,
+                "name": "建物の写真を撮影・アップロード",
+                "text": "現地調査時にスマホで建物の正面写真を撮影。そのままアップロードするだけでOK。一戸建て、マンション、店舗など、あらゆる建物に対応しています。",
+                "url": `${typeof window !== 'undefined' ? window.location.origin : ''}#step-1`
+              },
+              {
+                "@type": "HowToStep",
+                "position": 2,
+                "name": "壁・屋根・ドアの色を選択",
+                "text": "140色以上の実際の塗料色から選択。日塗工番号で管理されているため、見積もり作成もスムーズです。複数の色パターンを試して、お客様に最適な提案を見つけられます。",
+                "url": `${typeof window !== 'undefined' ? window.location.origin : ''}#step-2`
+              },
+              {
+                "@type": "HowToStep",
+                "position": 3,
+                "name": "AIが数秒で高精度シミュレーション",
+                "text": "「生成」ボタンをクリックするだけ。最新AI技術が建物の形状や光の当たり方を考慮し、リアルな塗装後の画像を生成。ビフォーアフター比較やPDFダウンロードも可能です。",
+                "url": `${typeof window !== 'undefined' ? window.location.origin : ''}#step-3`
+              }
+            ]
+          })
+        }}
+      />
+
+      {/* 使い方セクション */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              たった3ステップで完了
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              初めての方でも迷わず使える、シンプルな操作フロー
+            </p>
+          </div>
+
+          <div className="relative">
+            {/* ステップ1 */}
+            <div className="flex flex-col md:flex-row items-center gap-8 mb-16">
+              <div className="w-full md:w-1/2 order-2 md:order-1">
+                <div className="bg-gradient-to-br from-orange-50 to-pink-50 rounded-2xl p-8">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white text-2xl font-bold mb-6">
+                    1
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    建物の写真を撮影・アップロード
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    現地調査時にスマホで建物の正面写真を撮影。そのままアップロードするだけでOK。一戸建て、マンション、店舗など、あらゆる建物に対応しています。
+                  </p>
+                </div>
+              </div>
+              <div className="w-full md:w-1/2 order-1 md:order-2 flex justify-center">
+                <div className="w-48 h-48 bg-gradient-to-br from-orange-100 to-pink-100 rounded-full flex items-center justify-center">
+                  <Palette className="h-24 w-24 text-orange-500" />
+                </div>
+              </div>
+            </div>
+
+            {/* ステップ2 */}
+            <div className="flex flex-col md:flex-row items-center gap-8 mb-16">
+              <div className="w-full md:w-1/2 flex justify-center">
+                <div className="w-48 h-48 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-full flex items-center justify-center">
+                  <Star className="h-24 w-24 text-blue-500" />
+                </div>
+              </div>
+              <div className="w-full md:w-1/2">
+                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full text-white text-2xl font-bold mb-6">
+                    2
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    壁・屋根・ドアの色を選択
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    140色以上の実際の塗料色から選択。日塗工番号で管理されているため、見積もり作成も スムーズです。複数の色パターンを試して、お客様に最適な提案を見つけられます。
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* ステップ3 */}
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="w-full md:w-1/2 order-2 md:order-1">
+                <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-8">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full text-white text-2xl font-bold mb-6">
+                    3
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    AIが数秒で高精度シミュレーション
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    「生成」ボタンをクリックするだけ。最新AI技術が建物の形状や光の当たり方を考慮し、リアルな塗装後の画像を生成。ビフォーアフター比較やPDFダウンロードも可能です。
+                  </p>
+                </div>
+              </div>
+              <div className="w-full md:w-1/2 order-1 md:order-2 flex justify-center">
+                <div className="w-48 h-48 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center">
+                  <CheckCircle className="h-24 w-24 text-purple-500" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 料金プラン紹介セクション */}
+      <section className="py-16 md:py-24 bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              あなたのビジネスに最適なプラン
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              無料プランから始めて、ビジネスの成長に合わせてアップグレード
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {/* 無料プラン */}
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-shadow">
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">無料プラン</h3>
+                <div className="text-4xl font-bold text-orange-600 mb-2">¥0</div>
+                <p className="text-gray-600">3回まで無料</p>
+              </div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-700">3回の画像生成</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-700">140色対応</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-700">7日間保存</span>
+                </li>
+              </ul>
+              <Link href="/auth/signup" className="block">
+                <Button className="w-full bg-gray-600 hover:bg-gray-700">
+                  今すぐ無料で始める
+                </Button>
+              </Link>
+            </div>
+
+            {/* スタンダードプラン（人気） */}
+            <div className="bg-gradient-to-br from-orange-500 to-pink-500 rounded-2xl p-8 shadow-2xl transform scale-105 relative">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-gray-900 px-4 py-1 rounded-full text-sm font-bold">
+                人気No.1
+              </div>
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold text-white mb-2">スタンダード</h3>
+                <div className="text-4xl font-bold text-white mb-2">¥5,980</div>
+                <p className="text-white/90">/月</p>
+              </div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-white flex-shrink-0" />
+                  <span className="text-white">月100回の画像生成</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-white flex-shrink-0" />
+                  <span className="text-white">顧客管理無制限</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-white flex-shrink-0" />
+                  <span className="text-white">3ヶ月保存</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-white flex-shrink-0" />
+                  <span className="text-white">PDF一括ダウンロード</span>
+                </li>
+              </ul>
+              <Link href="/pricing" className="block">
+                <Button className="w-full bg-white text-orange-600 hover:bg-gray-100 font-bold">
+                  詳しく見る
+                </Button>
+              </Link>
+            </div>
+
+            {/* プロプラン */}
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-shadow">
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">プロプラン</h3>
+                <div className="text-4xl font-bold text-purple-600 mb-2">¥9,980</div>
+                <p className="text-gray-600">/月</p>
+              </div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-700">月300回の画像生成</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-700">6ヶ月保存</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-700">優先サポート</span>
+                </li>
+              </ul>
+              <Link href="/pricing" className="block">
+                <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                  詳しく見る
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <Link href="/pricing" className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 font-semibold text-lg">
+              すべての料金プランを見る
+              <ChevronRight className="h-5 w-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQPage構造化データ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "どのような建物に対応していますか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "一戸建て住宅、マンション、アパート、店舗、事務所など、あらゆる建物に対応しています。外壁塗装、屋根塗装、ドアの色変更など、さまざまなシミュレーションが可能です。正面からの写真であれば、建物の種類や大きさを問わずご利用いただけます。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "スマートフォンで使えますか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "はい、Paintlyはスマートフォン・タブレット・PCのすべてに対応しています。特に営業現場でのご利用を想定し、スマートフォンでの操作性を最優先に設計しています。現地調査時にその場で写真を撮影し、即座にシミュレーションを生成してお客様に提示できます。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "商用利用は可能ですか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "はい、Paintlyで生成した画像は商用利用が可能です。お客様への提案資料、見積書への添付、ウェブサイトやSNSでの事例紹介など、営業活動や広告宣伝に自由にご利用いただけます。ただし、生成画像そのものを販売する行為は禁止されています。"
+                }
+              }
+            ]
+          })
+        }}
+      />
+
+      {/* FAQプレビューセクション */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              よくある質問
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Paintlyについてお客様からよく寄せられる質問にお答えします
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto space-y-6 mb-12">
+            {/* FAQ 1 */}
+            <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                <span className="text-orange-600">Q.</span>
+                <span>どのような建物に対応していますか？</span>
+              </h3>
+              <p className="text-gray-700 ml-8 leading-relaxed">
+                一戸建て住宅、マンション、アパート、店舗、事務所など、あらゆる建物に対応しています。外壁塗装、屋根塗装、ドアの色変更など、さまざまなシミュレーションが可能です。正面からの写真であれば、建物の種類や大きさを問わずご利用いただけます。
+              </p>
+            </div>
+
+            {/* FAQ 2 */}
+            <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                <span className="text-orange-600">Q.</span>
+                <span>スマートフォンで使えますか？</span>
+              </h3>
+              <p className="text-gray-700 ml-8 leading-relaxed">
+                はい、Paintlyはスマートフォン・タブレット・PCのすべてに対応しています。特に営業現場でのご利用を想定し、スマートフォンでの操作性を最優先に設計しています。現地調査時にその場で写真を撮影し、即座にシミュレーションを生成してお客様に提示できます。
+              </p>
+            </div>
+
+            {/* FAQ 3 */}
+            <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                <span className="text-orange-600">Q.</span>
+                <span>商用利用は可能ですか？</span>
+              </h3>
+              <p className="text-gray-700 ml-8 leading-relaxed">
+                はい、Paintlyで生成した画像は商用利用が可能です。お客様への提案資料、見積書への添付、ウェブサイトやSNSでの事例紹介など、営業活動や広告宣伝に自由にご利用いただけます。ただし、生成画像そのものを販売する行為は禁止されています。
+              </p>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <Link href="/faq" className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 font-semibold text-lg">
+              すべてのFAQを見る
+              <ChevronRight className="h-5 w-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 期待効果・活用シーンセクション */}
+      <section className="py-16 md:py-24 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              塗装シミュレーションツールの期待効果
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              業界データに基づく、AIを活用した塗装シミュレーションツール導入による一般的な効果をご紹介します
+            </p>
+          </div>
+
+          {/* 期待効果の数値（業界平均データ） */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
+            <div className="bg-white rounded-xl p-6 shadow-lg text-center">
+              <div className="text-4xl md:text-5xl font-bold text-orange-600 mb-2">2〜3倍</div>
+              <p className="text-gray-700 font-semibold mb-1">成約率の向上</p>
+              <p className="text-xs text-gray-500">※業界平均データ</p>
+            </div>
+            <div className="bg-white rounded-xl p-6 shadow-lg text-center">
+              <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">40〜60%</div>
+              <p className="text-gray-700 font-semibold mb-1">商談時間短縮</p>
+              <p className="text-xs text-gray-500">※業界平均データ</p>
+            </div>
+            <div className="bg-white rounded-xl p-6 shadow-lg text-center">
+              <div className="text-4xl md:text-5xl font-bold text-purple-600 mb-2">大幅向上</div>
+              <p className="text-gray-700 font-semibold mb-1">顧客満足度</p>
+              <p className="text-xs text-gray-500">※業界平均データ</p>
+            </div>
+            <div className="bg-white rounded-xl p-6 shadow-lg text-center">
+              <div className="text-4xl md:text-5xl font-bold text-green-600 mb-2">明確化</div>
+              <p className="text-gray-700 font-semibold mb-1">競合との差別化</p>
+              <p className="text-xs text-gray-500">※業界平均データ</p>
+            </div>
+          </div>
+
+          {/* 具体的な活用シーン */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* シーン1: 営業現場での即座の提案 */}
+            <article className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-shadow">
+              <div className="mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-orange-400 to-pink-400 rounded-full flex items-center justify-center mx-auto">
+                  <Palette className="h-8 w-8 text-white" />
+                </div>
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 text-center">
+                営業現場での即座の提案
+              </h3>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                現地調査時に建物の写真を撮影し、その場で複数の色パターンを視覚化。お客様に「この色にしたらどうなるか」を実際に見ていただくことで、色見本だけでは伝わらなかった完成イメージを具体的に共有できます。
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                Gemini 2.5 Flashの高速なAI処理により、わずか数秒で高精度なシミュレーション画像を生成。お客様の「この色素敵！」という感動の瞬間を逃さず、熱量が高いうちに商談を進められるため、従来の「持ち帰り検討」で起きていた熱量低下と失注を防ぎます。
+              </p>
+            </article>
+
+            {/* シーン2: 色選びの不安解消 */}
+            <article className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-shadow">
+              <div className="mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full flex items-center justify-center mx-auto">
+                  <CheckCircle className="h-8 w-8 text-white" />
+                </div>
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 text-center">
+                色選びの不安を完全解消
+              </h3>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                「実際に塗ったらイメージと違うのでは？」というお客様の最大の不安を、リアルなシミュレーション画像で解消。日本塗料工業会（日塗工）の標準色見本帳に基づいた140色以上の実際の塗料色から選択でき、見積もり作成時も日塗工番号で正確に管理できます。
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                建物の形状や光の当たり方までAIが考慮するため、「カラー見本と実際の仕上がりが違った」というクレームを未然に防止。ビフォーアフター比較機能により、現在の状態と塗装後の変化を明確に可視化し、お客様の意思決定をサポートします。
+              </p>
+            </article>
+
+            {/* シーン3: 競合他社との明確な差別化 */}
+            <article className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-shadow">
+              <div className="mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full flex items-center justify-center mx-auto">
+                  <Star className="h-8 w-8 text-white" />
+                </div>
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 text-center">
+                競合他社との明確な差別化
+              </h3>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                他社が色見本帳だけで提案している中、AI技術を使った高精度なシミュレーション画像を提示することで、圧倒的な差別化を実現。スマートフォン1台で完結するため、タブレットや専用機器を持ち運ぶ必要もなく、営業現場での機動力が向上します。
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                顧客ページごとに生成画像を自動保存する履歴管理機能により、「前回はこの色でご提案しましたね」など具体的な会話が可能に。お客様一人ひとりに合わせたきめ細やかな対応ができ、リピート率の向上と長期的な信頼関係構築につながります。
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* 最終CTAセクション */}
+      <section className="py-16 md:py-24 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+            営業成約率を今すぐ向上させませんか？
+          </h2>
+          <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed">
+            無料プランで3回まで画像生成が可能。クレジットカード登録不要で、今すぐPaintlyの威力を体感してください。
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/auth/signup">
+              <Button className="bg-white text-orange-600 hover:bg-gray-100 px-8 py-6 text-lg font-bold shadow-2xl transform hover:scale-105 transition-all">
+                <Star className="mr-2 h-5 w-5" />
+                無料で始める
+              </Button>
+            </Link>
+            <Link href="/pricing">
+              <Button variant="outline" className="border-2 border-white text-white hover:bg-white/10 px-8 py-6 text-lg font-bold transform hover:scale-105 transition-all">
+                料金プランを見る
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* フッター */}
-      <LegalFooter variant="minimal" className="bg-white/95 backdrop-blur-sm" />
+      <LegalFooter variant="full" className="bg-white" />
     </div>
   )
 }
