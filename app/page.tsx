@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
-import { Star, Palette, Loader2, CheckCircle, XCircle, ChevronRight, QrCode } from 'lucide-react'
+import { Star, Palette, Loader2, CheckCircle, XCircle, ChevronRight, ChevronDown, QrCode } from 'lucide-react'
 import { LegalFooter } from '@/components/legal-footer'
 
 export default function HomePage() {
@@ -207,6 +207,23 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        {/* スクロール誘導アニメーション */}
+        <button
+          onClick={() => {
+            const nextSection = document.querySelector('section:nth-of-type(2)');
+            nextSection?.scrollIntoView({ behavior: 'smooth' });
+          }}
+          aria-label="下にスクロール"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 text-white opacity-80 hover:opacity-100 transition-opacity duration-300 cursor-pointer animate-bounce"
+        >
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-xs md:text-sm font-semibold" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
+              もっと詳しく
+            </span>
+            <ChevronDown className="h-8 w-8 md:h-10 md:w-10" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.8))' }} />
+          </div>
+        </button>
       </section>
 
       {/* 特徴セクション */}
@@ -232,7 +249,7 @@ export default function HomePage() {
                   わずか数秒で高精度シミュレーション
                 </h3>
                 <p className="text-gray-700 leading-relaxed">
-                  最新のAI技術<strong className="font-semibold">「Gemini 2.5 Flash」</strong>を使用し、建物の写真から<strong className="font-semibold">瞬時に</strong>塗装後のイメージを生成。<br />
+                  最新のAI技術を使用し、建物の写真から<strong className="font-semibold">瞬時に</strong>塗装後のイメージを生成。<br />
                   現地調査中にその場でお客様に<strong className="font-semibold">複数の提案</strong>を見せることができます。<br />
                   <strong className="font-semibold text-orange-600">140色以上</strong>の実際の塗料色に対応し、色名で直感的に選択できるため、お客様とのコミュニケーションもスムーズです。
                 </p>
@@ -774,7 +791,7 @@ export default function HomePage() {
                 お客様に「この色にしたらどうなるか」を実際に見ていただくことで、色見本だけでは伝わらなかった<strong className="font-semibold">完成イメージを具体的に共有</strong>できます。
               </p>
               <p className="text-gray-700 leading-relaxed">
-                <strong className="font-semibold">Gemini 2.5 Flash</strong>の高速なAI処理により、<strong className="font-semibold text-orange-600">わずか数秒で高精度なシミュレーション画像を生成。</strong><br />
+                最新のAI技術により、<strong className="font-semibold text-orange-600">わずか数秒で高精度なシミュレーション画像を生成。</strong><br />
                 お客様の「この色素敵！」という感動の瞬間を逃さず、<strong className="font-semibold text-green-600">熱量が高いうちに商談を進められる</strong>ため、従来の「持ち帰り検討」で起きていた<strong className="font-semibold text-red-600">熱量低下と失注を防ぎます。</strong>
               </p>
             </article>
