@@ -577,9 +577,9 @@ export default function HomePage() {
                   <span className="text-gray-700">顧客管理無制限</span>
                 </li>
               </ul>
-              <Link href="/pricing" className="block">
+              <Link href="/auth/signup" className="block">
                 <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                  詳しく見る
+                  無料で始める
                 </Button>
               </Link>
             </div>
@@ -604,9 +604,9 @@ export default function HomePage() {
                   <span className="text-white">顧客管理無制限</span>
                 </li>
               </ul>
-              <Link href="/pricing" className="block">
+              <Link href="/auth/signup" className="block">
                 <Button className="w-full bg-white text-orange-600 hover:bg-gray-100 font-bold">
-                  詳しく見る
+                  無料で始める
                 </Button>
               </Link>
             </div>
@@ -628,9 +628,9 @@ export default function HomePage() {
                   <span className="text-gray-700">顧客管理無制限</span>
                 </li>
               </ul>
-              <Link href="/pricing" className="block">
+              <Link href="/auth/signup" className="block">
                 <Button className="w-full bg-purple-600 hover:bg-purple-700">
-                  詳しく見る
+                  無料で始める
                 </Button>
               </Link>
             </div>
