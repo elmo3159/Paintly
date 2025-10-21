@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Google Fonts - Sawarabi Gothic・手書き風フォント・懐石デコール */
-@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Kaisei+Decol:wght@400;500;700&family=Sawarabi+Gothic&family=M+PLUS+Rounded+1c:wght@300;400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap");
+/* フォント読み込みをnext/font/googleに移行（LCP最適化） */
+/* lib/fonts.tsで管理 - ビルド時にフォントファイルをダウンロードしてセルフホスト */
 
 /* ============================================
    Paintly ネオブルータリズム × 職人デザインシステム
@@ -71,12 +71,13 @@
     --success: hsl(var(--success-h) var(--success-s) var(--success-l));
 
     /* ===== タイポグラフィ（読みやすさ重視） ===== */
+    /* next/font/googleで最適化されたフォント変数を使用 */
     --font-sans:
-      "Sawarabi Gothic", "M PLUS Rounded 1c", "Inter", -apple-system,
+      var(--font-mplus-rounded), var(--font-inter), -apple-system,
       BlinkMacSystemFont, system-ui, sans-serif;
-    --font-serif: "Noto Serif JP", "Georgia", serif;
-    --font-handwritten: "Caveat", cursive;
-    --font-kaisei: "Kaisei Decol", serif;
+    --font-serif: var(--font-mplus-rounded), "Georgia", serif;
+    --font-handwritten: var(--font-caveat), cursive;
+    --font-kaisei: var(--font-mplus-rounded), serif;
 
     /* より大きな差でヒエラルキーを強調 */
     --font-size-hero: 42px;

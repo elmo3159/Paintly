@@ -11,6 +11,18 @@ export function LegalFooter({ variant = 'default', className = '' }: LegalFooter
       <footer className={`py-4 text-center text-sm text-gray-600 ${className}`}>
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
           <Link
+            href="/pricing"
+            className="hover:text-blue-600 underline decoration-dotted underline-offset-4 transition-colors"
+          >
+            料金プラン
+          </Link>
+          <Link
+            href="/faq"
+            className="hover:text-blue-600 underline decoration-dotted underline-offset-4 transition-colors"
+          >
+            よくある質問
+          </Link>
+          <Link
             href="/terms"
             className="hover:text-blue-600 underline decoration-dotted underline-offset-4 transition-colors"
           >
@@ -56,18 +68,26 @@ export function LegalFooter({ variant = 'default', className = '' }: LegalFooter
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/dashboard"
+                  href="/pricing"
                   className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
                 >
-                  ダッシュボード
+                  料金プラン
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/billing"
+                  href="/faq"
                   className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
                 >
-                  料金プラン
+                  よくある質問
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/dashboard"
+                  className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                >
+                  ダッシュボード
                 </Link>
               </li>
               <li>

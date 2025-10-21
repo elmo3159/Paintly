@@ -127,7 +127,7 @@ export function TutorialModal() {
                   </li>
                   <li className="flex items-start gap-2">
                     <Check className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span>日塗工番号に対応した豊富なカラーパレット</span>
+                    <span>豊富なカラーパレットから自由に色選択</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <Check className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />

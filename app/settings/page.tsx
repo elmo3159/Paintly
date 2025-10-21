@@ -499,8 +499,77 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            {/* 2要素認証（MFA） */}
-            <MFASetup />
+            {/* セキュリティ設定 */}
+            <div className="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden">
+              <div className="p-6 border-b border-gray-200">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-gray-100 rounded-lg">
+                    <Shield className="h-6 w-6 text-gray-900" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900">セキュリティ設定</h2>
+                    <p className="text-gray-600 text-sm mt-1">アカウントのセキュリティを強化</p>
+                  </div>
+                </div>
+              </div>
+              <div className="p-6 space-y-4">
+                {/* 推奨認証方法 */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-start space-x-3">
+                    <Mail className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1">
+                      <h3 className="font-bold text-blue-900 mb-1">推奨：メールコード認証（Email OTP）</h3>
+                      <p className="text-sm text-blue-800 mb-2">
+                        サインイン時に「メールコード」タブを選択すると、メールで届く6桁のコードでログインできます。
+                      </p>
+                      <div className="space-y-1 text-sm text-blue-700">
+                        <div className="flex items-center">
+                          <CheckCircle className="h-4 w-4 mr-2" />
+                          <span>✅ 完全無料（追加コストなし）</span>
+                        </div>
+                        <div className="flex items-center">
+                          <CheckCircle className="h-4 w-4 mr-2" />
+                          <span>✅ アプリダウンロード不要</span>
+                        </div>
+                        <div className="flex items-center">
+                          <CheckCircle className="h-4 w-4 mr-2" />
+                          <span>✅ パスワード忘れの心配なし</span>
+                        </div>
+                        <div className="flex items-center">
+                          <CheckCircle className="h-4 w-4 mr-2" />
+                          <span>✅ セキュアな認証（60秒に1回制限、1時間で失効）</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2要素認証（上級者向け） */}
+                <div className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center space-x-2">
+                      <Lock className="h-5 w-5 text-gray-600" />
+                      <h3 className="font-bold text-gray-900">2要素認証アプリ（TOTP）</h3>
+                      <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">上級者向け</span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-3">
+                    Google AuthenticatorやMicrosoft Authenticatorなどの認証アプリを使用した2要素認証です。
+                  </p>
+                  <MFASetup />
+                </div>
+
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                  <p className="text-xs text-yellow-800 flex items-start">
+                    <AlertCircle className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0" />
+                    <span>
+                      <strong>注意：</strong>2要素認証アプリは、バックアップ機能のあるMicrosoft Authenticatorの使用を推奨します。
+                      Google Authenticatorは機種変更時にデータが消失する可能性があります。
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

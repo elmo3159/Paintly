@@ -11,7 +11,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, Palette, Droplet, Paintbrush, Home, Lock } from 'lucide-react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Loader2, Palette, Droplet, Paintbrush, Home, Lock, Mail, Key, CheckCircle } from 'lucide-react'
 // GoogleアイコンSVGコンポーネント
 const GoogleIcon = () => (
   <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -31,6 +32,14 @@ export default function SignInPage() {
   const [loading, setLoading] = useState(false)
   const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null)
   const supabase = createClient()
+
+  // Email OTP用のステート
+  const [otpEmail, setOtpEmail] = useState('')
+  const [otpCode, setOtpCode] = useState('')
+  const [otpSent, setOtpSent] = useState(false)
+  const [otpLoading, setOtpLoading] = useState(false)
+  const [otpError, setOtpError] = useState<string | null>(null)
+  const [otpSuccess, setOtpSuccess] = useState<string | null>(null)
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -141,6 +150,72 @@ export default function SignInPage() {
     }
   }
 
+  // Email OTPコード送信
+  const handleSendOTP = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setOtpError(null)
+    setOtpSuccess(null)
+    setOtpLoading(true)
+
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email: otpEmail,
+        options: {
+          shouldCreateUser: false, // 既存ユーザーのみ許可
+        },
+      })
+
+      if (error) {
+        if (error.message.includes('User not found')) {
+          setOtpError('このメールアドレスは登録されていません。新規登録してください。')
+        } else {
+          setOtpError(error.message)
+        }
+        setOtpLoading(false)
+        return
+      }
+
+      setOtpSent(true)
+      setOtpSuccess('6桁の認証コードをメールで送信しました！メールをご確認ください。')
+      setOtpLoading(false)
+    } catch (error) {
+      setOtpError('認証コードの送信に失敗しました。')
+      setOtpLoading(false)
+    }
+  }
+
+  // Email OTPでログイン
+  const handleVerifyOTP = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setOtpError(null)
+    setOtpLoading(true)
+
+    try {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email: otpEmail,
+        token: otpCode,
+        type: 'email',
+      })
+
+      if (error) {
+        setOtpError('認証コードが正しくありません。もう一度お試しください。')
+        setOtpLoading(false)
+        return
+      }
+
+      if (data?.user) {
+        setOtpSuccess('ログインに成功しました！')
+        setTimeout(() => {
+          router.push('/dashboard')
+          router.refresh()
+        }, 500)
+      }
+    } catch (error) {
+      setOtpError('ログインに失敗しました。')
+      setOtpLoading(false)
+    }
+  }
+
   return (
     <div className="min-h-dvh overflow-y-auto bg-gradient-to-br from-background via-secondary/30 to-primary/10 p-4 py-2 md:py-6 flex items-center">
       {/* 背景装飾 */}
@@ -186,92 +261,243 @@ export default function SignInPage() {
             </CardDescription>
           </div>
         </CardHeader>
-        <form onSubmit={handleSignIn} role="form" aria-labelledby="signin-title" aria-describedby={error ? "signin-error" : undefined}>
-          <CardContent className="space-y-2">
-            {error && (
-              <Alert variant="destructive" className="border-destructive/20 bg-destructive/5" role="alert" aria-live="polite">
-                <Lock className="h-4 w-4" />
-                <AlertDescription id="signin-error" className="text-destructive/90">
-                  {error}
-                </AlertDescription>
-              </Alert>
-            )}
-            
-            {/* フォームフィールド */}
-            <div className="space-y-3">
-              <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-xs md:text-sm font-semibold text-foreground flex items-center">
-                  <Home className="h-3.5 w-3.5 mr-1.5 text-primary" />
-                  メールアドレス
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="例: yamada@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  disabled={loading}
-                  aria-describedby={error ? "signin-error" : undefined}
-                  aria-invalid={error ? "true" : "false"}
-                  aria-label="メールアドレスを入力してください"
-                  className="paint-input h-9 md:h-10 text-sm md:text-base border-border/60 focus:border-primary transition-all duration-300"
-                />
-              </div>
+        <CardContent className="space-y-2 pt-4">
+          {/* タブ切り替え */}
+          <Tabs defaultValue="otp" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-4">
+              <TabsTrigger value="otp" className="text-xs md:text-sm flex items-center gap-1">
+                <Mail className="h-3.5 w-3.5" />
+                メールコード
+                <span className="ml-1 px-1.5 py-0.5 bg-primary/10 text-primary text-[10px] rounded-full font-bold">推奨</span>
+              </TabsTrigger>
+              <TabsTrigger value="password" className="text-xs md:text-sm flex items-center gap-1">
+                <Lock className="h-3.5 w-3.5" />
+                パスワード
+              </TabsTrigger>
+            </TabsList>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="password" className="text-xs md:text-sm font-semibold text-foreground flex items-center">
-                  <Lock className="h-3.5 w-3.5 mr-1.5 text-primary" />
-                  パスワード
-                </Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="パスワードを入力"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  disabled={loading}
-                  aria-describedby={error ? "signin-error" : undefined}
-                  aria-invalid={error ? "true" : "false"}
-                  aria-label="パスワードを入力してください"
-                  className="paint-input h-9 md:h-10 text-sm md:text-base border-border/60 focus:border-primary transition-all duration-300"
-                />
-              </div>
-            </div>
-
-            <div className="text-right">
-              <Link
-                href="/auth/reset-password"
-                className="text-sm text-primary hover:text-primary/80 font-medium paint-hover inline-flex items-center"
-                aria-label="パスワードリセットページに移動"
-              >
-                <Droplet className="h-3 w-3 mr-1" />
-                パスワードをお忘れですか？
-              </Link>
-            </div>
-          </CardContent>
-          <CardFooter className="flex flex-col space-y-3 pt-3">
-            {/* メインサインインボタン */}
-            <Button
-              type="submit"
-              className="w-full paint-button h-9 md:h-10 text-sm md:text-base font-bold shadow-lg"
-              disabled={loading}
-              aria-label={loading ? "サインイン処理中です" : "Paintlyにサインインする"}
-              aria-describedby={error ? "signin-error" : undefined}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  サインイン中...
-                </>
-              ) : (
-                <>
-                  <Palette className="mr-2 h-4 w-4" />
-                  Paintlyにサインイン
-                </>
+            {/* Email OTPログイン */}
+            <TabsContent value="otp" className="space-y-3">
+              {otpError && (
+                <Alert variant="destructive" className="border-destructive/20 bg-destructive/5" role="alert" aria-live="polite">
+                  <Lock className="h-4 w-4" />
+                  <AlertDescription className="text-destructive/90">{otpError}</AlertDescription>
+                </Alert>
               )}
-            </Button>
+
+              {otpSuccess && (
+                <Alert className="border-green-200 bg-green-50" role="alert" aria-live="polite">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <AlertDescription className="text-green-800">{otpSuccess}</AlertDescription>
+                </Alert>
+              )}
+
+              {!otpSent ? (
+                <form onSubmit={handleSendOTP} className="space-y-3">
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <p className="text-xs text-blue-800 flex items-start">
+                      <Mail className="h-3.5 w-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
+                      <span>
+                        <strong>完全無料＆アプリ不要！</strong><br />
+                        メールで届く6桁のコードでログインできます。
+                      </span>
+                    </p>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label htmlFor="otp-email" className="text-xs md:text-sm font-semibold text-foreground flex items-center">
+                      <Mail className="h-3.5 w-3.5 mr-1.5 text-primary" />
+                      メールアドレス
+                    </Label>
+                    <Input
+                      id="otp-email"
+                      type="email"
+                      placeholder="例: yamada@example.com"
+                      value={otpEmail}
+                      onChange={(e) => setOtpEmail(e.target.value)}
+                      required
+                      disabled={otpLoading}
+                      className="paint-input h-9 md:h-10 text-sm md:text-base border-border/60 focus:border-primary transition-all duration-300"
+                    />
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="w-full paint-button h-9 md:h-10 text-sm md:text-base font-bold shadow-lg"
+                    disabled={otpLoading}
+                  >
+                    {otpLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        送信中...
+                      </>
+                    ) : (
+                      <>
+                        <Mail className="mr-2 h-4 w-4" />
+                        認証コードを送信
+                      </>
+                    )}
+                  </Button>
+                </form>
+              ) : (
+                <form onSubmit={handleVerifyOTP} className="space-y-3">
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                    <p className="text-xs text-green-800 flex items-start">
+                      <CheckCircle className="h-3.5 w-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
+                      <span>
+                        <strong>{otpEmail}</strong> に6桁のコードを送信しました。<br />
+                        メールボックスをご確認ください。
+                      </span>
+                    </p>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label htmlFor="otp-code" className="text-xs md:text-sm font-semibold text-foreground flex items-center">
+                      <Key className="h-3.5 w-3.5 mr-1.5 text-primary" />
+                      6桁の認証コード
+                    </Label>
+                    <Input
+                      id="otp-code"
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]{6}"
+                      placeholder="123456"
+                      value={otpCode}
+                      onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                      required
+                      disabled={otpLoading}
+                      className="paint-input h-9 md:h-10 text-sm md:text-base border-border/60 focus:border-primary transition-all duration-300 text-center tracking-widest font-mono text-lg"
+                      maxLength={6}
+                    />
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        setOtpSent(false)
+                        setOtpCode('')
+                        setOtpError(null)
+                        setOtpSuccess(null)
+                      }}
+                      className="flex-1 h-9 md:h-10 text-sm"
+                      disabled={otpLoading}
+                    >
+                      戻る
+                    </Button>
+                    <Button
+                      type="submit"
+                      className="flex-1 paint-button h-9 md:h-10 text-sm md:text-base font-bold shadow-lg"
+                      disabled={otpLoading || otpCode.length !== 6}
+                    >
+                      {otpLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          確認中...
+                        </>
+                      ) : (
+                        <>
+                          <Palette className="mr-2 h-4 w-4" />
+                          ログイン
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </form>
+              )}
+            </TabsContent>
+
+            {/* パスワードログイン */}
+            <TabsContent value="password" className="space-y-3">
+              <form onSubmit={handleSignIn} role="form" aria-labelledby="signin-title" aria-describedby={error ? "signin-error" : undefined} className="space-y-3">
+                {error && (
+                  <Alert variant="destructive" className="border-destructive/20 bg-destructive/5" role="alert" aria-live="polite">
+                    <Lock className="h-4 w-4" />
+                    <AlertDescription id="signin-error" className="text-destructive/90">
+                      {error}
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                <div className="space-y-3">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="email" className="text-xs md:text-sm font-semibold text-foreground flex items-center">
+                      <Home className="h-3.5 w-3.5 mr-1.5 text-primary" />
+                      メールアドレス
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="例: yamada@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      disabled={loading}
+                      aria-describedby={error ? "signin-error" : undefined}
+                      aria-invalid={error ? "true" : "false"}
+                      aria-label="メールアドレスを入力してください"
+                      className="paint-input h-9 md:h-10 text-sm md:text-base border-border/60 focus:border-primary transition-all duration-300"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label htmlFor="password" className="text-xs md:text-sm font-semibold text-foreground flex items-center">
+                      <Lock className="h-3.5 w-3.5 mr-1.5 text-primary" />
+                      パスワード
+                    </Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder="パスワードを入力"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      disabled={loading}
+                      aria-describedby={error ? "signin-error" : undefined}
+                      aria-invalid={error ? "true" : "false"}
+                      aria-label="パスワードを入力してください"
+                      className="paint-input h-9 md:h-10 text-sm md:text-base border-border/60 focus:border-primary transition-all duration-300"
+                    />
+                  </div>
+                </div>
+
+                <div className="text-right">
+                  <Link
+                    href="/auth/reset-password"
+                    className="text-sm text-primary hover:text-primary/80 font-medium paint-hover inline-flex items-center"
+                    aria-label="パスワードリセットページに移動"
+                  >
+                    <Droplet className="h-3 w-3 mr-1" />
+                    パスワードをお忘れですか？
+                  </Link>
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full paint-button h-9 md:h-10 text-sm md:text-base font-bold shadow-lg"
+                  disabled={loading}
+                  aria-label={loading ? "サインイン処理中です" : "Paintlyにサインインする"}
+                  aria-describedby={error ? "signin-error" : undefined}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      サインイン中...
+                    </>
+                  ) : (
+                    <>
+                      <Palette className="mr-2 h-4 w-4" />
+                      Paintlyにサインイン
+                    </>
+                  )}
+                </Button>
+              </form>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+
+        <CardFooter className="flex flex-col space-y-3 pt-3">
 
             {/* 区切り線 */}
             <div className="relative">
@@ -312,8 +538,17 @@ export default function SignInPage() {
                 3回まで無料で画像生成を試用できます
               </p>
             </div>
+
+            {/* FAQリンク */}
+            <div className="text-center pt-1">
+              <Link
+                href="/faq"
+                className="text-xs text-muted-foreground hover:text-primary underline decoration-dotted underline-offset-4 transition-colors"
+              >
+                よくある質問を見る
+              </Link>
+            </div>
           </CardFooter>
-        </form>
       </Card>
       </div>
     </div>

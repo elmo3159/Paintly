@@ -353,6 +353,16 @@ export default function SignUpPage() {
                 <Droplet className="ml-1 h-2.5 w-2.5 animate-bounce" />
               </Link>
             </div>
+
+            {/* FAQリンク */}
+            <div className="text-center pt-1">
+              <Link
+                href="/faq"
+                className="text-xs text-muted-foreground hover:text-primary underline decoration-dotted underline-offset-4 transition-colors"
+              >
+                よくある質問を見る
+              </Link>
+            </div>
           </CardFooter>
         </form>
       </Card>

@@ -205,26 +205,26 @@ export default function HomePage() {
                 </Button>
               </Link>
             </div>
+
+            {/* スクロール誘導アニメーション - モバイルで通常フロー、sm以上でabsolute */}
+            <button
+              onClick={() => {
+                const nextSection = document.querySelector('section:nth-of-type(2)');
+                nextSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              aria-label="下にスクロール"
+              className="mt-4 sm:mt-0 sm:absolute sm:bottom-8 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-20 text-white opacity-80 hover:opacity-100 transition-opacity cursor-pointer animate-scroll-bounce"
+              style={{ transitionDuration: '300ms' }}
+            >
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-xs md:text-sm font-semibold" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
+                  もっと詳しく
+                </span>
+                <ChevronDown className="h-8 w-8 md:h-10 md:w-10" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.8))' }} />
+              </div>
+            </button>
           </div>
         </div>
-
-        {/* スクロール誘導アニメーション */}
-        <button
-          onClick={() => {
-            const nextSection = document.querySelector('section:nth-of-type(2)');
-            nextSection?.scrollIntoView({ behavior: 'smooth' });
-          }}
-          aria-label="下にスクロール"
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 text-white opacity-80 hover:opacity-100 transition-opacity cursor-pointer animate-scroll-bounce"
-          style={{ transitionDuration: '300ms' }}
-        >
-          <div className="flex flex-col items-center gap-1">
-            <span className="text-xs md:text-sm font-semibold" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
-              もっと詳しく
-            </span>
-            <ChevronDown className="h-8 w-8 md:h-10 md:w-10" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.8))' }} />
-          </div>
-        </button>
       </section>
 
       {/* 特徴セクション */}

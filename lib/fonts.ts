@@ -1,4 +1,4 @@
-import { Inter, M_PLUS_Rounded_1c } from 'next/font/google'
+import { Inter, M_PLUS_Rounded_1c, Caveat } from 'next/font/google'
 
 // Inter font for headings and English text
 export const inter = Inter({
@@ -19,5 +19,15 @@ export const mPlusRounded = M_PLUS_Rounded_1c({
   fallback: ['system-ui', 'arial'],
 })
 
+// Caveat for handwritten style
+export const caveat = Caveat({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-caveat',
+  weight: ['400', '500', '600', '700'],
+  fallback: ['cursive'],
+})
+
 // CSS class names for easy use
-export const fontClassNames = `${inter.variable} ${mPlusRounded.variable}`
+// これらの変数がglobals.cssで--font-sans, --font-handwrittenなどとして使用されます
+export const fontClassNames = `${inter.variable} ${mPlusRounded.variable} ${caveat.variable}`
