@@ -11,7 +11,7 @@ export const inter = Inter({
 
 // M PLUS Rounded 1c for Japanese text - rounded, friendly appearance
 export const mPlusRounded = M_PLUS_Rounded_1c({
-  subsets: ['latin'],
+  subsets: ['latin', 'japanese'],
   display: 'swap',
   variable: '--font-mplus-rounded',
   preload: true,
