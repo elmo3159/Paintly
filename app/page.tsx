@@ -215,7 +215,7 @@ export default function HomePage() {
             nextSection?.scrollIntoView({ behavior: 'smooth' });
           }}
           aria-label="下にスクロール"
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 text-white opacity-80 hover:opacity-100 transition-opacity duration-300 cursor-pointer animate-bounce"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 text-white opacity-80 hover:opacity-100 transition-opacity duration-300 cursor-pointer animate-scroll-bounce"
         >
           <div className="flex flex-col items-center gap-1">
             <span className="text-xs md:text-sm font-semibold" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
