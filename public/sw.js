@@ -1,6 +1,6 @@
 // Service Worker for Paintly PWA - Enhanced Version
-// v4: Optimized logo.png from 5MB to 5.4KB for instant loading
-const CACHE_VERSION = '2025.10.17-v4'
+// v5: Fixed 206 Partial Response caching errors and locked body errors
+const CACHE_VERSION = '2025.10.22-v5'
 const STATIC_CACHE = `paintly-static-${CACHE_VERSION}`
 const DYNAMIC_CACHE = `paintly-dynamic-${CACHE_VERSION}`
 const IMAGES_CACHE = `paintly-images-${CACHE_VERSION}`
@@ -187,21 +187,13 @@ async function handleApiRequest(request) {
   try {
     // AI画像生成APIは15-20秒かかるため、タイムアウトを30秒に延長
     const networkResponse = await fetchWithTimeout(request, 30000)
-    
-    // Cache successful GET requests
-    if (networkResponse.ok && request.method === 'GET') {
-      // Add timestamp for cache invalidation
-      const responseToCache = new Response(networkResponse.body, {
-        status: networkResponse.status,
-        statusText: networkResponse.statusText,
-        headers: {
-          ...Object.fromEntries(networkResponse.headers),
-          'sw-cached-at': Date.now().toString()
-        }
-      })
-      cache.put(request, responseToCache)
+
+    // Cache successful GET requests (only complete responses, not partial 206)
+    if (networkResponse.ok && request.method === 'GET' && networkResponse.status !== 206) {
+      // Use clone() to avoid locking the body
+      cache.put(request, networkResponse.clone())
     }
-    
+
     return networkResponse
   } catch (error) {
     console.log('🌐 API offline, checking cache...')
@@ -243,20 +235,13 @@ async function handleImageRequest(request) {
   
   try {
     const networkResponse = await fetch(request)
-    
-    if (networkResponse.ok) {
-      // Cache with timestamp
-      const responseToCache = new Response(networkResponse.body, {
-        status: networkResponse.status,
-        statusText: networkResponse.statusText,
-        headers: {
-          ...Object.fromEntries(networkResponse.headers),
-          'sw-cached-at': Date.now().toString()
-        }
-      })
-      cache.put(request, responseToCache)
+
+    if (networkResponse.ok && networkResponse.status !== 206) {
+      // Only cache complete responses, not partial (206)
+      // Use clone() to avoid locking the body
+      cache.put(request, networkResponse.clone())
     }
-    
+
     return networkResponse
   } catch (error) {
     // Return cached version even if expired
@@ -297,18 +282,20 @@ async function handleDynamicRequest(request) {
   if (cachedResponse) {
     // Update in background
     fetch(request).then(networkResponse => {
-      if (networkResponse.ok) {
+      // Only cache complete responses (status 200-299), not partial responses (206)
+      if (networkResponse.ok && networkResponse.status !== 206) {
         cache.put(request, networkResponse)
       }
     }).catch(() => {}) // Ignore network errors for background updates
-    
+
     return cachedResponse
   }
-  
+
   // No cache, try network
   try {
     const networkResponse = await fetch(request)
-    if (networkResponse.ok) {
+    // Only cache complete responses (status 200-299), not partial responses (206)
+    if (networkResponse.ok && networkResponse.status !== 206) {
       cache.put(request, networkResponse.clone())
     }
     return networkResponse
