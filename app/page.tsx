@@ -576,10 +576,6 @@ export default function HomePage() {
                   <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
                   <span className="text-gray-700">顧客管理無制限</span>
                 </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">1ヶ月保存</span>
-                </li>
               </ul>
               <Link href="/pricing" className="block">
                 <Button className="w-full bg-blue-600 hover:bg-blue-700">
@@ -607,10 +603,6 @@ export default function HomePage() {
                   <CheckCircle className="h-5 w-5 text-white flex-shrink-0" />
                   <span className="text-white">顧客管理無制限</span>
                 </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-white flex-shrink-0" />
-                  <span className="text-white">3ヶ月保存</span>
-                </li>
               </ul>
               <Link href="/pricing" className="block">
                 <Button className="w-full bg-white text-orange-600 hover:bg-gray-100 font-bold">
@@ -634,10 +626,6 @@ export default function HomePage() {
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
                   <span className="text-gray-700">顧客管理無制限</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">6ヶ月保存</span>
                 </li>
               </ul>
               <Link href="/pricing" className="block">
