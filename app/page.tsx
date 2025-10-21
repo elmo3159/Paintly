@@ -190,30 +190,51 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* CTAボタン */}
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/auth/signup">
-                <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-4 md:px-8 md:py-5 text-sm md:text-base font-bold shadow-[0_8px_30px_rgb(249,115,22,0.4)] hover:shadow-[0_12px_40px_rgb(249,115,22,0.5)] border-2 border-orange-400 transition-all duration-300 transform hover:scale-105">
-                  <Star className="mr-2 h-4 w-4" />
-                  無料で始める
-                </Button>
-              </Link>
-              <Link href="/auth/signin">
-                <Button variant="outline" className="border-2 border-white bg-white/10 backdrop-blur-sm text-white hover:bg-white hover:text-black px-6 py-4 md:px-8 md:py-5 text-sm md:text-base font-bold shadow-[0_8px_30px_rgba(255,255,255,0.2)] hover:shadow-[0_12px_40px_rgba(255,255,255,0.3)] transition-all duration-300 transform hover:scale-105">
-                  <Palette className="mr-2 h-4 w-4" />
-                  ログインして続ける
-                </Button>
-              </Link>
+            {/* モバイル: もっと詳しくボタンとCTAボタンを横並び */}
+            <div className="flex flex-row gap-3 sm:gap-0 justify-center items-center">
+              {/* もっと詳しくボタン - モバイルでのみ表示 */}
+              <button
+                onClick={() => {
+                  const nextSection = document.querySelector('section:nth-of-type(2)');
+                  nextSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                aria-label="下にスクロール"
+                className="sm:hidden flex-shrink-0 text-white opacity-80 hover:opacity-100 transition-opacity cursor-pointer animate-scroll-bounce"
+                style={{ transitionDuration: '300ms' }}
+              >
+                <div className="flex flex-col items-center gap-0.5">
+                  <span className="text-xs font-semibold whitespace-nowrap" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
+                    詳しく
+                  </span>
+                  <ChevronDown className="h-7 w-7" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.8))' }} />
+                </div>
+              </button>
+
+              {/* CTAボタン */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link href="/auth/signup">
+                  <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-4 md:px-8 md:py-5 text-sm md:text-base font-bold shadow-[0_8px_30px_rgb(249,115,22,0.4)] hover:shadow-[0_12px_40px_rgb(249,115,22,0.5)] border-2 border-orange-400 transition-all duration-300 transform hover:scale-105">
+                    <Star className="mr-2 h-4 w-4" />
+                    無料で始める
+                  </Button>
+                </Link>
+                <Link href="/auth/signin">
+                  <Button variant="outline" className="border-2 border-white bg-white/10 backdrop-blur-sm text-white hover:bg-white hover:text-black px-6 py-4 md:px-8 md:py-5 text-sm md:text-base font-bold shadow-[0_8px_30px_rgba(255,255,255,0.2)] hover:shadow-[0_12px_40px_rgba(255,255,255,0.3)] transition-all duration-300 transform hover:scale-105">
+                    <Palette className="mr-2 h-4 w-4" />
+                    ログインして続ける
+                  </Button>
+                </Link>
+              </div>
             </div>
 
-            {/* スクロール誘導アニメーション - モバイルで通常フロー、sm以上でabsolute */}
+            {/* スクロール誘導アニメーション - sm以上でabsolute表示 */}
             <button
               onClick={() => {
                 const nextSection = document.querySelector('section:nth-of-type(2)');
                 nextSection?.scrollIntoView({ behavior: 'smooth' });
               }}
               aria-label="下にスクロール"
-              className="mt-4 sm:mt-0 sm:absolute sm:bottom-8 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-20 text-white opacity-80 hover:opacity-100 transition-opacity cursor-pointer animate-scroll-bounce"
+              className="hidden sm:block absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 text-white opacity-80 hover:opacity-100 transition-opacity cursor-pointer animate-scroll-bounce"
               style={{ transitionDuration: '300ms' }}
             >
               <div className="flex flex-col items-center gap-1">
