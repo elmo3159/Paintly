@@ -190,16 +190,16 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* モバイル: もっと詳しくボタンとCTAボタンを横並び */}
-            <div className="flex flex-row gap-3 sm:gap-0 justify-center items-center">
-              {/* もっと詳しくボタン - モバイルでのみ表示 */}
+            {/* モバイル: CTAボタン中央配置 + 詳しくボタン左側配置 */}
+            <div className="relative">
+              {/* もっと詳しくボタン - モバイルでのみ左側に表示 */}
               <button
                 onClick={() => {
                   const nextSection = document.querySelector('section:nth-of-type(2)');
                   nextSection?.scrollIntoView({ behavior: 'smooth' });
                 }}
                 aria-label="下にスクロール"
-                className="sm:hidden flex-shrink-0 text-white opacity-80 hover:opacity-100 transition-opacity cursor-pointer animate-scroll-bounce"
+                className="sm:hidden absolute left-0 top-1/2 -translate-y-1/2 text-white opacity-80 hover:opacity-100 transition-opacity cursor-pointer animate-scroll-bounce z-10"
                 style={{ transitionDuration: '300ms' }}
               >
                 <div className="flex flex-col items-center gap-0.5">
@@ -210,8 +210,8 @@ export default function HomePage() {
                 </div>
               </button>
 
-              {/* CTAボタン */}
-              <div className="flex flex-col sm:flex-row gap-3">
+              {/* CTAボタン - 中央配置 */}
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link href="/auth/signup">
                   <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-4 md:px-8 md:py-5 text-sm md:text-base font-bold shadow-[0_8px_30px_rgb(249,115,22,0.4)] hover:shadow-[0_12px_40px_rgb(249,115,22,0.5)] border-2 border-orange-400 transition-all duration-300 transform hover:scale-105">
                     <Star className="mr-2 h-4 w-4" />
