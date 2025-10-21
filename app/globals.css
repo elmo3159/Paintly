@@ -73,11 +73,11 @@
     /* ===== タイポグラフィ（読みやすさ重視） ===== */
     /* next/font/googleで最適化されたフォント変数を使用 */
     --font-sans:
-      var(--font-mplus-rounded), var(--font-inter), -apple-system,
+      var(--font-noto-sans-jp), var(--font-inter), -apple-system,
       BlinkMacSystemFont, system-ui, sans-serif;
-    --font-serif: var(--font-mplus-rounded), "Georgia", serif;
+    --font-serif: var(--font-noto-sans-jp), "Georgia", serif;
     --font-handwritten: var(--font-caveat), cursive;
-    --font-kaisei: var(--font-mplus-rounded), serif;
+    --font-kaisei: var(--font-noto-sans-jp), serif;
 
     /* より大きな差でヒエラルキーを強調 */
     --font-size-hero: 42px;
