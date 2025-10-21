@@ -91,7 +91,6 @@ export default function RootLayout({
       <head>
         <link rel="apple-touch-icon" sizes="180x180" href="/icon-192.png" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <link rel="preload" as="image" href="/logo.png" fetchPriority="high" />
       </head>
       <body
         className={`${fontClassNames} relative min-h-screen text-foreground`}
