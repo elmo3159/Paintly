@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
@@ -23,25 +22,14 @@ interface Plan {
 }
 
 export default function PricingPage() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
   const [plans, setPlans] = useState<Plan[]>([])
   const [loading, setLoading] = useState(true)
-  const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
   const supabase = createClient()
 
   useEffect(() => {
-    // URLパラメータをチェック
-    if (searchParams.get('success') === 'true') {
-      setSuccess(true)
-    } else if (searchParams.get('canceled') === 'true') {
-      setError('決済がキャンセルされました。')
-    }
-
     fetchPlans()
-  }, [searchParams])
+  }, [])
 
   const fetchPlans = async () => {
     try {
@@ -59,62 +47,6 @@ export default function PricingPage() {
       setError('プラン情報の取得に失敗しました。')
     } finally {
       setLoading(false)
-    }
-  }
-
-  const handleSelectPlan = async (plan: Plan) => {
-    // 無料プランの場合はダッシュボードに遷移
-    if (plan.slug === 'free' || plan.price === 0) {
-      router.push('/dashboard')
-      return
-    }
-
-    // Stripe Price IDがない場合はエラー
-    if (!plan.stripe_price_id) {
-      setError('このプランは現在利用できません。')
-      return
-    }
-
-    setCheckoutLoading(plan.id)
-    setError(null)
-
-    try {
-      // ユーザー認証チェック
-      const { data: { user } } = await supabase.auth.getUser()
-
-      if (!user) {
-        router.push('/auth/signin?redirect=/pricing')
-        return
-      }
-
-      // Checkout Session作成
-      const response = await fetch('/api/stripe/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          priceId: plan.stripe_price_id,
-        }),
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'セッションの作成に失敗しました')
-      }
-
-      // Stripeの決済ページにリダイレクト
-      if (data.url) {
-        window.location.href = data.url
-      } else {
-        throw new Error('決済URLの取得に失敗しました')
-      }
-
-    } catch (err) {
-      console.error('Checkout error:', err)
-      setError(err instanceof Error ? err.message : '決済処理に失敗しました')
-      setCheckoutLoading(null)
     }
   }
 
@@ -156,18 +88,12 @@ export default function PricingPage() {
           <p className="text-lg text-white">
             あなたのビジネスに最適なプランをお選びください
           </p>
+          <p className="text-sm text-white/80 mt-2">
+            まずは無料登録から始めましょう
+          </p>
         </div>
 
         {/* アラート表示 */}
-        {success && (
-          <Alert className="mb-8 border-primary/20 bg-primary/5">
-            <Check className="h-4 w-4 text-primary" />
-            <AlertDescription className="text-primary">
-              決済が完了しました！ダッシュボードでご確認ください。
-            </AlertDescription>
-          </Alert>
-        )}
-
         {error && (
           <Alert variant="destructive" className="mb-8">
             <AlertDescription>{error}</AlertDescription>
@@ -213,22 +139,11 @@ export default function PricingPage() {
               </CardContent>
 
               <CardFooter>
-                <Button
-                  className="w-full paint-button"
-                  onClick={() => handleSelectPlan(plan)}
-                  disabled={checkoutLoading === plan.id}
-                >
-                  {checkoutLoading === plan.id ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      処理中...
-                    </>
-                  ) : (
-                    <>
-                      {plan.slug === 'free' ? 'ダッシュボードへ' : 'プランを選択'}
-                    </>
-                  )}
-                </Button>
+                <Link href="/auth/signup" className="w-full">
+                  <Button className="w-full paint-button">
+                    無料で始める
+                  </Button>
+                </Link>
               </CardFooter>
             </Card>
           ))}
@@ -236,8 +151,8 @@ export default function PricingPage() {
 
         {/* フッター */}
         <div className="text-center mt-12 space-y-3">
-          <p className="text-sm text-muted-foreground">
-            プランはいつでも変更・キャンセル可能です
+          <p className="text-sm text-white/80">
+            無料プランで3回まで試せます。登録後、有料プランはいつでも変更・キャンセル可能です
           </p>
           <p className="text-sm">
             <Link
