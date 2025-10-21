@@ -560,30 +560,30 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {/* 無料プラン */}
+            {/* ライトプラン */}
             <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-shadow">
               <div className="text-center mb-6">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">無料プラン</h3>
-                <div className="text-4xl font-bold text-orange-600 mb-2">¥0</div>
-                <p className="text-gray-600">3回まで無料</p>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">ライトプラン</h3>
+                <div className="text-4xl font-bold text-blue-600 mb-2">¥2,980</div>
+                <p className="text-gray-600">/月</p>
               </div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">3回の画像生成</span>
+                  <span className="text-gray-700">月30回の画像生成</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">140色対応</span>
+                  <span className="text-gray-700">顧客管理無制限</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">7日間保存</span>
+                  <span className="text-gray-700">1ヶ月保存</span>
                 </li>
               </ul>
-              <Link href="/auth/signup" className="block">
-                <Button className="w-full bg-gray-600 hover:bg-gray-700">
-                  今すぐ無料で始める
+              <Link href="/pricing" className="block">
+                <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                  詳しく見る
                 </Button>
               </Link>
             </div>
@@ -611,10 +611,6 @@ export default function HomePage() {
                   <CheckCircle className="h-5 w-5 text-white flex-shrink-0" />
                   <span className="text-white">3ヶ月保存</span>
                 </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-white flex-shrink-0" />
-                  <span className="text-white">PDF一括ダウンロード</span>
-                </li>
               </ul>
               <Link href="/pricing" className="block">
                 <Button className="w-full bg-white text-orange-600 hover:bg-gray-100 font-bold">
@@ -637,11 +633,11 @@ export default function HomePage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">6ヶ月保存</span>
+                  <span className="text-gray-700">顧客管理無制限</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">優先サポート</span>
+                  <span className="text-gray-700">6ヶ月保存</span>
                 </li>
               </ul>
               <Link href="/pricing" className="block">
