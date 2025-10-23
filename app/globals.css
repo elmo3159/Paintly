@@ -1319,17 +1319,27 @@
 /* ============================================
    Logo Paint Brush Animation
    ============================================ */
-/* ロゴ背景の白いペンキアニメーション */
+/* ロゴ背景の筆で描いたようなペンキアニメーション */
 @keyframes paintBrush {
   0% {
-    stroke-dashoffset: 400;
+    stroke-dashoffset: 500;
     opacity: 0;
   }
-  10% {
+  5% {
+    opacity: 0.6;
+  }
+  15% {
     opacity: 1;
   }
   100% {
     stroke-dashoffset: 0;
     opacity: 1;
+  }
+}
+
+/* より自然な筆の動き - イージング関数 */
+@supports (animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1)) {
+  [style*="paintBrush"] {
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 }

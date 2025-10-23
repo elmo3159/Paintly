@@ -110,70 +110,118 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto w-full space-y-6">
             {/* ロゴ with ペイントアニメーション */}
             <div className="relative inline-block mx-auto mb-5 -mt-8 md:-mt-16">
-              {/* 白いペンキのブラシストローク背景 */}
+              {/* 筆で描いたような白いペンキストローク */}
               <svg
                 className="absolute inset-0 w-full h-full -z-10"
                 viewBox="0 0 320 180"
                 xmlns="http://www.w3.org/2000/svg"
                 style={{
-                  transform: 'scale(1.3)',
+                  transform: 'scale(1.4)',
                   transformOrigin: 'center',
                 }}
               >
-                {/* かすれたペンキのブラシストローク（左下から右上へ） */}
                 <defs>
-                  {/* ブラシのかすれ効果用フィルター */}
-                  <filter id="brush-texture">
-                    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise" />
-                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+                  {/* 自然なブラシ効果のフィルター */}
+                  <filter id="organic-brush">
+                    {/* ノイズテクスチャ生成 */}
+                    <feTurbulence
+                      type="fractalNoise"
+                      baseFrequency="2.5"
+                      numOctaves="5"
+                      result="turbulence"
+                      seed="2"
+                    />
+                    {/* エッジをぼかして柔らかく */}
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+                    {/* ノイズでストロークを歪ませる */}
+                    <feDisplacementMap
+                      in="blur"
+                      in2="turbulence"
+                      scale="8"
+                      xChannelSelector="R"
+                      yChannelSelector="G"
+                      result="displaced"
+                    />
+                    {/* コントラストを調整 */}
+                    <feColorMatrix
+                      in="displaced"
+                      type="matrix"
+                      values="1 0 0 0 0
+                              0 1 0 0 0
+                              0 0 1 0 0
+                              0 0 0 1.2 -0.1"
+                      result="contrast"
+                    />
+                    {/* さらに軽くぼかしてソフトに */}
+                    <feGaussianBlur in="contrast" stdDeviation="1.5" />
                   </filter>
                 </defs>
 
-                {/* メインのブラシストローク */}
+                {/* 筆のベースストローク（太い部分） */}
                 <path
-                  d="M 20 160 Q 100 120, 160 90 T 300 20"
-                  stroke="rgba(255, 255, 255, 0.3)"
-                  strokeWidth="80"
+                  d="M 15 165 C 60 145, 85 135, 120 115 C 155 95, 180 80, 210 60 C 240 40, 270 25, 305 15"
+                  stroke="rgba(255, 255, 255, 0.35)"
+                  strokeWidth="75"
                   fill="none"
                   strokeLinecap="round"
-                  filter="url(#brush-texture)"
+                  strokeLinejoin="round"
+                  filter="url(#organic-brush)"
                   style={{
-                    strokeDasharray: '400',
-                    strokeDashoffset: '400',
-                    animation: 'paintBrush 1.5s ease-out forwards',
+                    strokeDasharray: '450',
+                    strokeDashoffset: '450',
+                    animation: 'paintBrush 2s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+                    animationDelay: '0.3s'
+                  }}
+                />
+
+                {/* 筆の中間層（かすれ表現） */}
+                <path
+                  d="M 8 172 C 55 150, 82 138, 115 120 C 150 100, 175 85, 205 65 C 235 45, 265 30, 312 18"
+                  stroke="rgba(255, 255, 255, 0.2)"
+                  strokeWidth="85"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  filter="url(#organic-brush)"
+                  style={{
+                    strokeDasharray: '470',
+                    strokeDashoffset: '470',
+                    animation: 'paintBrush 2s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+                    animationDelay: '0.4s'
+                  }}
+                />
+
+                {/* 筆のハイライト（明るい部分） */}
+                <path
+                  d="M 22 158 C 65 140, 90 130, 125 110 C 158 92, 185 75, 215 55 C 245 35, 275 20, 298 12"
+                  stroke="rgba(255, 255, 255, 0.45)"
+                  strokeWidth="50"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  filter="url(#organic-brush)"
+                  style={{
+                    strokeDasharray: '430',
+                    strokeDashoffset: '430',
+                    animation: 'paintBrush 2s cubic-bezier(0.4, 0, 0.2, 1) forwards',
                     animationDelay: '0.5s'
                   }}
                 />
 
-                {/* 追加のブラシストローク（かすれ効果） */}
+                {/* 筆の端（細い部分） */}
                 <path
-                  d="M 10 170 Q 90 130, 150 100 T 310 30"
-                  stroke="rgba(255, 255, 255, 0.15)"
-                  strokeWidth="90"
+                  d="M 25 155 C 70 138, 95 128, 130 108 C 165 88, 190 73, 220 53"
+                  stroke="rgba(255, 255, 255, 0.25)"
+                  strokeWidth="35"
                   fill="none"
                   strokeLinecap="round"
-                  filter="url(#brush-texture)"
+                  strokeLinejoin="round"
+                  filter="url(#organic-brush)"
                   style={{
-                    strokeDasharray: '420',
-                    strokeDashoffset: '420',
-                    animation: 'paintBrush 1.5s ease-out forwards',
+                    strokeDasharray: '330',
+                    strokeDashoffset: '330',
+                    animation: 'paintBrush 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards',
                     animationDelay: '0.6s'
-                  }}
-                />
-
-                {/* はみ出し部分のブラシストローク */}
-                <path
-                  d="M 30 150 Q 110 110, 170 80 T 290 10"
-                  stroke="rgba(255, 255, 255, 0.2)"
-                  strokeWidth="70"
-                  fill="none"
-                  strokeLinecap="round"
-                  filter="url(#brush-texture)"
-                  style={{
-                    strokeDasharray: '380',
-                    strokeDashoffset: '380',
-                    animation: 'paintBrush 1.5s ease-out forwards',
-                    animationDelay: '0.7s'
                   }}
                 />
               </svg>
