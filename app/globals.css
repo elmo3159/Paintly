@@ -1305,3 +1305,13 @@
 .animation-delay-4000 {
   animation-delay: 4s;
 }
+
+/* ============================================
+   reCAPTCHA Badge Hidden (moved to footer text)
+   ============================================ */
+/* バッジを非表示にして、代わりにフッターにテキスト表示 */
+.grecaptcha-badge {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

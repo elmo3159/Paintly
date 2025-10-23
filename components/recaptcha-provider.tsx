@@ -17,21 +17,30 @@ export function RecaptchaProvider({ children }: RecaptchaProviderProps) {
   }
 
   return (
-    <GoogleReCaptchaProvider
-      reCaptchaKey={siteKey}
-      scriptProps={{
-        async: true,
-        defer: true,
-        appendTo: 'head',
-      }}
-      container={{
-        parameters: {
-          badge: 'bottomright', // reCAPTCHAバッジの位置
-          theme: 'light',
-        },
-      }}
-    >
-      {children}
-    </GoogleReCaptchaProvider>
+    <>
+      <GoogleReCaptchaProvider
+        reCaptchaKey={siteKey}
+        scriptProps={{
+          async: true,
+          defer: true,
+          appendTo: 'head',
+        }}
+        container={{
+          parameters: {
+            badge: 'inline', // バッジを非表示にするための設定
+            theme: 'light',
+          },
+        }}
+      >
+        {children}
+      </GoogleReCaptchaProvider>
+      <style jsx global>{`
+        .grecaptcha-badge {
+          visibility: hidden !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
+        }
+      `}</style>
+    </>
   )
 }

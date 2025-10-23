@@ -42,6 +42,27 @@ export function LegalFooter({ variant = 'default', className = '' }: LegalFooter
           </Link>
         </div>
         <p className="mt-2 text-xs text-gray-500">© 2025 Paintly. All rights reserved.</p>
+        <p className="mt-2 text-xs text-gray-500">
+          このサイトはreCAPTCHAによって保護されており、Googleの
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline ml-1"
+          >
+            プライバシーポリシー
+          </a>
+          と
+          <a
+            href="https://policies.google.com/terms"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline ml-1"
+          >
+            利用規約
+          </a>
+          が適用されます。
+        </p>
       </footer>
     )
   }
@@ -137,6 +158,27 @@ export function LegalFooter({ variant = 'default', className = '' }: LegalFooter
         <div className="pt-6 border-t border-gray-200">
           <p className="text-center text-sm text-gray-500">
             © 2025 Paintly. All rights reserved.
+          </p>
+          <p className="text-center text-xs text-gray-500 mt-2">
+            このサイトはreCAPTCHAによって保護されており、Googleの
+            <a
+              href="https://policies.google.com/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline ml-1"
+            >
+              プライバシーポリシー
+            </a>
+            と
+            <a
+              href="https://policies.google.com/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline ml-1"
+            >
+              利用規約
+            </a>
+            が適用されます。
           </p>
         </div>
       </div>
