@@ -451,8 +451,21 @@ export default function CustomerPage() {
         body: formData
       })
 
-      const result = await response.json()
-      
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type')
+      console.log('🔍 [Frontend] Response Content-Type:', contentType)
+      console.log('🔍 [Frontend] Response Status:', response.status)
+
+      let result
+      if (contentType && contentType.includes('application/json')) {
+        result = await response.json()
+      } else {
+        // Handle non-JSON responses (errors)
+        const text = await response.text()
+        console.error('❌ [Frontend] Non-JSON Response:', text.substring(0, 500))
+        throw new Error(`APIエラー (${response.status}): ${text.substring(0, 200)}`)
+      }
+
       // 🔍 Debug: Log the actual API response
       console.log('🔍 [Frontend] Full API Response:', result)
       console.log('🔍 [Frontend] response.ok:', response.ok)

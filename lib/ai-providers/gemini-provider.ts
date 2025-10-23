@@ -234,11 +234,33 @@ export class GeminiProvider extends AIProvider {
 
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error)
+      const errorStack = error instanceof Error ? error.stack : undefined
+
       console.error('❌ [Gemini] Generation error:', errorMessage)
+      console.error('❌ [Gemini] Error stack:', errorStack)
+      console.error('❌ [Gemini] Full error object:', JSON.stringify(error, Object.getOwnPropertyNames(error), 2))
+
+      // Extract more details from Google API errors
+      let detailedError = errorMessage
+      if (typeof error === 'object' && error !== null) {
+        const err = error as any
+        if (err.response) {
+          console.error('❌ [Gemini] API Response Error:', {
+            status: err.response.status,
+            statusText: err.response.statusText,
+            data: err.response.data
+          })
+          detailedError = `Gemini API Error (${err.response.status}): ${err.response.statusText}`
+        }
+        if (err.code) {
+          console.error('❌ [Gemini] Error Code:', err.code)
+          detailedError += ` [Code: ${err.code}]`
+        }
+      }
 
       return {
         success: false,
-        error: errorMessage || 'Gemini API呼び出しに失敗しました',
+        error: detailedError || 'Gemini API呼び出しに失敗しました',
         metadata: {
           provider: this.config.name,
           model: this.config.model,
