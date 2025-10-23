@@ -252,73 +252,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 特徴セクション */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 md:mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Paintlyが選ばれる3つの理由
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              AI技術を活用した塗装シミュレーションで、営業活動を劇的に効率化します
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-            {/* 特徴1: 瞬時の生成 */}
-            <article className="text-center group hover:transform hover:scale-105 transition-all duration-300">
-              <div className="bg-gradient-to-br from-orange-50 to-pink-50 rounded-2xl p-8 mb-6 group-hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Star className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-                  わずか数秒で高精度シミュレーション
-                </h3>
-                <p className="text-gray-700 leading-relaxed">
-                  最新のAI技術を使用し、建物の写真から<strong className="font-semibold">瞬時に</strong>塗装後のイメージを生成。<br />
-                  現地調査中にその場でお客様に<strong className="font-semibold">複数の提案</strong>を見せることができます。<br />
-                  <strong className="font-semibold text-orange-600">140色以上</strong>の実際の塗料色に対応し、色名で直感的に選択できるため、お客様とのコミュニケーションもスムーズです。
-                </p>
-              </div>
-            </article>
-
-            {/* 特徴2: モバイル完全対応 */}
-            <article className="text-center group hover:transform hover:scale-105 transition-all duration-300">
-              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 mb-6 group-hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Palette className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-                  スマホ1台で完結する営業活動
-                </h3>
-                <p className="text-gray-700 leading-relaxed">
-                  スマートフォン・タブレット・PCすべてに<strong className="font-semibold">完全対応。</strong><br />
-                  営業現場でその場で写真撮影→色選択→シミュレーション生成→お客様への提示まで、<strong className="font-semibold text-blue-600">スマホ1台で完結</strong>します。<br />
-                  <strong className="font-semibold">オフライン対応のPWA技術</strong>により、ネット環境が不安定な現場でも安定して動作します。
-                </p>
-              </div>
-            </article>
-
-            {/* 特徴3: 顧客管理機能 */}
-            <article className="text-center group hover:transform hover:scale-105 transition-all duration-300">
-              <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-8 mb-6 group-hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-                  顧客ごとの履歴管理で提案力アップ
-                </h3>
-                <p className="text-gray-700 leading-relaxed">
-                  顧客ページごとに生成した画像を<strong className="font-semibold">自動保存。</strong><br />
-                  過去の提案内容をいつでも確認でき、「前回はこの色でしたね」など<strong className="font-semibold">具体的な会話が可能に。</strong><br />
-                  <strong className="font-semibold">ビフォーアフター比較機能</strong>により、お客様の意思決定をサポートし、<strong className="font-semibold text-purple-600">成約率を大幅に向上</strong>させます。
-                </p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
       {/* Before/After実例ギャラリーセクション */}
       <section className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
         {/* SEO構造化データ: ImageGallery */}
@@ -407,7 +340,7 @@ export default function HomePage() {
                     <span className="text-xs font-semibold text-orange-400 uppercase tracking-wider">実例 1</span>
                     <span className="text-xs text-gray-400">スライダーを動かす →</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">一戸建て住宅</h3>
+                  <h3 className="text-xl font-bold text-white mb-2">実例 1</h3>
                   <p className="text-sm text-gray-400">外壁カラー変更シミュレーション</p>
                 </div>
                 <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl">
@@ -438,12 +371,12 @@ export default function HomePage() {
                     <span className="text-xs font-semibold text-pink-400 uppercase tracking-wider">実例 2</span>
                     <span className="text-xs text-gray-400">スライダーを動かす →</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">マンション外観</h3>
+                  <h3 className="text-xl font-bold text-white mb-2">実例 2</h3>
                   <p className="text-sm text-gray-400">複数色組み合わせシミュレーション</p>
                 </div>
                 <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl">
                   <ReactCompareSlider
-                    itemOne={<ReactCompareSliderImage src="/LP-Before2.png" alt="塗装前のマンション外観" />}
+                    itemOne={<ReactCompareSliderImage src="/LP-Before2.png" alt="塗装前の一戸建て住宅" />}
                     itemTwo={<ReactCompareSliderImage src="/LP-After2.png" alt="Paintly AI生成による塗装後イメージ" />}
                     className="h-full w-full"
                   />
@@ -469,12 +402,12 @@ export default function HomePage() {
                     <span className="text-xs font-semibold text-purple-400 uppercase tracking-wider">実例 3</span>
                     <span className="text-xs text-gray-400">スライダーを動かす →</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">店舗併用住宅</h3>
+                  <h3 className="text-xl font-bold text-white mb-2">実例 3</h3>
                   <p className="text-sm text-gray-400">屋根・外壁一括変更シミュレーション</p>
                 </div>
                 <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl">
                   <ReactCompareSlider
-                    itemOne={<ReactCompareSliderImage src="/LP-Before3.png" alt="塗装前の店舗併用住宅" />}
+                    itemOne={<ReactCompareSliderImage src="/LP-Before3.png" alt="塗装前の一戸建て住宅" />}
                     itemTwo={<ReactCompareSliderImage src="/LP-After3.png" alt="Paintly AI生成による塗装後イメージ" />}
                     className="h-full w-full"
                   />
@@ -507,6 +440,73 @@ export default function HomePage() {
             <p className="mt-4 text-sm text-gray-400">
               クレジットカード不要 • 3回まで完全無料
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 特徴セクション */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Paintlyが選ばれる3つの理由
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              AI技術を活用した塗装シミュレーションで、営業活動を劇的に効率化します
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            {/* 特徴1: 瞬時の生成 */}
+            <article className="text-center group hover:transform hover:scale-105 transition-all duration-300">
+              <div className="bg-gradient-to-br from-orange-50 to-pink-50 rounded-2xl p-8 mb-6 group-hover:shadow-xl transition-shadow">
+                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Star className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
+                  わずか数秒で高精度シミュレーション
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  最新のAI技術を使用し、建物の写真から<strong className="font-semibold">瞬時に</strong>塗装後のイメージを生成。<br />
+                  現地調査中にその場でお客様に<strong className="font-semibold">複数の提案</strong>を見せることができます。<br />
+                  <strong className="font-semibold text-orange-600">140色以上</strong>の実際の塗料色に対応し、色名で直感的に選択できるため、お客様とのコミュニケーションもスムーズです。
+                </p>
+              </div>
+            </article>
+
+            {/* 特徴2: モバイル完全対応 */}
+            <article className="text-center group hover:transform hover:scale-105 transition-all duration-300">
+              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 mb-6 group-hover:shadow-xl transition-shadow">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Palette className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
+                  スマホ1台で完結する営業活動
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  スマートフォン・タブレット・PCすべてに<strong className="font-semibold">完全対応。</strong><br />
+                  営業現場でその場で写真撮影→色選択→シミュレーション生成→お客様への提示まで、<strong className="font-semibold text-blue-600">スマホ1台で完結</strong>します。<br />
+                  <strong className="font-semibold">オフライン対応のPWA技術</strong>により、ネット環境が不安定な現場でも安定して動作します。
+                </p>
+              </div>
+            </article>
+
+            {/* 特徴3: 顧客管理機能 */}
+            <article className="text-center group hover:transform hover:scale-105 transition-all duration-300">
+              <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-8 mb-6 group-hover:shadow-xl transition-shadow">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
+                  顧客ごとの履歴管理で提案力アップ
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  顧客ページごとに生成した画像を<strong className="font-semibold">自動保存。</strong><br />
+                  過去の提案内容をいつでも確認でき、「前回はこの色でしたね」など<strong className="font-semibold">具体的な会話が可能に。</strong><br />
+                  <strong className="font-semibold">ビフォーアフター比較機能</strong>により、お客様の意思決定をサポートし、<strong className="font-semibold text-purple-600">成約率を大幅に向上</strong>させます。
+                </p>
+              </div>
+            </article>
           </div>
         </div>
       </section>
