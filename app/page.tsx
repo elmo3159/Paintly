@@ -322,7 +322,7 @@ export default function HomePage() {
           {/* メインヘッドライン */}
           <div className="text-center mb-16 md:mb-24">
             <h2 className="text-5xl md:text-7xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 leading-tight">
-              このクオリティが一瞬で。
+              このクオリティが<br />一瞬で。
             </h2>
             <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
               実際の建物にPaintlyを使用したAI塗装シミュレーション実例。<br />
