@@ -109,7 +109,7 @@ export default function HomePage() {
         <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 text-center py-2">
           <div className="max-w-7xl mx-auto w-full space-y-6">
             {/* ロゴ */}
-            <div className="relative inline-block mx-auto mb-5 -mt-8 md:-mt-16">
+            <div className="relative inline-block mx-auto mb-5 mt-4 md:-mt-8">
               <Image
                 src="/logo.png"
                 alt="Paintly - AI塗装シミュレーションツールのロゴ"
