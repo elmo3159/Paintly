@@ -8,6 +8,10 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Star, Palette, Loader2, CheckCircle, XCircle, ChevronRight, ChevronDown, QrCode } from 'lucide-react'
 import { LegalFooter } from '@/components/legal-footer'
+import {
+  ReactCompareSlider,
+  ReactCompareSliderImage
+} from 'react-compare-slider'
 
 export default function HomePage() {
   const router = useRouter()
@@ -311,6 +315,198 @@ export default function HomePage() {
                 </p>
               </div>
             </article>
+          </div>
+        </div>
+      </section>
+
+      {/* Before/After実例ギャラリーセクション */}
+      <section className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+        {/* SEO構造化データ: ImageGallery */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ImageGallery",
+              "name": "Paintly AI塗装シミュレーション実例",
+              "description": "実際の建物にPaintlyを使用して塗装シミュレーションを行った実例。瞬時に高精度なビフォーアフター画像を生成します。",
+              "associatedMedia": [
+                {
+                  "@type": "ImageObject",
+                  "name": "塗装シミュレーション実例1 - Before",
+                  "contentUrl": `${typeof window !== 'undefined' ? window.location.origin : ''}/LP-Before1.png`,
+                  "description": "Paintly使用前の建物写真",
+                  "encodingFormat": "image/png"
+                },
+                {
+                  "@type": "ImageObject",
+                  "name": "塗装シミュレーション実例1 - After",
+                  "contentUrl": `${typeof window !== 'undefined' ? window.location.origin : ''}/LP-After1.jpg`,
+                  "description": "Paintly使用後のAI生成塗装イメージ",
+                  "encodingFormat": "image/jpeg"
+                },
+                {
+                  "@type": "ImageObject",
+                  "name": "塗装シミュレーション実例2 - Before",
+                  "contentUrl": `${typeof window !== 'undefined' ? window.location.origin : ''}/LP-Before2.png`,
+                  "description": "Paintly使用前の建物写真",
+                  "encodingFormat": "image/png"
+                },
+                {
+                  "@type": "ImageObject",
+                  "name": "塗装シミュレーション実例2 - After",
+                  "contentUrl": `${typeof window !== 'undefined' ? window.location.origin : ''}/LP-After2.png`,
+                  "description": "Paintly使用後のAI生成塗装イメージ",
+                  "encodingFormat": "image/png"
+                },
+                {
+                  "@type": "ImageObject",
+                  "name": "塗装シミュレーション実例3 - Before",
+                  "contentUrl": `${typeof window !== 'undefined' ? window.location.origin : ''}/LP-Before3.png`,
+                  "description": "Paintly使用前の建物写真",
+                  "encodingFormat": "image/png"
+                },
+                {
+                  "@type": "ImageObject",
+                  "name": "塗装シミュレーション実例3 - After",
+                  "contentUrl": `${typeof window !== 'undefined' ? window.location.origin : ''}/LP-After3.png`,
+                  "description": "Paintly使用後のAI生成塗装イメージ",
+                  "encodingFormat": "image/png"
+                }
+              ]
+            })
+          }}
+        />
+
+        {/* 背景装飾 */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-orange-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
+          <div className="absolute top-40 right-10 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* メインヘッドライン */}
+          <div className="text-center mb-16 md:mb-24">
+            <h2 className="text-5xl md:text-7xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 leading-tight">
+              このクオリティが一瞬で。
+            </h2>
+            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              実際の建物にPaintlyを使用したAI塗装シミュレーション実例。<br />
+              スライダーを左右に動かして、ビフォーアフターの違いをご確認ください。
+            </p>
+          </div>
+
+          {/* Before/Afterスライダーギャラリー */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+            {/* 実例1 */}
+            <article className="group">
+              <div className="relative bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-white/30 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/20">
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-semibold text-orange-400 uppercase tracking-wider">実例 1</span>
+                    <span className="text-xs text-gray-400">スライダーを動かす →</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">一戸建て住宅</h3>
+                  <p className="text-sm text-gray-400">外壁カラー変更シミュレーション</p>
+                </div>
+                <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl">
+                  <ReactCompareSlider
+                    itemOne={<ReactCompareSliderImage src="/LP-Before1.png" alt="塗装前の一戸建て住宅" />}
+                    itemTwo={<ReactCompareSliderImage src="/LP-After1.jpg" alt="Paintly AI生成による塗装後イメージ" />}
+                    className="h-full w-full"
+                  />
+                </div>
+                <div className="mt-4 flex items-center justify-between text-xs text-gray-400">
+                  <span className="flex items-center gap-1">
+                    <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                    Before
+                  </span>
+                  <span className="flex items-center gap-1">
+                    After
+                    <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
+                  </span>
+                </div>
+              </div>
+            </article>
+
+            {/* 実例2 */}
+            <article className="group">
+              <div className="relative bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-white/30 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/20">
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-semibold text-pink-400 uppercase tracking-wider">実例 2</span>
+                    <span className="text-xs text-gray-400">スライダーを動かす →</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">マンション外観</h3>
+                  <p className="text-sm text-gray-400">複数色組み合わせシミュレーション</p>
+                </div>
+                <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl">
+                  <ReactCompareSlider
+                    itemOne={<ReactCompareSliderImage src="/LP-Before2.png" alt="塗装前のマンション外観" />}
+                    itemTwo={<ReactCompareSliderImage src="/LP-After2.png" alt="Paintly AI生成による塗装後イメージ" />}
+                    className="h-full w-full"
+                  />
+                </div>
+                <div className="mt-4 flex items-center justify-between text-xs text-gray-400">
+                  <span className="flex items-center gap-1">
+                    <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                    Before
+                  </span>
+                  <span className="flex items-center gap-1">
+                    After
+                    <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
+                  </span>
+                </div>
+              </div>
+            </article>
+
+            {/* 実例3 */}
+            <article className="group md:col-span-2 lg:col-span-1">
+              <div className="relative bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-white/30 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20">
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-semibold text-purple-400 uppercase tracking-wider">実例 3</span>
+                    <span className="text-xs text-gray-400">スライダーを動かす →</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">店舗併用住宅</h3>
+                  <p className="text-sm text-gray-400">屋根・外壁一括変更シミュレーション</p>
+                </div>
+                <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl">
+                  <ReactCompareSlider
+                    itemOne={<ReactCompareSliderImage src="/LP-Before3.png" alt="塗装前の店舗併用住宅" />}
+                    itemTwo={<ReactCompareSliderImage src="/LP-After3.png" alt="Paintly AI生成による塗装後イメージ" />}
+                    className="h-full w-full"
+                  />
+                </div>
+                <div className="mt-4 flex items-center justify-between text-xs text-gray-400">
+                  <span className="flex items-center gap-1">
+                    <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                    Before
+                  </span>
+                  <span className="flex items-center gap-1">
+                    After
+                    <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
+                  </span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          {/* CTAボタン */}
+          <div className="mt-16 text-center">
+            <Link href="/auth/signup">
+              <Button
+                size="lg"
+                className="text-lg px-10 py-6 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 hover:from-orange-600 hover:via-pink-600 hover:to-purple-600 text-white font-bold rounded-full shadow-2xl hover:shadow-pink-500/50 transition-all duration-300 hover:scale-105"
+              >
+                今すぐ無料で始める
+                <ChevronRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            <p className="mt-4 text-sm text-gray-400">
+              クレジットカード不要 • 3回まで完全無料
+            </p>
           </div>
         </div>
       </section>
