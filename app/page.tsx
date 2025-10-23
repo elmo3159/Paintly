@@ -321,8 +321,9 @@ export default function HomePage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* メインヘッドライン */}
           <div className="text-center mb-16 md:mb-24">
-            <h2 className="text-5xl md:text-7xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 leading-tight">
-              このクオリティが<br />一瞬で。
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 leading-tight">
+              <span className="block whitespace-nowrap">このクオリティが</span>
+              <span className="block whitespace-nowrap">一瞬で。</span>
             </h2>
             <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
               実際の建物にPaintlyを使用したAI塗装シミュレーション実例。<br />
