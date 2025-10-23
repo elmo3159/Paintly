@@ -113,10 +113,10 @@ export default function HomePage() {
               {/* 筆で描いたような白いペンキストローク */}
               <svg
                 className="absolute inset-0 w-full h-full -z-10"
-                viewBox="0 0 320 180"
+                viewBox="60 20 200 140"
                 xmlns="http://www.w3.org/2000/svg"
                 style={{
-                  transform: 'scale(1.4)',
+                  transform: 'scale(1.05)',
                   transformOrigin: 'center',
                 }}
               >
@@ -197,7 +197,7 @@ export default function HomePage() {
 
                 {/* 筆のベースストローク（太い部分） */}
                 <path
-                  d="M 15 165 C 60 145, 85 135, 120 115 C 155 95, 180 80, 210 60 C 240 40, 270 25, 305 15"
+                  d="M 85 140 C 120 125, 145 115, 170 100 C 195 85, 220 70, 245 55"
                   stroke="url(#brush-fade)"
                   strokeWidth="75"
                   fill="none"
@@ -206,8 +206,8 @@ export default function HomePage() {
                   filter="url(#organic-brush)"
                   opacity="0.35"
                   style={{
-                    strokeDasharray: '450',
-                    strokeDashoffset: '450',
+                    strokeDasharray: '280',
+                    strokeDashoffset: '280',
                     animation: 'paintBrush 2s cubic-bezier(0.4, 0, 0.2, 1) forwards',
                     animationDelay: '0.3s'
                   }}
@@ -215,7 +215,7 @@ export default function HomePage() {
 
                 {/* 筆の中間層（かすれ表現） */}
                 <path
-                  d="M 8 172 C 55 150, 82 138, 115 120 C 150 100, 175 85, 205 65 C 235 45, 265 30, 312 18"
+                  d="M 78 147 C 115 130, 138 118, 165 105 C 190 90, 215 75, 252 58"
                   stroke="url(#brush-fade-2)"
                   strokeWidth="85"
                   fill="none"
@@ -224,8 +224,8 @@ export default function HomePage() {
                   filter="url(#organic-brush)"
                   opacity="0.2"
                   style={{
-                    strokeDasharray: '470',
-                    strokeDashoffset: '470',
+                    strokeDasharray: '300',
+                    strokeDashoffset: '300',
                     animation: 'paintBrush 2s cubic-bezier(0.4, 0, 0.2, 1) forwards',
                     animationDelay: '0.4s'
                   }}
@@ -233,7 +233,7 @@ export default function HomePage() {
 
                 {/* 筆のハイライト（明るい部分） */}
                 <path
-                  d="M 22 158 C 65 140, 90 130, 125 110 C 158 92, 185 75, 215 55 C 245 35, 275 20, 298 12"
+                  d="M 92 133 C 125 120, 150 110, 175 95 C 198 82, 225 65, 238 52"
                   stroke="url(#brush-fade-3)"
                   strokeWidth="50"
                   fill="none"
@@ -242,8 +242,8 @@ export default function HomePage() {
                   filter="url(#organic-brush)"
                   opacity="0.45"
                   style={{
-                    strokeDasharray: '430',
-                    strokeDashoffset: '430',
+                    strokeDasharray: '260',
+                    strokeDashoffset: '260',
                     animation: 'paintBrush 2s cubic-bezier(0.4, 0, 0.2, 1) forwards',
                     animationDelay: '0.5s'
                   }}
@@ -251,7 +251,7 @@ export default function HomePage() {
 
                 {/* 筆の端（細い部分） */}
                 <path
-                  d="M 25 155 C 70 138, 95 128, 130 108 C 165 88, 190 73, 220 53"
+                  d="M 95 130 C 130 115, 155 105, 180 90 C 205 75, 230 60, 235 50"
                   stroke="url(#brush-fade-4)"
                   strokeWidth="35"
                   fill="none"
@@ -260,8 +260,8 @@ export default function HomePage() {
                   filter="url(#organic-brush)"
                   opacity="0.25"
                   style={{
-                    strokeDasharray: '330',
-                    strokeDashoffset: '330',
+                    strokeDasharray: '240',
+                    strokeDashoffset: '240',
                     animation: 'paintBrush 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards',
                     animationDelay: '0.6s'
                   }}
