@@ -112,9 +112,9 @@ export default function HomePage() {
             <div className="relative inline-block mx-auto mb-2 md:-mt-8">
               {/* 白いぼかし背景 */}
               <div
-                className="absolute inset-0 -inset-x-8 -inset-y-4 rounded-3xl backdrop-blur-sm"
+                className="absolute inset-0 -inset-x-6 -inset-y-3 rounded-3xl backdrop-blur-sm"
                 style={{
-                  background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.15) 40%, rgba(255, 255, 255, 0) 70%)'
+                  background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.25) 40%, rgba(255, 255, 255, 0) 70%)'
                 }}
               />
               <Image
