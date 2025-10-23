@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
+import imageCompression from 'browser-image-compression'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { X, Upload, Image as ImageIcon } from 'lucide-react'
@@ -40,8 +41,9 @@ const reportClientError = (error: Error, context: string) => {
 export function ImageUpload({ label, onChange, required = false, helperText }: ImageUploadProps) {
   const [preview, setPreview] = useState<string | null>(null)
   const [fileName, setFileName] = useState<string | null>(null)
+  const [compressing, setCompressing] = useState(false)
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
     try {
       if (!acceptedFiles || acceptedFiles.length === 0) {
         console.log('No files selected or files were rejected')
@@ -73,6 +75,34 @@ export function ImageUpload({ label, onChange, required = false, helperText }: I
         type: file.type
       })
 
+      // Compress image before uploading
+      setCompressing(true)
+      let compressedFile = file
+
+      try {
+        const compressionOptions = {
+          maxSizeMB: 1, // 1MB max to stay well under Vercel's 4.5MB limit
+          maxWidthOrHeight: 1920, // Maintain high quality
+          useWebWorker: true,
+          fileType: 'image/jpeg' as const // Convert to JPEG for better compression
+        }
+
+        console.log('🔄 Compressing image...')
+        compressedFile = await imageCompression(file, compressionOptions)
+
+        console.log('✅ Image compressed:', {
+          originalSize: (file.size / 1024 / 1024).toFixed(2) + 'MB',
+          compressedSize: (compressedFile.size / 1024 / 1024).toFixed(2) + 'MB',
+          reduction: ((1 - compressedFile.size / file.size) * 100).toFixed(1) + '%'
+        })
+      } catch (compressionError) {
+        console.warn('⚠️ Compression failed, using original file:', compressionError)
+        // If compression fails, use original file
+        compressedFile = file
+      } finally {
+        setCompressing(false)
+      }
+
       // Create preview with enhanced error handling
       const reader = new FileReader()
 
@@ -86,7 +116,7 @@ export function ImageUpload({ label, onChange, required = false, helperText }: I
           console.log('✅ File preview created successfully')
           setPreview(result)
           setFileName(file.name)
-          onChange(file)
+          onChange(compressedFile)
         } catch (previewError) {
           const error = previewError instanceof Error ? previewError : new Error('Preview creation failed')
           console.error('❌ Preview creation error:', error)
@@ -119,6 +149,8 @@ export function ImageUpload({ label, onChange, required = false, helperText }: I
 
       // Show user-friendly error message
       alert(`ファイルの処理に失敗しました: ${fileError.message}`)
+    } finally {
+      setCompressing(false)
     }
   }, [onChange])
 
@@ -211,7 +243,16 @@ export function ImageUpload({ label, onChange, required = false, helperText }: I
         <p className="text-sm text-muted-foreground">{helperText}</p>
       )}
 
-      {!preview ? (
+      {compressing ? (
+        <Card className="border-2 border-dashed">
+          <CardContent className="flex flex-col items-center justify-center p-6">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-4"></div>
+            <p className="text-sm text-center text-muted-foreground">
+              画像を圧縮しています...
+            </p>
+          </CardContent>
+        </Card>
+      ) : !preview ? (
         <Card
           {...getRootProps()}
           className={`border-2 border-dashed cursor-pointer transition-colors ${
@@ -223,8 +264,8 @@ export function ImageUpload({ label, onChange, required = false, helperText }: I
           aria-describedby={helperText ? `${label}-helper` : undefined}
         >
           <CardContent className="flex flex-col items-center justify-center p-6">
-            <input 
-              {...getInputProps()} 
+            <input
+              {...getInputProps()}
               aria-label={label}
               aria-required={required}
             />
