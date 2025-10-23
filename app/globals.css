@@ -1315,3 +1315,21 @@
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+/* ============================================
+   Logo Paint Brush Animation
+   ============================================ */
+/* ロゴ背景の白いペンキアニメーション */
+@keyframes paintBrush {
+  0% {
+    stroke-dashoffset: 400;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}

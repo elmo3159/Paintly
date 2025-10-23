@@ -108,16 +108,86 @@ export default function HomePage() {
         {/* コンテンツ */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 text-center py-2">
           <div className="max-w-7xl mx-auto w-full space-y-6">
-            {/* ロゴ */}
-            <Image
-              src="/logo.png"
-              alt="Paintly - AI塗装シミュレーションツールのロゴ"
-              width={284}
-              height={160}
-              priority={true}
-              fetchPriority="high"
-              className="h-24 md:h-28 w-auto object-contain mx-auto mb-5 -mt-8 md:-mt-16"
-            />
+            {/* ロゴ with ペイントアニメーション */}
+            <div className="relative inline-block mx-auto mb-5 -mt-8 md:-mt-16">
+              {/* 白いペンキのブラシストローク背景 */}
+              <svg
+                className="absolute inset-0 w-full h-full -z-10"
+                viewBox="0 0 320 180"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{
+                  transform: 'scale(1.3)',
+                  transformOrigin: 'center',
+                }}
+              >
+                {/* かすれたペンキのブラシストローク（左下から右上へ） */}
+                <defs>
+                  {/* ブラシのかすれ効果用フィルター */}
+                  <filter id="brush-texture">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise" />
+                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+                  </filter>
+                </defs>
+
+                {/* メインのブラシストローク */}
+                <path
+                  d="M 20 160 Q 100 120, 160 90 T 300 20"
+                  stroke="rgba(255, 255, 255, 0.3)"
+                  strokeWidth="80"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#brush-texture)"
+                  style={{
+                    strokeDasharray: '400',
+                    strokeDashoffset: '400',
+                    animation: 'paintBrush 1.5s ease-out forwards',
+                    animationDelay: '0.5s'
+                  }}
+                />
+
+                {/* 追加のブラシストローク（かすれ効果） */}
+                <path
+                  d="M 10 170 Q 90 130, 150 100 T 310 30"
+                  stroke="rgba(255, 255, 255, 0.15)"
+                  strokeWidth="90"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#brush-texture)"
+                  style={{
+                    strokeDasharray: '420',
+                    strokeDashoffset: '420',
+                    animation: 'paintBrush 1.5s ease-out forwards',
+                    animationDelay: '0.6s'
+                  }}
+                />
+
+                {/* はみ出し部分のブラシストローク */}
+                <path
+                  d="M 30 150 Q 110 110, 170 80 T 290 10"
+                  stroke="rgba(255, 255, 255, 0.2)"
+                  strokeWidth="70"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#brush-texture)"
+                  style={{
+                    strokeDasharray: '380',
+                    strokeDashoffset: '380',
+                    animation: 'paintBrush 1.5s ease-out forwards',
+                    animationDelay: '0.7s'
+                  }}
+                />
+              </svg>
+
+              <Image
+                src="/logo.png"
+                alt="Paintly - AI塗装シミュレーションツールのロゴ"
+                width={284}
+                height={160}
+                priority={true}
+                fetchPriority="high"
+                className="h-24 md:h-28 w-auto object-contain relative z-10"
+              />
+            </div>
 
             {/* バッジ */}
             <div className="mb-5">
