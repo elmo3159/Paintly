@@ -107,9 +107,9 @@ export default function HomePage() {
 
         {/* コンテンツ */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 text-center py-2">
-          <div className="max-w-7xl mx-auto w-full space-y-6">
+          <div className="max-w-7xl mx-auto w-full space-y-3">
             {/* ロゴ */}
-            <div className="relative inline-block mx-auto mb-5 mt-12 md:-mt-8">
+            <div className="relative inline-block mx-auto mb-2 md:-mt-8">
               <Image
                 src="/logo.png"
                 alt="Paintly - AI塗装シミュレーションツールのロゴ"
@@ -122,7 +122,7 @@ export default function HomePage() {
             </div>
 
             {/* バッジ */}
-            <div className="mb-5">
+            <div>
               <span className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 via-pink-500 to-orange-500 text-white px-3 py-1.5 rounded-full text-xs md:text-sm font-bold shadow-lg">
                 <Star className="h-3 w-3 md:h-4 md:w-4" />
                 一瞬で140色の高精度なシミュレーション
@@ -130,7 +130,7 @@ export default function HomePage() {
             </div>
 
             {/* メインタイトル */}
-            <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-white mb-5 leading-tight"
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-white leading-tight"
                 style={{
                   textShadow: '2px 2px 4px rgba(0,0,0,0.8), -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5)'
                 }}>
@@ -139,7 +139,7 @@ export default function HomePage() {
             </h1>
 
             {/* キャッチフレーズ */}
-            <div className="mb-6">
+            <div>
               <p className="text-lg md:text-3xl font-bold text-white leading-tight">
                 「この家に住みたい」<br />
                 <span className="text-sm md:text-xl text-white/90">お客様がそう思った瞬間、</span><br />
@@ -150,7 +150,7 @@ export default function HomePage() {
             </div>
 
             {/* フロー比較（コンパクト版） */}
-            <div className="grid grid-cols-2 gap-3 md:gap-4 max-w-4xl mx-auto mb-5">
+            <div className="grid grid-cols-2 gap-3 md:gap-4 max-w-4xl mx-auto">
               {/* 従来 */}
               <div className="bg-white/5 backdrop-blur-sm rounded-xl p-2 md:p-3 border border-red-500/30">
                 <div className="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold mb-2 inline-block">
