@@ -339,7 +339,7 @@ export default function HomePage() {
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-semibold text-orange-400 uppercase tracking-wider">実例 1</span>
-                    <span className="text-xs text-gray-400">スライダーを動かす →</span>
+                    <span className="text-xs text-gray-400">スライダーを動かす ↓</span>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">実例 1</h3>
                   <p className="text-sm text-gray-400">外壁カラー変更シミュレーション</p>
@@ -370,7 +370,7 @@ export default function HomePage() {
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-semibold text-pink-400 uppercase tracking-wider">実例 2</span>
-                    <span className="text-xs text-gray-400">スライダーを動かす →</span>
+                    <span className="text-xs text-gray-400">スライダーを動かす ↓</span>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">実例 2</h3>
                   <p className="text-sm text-gray-400">複数色組み合わせシミュレーション</p>
@@ -401,7 +401,7 @@ export default function HomePage() {
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-semibold text-purple-400 uppercase tracking-wider">実例 3</span>
-                    <span className="text-xs text-gray-400">スライダーを動かす →</span>
+                    <span className="text-xs text-gray-400">スライダーを動かす ↓</span>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">実例 3</h3>
                   <p className="text-sm text-gray-400">屋根・外壁一括変更シミュレーション</p>
