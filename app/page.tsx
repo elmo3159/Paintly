@@ -155,17 +155,56 @@ export default function HomePage() {
                     {/* さらに軽くぼかしてソフトに */}
                     <feGaussianBlur in="contrast" stdDeviation="1.5" />
                   </filter>
+
+                  {/* 筆のストロークが途中から始まって途中で終わる透明度グラデーション */}
+                  <linearGradient id="brush-fade" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="white" stopOpacity="0" />
+                    <stop offset="15%" stopColor="white" stopOpacity="0.3" />
+                    <stop offset="25%" stopColor="white" stopOpacity="1" />
+                    <stop offset="75%" stopColor="white" stopOpacity="1" />
+                    <stop offset="88%" stopColor="white" stopOpacity="0.3" />
+                    <stop offset="100%" stopColor="white" stopOpacity="0" />
+                  </linearGradient>
+
+                  {/* 各層の微妙に異なるフェード */}
+                  <linearGradient id="brush-fade-2" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="white" stopOpacity="0" />
+                    <stop offset="12%" stopColor="white" stopOpacity="0.2" />
+                    <stop offset="22%" stopColor="white" stopOpacity="0.8" />
+                    <stop offset="78%" stopColor="white" stopOpacity="0.8" />
+                    <stop offset="90%" stopColor="white" stopOpacity="0.2" />
+                    <stop offset="100%" stopColor="white" stopOpacity="0" />
+                  </linearGradient>
+
+                  <linearGradient id="brush-fade-3" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="white" stopOpacity="0" />
+                    <stop offset="18%" stopColor="white" stopOpacity="0.4" />
+                    <stop offset="28%" stopColor="white" stopOpacity="1" />
+                    <stop offset="72%" stopColor="white" stopOpacity="1" />
+                    <stop offset="85%" stopColor="white" stopOpacity="0.4" />
+                    <stop offset="100%" stopColor="white" stopOpacity="0" />
+                  </linearGradient>
+
+                  <linearGradient id="brush-fade-4" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="white" stopOpacity="0" />
+                    <stop offset="20%" stopColor="white" stopOpacity="0.3" />
+                    <stop offset="35%" stopColor="white" stopOpacity="0.9" />
+                    <stop offset="65%" stopColor="white" stopOpacity="0.9" />
+                    <stop offset="80%" stopColor="white" stopOpacity="0.3" />
+                    <stop offset="100%" stopColor="white" stopOpacity="0" />
+                  </linearGradient>
                 </defs>
 
                 {/* 筆のベースストローク（太い部分） */}
                 <path
                   d="M 15 165 C 60 145, 85 135, 120 115 C 155 95, 180 80, 210 60 C 240 40, 270 25, 305 15"
-                  stroke="rgba(255, 255, 255, 0.35)"
+                  stroke="url(#brush-fade)"
                   strokeWidth="75"
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   filter="url(#organic-brush)"
+                  opacity="0.35"
                   style={{
                     strokeDasharray: '450',
                     strokeDashoffset: '450',
@@ -177,12 +216,13 @@ export default function HomePage() {
                 {/* 筆の中間層（かすれ表現） */}
                 <path
                   d="M 8 172 C 55 150, 82 138, 115 120 C 150 100, 175 85, 205 65 C 235 45, 265 30, 312 18"
-                  stroke="rgba(255, 255, 255, 0.2)"
+                  stroke="url(#brush-fade-2)"
                   strokeWidth="85"
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   filter="url(#organic-brush)"
+                  opacity="0.2"
                   style={{
                     strokeDasharray: '470',
                     strokeDashoffset: '470',
@@ -194,12 +234,13 @@ export default function HomePage() {
                 {/* 筆のハイライト（明るい部分） */}
                 <path
                   d="M 22 158 C 65 140, 90 130, 125 110 C 158 92, 185 75, 215 55 C 245 35, 275 20, 298 12"
-                  stroke="rgba(255, 255, 255, 0.45)"
+                  stroke="url(#brush-fade-3)"
                   strokeWidth="50"
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   filter="url(#organic-brush)"
+                  opacity="0.45"
                   style={{
                     strokeDasharray: '430',
                     strokeDashoffset: '430',
@@ -211,12 +252,13 @@ export default function HomePage() {
                 {/* 筆の端（細い部分） */}
                 <path
                   d="M 25 155 C 70 138, 95 128, 130 108 C 165 88, 190 73, 220 53"
-                  stroke="rgba(255, 255, 255, 0.25)"
+                  stroke="url(#brush-fade-4)"
                   strokeWidth="35"
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   filter="url(#organic-brush)"
+                  opacity="0.25"
                   style={{
                     strokeDasharray: '330',
                     strokeDashoffset: '330',
