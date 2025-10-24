@@ -439,8 +439,8 @@ export default function HomePage() {
 
           {/* 魅力的なコピーセクション */}
           <div className="mt-20 mb-16 relative">
-            {/* 装飾的な背景 */}
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 via-pink-500/10 to-purple-500/10 rounded-3xl blur-3xl"></div>
+            {/* 装飾的な背景 - blur軽減 */}
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 via-pink-500/10 to-purple-500/10 rounded-3xl blur-xl"></div>
 
             <div className="relative space-y-12">
               {/* メインコピー1 */}
@@ -448,19 +448,18 @@ export default function HomePage() {
                 <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
                   <span className="block text-white mb-3">
                     必要なのは
-                    <span className="inline-block mx-3 px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
+                    <span className="inline-block mx-3 px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl shadow-lg">
                       📱 スマホだけ
                     </span>
                   </span>
                   <span
-                    className="block bg-clip-text text-transparent bg-gradient-to-r from-orange-300 via-pink-300 to-purple-300 animate-text-shimmer"
-                    style={{ backgroundSize: '200% 200%' }}
+                    className="block bg-clip-text text-transparent bg-gradient-to-r from-orange-300 via-pink-300 to-purple-300"
                   >
                     様変わりした自宅を見て
                   </span>
                   <span className="block text-white mt-3">
                     お客様は
-                    <span className="inline-block mx-3 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 rounded-xl shadow-2xl animate-pulse">
+                    <span className="inline-block mx-3 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 rounded-xl shadow-xl">
                       感動
                     </span>
                     するはずです。
@@ -471,7 +470,7 @@ export default function HomePage() {
               {/* 区切り装飾 */}
               <div className="flex items-center justify-center gap-4">
                 <div className="h-1 w-32 bg-gradient-to-r from-transparent via-orange-400 to-transparent rounded-full"></div>
-                <Star className="h-8 w-8 text-orange-400 animate-spin-slow" />
+                <Star className="h-8 w-8 text-orange-400" />
                 <div className="h-1 w-32 bg-gradient-to-r from-transparent via-orange-400 to-transparent rounded-full"></div>
               </div>
 
@@ -480,10 +479,10 @@ export default function HomePage() {
                 <h2 className="font-bold leading-relaxed">
                   {/* 写真を撮って + 色を選ぶ（常に横並び） */}
                   <span className="flex flex-wrap justify-center items-center gap-3 mb-3 text-xl sm:text-2xl md:text-3xl lg:text-4xl">
-                    <span className="inline-block bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-xl border border-white/20 shadow-lg hover:bg-white/20 transition-all">
+                    <span className="inline-block bg-white/10 px-3 sm:px-4 py-2 rounded-xl border border-white/20 shadow-lg hover:bg-white/20 transition-all">
                       <span className="text-orange-300 whitespace-nowrap">📷 写真を撮って</span>
                     </span>
-                    <span className="inline-block bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-xl border border-white/20 shadow-lg hover:bg-white/20 transition-all">
+                    <span className="inline-block bg-white/10 px-3 sm:px-4 py-2 rounded-xl border border-white/20 shadow-lg hover:bg-white/20 transition-all">
                       <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-300 to-purple-300 whitespace-nowrap">
                         🎨 色を選ぶ
                       </span>
