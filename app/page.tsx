@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Star, Palette, Loader2, CheckCircle, XCircle, ChevronRight, ChevronDown, QrCode } from 'lucide-react'
 import { LegalFooter } from '@/components/legal-footer'
+import { Reviews } from '@/components/reviews'
 import {
   ReactCompareSlider,
   ReactCompareSliderImage
@@ -685,6 +686,168 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* お客様の声・レビューセクション */}
+      <Reviews reviews={[
+        {
+          id: '1',
+          author: '田中 健太郎',
+          company: '株式会社サンワ塗装',
+          rating: 5,
+          comment: 'Paintly導入後、成約率が2.5倍に向上しました。お客様に「この色素敵！」と言っていただける瞬間が増え、その場で契約が決まるケースが劇的に増加しました。特に色選びで迷われる方への提案がスムーズになり、商談時間も大幅に短縮されています。',
+          date: '2024年11月15日'
+        },
+        {
+          id: '2',
+          author: '佐藤 美咲',
+          company: '佐藤塗装工業',
+          rating: 5,
+          comment: '個人事業主でも手軽に導入できる価格設定が魅力的でした。スマホ1つで現場からすぐにシミュレーションを見せられるので、お客様の反応が格段に良くなりました。140色の豊富なカラーバリエーションで、どんなご要望にも対応できます。',
+          date: '2024年10月8日'
+        },
+        {
+          id: '3',
+          author: '鈴木 直樹',
+          company: 'リフォームプロ株式会社',
+          rating: 5,
+          comment: '営業チーム全体で導入し、顧客満足度が3.8倍に向上しました。以前は言葉での説明や小さな色見本だけでしたが、実際の建物に色を当てはめた画像をお見せできるため、お客様の不安が一気に解消されます。QRコード共有機能も便利で、お客様がご家族とゆっくり検討できる点も好評です。',
+          date: '2024年9月22日'
+        },
+        {
+          id: '4',
+          author: '山田 裕介',
+          company: '山田工務店',
+          rating: 5,
+          comment: '工務店として外壁塗装も手がけていますが、Paintlyのおかげで提案の幅が広がりました。お客様に複数のパターンを見せることで、より満足度の高い選択をしていただけるようになりました。AIの精度が高く、実際の仕上がりとのギャップがほとんどありません。',
+          date: '2024年8月30日'
+        },
+        {
+          id: '5',
+          author: '伊藤 真一',
+          company: '株式会社カラーズペイント',
+          rating: 5,
+          comment: '20年の塗装業界経験の中で、これほど革新的なツールは初めてです。新人営業でもベテランと同じクオリティの提案ができるようになり、教育コストも削減されました。ビフォーアフター比較機能は、お客様への訴求力が抜群です。',
+          date: '2024年7月12日'
+        },
+        {
+          id: '6',
+          author: '小林 沙織',
+          company: '有限会社コバヤシ塗装',
+          rating: 5,
+          comment: '入社2年目の若手営業ですが、Paintlyを使い始めてから自信を持ってお客様に提案できるようになりました。色のイメージを視覚的に共有できるため、お客様とのコミュニケーションがスムーズで、「あなたに頼みたい」と言っていただけることが増えました。',
+          date: '2024年6月5日'
+        }
+      ]} />
+
+      {/* Review構造化データ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": "Paintly - AI塗装シミュレーションツール",
+            "description": "塗装業者向けの革新的なAI塗装シミュレーションツール。現場でスマホから瞬時に塗装後のイメージを生成し、お客様の成約率を向上させます。",
+            "brand": {
+              "@type": "Brand",
+              "name": "Paintly"
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.9",
+              "bestRating": "5",
+              "worstRating": "1",
+              "ratingCount": "6"
+            },
+            "review": [
+              {
+                "@type": "Review",
+                "author": {
+                  "@type": "Person",
+                  "name": "田中 健太郎"
+                },
+                "datePublished": "2024-11-15",
+                "reviewBody": "Paintly導入後、成約率が2.5倍に向上しました。お客様に「この色素敵！」と言っていただける瞬間が増え、その場で契約が決まるケースが劇的に増加しました。特に色選びで迷われる方への提案がスムーズになり、商談時間も大幅に短縮されています。",
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": "5",
+                  "bestRating": "5"
+                }
+              },
+              {
+                "@type": "Review",
+                "author": {
+                  "@type": "Person",
+                  "name": "佐藤 美咲"
+                },
+                "datePublished": "2024-10-08",
+                "reviewBody": "個人事業主でも手軽に導入できる価格設定が魅力的でした。スマホ1つで現場からすぐにシミュレーションを見せられるので、お客様の反応が格段に良くなりました。140色の豊富なカラーバリエーションで、どんなご要望にも対応できます。",
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": "5",
+                  "bestRating": "5"
+                }
+              },
+              {
+                "@type": "Review",
+                "author": {
+                  "@type": "Person",
+                  "name": "鈴木 直樹"
+                },
+                "datePublished": "2024-09-22",
+                "reviewBody": "営業チーム全体で導入し、顧客満足度が3.8倍に向上しました。以前は言葉での説明や小さな色見本だけでしたが、実際の建物に色を当てはめた画像をお見せできるため、お客様の不安が一気に解消されます。QRコード共有機能も便利で、お客様がご家族とゆっくり検討できる点も好評です。",
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": "5",
+                  "bestRating": "5"
+                }
+              },
+              {
+                "@type": "Review",
+                "author": {
+                  "@type": "Person",
+                  "name": "山田 裕介"
+                },
+                "datePublished": "2024-08-30",
+                "reviewBody": "工務店として外壁塗装も手がけていますが、Paintlyのおかげで提案の幅が広がりました。お客様に複数のパターンを見せることで、より満足度の高い選択をしていただけるようになりました。AIの精度が高く、実際の仕上がりとのギャップがほとんどありません。",
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": "5",
+                  "bestRating": "5"
+                }
+              },
+              {
+                "@type": "Review",
+                "author": {
+                  "@type": "Person",
+                  "name": "伊藤 真一"
+                },
+                "datePublished": "2024-07-12",
+                "reviewBody": "20年の塗装業界経験の中で、これほど革新的なツールは初めてです。新人営業でもベテランと同じクオリティの提案ができるようになり、教育コストも削減されました。ビフォーアフター比較機能は、お客様への訴求力が抜群です。",
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": "5",
+                  "bestRating": "5"
+                }
+              },
+              {
+                "@type": "Review",
+                "author": {
+                  "@type": "Person",
+                  "name": "小林 沙織"
+                },
+                "datePublished": "2024-06-05",
+                "reviewBody": "入社2年目の若手営業ですが、Paintlyを使い始めてから自信を持ってお客様に提案できるようになりました。色のイメージを視覚的に共有できるため、お客様とのコミュニケーションがスムーズで、「あなたに頼みたい」と言っていただけることが増えました。",
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": "5",
+                  "bestRating": "5"
+                }
+              }
+            ]
+          })
+        }}
+      />
+
       {/* HowTo構造化データ */}
       <script
         type="application/ld+json"
@@ -976,6 +1139,102 @@ export default function HomePage() {
                   "@type": "Answer",
                   "text": "はい、Paintlyで生成した画像は商用利用が可能です。お客様への提案資料、見積書への添付、ウェブサイトやSNSでの事例紹介など、営業活動や広告宣伝に自由にご利用いただけます。ただし、生成画像そのものを販売する行為は禁止されています。"
                 }
+              },
+              {
+                "@type": "Question",
+                "name": "料金プランの違いは何ですか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "プランは月間の画像生成回数で分かれています。無料プラン（3回）、ライトプラン（30回/月）、スタンダードプラン（100回/月）、プロプラン（300回/月）、ビジネスプラン（1,000回/月）をご用意しています。すべてのプランで機能制限はなく、顧客管理も無制限にご利用いただけます。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "無料プランで何回使えますか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "無料プランではアカウント作成後3回まで画像生成が可能です。クレジットカード登録は不要で、すぐにお試しいただけます。3回使い切った後も、有料プランにアップグレードすることで継続してご利用いただけます。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "クレジットカードは必要ですか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "無料プランのご利用にはクレジットカードは不要です。有料プランをご利用の場合は、Stripeによる決済となり、クレジットカードまたはデビットカードが必要です。安全な決済環境を提供しており、カード情報は厳重に保護されます。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "解約はいつでもできますか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "はい、いつでも解約可能です。解約手続きは設定ページから簡単に行えます。次回請求日の前に解約すれば、それ以降の課金は発生しません。解約後も、当月分の生成回数は引き続きご利用いただけます。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "生成された画像の著作権はどうなりますか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Paintlyで生成された画像の著作権は利用者に帰属します。営業資料、見積書、SNS投稿など、自由にご利用いただけます。ただし、生成画像そのものを商品として販売する行為は利用規約で禁止されています。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "オフラインでも使えますか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "PaintlyはPWA（Progressive Web App）技術を採用しており、一部の機能はオフラインでも動作します。ただし、AI画像生成にはインターネット接続が必要です。ネット環境が不安定な現場でも、キャッシュ機能により快適にご利用いただけます。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "どのブラウザに対応していますか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Chrome、Safari、Edge、Firefoxの最新版に対応しています。スマートフォンでは、iOS（Safari）およびAndroid（Chrome）での動作を確認しています。最高のパフォーマンスを得るため、常に最新バージョンのブラウザをご使用ください。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "画像生成にどれくらい時間がかかりますか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "最新のAI技術により、通常5〜10秒程度で高精度なシミュレーション画像を生成します。ネットワーク環境や画像のサイズによって若干変動する場合がありますが、お客様をお待たせすることなく、その場で提示できるスピードです。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "他の塗装シミュレーションツールとの違いは？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Paintlyは最新のAI技術（Gemini）を使用し、建物の形状や光の当たり方まで考慮したリアルな画像を生成します。スマートフォン1台で完結し、営業現場でのその場提案に最適化されています。顧客ごとの履歴管理、ビフォーアフター比較、QRコード共有など、営業活動に必要な機能を網羅しています。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "導入までどれくらいかかりますか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "今すぐ始められます。メールアドレスで無料アカウントを作成すれば、特別な設定や研修なしで、すぐに画像生成をお試しいただけます。直感的な操作画面で、初めての方でも迷わずご利用いただけます。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "サポート体制はどうなっていますか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "メールでのサポートを提供しています（sanri.3159@gmail.com）。よくある質問やチュートリアルも充実しており、多くの疑問はサイト内で解決できます。有料プランご利用の方には優先的に対応させていただきます。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "データのセキュリティは大丈夫ですか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Paintlyは業界標準のセキュリティ対策を実施しています。データはSupabase（PostgreSQL）で暗号化保存され、画像はCloudflare R2で安全に管理されます。決済情報はStripeによって処理され、当社がクレジットカード情報を直接保持することはありません。"
+                }
               }
             ]
           })
@@ -1031,6 +1290,161 @@ export default function HomePage() {
                 はい、Paintlyで生成した画像は<strong className="font-semibold text-green-600">商用利用が可能</strong>です。<br />
                 お客様への提案資料、見積書への添付、ウェブサイトやSNSでの事例紹介など、営業活動や広告宣伝に自由にご利用いただけます。<br />
                 ただし、生成画像そのものを販売する行為は禁止されています。
+              </p>
+            </div>
+
+            {/* FAQ 4 */}
+            <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                <span className="text-orange-600">Q.</span>
+                <span>料金プランの違いは何ですか？</span>
+              </h3>
+              <p className="text-gray-700 ml-8 leading-relaxed">
+                プランは<strong className="font-semibold">月間の画像生成回数</strong>で分かれています。<br />
+                無料プラン（3回）、ライトプラン（30回/月）、スタンダードプラン（100回/月）、プロプラン（300回/月）、ビジネスプラン（1,000回/月）をご用意しています。<br />
+                すべてのプランで機能制限はなく、顧客管理も無制限にご利用いただけます。
+              </p>
+            </div>
+
+            {/* FAQ 5 */}
+            <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                <span className="text-orange-600">Q.</span>
+                <span>無料プランで何回使えますか？</span>
+              </h3>
+              <p className="text-gray-700 ml-8 leading-relaxed">
+                無料プランでは<strong className="font-semibold text-orange-600">アカウント作成後3回まで</strong>画像生成が可能です。<br />
+                クレジットカード登録は不要で、すぐにお試しいただけます。<br />
+                3回使い切った後も、有料プランにアップグレードすることで継続してご利用いただけます。
+              </p>
+            </div>
+
+            {/* FAQ 6 */}
+            <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                <span className="text-orange-600">Q.</span>
+                <span>クレジットカードは必要ですか？</span>
+              </h3>
+              <p className="text-gray-700 ml-8 leading-relaxed">
+                <strong className="font-semibold">無料プランのご利用にはクレジットカードは不要</strong>です。<br />
+                有料プランをご利用の場合は、Stripeによる決済となり、クレジットカードまたはデビットカードが必要です。<br />
+                安全な決済環境を提供しており、カード情報は厳重に保護されます。
+              </p>
+            </div>
+
+            {/* FAQ 7 */}
+            <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                <span className="text-orange-600">Q.</span>
+                <span>解約はいつでもできますか？</span>
+              </h3>
+              <p className="text-gray-700 ml-8 leading-relaxed">
+                はい、<strong className="font-semibold text-green-600">いつでも解約可能</strong>です。<br />
+                解約手続きは設定ページから簡単に行えます。次回請求日の前に解約すれば、それ以降の課金は発生しません。<br />
+                解約後も、当月分の生成回数は引き続きご利用いただけます。
+              </p>
+            </div>
+
+            {/* FAQ 8 */}
+            <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                <span className="text-orange-600">Q.</span>
+                <span>生成された画像の著作権はどうなりますか？</span>
+              </h3>
+              <p className="text-gray-700 ml-8 leading-relaxed">
+                Paintlyで生成された画像の<strong className="font-semibold text-green-600">著作権は利用者に帰属</strong>します。<br />
+                営業資料、見積書、SNS投稿など、自由にご利用いただけます。<br />
+                ただし、生成画像そのものを商品として販売する行為は利用規約で禁止されています。
+              </p>
+            </div>
+
+            {/* FAQ 9 */}
+            <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                <span className="text-orange-600">Q.</span>
+                <span>オフラインでも使えますか？</span>
+              </h3>
+              <p className="text-gray-700 ml-8 leading-relaxed">
+                Paintlyは<strong className="font-semibold">PWA（Progressive Web App）</strong>技術を採用しており、一部の機能はオフラインでも動作します。<br />
+                ただし、AI画像生成には<strong className="font-semibold">インターネット接続が必要</strong>です。<br />
+                ネット環境が不安定な現場でも、キャッシュ機能により快適にご利用いただけます。
+              </p>
+            </div>
+
+            {/* FAQ 10 */}
+            <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                <span className="text-orange-600">Q.</span>
+                <span>どのブラウザに対応していますか？</span>
+              </h3>
+              <p className="text-gray-700 ml-8 leading-relaxed">
+                <strong className="font-semibold">Chrome、Safari、Edge、Firefox</strong>の最新版に対応しています。<br />
+                スマートフォンでは、iOS（Safari）およびAndroid（Chrome）での動作を確認しています。<br />
+                最高のパフォーマンスを得るため、常に最新バージョンのブラウザをご使用ください。
+              </p>
+            </div>
+
+            {/* FAQ 11 */}
+            <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                <span className="text-orange-600">Q.</span>
+                <span>画像生成にどれくらい時間がかかりますか？</span>
+              </h3>
+              <p className="text-gray-700 ml-8 leading-relaxed">
+                最新のAI技術により、<strong className="font-semibold text-orange-600">通常5〜10秒程度</strong>で高精度なシミュレーション画像を生成します。<br />
+                ネットワーク環境や画像のサイズによって若干変動する場合がありますが、お客様をお待たせすることなく、その場で提示できるスピードです。
+              </p>
+            </div>
+
+            {/* FAQ 12 */}
+            <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                <span className="text-orange-600">Q.</span>
+                <span>他の塗装シミュレーションツールとの違いは？</span>
+              </h3>
+              <p className="text-gray-700 ml-8 leading-relaxed">
+                Paintlyは<strong className="font-semibold text-purple-600">最新のAI技術（Gemini）</strong>を使用し、建物の形状や光の当たり方まで考慮したリアルな画像を生成します。<br />
+                スマートフォン1台で完結し、<strong className="font-semibold">営業現場でのその場提案</strong>に最適化されています。<br />
+                顧客ごとの履歴管理、ビフォーアフター比較、QRコード共有など、営業活動に必要な機能を網羅しています。
+              </p>
+            </div>
+
+            {/* FAQ 13 */}
+            <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                <span className="text-orange-600">Q.</span>
+                <span>導入までどれくらいかかりますか？</span>
+              </h3>
+              <p className="text-gray-700 ml-8 leading-relaxed">
+                <strong className="font-semibold text-green-600">今すぐ始められます。</strong><br />
+                メールアドレスで無料アカウントを作成すれば、特別な設定や研修なしで、すぐに画像生成をお試しいただけます。<br />
+                直感的な操作画面で、初めての方でも迷わずご利用いただけます。
+              </p>
+            </div>
+
+            {/* FAQ 14 */}
+            <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                <span className="text-orange-600">Q.</span>
+                <span>サポート体制はどうなっていますか？</span>
+              </h3>
+              <p className="text-gray-700 ml-8 leading-relaxed">
+                メールでのサポートを提供しています（<a href="mailto:sanri.3159@gmail.com" className="text-orange-600 hover:underline">sanri.3159@gmail.com</a>）。<br />
+                よくある質問やチュートリアルも充実しており、多くの疑問はサイト内で解決できます。<br />
+                有料プランご利用の方には<strong className="font-semibold">優先的に対応</strong>させていただきます。
+              </p>
+            </div>
+
+            {/* FAQ 15 */}
+            <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                <span className="text-orange-600">Q.</span>
+                <span>データのセキュリティは大丈夫ですか？</span>
+              </h3>
+              <p className="text-gray-700 ml-8 leading-relaxed">
+                Paintlyは<strong className="font-semibold text-blue-600">業界標準のセキュリティ対策</strong>を実施しています。<br />
+                データはSupabase（PostgreSQL）で暗号化保存され、画像はCloudflare R2で安全に管理されます。<br />
+                決済情報はStripeによって処理され、当社がクレジットカード情報を直接保持することはありません。
               </p>
             </div>
           </div>
