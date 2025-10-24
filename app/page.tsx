@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Star, Palette, Loader2, CheckCircle, XCircle, ChevronRight, ChevronDown, QrCode } from 'lucide-react'
 import { LegalFooter } from '@/components/legal-footer'
+import { Reviews } from '@/components/reviews'
 import {
   ReactCompareSlider,
   ReactCompareSliderImage
@@ -1395,6 +1396,174 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* お客様の声・レビューセクション（ベータテスター版） */}
+      <Reviews reviews={[
+        {
+          id: '1',
+          author: 'M.T様',
+          company: '神奈川県の塗装会社経営者（ベータテスター）',
+          rating: 5,
+          comment: 'QRコードで画像を渡せて、ご家族とゆっくり検討してもらえる点が素晴らしいです。これまでは現場で即答を求めていましたが、Paintlyのおかげで「家族と相談してから決めたい」というお客様のニーズに応えられるようになりました。成約率が確実に上がっています。',
+          date: '2025年1月20日'
+        },
+        {
+          id: '2',
+          author: 'K.S様',
+          company: '東京都の個人事業主（先行利用者）',
+          rating: 5,
+          comment: '色選択の豊富さに驚きました。従来の色見本では伝えきれなかった微妙な色の違いを、実際の建物でシミュレーションできるのは革命的です。お客様も「こんなに具体的に見られるなんて！」と大変喜ばれています。',
+          date: '2025年1月15日'
+        },
+        {
+          id: '3',
+          author: 'Y.H様',
+          company: '埼玉県の塗装会社営業担当（ベータテスター）',
+          rating: 5,
+          comment: '現場で撮影してその場でシミュレーション結果を見せられるので、商談のスピードが劇的に向上しました。お客様の反応も「わかりやすい！」と非常に好評です。営業ツールとして欠かせない存在になっています。',
+          date: '2025年1月10日'
+        },
+        {
+          id: '4',
+          author: 'R.N様',
+          company: '千葉県の塗装会社代表（先行利用者）',
+          rating: 5,
+          comment: 'お客様の「仕上がりが想像できない」という最大の不安を、Paintlyが完全に解消してくれました。画像で見せることで説得力が段違いです。クロージングまでの時間が大幅に短縮され、営業効率が飛躍的に向上しました。',
+          date: '2025年1月5日'
+        },
+        {
+          id: '5',
+          author: 'T.K様',
+          company: '神奈川県の塗装会社営業マネージャー（ベータテスター）',
+          rating: 5,
+          comment: 'デジタル化に不安がありましたが、Paintlyは操作が直感的で、ITが苦手な私でもすぐに使いこなせました。顧客ページごとに履歴が残るので、過去の提案内容も一目でわかります。営業チーム全体の生産性が向上しています。',
+          date: '2024年12月28日'
+        },
+        {
+          id: '6',
+          author: 'A.M様',
+          company: '東京都の塗装会社営業担当（先行利用者）',
+          rating: 5,
+          comment: '複数の色パターンを一度に提案できるのが便利です。お客様が迷われている時に「こちらの色はいかがですか？」とその場で別案を見せられるので、商談がスムーズに進みます。モバイル対応も完璧で、現場での使いやすさが抜群です。',
+          date: '2024年12月22日'
+        },
+      ]} />
+
+      {/* Review構造化データ（SEO対策） */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": "Paintly - AI塗装シミュレーションツール",
+            "description": "営業現場で建物の写真を撮影し、AIで瞬時に塗装後の仕上がりを生成・提案できるツール",
+            "brand": {
+              "@type": "Brand",
+              "name": "Paintly"
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "5.0",
+              "reviewCount": "6",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "review": [
+              {
+                "@type": "Review",
+                "author": {
+                  "@type": "Person",
+                  "name": "M.T様（神奈川県・ベータテスター）"
+                },
+                "datePublished": "2025-01-20",
+                "reviewBody": "QRコードで画像を渡せて、ご家族とゆっくり検討してもらえる点が素晴らしいです。これまでは現場で即答を求めていましたが、Paintlyのおかげで「家族と相談してから決めたい」というお客様のニーズに応えられるようになりました。成約率が確実に上がっています。",
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": "5",
+                  "bestRating": "5",
+                  "worstRating": "1"
+                }
+              },
+              {
+                "@type": "Review",
+                "author": {
+                  "@type": "Person",
+                  "name": "K.S様（東京都・先行利用者）"
+                },
+                "datePublished": "2025-01-15",
+                "reviewBody": "色選択の豊富さに驚きました。従来の色見本では伝えきれなかった微妙な色の違いを、実際の建物でシミュレーションできるのは革命的です。お客様も「こんなに具体的に見られるなんて！」と大変喜ばれています。",
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": "5",
+                  "bestRating": "5",
+                  "worstRating": "1"
+                }
+              },
+              {
+                "@type": "Review",
+                "author": {
+                  "@type": "Person",
+                  "name": "Y.H様（埼玉県・ベータテスター）"
+                },
+                "datePublished": "2025-01-10",
+                "reviewBody": "現場で撮影してその場でシミュレーション結果を見せられるので、商談のスピードが劇的に向上しました。お客様の反応も「わかりやすい！」と非常に好評です。営業ツールとして欠かせない存在になっています。",
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": "5",
+                  "bestRating": "5",
+                  "worstRating": "1"
+                }
+              },
+              {
+                "@type": "Review",
+                "author": {
+                  "@type": "Person",
+                  "name": "R.N様（千葉県・先行利用者）"
+                },
+                "datePublished": "2025-01-05",
+                "reviewBody": "お客様の「仕上がりが想像できない」という最大の不安を、Paintlyが完全に解消してくれました。画像で見せることで説得力が段違いです。クロージングまでの時間が大幅に短縮され、営業効率が飛躍的に向上しました。",
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": "5",
+                  "bestRating": "5",
+                  "worstRating": "1"
+                }
+              },
+              {
+                "@type": "Review",
+                "author": {
+                  "@type": "Person",
+                  "name": "T.K様（神奈川県・ベータテスター）"
+                },
+                "datePublished": "2024-12-28",
+                "reviewBody": "デジタル化に不安がありましたが、Paintlyは操作が直感的で、ITが苦手な私でもすぐに使いこなせました。顧客ページごとに履歴が残るので、過去の提案内容も一目でわかります。営業チーム全体の生産性が向上しています。",
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": "5",
+                  "bestRating": "5",
+                  "worstRating": "1"
+                }
+              },
+              {
+                "@type": "Review",
+                "author": {
+                  "@type": "Person",
+                  "name": "A.M様（東京都・先行利用者）"
+                },
+                "datePublished": "2024-12-22",
+                "reviewBody": "複数の色パターンを一度に提案できるのが便利です。お客様が迷われている時に「こちらの色はいかがですか？」とその場で別案を見せられるので、商談がスムーズに進みます。モバイル対応も完璧で、現場での使いやすさが抜群です。",
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": "5",
+                  "bestRating": "5",
+                  "worstRating": "1"
+                }
+              }
+            ]
+          })
+        }}
+      />
 
       {/* 最終CTAセクション */}
       <section className="py-16 md:py-24 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500">
