@@ -1,4 +1,6 @@
 import { Metadata } from 'next'
+import Link from 'next/link'
+import { Home, FileText, DollarSign } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: '利用規約 | Paintly',
@@ -13,6 +15,31 @@ export default function TermsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* ナビゲーションリンク */}
+        <div className="mb-6 flex flex-wrap gap-4">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
+          >
+            <Home className="h-4 w-4" />
+            ホームに戻る
+          </Link>
+          <Link
+            href="/privacy"
+            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
+          >
+            <FileText className="h-4 w-4" />
+            プライバシーポリシー
+          </Link>
+          <Link
+            href="/pricing"
+            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
+          >
+            <DollarSign className="h-4 w-4" />
+            料金プラン
+          </Link>
+        </div>
+
         {/* ヘッダー */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">利用規約</h1>

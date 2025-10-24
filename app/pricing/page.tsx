@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Check, Loader2, Star, Zap, Crown, Rocket, Building2, Infinity } from 'lucide-react'
+import { Check, Loader2, Star, Zap, Crown, Rocket, Building2, Infinity, Home } from 'lucide-react'
 
 interface Plan {
   id: string
@@ -80,6 +80,17 @@ export default function PricingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-primary/10 py-12 px-4">
       <div className="max-w-7xl mx-auto">
+        {/* ホームリンク */}
+        <div className="mb-6">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-white/80 hover:text-white font-medium transition-colors"
+          >
+            <Home className="h-5 w-5" />
+            ホームに戻る
+          </Link>
+        </div>
+
         {/* ヘッダー */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
