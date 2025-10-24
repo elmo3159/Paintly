@@ -97,6 +97,14 @@ export function LegalFooter({ variant = 'default', className = '' }: LegalFooter
               </li>
               <li>
                 <Link
+                  href="/blog"
+                  className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                >
+                  ブログ
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/faq"
                   className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
                 >
