@@ -8,14 +8,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const legalPageDate = new Date('2025-01-15T00:00:00+09:00') // 利用規約の最終更新日
   const blogPageDate = new Date('2025-01-24T00:00:00+09:00') // ブログの最終更新日
 
-  // ブログ記事のスラッグリスト
-  const blogPosts = [
-    { slug: 'ai-simulation-case-study', date: '2024-11-20' },
-    { slug: 'exterior-color-selection-guide', date: '2024-11-10' },
-    { slug: 'digital-transformation-painting-business', date: '2024-10-28' },
-    { slug: 'popular-exterior-colors-2024', date: '2024-10-15' },
-    { slug: 'customer-anxiety-resolution', date: '2024-10-05' },
-  ]
+  // ブログ記事（削除済み - E-E-A-T対策のため全記事削除）
+  const blogPosts: { slug: string; date: string }[] = []
 
   return [
     {
@@ -66,14 +60,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.5,
     },
-    // ブログ一覧ページ
-    {
-      url: `${baseUrl}/blog`,
-      lastModified: blogPageDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    // ブログ記事ページ
+    // ブログ記事ページ（現在は空 - 記事が追加されたら自動的に表示）
     ...blogPosts.map((post) => ({
       url: `${baseUrl}/blog/${post.slug}`,
       lastModified: new Date(post.date),
