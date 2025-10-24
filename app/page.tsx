@@ -406,7 +406,7 @@ export default function HomePage() {
             </article>
 
             {/* 実例3 */}
-            <article className="group md:col-span-2 lg:col-span-1">
+            <article className="group">
               <div className="relative bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-white/30 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20">
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
