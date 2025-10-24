@@ -512,6 +512,19 @@ export default function HomePage() {
                     </span>
                     が作れます。
                   </span>
+
+                  {/* 緊急性・競争優位性訴求 */}
+                  <div className="mt-8 inline-block">
+                    <div className="relative bg-gradient-to-r from-orange-500/20 via-red-500/20 to-pink-500/20 backdrop-blur-sm border-2 border-orange-400/40 rounded-2xl px-6 py-4 shadow-lg">
+                      {/* 左側の警告バー */}
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-500 via-red-500 to-pink-500 rounded-l-2xl"></div>
+
+                      <p className="text-base sm:text-lg md:text-xl text-white/95 leading-relaxed">
+                        <span className="font-bold text-orange-300">他社</span>に顧客を取られる前に。<br />
+                        視覚で差をつけて、その場で<span className="font-bold text-pink-300">成約</span>を決める。
+                      </p>
+                    </div>
+                  </div>
                 </h2>
               </div>
             </div>
