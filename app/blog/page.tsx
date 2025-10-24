@@ -42,8 +42,8 @@ const blogPosts: BlogPost[] = [
     publishedAt: '2024年11月20日',
     readingTime: '5分',
     author: {
-      name: '村上 ダニエル',
-      role: 'Paintly運営チーム',
+      name: 'Paintly運営チーム',
+      role: '塗装業界DX支援',
     },
   },
   {
@@ -56,8 +56,8 @@ const blogPosts: BlogPost[] = [
     publishedAt: '2024年11月10日',
     readingTime: '4分',
     author: {
-      name: '村上 ダニエル',
-      role: 'Paintly運営チーム',
+      name: 'Paintly運営チーム',
+      role: '塗装業界DX支援',
     },
   },
   {
@@ -70,8 +70,8 @@ const blogPosts: BlogPost[] = [
     publishedAt: '2024年10月28日',
     readingTime: '6分',
     author: {
-      name: '村上 ダニエル',
-      role: 'Paintly運営チーム',
+      name: 'Paintly運営チーム',
+      role: '塗装業界DX支援',
     },
   },
   {
@@ -84,8 +84,8 @@ const blogPosts: BlogPost[] = [
     publishedAt: '2024年10月15日',
     readingTime: '5分',
     author: {
-      name: '村上 ダニエル',
-      role: 'Paintly運営チーム',
+      name: 'Paintly運営チーム',
+      role: '塗装業界DX支援',
     },
   },
   {
@@ -98,8 +98,8 @@ const blogPosts: BlogPost[] = [
     publishedAt: '2024年10月5日',
     readingTime: '4分',
     author: {
-      name: '村上 ダニエル',
-      role: 'Paintly運営チーム',
+      name: 'Paintly運営チーム',
+      role: '塗装業界DX支援',
     },
   },
 ]

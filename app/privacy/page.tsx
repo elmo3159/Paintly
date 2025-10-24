@@ -366,7 +366,7 @@ export default function PrivacyPage() {
           {/* フッター */}
           <div className="mt-12 pt-8 border-t border-gray-200 text-center text-gray-600">
             <p>制定日: 2025年10月15日</p>
-            <p className="mt-2">村上 ダニエル</p>
+            <p className="mt-2">Paintly運営チーム</p>
           </div>
         </div>
 

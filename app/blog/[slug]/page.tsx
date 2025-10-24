@@ -123,8 +123,8 @@ Paintlyの導入を検討されている方は、まず[無料トライアル](/
     publishedAt: '2024年11月20日',
     readingTime: '5分',
     author: {
-      name: '村上 ダニエル',
-      role: 'Paintly運営チーム',
+      name: 'Paintly運営チーム',
+      role: '塗装業界DX支援',
     },
   },
   'exterior-color-selection-guide': {
@@ -279,8 +279,8 @@ Paintlyの色選び機能を試したい方は、[無料トライアル](/auth/s
     publishedAt: '2024年11月10日',
     readingTime: '4分',
     author: {
-      name: '村上 ダニエル',
-      role: 'Paintly運営チーム',
+      name: 'Paintly運営チーム',
+      role: '塗装業界DX支援',
     },
   },
   'digital-transformation-painting-business': {
@@ -483,8 +483,8 @@ Paintlyをはじめとするデジタルツールを活用することで、**�
     publishedAt: '2024年10月28日',
     readingTime: '6分',
     author: {
-      name: '村上 ダニエル',
-      role: 'Paintly運営チーム',
+      name: 'Paintly運営チーム',
+      role: '塗装業界DX支援',
     },
   },
   'popular-exterior-colors-2024': {
@@ -728,8 +728,8 @@ Paintlyの[無料トライアル](/auth/signup)で、最新トレンド色140色
     publishedAt: '2024年10月15日',
     readingTime: '5分',
     author: {
-      name: '村上 ダニエル',
-      role: 'Paintly運営チーム',
+      name: 'Paintly運営チーム',
+      role: '塗装業界DX支援',
     },
   },
   'customer-anxiety-resolution': {
@@ -982,8 +982,8 @@ Paintlyの[無料トライアル](/auth/signup)で、お客様の不安を解消
     publishedAt: '2024年10月5日',
     readingTime: '4分',
     author: {
-      name: '村上 ダニエル',
-      role: 'Paintly運営チーム',
+      name: 'Paintly運営チーム',
+      role: '塗装業界DX支援',
     },
   },
 }
