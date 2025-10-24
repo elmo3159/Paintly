@@ -345,7 +345,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
             {/* 実例1 */}
             <article className="group">
-              <div className="relative bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-white/30 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/20">
+              <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-white/30 transition-all duration-300 hover:shadow-xl hover:shadow-orange-500/20" style={{willChange: 'transform'}}>
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-semibold text-orange-400 uppercase tracking-wider">実例 1</span>
@@ -376,7 +376,7 @@ export default function HomePage() {
 
             {/* 実例2 */}
             <article className="group">
-              <div className="relative bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-white/30 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/20">
+              <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-white/30 transition-all duration-300 hover:shadow-xl hover:shadow-pink-500/20" style={{willChange: 'transform'}}>
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-semibold text-pink-400 uppercase tracking-wider">実例 2</span>
@@ -407,7 +407,7 @@ export default function HomePage() {
 
             {/* 実例3 */}
             <article className="group">
-              <div className="relative bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-white/30 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20">
+              <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-white/30 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/20" style={{willChange: 'transform'}}>
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-semibold text-purple-400 uppercase tracking-wider">実例 3</span>
