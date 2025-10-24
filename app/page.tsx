@@ -460,7 +460,7 @@ export default function HomePage() {
                   <span className="block text-white mt-3">
                     お客様は
                     <span className="inline-block mx-3 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 rounded-xl shadow-2xl animate-pulse">
-                      ✨ 感動
+                      感動
                     </span>
                     するはずです。
                   </span>
@@ -476,30 +476,37 @@ export default function HomePage() {
 
               {/* メインコピー2 */}
               <div className="text-center max-w-5xl mx-auto">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-relaxed">
-                  <span className="inline-block bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/20 shadow-lg mb-3 hover:bg-white/20 transition-all">
-                    <span className="text-orange-300">📷 写真を撮って</span>
-                  </span>
-                  <span className="inline-block bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/20 shadow-lg mb-3 mx-3 hover:bg-white/20 transition-all">
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-300 to-purple-300">
-                      🎨 色を選ぶ
+                <h2 className="font-bold leading-relaxed">
+                  {/* 写真を撮って + 色を選ぶ（常に横並び） */}
+                  <span className="flex flex-wrap justify-center items-center gap-3 mb-3 text-xl sm:text-2xl md:text-3xl lg:text-4xl">
+                    <span className="inline-block bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-xl border border-white/20 shadow-lg hover:bg-white/20 transition-all">
+                      <span className="text-orange-300 whitespace-nowrap">📷 写真を撮って</span>
+                    </span>
+                    <span className="inline-block bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-xl border border-white/20 shadow-lg hover:bg-white/20 transition-all">
+                      <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-300 to-purple-300 whitespace-nowrap">
+                        🎨 色を選ぶ
+                      </span>
                     </span>
                   </span>
-                  <span className="block text-white/90 text-xl sm:text-2xl md:text-3xl mt-4">
-                    だけで
-                  </span>
-                  <span className="block mt-4">
-                    <span className="text-white/90">誰でも</span>
-                    <span className="inline-block mx-2 px-5 py-3 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl shadow-2xl transform hover:scale-110 transition-all text-white font-extrabold">
+
+                  {/* だけで誰でも簡単に（一行に収める） */}
+                  <span className="block text-white/90 text-lg sm:text-xl md:text-2xl lg:text-3xl mt-4">
+                    <span>だけで</span>
+                    <span className="mx-2">誰でも</span>
+                    <span className="inline-block mx-1 px-4 sm:px-5 py-2 sm:py-3 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl shadow-2xl transform hover:scale-110 transition-all text-white font-extrabold">
                       簡単に
                     </span>
                   </span>
+
+                  {/* 一瞬で（単独で一行） */}
                   <span className="block mt-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
                     <span className="inline-block px-6 py-3 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 rounded-2xl shadow-2xl animate-pulse-slow text-white font-black">
-                      ⚡ 一瞬で
+                      一瞬で
                     </span>
                   </span>
-                  <span className="block mt-6 text-white/90">
+
+                  {/* シミュレーション画像が作れます */}
+                  <span className="block mt-6 text-white/90 text-xl sm:text-2xl md:text-3xl lg:text-4xl">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-300 via-cyan-300 to-teal-300 font-extrabold">
                       シミュレーション画像
                     </span>
