@@ -489,12 +489,12 @@ export default function HomePage() {
                     </span>
                   </span>
 
-                  {/* だけで誰でも簡単に（一行に収める） */}
+                  {/* これだけで誰でも簡単（一行に収める） */}
                   <span className="block text-white/90 text-lg sm:text-xl md:text-2xl lg:text-3xl mt-4">
-                    <span>だけで</span>
+                    <span>これだけで</span>
                     <span className="mx-2">誰でも</span>
                     <span className="inline-block mx-1 px-4 sm:px-5 py-2 sm:py-3 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl shadow-2xl transform hover:scale-110 transition-all text-white font-extrabold">
-                      簡単に
+                      簡単
                     </span>
                   </span>
 
