@@ -79,11 +79,52 @@ const config: Config = {
             animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)',
           },
         },
+        'text-shimmer': {
+          '0%, 100%': {
+            backgroundPosition: '0% 50%',
+          },
+          '50%': {
+            backgroundPosition: '100% 50%',
+          },
+        },
+        'pulse-slow': {
+          '0%, 100%': {
+            opacity: '1',
+            transform: 'scale(1)',
+          },
+          '50%': {
+            opacity: '0.85',
+            transform: 'scale(1.05)',
+          },
+        },
+        'spin-slow': {
+          from: {
+            transform: 'rotate(0deg)',
+          },
+          to: {
+            transform: 'rotate(360deg)',
+          },
+        },
+        blob: {
+          '0%, 100%': {
+            transform: 'translate(0px, 0px) scale(1)',
+          },
+          '33%': {
+            transform: 'translate(30px, -50px) scale(1.1)',
+          },
+          '66%': {
+            transform: 'translate(-20px, 20px) scale(0.9)',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'scroll-bounce': 'scroll-bounce 1s ease-in-out infinite',
+        'text-shimmer': 'text-shimmer 3s ease-in-out infinite',
+        'pulse-slow': 'pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'spin-slow': 'spin-slow 8s linear infinite',
+        blob: 'blob 7s infinite',
       },
     },
   },

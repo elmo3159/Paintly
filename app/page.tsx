@@ -436,6 +436,80 @@ export default function HomePage() {
             </article>
           </div>
 
+          {/* 魅力的なコピーセクション */}
+          <div className="mt-20 mb-16 relative">
+            {/* 装飾的な背景 */}
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 via-pink-500/10 to-purple-500/10 rounded-3xl blur-3xl"></div>
+
+            <div className="relative space-y-12">
+              {/* メインコピー1 */}
+              <div className="text-center">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
+                  <span className="block text-white mb-3">
+                    必要なのは
+                    <span className="inline-block mx-3 px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
+                      📱 スマホだけ
+                    </span>
+                  </span>
+                  <span
+                    className="block bg-clip-text text-transparent bg-gradient-to-r from-orange-300 via-pink-300 to-purple-300 animate-text-shimmer"
+                    style={{ backgroundSize: '200% 200%' }}
+                  >
+                    様変わりした自宅を見て
+                  </span>
+                  <span className="block text-white mt-3">
+                    お客様は
+                    <span className="inline-block mx-3 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 rounded-xl shadow-2xl animate-pulse">
+                      ✨ 感動
+                    </span>
+                    するはずです。
+                  </span>
+                </h2>
+              </div>
+
+              {/* 区切り装飾 */}
+              <div className="flex items-center justify-center gap-4">
+                <div className="h-1 w-32 bg-gradient-to-r from-transparent via-orange-400 to-transparent rounded-full"></div>
+                <Star className="h-8 w-8 text-orange-400 animate-spin-slow" />
+                <div className="h-1 w-32 bg-gradient-to-r from-transparent via-orange-400 to-transparent rounded-full"></div>
+              </div>
+
+              {/* メインコピー2 */}
+              <div className="text-center max-w-5xl mx-auto">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-relaxed">
+                  <span className="inline-block bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/20 shadow-lg mb-3 hover:bg-white/20 transition-all">
+                    <span className="text-orange-300">📷 写真を撮って</span>
+                  </span>
+                  <span className="inline-block bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/20 shadow-lg mb-3 mx-3 hover:bg-white/20 transition-all">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-300 to-purple-300">
+                      🎨 色を選ぶ
+                    </span>
+                  </span>
+                  <span className="block text-white/90 text-xl sm:text-2xl md:text-3xl mt-4">
+                    だけで
+                  </span>
+                  <span className="block mt-4">
+                    <span className="text-white/90">誰でも</span>
+                    <span className="inline-block mx-2 px-5 py-3 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl shadow-2xl transform hover:scale-110 transition-all text-white font-extrabold">
+                      簡単に
+                    </span>
+                  </span>
+                  <span className="block mt-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
+                    <span className="inline-block px-6 py-3 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 rounded-2xl shadow-2xl animate-pulse-slow text-white font-black">
+                      ⚡ 一瞬で
+                    </span>
+                  </span>
+                  <span className="block mt-6 text-white/90">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-300 via-cyan-300 to-teal-300 font-extrabold">
+                      シミュレーション画像
+                    </span>
+                    が作れます。
+                  </span>
+                </h2>
+              </div>
+            </div>
+          </div>
+
           {/* CTAボタン */}
           <div className="mt-16 text-center">
             <Link href="/auth/signup">
