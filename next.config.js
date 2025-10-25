@@ -50,6 +50,8 @@ const nextConfig = {
   },
 
   experimental: {
+    // SWC強制トランスパイル（ES2022+ターゲット、ポリフィル削除）
+    forceSwcTransforms: true,
     serverActions: {
       bodySizeLimit: '10mb',
     },
@@ -82,6 +84,8 @@ const nextConfig = {
     emotion: false,
     styledComponents: false,
   },
+
+
   
   async headers() {
     return [
