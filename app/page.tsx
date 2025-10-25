@@ -97,7 +97,7 @@ export default function HomePage() {
           loop
           playsInline
           preload="none"
-          poster="/Paintly-haikei.png"
+          poster="/Paintly-haikei.webp"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src="/demo/slider-demo.mp4" type="video/mp4" />
@@ -363,7 +363,7 @@ export default function HomePage() {
                           alt="塗装前の一戸建て住宅"
                           fill
                           style={{ objectFit: 'cover' }}
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          sizes="(max-width: 640px) 100vw, 384px"
                           quality={75}
                           priority={false}
                         />
@@ -376,7 +376,7 @@ export default function HomePage() {
                           alt="Paintly AI生成による塗装後イメージ"
                           fill
                           style={{ objectFit: 'cover' }}
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          sizes="(max-width: 640px) 100vw, 384px"
                           quality={75}
                           priority={false}
                         />
@@ -418,7 +418,7 @@ export default function HomePage() {
                           alt="塗装前の一戸建て住宅"
                           fill
                           style={{ objectFit: 'cover' }}
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          sizes="(max-width: 640px) 100vw, 384px"
                           quality={75}
                           priority={false}
                         />
@@ -431,7 +431,7 @@ export default function HomePage() {
                           alt="Paintly AI生成による塗装後イメージ"
                           fill
                           style={{ objectFit: 'cover' }}
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          sizes="(max-width: 640px) 100vw, 384px"
                           quality={75}
                           priority={false}
                         />
@@ -473,7 +473,7 @@ export default function HomePage() {
                           alt="塗装前の一戸建て住宅"
                           fill
                           style={{ objectFit: 'cover' }}
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          sizes="(max-width: 640px) 100vw, 384px"
                           quality={75}
                           priority={false}
                         />
@@ -486,7 +486,7 @@ export default function HomePage() {
                           alt="Paintly AI生成による塗装後イメージ"
                           fill
                           style={{ objectFit: 'cover' }}
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          sizes="(max-width: 640px) 100vw, 384px"
                           quality={75}
                           priority={false}
                         />
