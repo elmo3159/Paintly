@@ -105,7 +105,7 @@ export default function RootLayout({
         <link
           rel="preload"
           as="image"
-          href="/Paintly-haikei.webp"
+          href="/bg-paint-drip.png"
           fetchPriority="high"
         />
         {/* PWA icons */}

@@ -114,7 +114,7 @@ export default function HomePage() {
             "@type": "VideoObject",
             "name": "Paintly - AI塗装シミュレーションデモ",
             "description": "Paintlyを使った塗装シミュレーションの実演動画。スマートフォンで建物の写真を撮影し、140色から色を選択するだけで、AIが瞬時に高精度な塗装後のイメージを生成します。",
-            "thumbnailUrl": `${typeof window !== 'undefined' ? window.location.origin : ''}/Paintly-haikei.webp`,
+            "thumbnailUrl": `${typeof window !== 'undefined' ? window.location.origin : ''}/bg-paint-drip.png`,
             "uploadDate": "2025-01-10",
             "duration": "PT30S",
             "contentUrl": `${typeof window !== 'undefined' ? window.location.origin : ''}/demo/slider-demo.mp4`,
@@ -128,7 +128,7 @@ export default function HomePage() {
         {/* 背景画像 - LCP最適化: poster画像を常に表示 */}
         <div
           className="absolute inset-0 w-full h-full bg-cover bg-center"
-          style={{ backgroundImage: "url('/Paintly-haikei.webp')" }}
+          style={{ backgroundImage: "url('/bg-paint-drip.png')" }}
         />
 
         {/* 背景動画 - LCP最適化: ページ読み込み完了後に遅延読み込み */}
