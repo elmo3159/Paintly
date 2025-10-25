@@ -67,6 +67,8 @@ const nextConfig = {
     ],
     // Critical CSS optimization - Next.js 15 uses Critters by default
     optimizeCss: true,
+    // CSS最小化とTree Shaking強化
+    cssChunking: 'strict',
     webVitalsAttribution: ['CLS', 'LCP'],
   },
   
