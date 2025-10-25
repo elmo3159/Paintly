@@ -67,8 +67,8 @@ const nextConfig = {
       'framer-motion',
       'react-dropzone'
     ],
-    // Critical CSS optimization - Next.js 15 uses Critters by default
-    optimizeCss: true,
+    // Critical CSS optimization - DISABLED: Critters doesn't support App Router streaming
+    // optimizeCss: true,  // Not working with App Router, causing issues
     // CSS最小化とTree Shaking強化
     cssChunking: 'strict',
     webVitalsAttribution: ['CLS', 'LCP'],

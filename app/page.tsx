@@ -40,9 +40,10 @@ const ReactCompareSliderImage = dynamic(() => import('react-compare-slider').the
 
 export default function HomePage() {
   const router = useRouter()
-  const [isChecking, setIsChecking] = useState(true)
   const [videoLoaded, setVideoLoaded] = useState(false)
 
+  // LCP OPTIMIZATION: Non-blocking auth check - don't block initial render
+  // Previous implementation blocked LCP for 500-1000ms+ waiting for auth check
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -51,24 +52,21 @@ export default function HomePage() {
         const supabase = createClient()
         const { data: { user } } = await supabase.auth.getUser()
 
+        // Silently redirect if already logged in (no loading screen)
         if (user) {
           router.push('/dashboard')
-        } else {
-          setIsChecking(false)
         }
       } catch (error) {
         console.error('Auth check error:', error)
-        setIsChecking(false)
       }
     }
 
+    // Run auth check in background without blocking render
     checkAuth()
   }, [router])
 
   // LCP optimization: Delay video loading until after critical resources
   useEffect(() => {
-    if (isChecking) return
-
     const loadVideo = () => {
       setVideoLoaded(true)
     }
@@ -80,18 +78,7 @@ export default function HomePage() {
       window.addEventListener('load', loadVideo)
       return () => window.removeEventListener('load', loadVideo)
     }
-  }, [isChecking])
-
-  if (isChecking) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-primary/10">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-12 w-12 animate-spin text-primary" />
-          <p className="text-muted-foreground">読み込み中...</p>
-        </div>
-      </div>
-    )
-  }
+  }, [])
 
   return (
     <div className="w-full overflow-hidden">
