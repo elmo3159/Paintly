@@ -72,12 +72,14 @@
 
     /* ===== タイポグラフィ（読みやすさ重視） ===== */
     /* next/font/googleで最適化されたフォント変数を使用 */
+    /* LCP optimization: Noto Sans JP removed (32 font requests) - use system fonts for Japanese */
     --font-sans:
-      var(--font-noto-sans-jp), var(--font-inter), -apple-system,
-      BlinkMacSystemFont, system-ui, sans-serif;
-    --font-serif: var(--font-noto-sans-jp), "Georgia", serif;
+      var(--font-inter), -apple-system, BlinkMacSystemFont, system-ui,
+      'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Meiryo',
+      sans-serif;
+    --font-serif: 'Hiragino Mincho ProN', 'Yu Mincho', "Georgia", serif;
     --font-handwritten: cursive, 'Comic Sans MS', 'Apple Chancery', 'Bradley Hand';
-    --font-kaisei: var(--font-noto-sans-jp), serif;
+    --font-kaisei: 'Hiragino Mincho ProN', 'Yu Mincho', serif;
 
     /* より大きな差でヒエラルキーを強調 */
     --font-size-hero: 42px;
