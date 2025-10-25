@@ -379,7 +379,7 @@ export default function HomePage() {
                           alt="塗装前の一戸建て住宅"
                           fill
                           style={{ objectFit: 'cover' }}
-                          sizes="(max-width: 640px) 100vw, 330px"
+                          sizes="330px"
                           quality={75}
                           priority={false}
                         />
@@ -392,7 +392,7 @@ export default function HomePage() {
                           alt="Paintly AI生成による塗装後イメージ"
                           fill
                           style={{ objectFit: 'cover' }}
-                          sizes="(max-width: 640px) 100vw, 330px"
+                          sizes="330px"
                           quality={75}
                           priority={false}
                         />
@@ -434,7 +434,7 @@ export default function HomePage() {
                           alt="塗装前の一戸建て住宅"
                           fill
                           style={{ objectFit: 'cover' }}
-                          sizes="(max-width: 640px) 100vw, 330px"
+                          sizes="330px"
                           quality={75}
                           priority={false}
                         />
@@ -447,7 +447,7 @@ export default function HomePage() {
                           alt="Paintly AI生成による塗装後イメージ"
                           fill
                           style={{ objectFit: 'cover' }}
-                          sizes="(max-width: 640px) 100vw, 330px"
+                          sizes="330px"
                           quality={75}
                           priority={false}
                         />
@@ -489,7 +489,7 @@ export default function HomePage() {
                           alt="塗装前の一戸建て住宅"
                           fill
                           style={{ objectFit: 'cover' }}
-                          sizes="(max-width: 640px) 100vw, 330px"
+                          sizes="330px"
                           quality={75}
                           priority={false}
                         />
@@ -502,7 +502,7 @@ export default function HomePage() {
                           alt="Paintly AI生成による塗装後イメージ"
                           fill
                           style={{ objectFit: 'cover' }}
-                          sizes="(max-width: 640px) 100vw, 330px"
+                          sizes="330px"
                           quality={75}
                           priority={false}
                         />
