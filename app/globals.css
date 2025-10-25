@@ -76,7 +76,7 @@
       var(--font-noto-sans-jp), var(--font-inter), -apple-system,
       BlinkMacSystemFont, system-ui, sans-serif;
     --font-serif: var(--font-noto-sans-jp), "Georgia", serif;
-    --font-handwritten: var(--font-caveat), cursive;
+    --font-handwritten: cursive, 'Comic Sans MS', 'Apple Chancery', 'Bradley Hand';
     --font-kaisei: var(--font-noto-sans-jp), serif;
 
     /* より大きな差でヒエラルキーを強調 */
