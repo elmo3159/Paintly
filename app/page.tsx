@@ -31,6 +31,7 @@ const ReactCompareSliderImage = dynamic(() => import('react-compare-slider').the
 export default function HomePage() {
   const router = useRouter()
   const [isChecking, setIsChecking] = useState(true)
+  const [videoLoaded, setVideoLoaded] = useState(false)
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -53,6 +54,23 @@ export default function HomePage() {
 
     checkAuth()
   }, [router])
+
+  // LCP optimization: Delay video loading until after critical resources
+  useEffect(() => {
+    if (isChecking) return
+
+    const loadVideo = () => {
+      setVideoLoaded(true)
+    }
+
+    // Start video after page is fully loaded
+    if (document.readyState === 'complete') {
+      loadVideo()
+    } else {
+      window.addEventListener('load', loadVideo)
+      return () => window.removeEventListener('load', loadVideo)
+    }
+  }, [isChecking])
 
   if (isChecking) {
     return (
@@ -106,18 +124,24 @@ export default function HomePage() {
 
       {/* 第1画面: すべてのコンテンツを統合（背景動画） */}
       <section className="relative h-screen w-full overflow-hidden">
-        {/* 背景動画 - LCP最適化: poster画像とpreload=noneで初期読み込みを遅延 */}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="none"
-          poster="/Paintly-haikei.webp"
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/demo/slider-demo.mp4" type="video/mp4" />
-        </video>
+        {/* 背景画像 - LCP最適化: poster画像を常に表示 */}
+        <div
+          className="absolute inset-0 w-full h-full bg-cover bg-center"
+          style={{ backgroundImage: "url('/Paintly-haikei.webp')" }}
+        />
+
+        {/* 背景動画 - LCP最適化: ページ読み込み完了後に遅延読み込み */}
+        {videoLoaded && (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="/demo/slider-demo.mp4" type="video/mp4" />
+          </video>
+        )}
 
         {/* ダークオーバーレイ */}
         <div className="absolute inset-0 bg-black/60"></div>
