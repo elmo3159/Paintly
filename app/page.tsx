@@ -97,7 +97,7 @@ export default function HomePage() {
           loop
           playsInline
           preload="none"
-          poster="/Paintly-haikei.png"
+          poster="/_next/image?url=%2FPaintly-haikei.png&w=828&q=75"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src="/demo/slider-demo.mp4" type="video/mp4" />
@@ -364,7 +364,7 @@ export default function HomePage() {
                           fill
                           style={{ objectFit: 'cover' }}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          quality={85}
+                          quality={75}
                           priority={false}
                         />
                       </div>
@@ -377,7 +377,7 @@ export default function HomePage() {
                           fill
                           style={{ objectFit: 'cover' }}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          quality={85}
+                          quality={75}
                           priority={false}
                         />
                       </div>
@@ -419,7 +419,7 @@ export default function HomePage() {
                           fill
                           style={{ objectFit: 'cover' }}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          quality={85}
+                          quality={75}
                           priority={false}
                         />
                       </div>
@@ -432,7 +432,7 @@ export default function HomePage() {
                           fill
                           style={{ objectFit: 'cover' }}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          quality={85}
+                          quality={75}
                           priority={false}
                         />
                       </div>
@@ -474,7 +474,7 @@ export default function HomePage() {
                           fill
                           style={{ objectFit: 'cover' }}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          quality={85}
+                          quality={75}
                           priority={false}
                         />
                       </div>
@@ -487,7 +487,7 @@ export default function HomePage() {
                           fill
                           style={{ objectFit: 'cover' }}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          quality={85}
+                          quality={75}
                           priority={false}
                         />
                       </div>
