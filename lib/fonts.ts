@@ -1,11 +1,13 @@
 import { Inter, Noto_Sans_JP, Caveat } from 'next/font/google'
 
 // Inter font for headings and English text
+// LCP optimization: reduced from all weights to 4 weights for faster loading
 export const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
   preload: true,
+  weight: ['400', '500', '600', '700'],
   fallback: ['system-ui', 'arial'],
 })
 
