@@ -88,6 +88,19 @@ export default function RootLayout({
   return (
     <html lang="ja" suppressHydrationWarning>
       <head>
+        {/* Critical CSS - inline for fastest initial render (LCP optimization) */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+          :root{--brand-h:18;--brand-s:68%;--brand-l:48%;--brand:hsl(18,68%,48%);--brand-light:hsl(18,68%,85%);--brand-dark:hsl(18,68%,30%);--bg-h:0;--bg-s:0%;--bg-l:98%;--bg:hsl(0,0%,98%);--fg-h:0;--fg-s:0%;--fg-l:20%;--fg:hsl(0,0%,20%);--surface:hsl(0,0%,100%);--border:hsl(0,0%,88%);--font-sans:var(--font-noto-sans-jp),var(--font-inter),-apple-system,sans-serif;--font-size-body:17px}
+          html{color-scheme:light;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+          body{font-family:var(--font-sans);font-size:var(--font-size-body);line-height:1.8;color:var(--fg);background:var(--bg);margin:0;padding:0}
+          *{box-sizing:border-box}
+          .h-screen{height:100vh;height:100dvh}
+          .min-h-screen{min-height:100vh;min-height:100dvh}
+        `,
+          }}
+        />
         {/* PWA icons */}
         <link rel="apple-touch-icon" sizes="180x180" href="/icon-192.png" />
         <meta name="mobile-web-app-capable" content="yes" />

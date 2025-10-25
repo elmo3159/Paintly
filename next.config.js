@@ -1,3 +1,7 @@
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -49,7 +53,9 @@ const nextConfig = {
       '@radix-ui/react-scroll-area',
       '@radix-ui/react-checkbox',
       '@supabase/supabase-js',
-      '@fal-ai/client'
+      '@fal-ai/client',
+      'framer-motion',
+      'react-dropzone'
     ],
     optimizeCss: true,
     webVitalsAttribution: ['CLS', 'LCP'],
@@ -271,4 +277,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+module.exports = withBundleAnalyzer(nextConfig)
