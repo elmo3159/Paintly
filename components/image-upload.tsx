@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import imageCompression from 'browser-image-compression'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { X, Upload, Image as ImageIcon } from 'lucide-react'
@@ -80,6 +79,9 @@ export function ImageUpload({ label, onChange, required = false, helperText }: I
       let compressedFile = file
 
       try {
+        // Dynamic import for browser-image-compression (only load when actually compressing)
+        const imageCompression = (await import('browser-image-compression')).default
+
         const compressionOptions = {
           maxSizeMB: 1, // 1MB max to stay well under Vercel's 4.5MB limit
           maxWidthOrHeight: 1920, // Maintain high quality

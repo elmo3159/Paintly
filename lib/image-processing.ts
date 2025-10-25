@@ -1,5 +1,3 @@
-import imageCompression from 'browser-image-compression'
-
 export interface ImageProcessingOptions {
   maxSizeMB?: number
   maxWidthOrHeight?: number
@@ -22,6 +20,8 @@ export async function compressImage(
   }
 
   try {
+    // Dynamic import for browser-image-compression (only load when actually compressing)
+    const imageCompression = (await import('browser-image-compression')).default
     const compressedFile = await imageCompression(file, defaultOptions)
     return compressedFile
   } catch (error) {
