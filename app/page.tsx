@@ -4,24 +4,40 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { createClient } from '@/lib/supabase/client'
+import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/button'
 import { Star, Palette, Loader2, CheckCircle, XCircle, ChevronRight, ChevronDown, QrCode } from 'lucide-react'
-import { LegalFooter } from '@/components/legal-footer'
-import { Reviews } from '@/components/reviews'
-import {
-  ReactCompareSlider,
-  ReactCompareSliderImage
-} from 'react-compare-slider'
+
+// Dynamic imports for performance optimization
+const LegalFooter = dynamic(() => import('@/components/legal-footer').then(mod => ({ default: mod.LegalFooter })), {
+  ssr: false,
+  loading: () => <div className="h-96 bg-white" />
+})
+
+const Reviews = dynamic(() => import('@/components/reviews').then(mod => ({ default: mod.Reviews })), {
+  ssr: false,
+  loading: () => <div className="h-64 bg-secondary/30" />
+})
+
+const ReactCompareSlider = dynamic(() => import('react-compare-slider').then(mod => ({ default: mod.ReactCompareSlider })), {
+  ssr: false,
+  loading: () => <div className="h-[400px] bg-secondary/30 rounded-lg animate-pulse" />
+})
+
+const ReactCompareSliderImage = dynamic(() => import('react-compare-slider').then(mod => ({ default: mod.ReactCompareSliderImage })), {
+  ssr: false
+})
 
 export default function HomePage() {
   const router = useRouter()
-  const supabase = createClient()
   const [isChecking, setIsChecking] = useState(true)
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        // Dynamic import Supabase client to reduce initial bundle size
+        const { createClient } = await import('@/lib/supabase/client')
+        const supabase = createClient()
         const { data: { user } } = await supabase.auth.getUser()
 
         if (user) {
@@ -36,7 +52,7 @@ export default function HomePage() {
     }
 
     checkAuth()
-  }, [router, supabase.auth])
+  }, [router])
 
   if (isChecking) {
     return (
