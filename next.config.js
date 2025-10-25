@@ -41,6 +41,14 @@ const nextConfig = {
     minimumCacheTTL: 60,
   },
   
+  // ModularizeImports - 未使用コード削減（195KB削減目標）
+  modularizeImports: {
+    'lucide-react': {
+      transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}',
+      skipDefaultConversion: true,
+    },
+  },
+
   experimental: {
     serverActions: {
       bodySizeLimit: '10mb',
@@ -210,9 +218,12 @@ const nextConfig = {
       // 本番環境でのバンドル最適化（Unused JS削減）
       config.optimization = {
         ...config.optimization,
-        // Tree shaking強化
+        // Tree shaking強化（195KB未使用JS削減）
+        minimize: true,
         usedExports: true,
+        providedExports: true,
         sideEffects: true,
+        innerGraph: true,
         // より細かいchunk分割でunused JS削減
         splitChunks: {
           chunks: 'all',
