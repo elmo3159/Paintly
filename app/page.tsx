@@ -125,17 +125,7 @@ export default function HomePage() {
 
       {/* 第1画面: すべてのコンテンツを統合（背景動画） */}
       <section className="relative h-screen w-full overflow-hidden">
-        {/* LCP最適化: 即座に表示される軽量グラデーション背景（<1KB） */}
-        <div
-          className="absolute inset-0 w-full h-full"
-          style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%)',
-            backgroundSize: '400% 400%',
-            animation: 'gradient 15s ease infinite'
-          }}
-        />
-
-        {/* 背景動画 - ページ読み込み完了後に遅延読み込み */}
+        {/* 背景動画 - LCP最適化: ページ読み込み完了後に遅延読み込み */}
         {videoLoaded && (
           <video
             autoPlay

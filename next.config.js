@@ -57,13 +57,8 @@ const nextConfig = {
       'framer-motion',
       'react-dropzone'
     ],
-    // Critical CSS optimization (430ms render-blocking reduction)
-    optimizeCss: {
-      // Inline critical CSS to reduce render-blocking
-      inlineCriticalCss: true,
-      // Use Critters for critical CSS extraction
-      critters: true,
-    },
+    // Critical CSS optimization - Next.js 15 uses Critters by default
+    optimizeCss: true,
     webVitalsAttribution: ['CLS', 'LCP'],
   },
   
