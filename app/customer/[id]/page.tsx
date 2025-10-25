@@ -15,8 +15,21 @@ const GenerationHistory = dynamic(
   () => import('@/components/generation-history').then(mod => mod.GenerationHistory),
   { ssr: false }
 )
-import { ImageComparisonFixed } from '@/components/image-comparison-fixed'
-import { ImageComparisonGrid } from '@/components/image-comparison-grid'
+// ImageComparisonFixed/Gridを動的インポート（react-compare-slider削減）
+const ImageComparisonFixed = dynamic(
+  () => import('@/components/image-comparison-fixed').then(mod => ({ default: mod.ImageComparisonFixed })),
+  {
+    ssr: false,
+    loading: () => <div className="flex items-center justify-center h-[600px]"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" /></div>
+  }
+)
+const ImageComparisonGrid = dynamic(
+  () => import('@/components/image-comparison-grid').then(mod => ({ default: mod.ImageComparisonGrid })),
+  {
+    ssr: false,
+    loading: () => <div className="flex items-center justify-center h-[400px]"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" /></div>
+  }
+)
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'

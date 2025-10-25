@@ -12,7 +12,12 @@ import { Loader2, Download, Eye, Calendar, Palette, Heart, FileDown, QrCode } fr
 import { useFavorites } from '@/hooks/use-favorites'
 import type { ExportImageData } from '@/lib/pdf-export-types'
 import Image from 'next/image'
-import { ImageComparisonFixed } from '@/components/image-comparison-fixed'
+
+// ImageComparisonFixedを動的インポート（react-compare-slider削減）
+const ImageComparisonFixed = dynamic(() => import('@/components/image-comparison-fixed').then(mod => ({ default: mod.ImageComparisonFixed })), {
+  loading: () => <div className="flex items-center justify-center h-[400px]"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" /></div>,
+  ssr: false,
+})
 
 const QRCodeModal = dynamic(() => import('@/components/qr-code-modal').then(mod => ({ default: mod.QRCodeModal })), {
   loading: () => <div className="flex items-center justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>,
