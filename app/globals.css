@@ -1283,6 +1283,19 @@
 /* ============================================
    LP Before/After Gallery Animations
    ============================================ */
+/* Hero gradient background animation - LCP optimization */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 /* Blob animation for background decorations */
 @keyframes animate-blob {
   0%, 100% {
