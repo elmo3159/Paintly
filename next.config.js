@@ -61,8 +61,15 @@ const nextConfig = {
     webVitalsAttribution: ['CLS', 'LCP'],
   },
   
+  // SWCコンパイラ最適化（ポリフィル削減、ES2022+対応）
+  // Next.js 15ではSWC Minifyがデフォルト有効（swcMinifyオプションは削除済み）
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
+    // 本番環境でReactプロパティ削除（data-testid等）
+    reactRemoveProperties: process.env.NODE_ENV === 'production',
+    // Emotion/styled-components不使用なので無効化
+    emotion: false,
+    styledComponents: false,
   },
   
   async headers() {
