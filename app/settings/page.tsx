@@ -2,12 +2,17 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { User, Lock, CheckCircle, AlertCircle, Palette, Paintbrush, ArrowLeft, Sparkles, Mail, Calendar, Shield, CreditCard, Copy } from 'lucide-react'
-import { MFASetup } from '@/components/mfa-setup'
+
+const MFASetup = dynamic(() => import('@/components/mfa-setup').then(mod => ({ default: mod.MFASetup })), {
+  loading: () => <div className="flex items-center justify-center p-8"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div></div>,
+  ssr: false,
+})
 
 interface UserProfile {
   sales_person_name?: string

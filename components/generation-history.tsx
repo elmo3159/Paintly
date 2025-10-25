@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -12,7 +13,11 @@ import { useFavorites } from '@/hooks/use-favorites'
 import type { ExportImageData } from '@/lib/pdf-export-types'
 import Image from 'next/image'
 import { ImageComparisonFixed } from '@/components/image-comparison-fixed'
-import { QRCodeModal } from '@/components/qr-code-modal'
+
+const QRCodeModal = dynamic(() => import('@/components/qr-code-modal').then(mod => ({ default: mod.QRCodeModal })), {
+  loading: () => <div className="flex items-center justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>,
+  ssr: false,
+})
 
 // Client-side error reporting function
 const reportClientError = (error: Error, context: string) => {
