@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/button'
-import { Star, Palette, Loader2, CheckCircle, XCircle, ChevronRight, ChevronDown, QrCode } from 'lucide-react'
+import { Star, Palette, CheckCircle, XCircle, ChevronRight, ChevronDown, QrCode } from 'lucide-react'
 
 // Dynamic imports for performance optimization
 const LegalFooter = dynamic(() => import('@/components/legal-footer').then(mod => ({ default: mod.LegalFooter })), {
