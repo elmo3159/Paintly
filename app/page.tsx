@@ -32,6 +32,7 @@ export default function HomePage() {
   const router = useRouter()
   const [isChecking, setIsChecking] = useState(true)
   const [videoLoaded, setVideoLoaded] = useState(false)
+  const [isFaqExpanded, setIsFaqExpanded] = useState(false)
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -1268,6 +1269,10 @@ export default function HomePage() {
               </p>
             </div>
 
+            {/* FAQ 6-15: 折りたたみ可能セクション（SEO: FAQスキーマは全15件維持） */}
+            <div className={`space-y-6 overflow-hidden transition-all duration-300 ease-in-out ${
+              isFaqExpanded ? 'max-h-[10000px] opacity-100' : 'max-h-0 opacity-0'
+            }`}>
             {/* FAQ 6 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
@@ -1395,6 +1400,28 @@ export default function HomePage() {
                 データはSupabase（PostgreSQL）で暗号化保存され、画像はCloudflare R2で安全に管理されます。<br />
                 決済情報はStripeによって処理され、当社がクレジットカード情報を直接保持することはありません。
               </p>
+            </div>
+            </div>
+            {/* 折りたたみセクション終了 */}
+
+            {/* FAQ展開/折りたたみボタン */}
+            <div className="text-center mt-8">
+              <button
+                onClick={() => setIsFaqExpanded(!isFaqExpanded)}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-colors shadow-md hover:shadow-lg"
+              >
+                {isFaqExpanded ? (
+                  <>
+                    <ChevronDown className="h-5 w-5 rotate-180 transition-transform" />
+                    <span>FAQを折りたたむ</span>
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="h-5 w-5 transition-transform" />
+                    <span>さらに10件のFAQを見る</span>
+                  </>
+                )}
+              </button>
             </div>
           </div>
 
