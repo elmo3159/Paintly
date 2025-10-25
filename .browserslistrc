@@ -1,23 +1,24 @@
-# モダンブラウザのみをターゲット（14.7 KiBレガシーJS削減）
-# PageSpeed Insights推奨設定 (2025年版)
+# ES2022+完全対応ブラウザのみターゲット（28.1 KiBポリフィル削減）
+# PageSpeed Insights最適化設定 (2025年版)
+# Array.prototype.at, Object.hasOwn等のネイティブサポート
 
-# Chrome（世界シェア65%、2020年8月以降）
-chrome >= 84
+# Chrome（世界シェア65%、2021年9月以降 - ES2022対応）
+chrome >= 94
 
-# Firefox（世界シェア3%、2020年7月以降）
-firefox >= 78
+# Firefox（世界シェア3%、2021年10月以降 - ES2022対応）
+firefox >= 93
 
-# Safari（世界シェア20%、2020年9月以降）
-safari >= 14
+# Safari（世界シェア20%、2022年3月以降 - ES2022対応）
+safari >= 15.4
 
-# Edge（Chromiumベース、2020年1月以降）
-edge >= 84
+# Edge（Chromiumベース、2021年9月以降 - ES2022対応）
+edge >= 94
 
-# iOS Safari（モバイル重要、2020年9月以降）
-ios_saf >= 14
+# iOS Safari（モバイル重要、2022年3月以降 - ES2022対応）
+ios_saf >= 15.4
 
-# Android Chrome（モバイル重要、2020年8月以降）
-and_chr >= 84
+# Android Chrome（モバイル重要、2021年9月以降 - ES2022対応）
+and_chr >= 94
 
 # 以下のレガシーブラウザを除外
 not ie 11
