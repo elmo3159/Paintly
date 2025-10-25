@@ -356,8 +356,32 @@ export default function HomePage() {
                 </div>
                 <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl">
                   <ReactCompareSlider
-                    itemOne={<ReactCompareSliderImage src="/LP-Before1.png" alt="塗装前の一戸建て住宅" />}
-                    itemTwo={<ReactCompareSliderImage src="/LP-After1.jpg" alt="Paintly AI生成による塗装後イメージ" />}
+                    itemOne={
+                      <div className="relative w-full h-full">
+                        <Image
+                          src="/LP-Before1.png"
+                          alt="塗装前の一戸建て住宅"
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          quality={85}
+                          priority={false}
+                        />
+                      </div>
+                    }
+                    itemTwo={
+                      <div className="relative w-full h-full">
+                        <Image
+                          src="/LP-After1.jpg"
+                          alt="Paintly AI生成による塗装後イメージ"
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          quality={85}
+                          priority={false}
+                        />
+                      </div>
+                    }
                     className="h-full w-full"
                   />
                 </div>
@@ -387,8 +411,32 @@ export default function HomePage() {
                 </div>
                 <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl">
                   <ReactCompareSlider
-                    itemOne={<ReactCompareSliderImage src="/LP-Before2.png" alt="塗装前の一戸建て住宅" />}
-                    itemTwo={<ReactCompareSliderImage src="/LP-After2.png" alt="Paintly AI生成による塗装後イメージ" />}
+                    itemOne={
+                      <div className="relative w-full h-full">
+                        <Image
+                          src="/LP-Before2.png"
+                          alt="塗装前の一戸建て住宅"
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          quality={85}
+                          priority={false}
+                        />
+                      </div>
+                    }
+                    itemTwo={
+                      <div className="relative w-full h-full">
+                        <Image
+                          src="/LP-After2.png"
+                          alt="Paintly AI生成による塗装後イメージ"
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          quality={85}
+                          priority={false}
+                        />
+                      </div>
+                    }
                     className="h-full w-full"
                   />
                 </div>
@@ -418,8 +466,32 @@ export default function HomePage() {
                 </div>
                 <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl">
                   <ReactCompareSlider
-                    itemOne={<ReactCompareSliderImage src="/LP-Before3.png" alt="塗装前の一戸建て住宅" />}
-                    itemTwo={<ReactCompareSliderImage src="/LP-After3.png" alt="Paintly AI生成による塗装後イメージ" />}
+                    itemOne={
+                      <div className="relative w-full h-full">
+                        <Image
+                          src="/LP-Before3.png"
+                          alt="塗装前の一戸建て住宅"
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          quality={85}
+                          priority={false}
+                        />
+                      </div>
+                    }
+                    itemTwo={
+                      <div className="relative w-full h-full">
+                        <Image
+                          src="/LP-After3.png"
+                          alt="Paintly AI生成による塗装後イメージ"
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          quality={85}
+                          priority={false}
+                        />
+                      </div>
+                    }
                     className="h-full w-full"
                   />
                 </div>
@@ -573,7 +645,7 @@ export default function HomePage() {
                 <p className="text-gray-700 leading-relaxed">
                   最新のAI技術を使用し、建物の写真から<strong className="font-semibold">瞬時に</strong>塗装後のイメージを生成。<br />
                   現地調査中にその場でお客様に<strong className="font-semibold">複数の提案</strong>を見せることができます。<br />
-                  <strong className="font-semibold text-orange-600">140色以上</strong>の実際の塗料色に対応し、色名で直感的に選択できるため、お客様とのコミュニケーションもスムーズです。
+                  <strong className="font-semibold text-orange-700">140色以上</strong>の実際の塗料色に対応し、色名で直感的に選択できるため、お客様とのコミュニケーションもスムーズです。
                 </p>
               </div>
             </article>
@@ -632,14 +704,14 @@ export default function HomePage() {
             <div className="bg-white rounded-xl p-8 shadow-lg">
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <XCircle className="h-6 w-6 text-red-500" />
+                  <XCircle className="h-6 w-6 text-red-700" />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">従来の課題</h3>
                   <p className="text-gray-700">
                     <strong className="font-semibold">カラー見本だけでは伝わらない。</strong><br />
-                    「実際に塗ったらどうなるの？」という不安から、お客様の決断が遅れ、<strong className="font-semibold text-red-600">競合他社に流れてしまう。</strong><br />
-                    持ち帰りで見積もりを作成している間に、お客様の熱量が下がり<strong className="font-semibold text-red-600">失注につながる。</strong>
+                    「実際に塗ったらどうなるの？」という不安から、お客様の決断が遅れ、<strong className="font-semibold text-red-700">競合他社に流れてしまう。</strong><br />
+                    持ち帰りで見積もりを作成している間に、お客様の熱量が下がり<strong className="font-semibold text-red-700">失注につながる。</strong>
                   </p>
                 </div>
               </div>
@@ -655,8 +727,8 @@ export default function HomePage() {
                   <h3 className="text-xl font-bold text-gray-900 mb-2">Paintlyの解決策</h3>
                   <p className="text-gray-700">
                     <strong className="font-semibold">その場で複数の色パターンを視覚化。</strong><br />
-                    「この色素敵！」というお客様の感動を逃さず、<strong className="font-semibold text-green-600">熱量が高いうちに商談を進められます。</strong><br />
-                    <strong className="font-semibold">140色</strong>のリアルな塗装シミュレーションで、お客様の不安を解消し<strong className="font-semibold text-green-600">即決を促進</strong>します。
+                    「この色素敵！」というお客様の感動を逃さず、<strong className="font-semibold text-green-700">熱量が高いうちに商談を進められます。</strong><br />
+                    <strong className="font-semibold">140色</strong>のリアルな塗装シミュレーションで、お客様の不安を解消し<strong className="font-semibold text-green-700">即決を促進</strong>します。
                   </p>
                 </div>
               </div>
@@ -669,7 +741,7 @@ export default function HomePage() {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center p-6 bg-orange-50 rounded-xl">
-                <div className="text-4xl font-bold text-orange-600 mb-2">2.5倍</div>
+                <div className="text-4xl font-bold text-orange-700 mb-2">2.5倍</div>
                 <p className="text-gray-700 font-semibold">成約率の向上</p>
               </div>
               <div className="text-center p-6 bg-blue-50 rounded-xl">
@@ -767,7 +839,7 @@ export default function HomePage() {
               </div>
               <div className="w-full md:w-1/2 order-1 md:order-2 flex justify-center">
                 <div className="w-48 h-48 bg-gradient-to-br from-orange-100 to-pink-100 rounded-full flex items-center justify-center">
-                  <Palette className="h-24 w-24 text-orange-500" />
+                  <Palette className="h-24 w-24 text-orange-700" />
                 </div>
               </div>
             </div>
@@ -824,7 +896,7 @@ export default function HomePage() {
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="w-full md:w-1/2 flex justify-center">
                 <div className="w-48 h-48 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center">
-                  <QrCode className="h-24 w-24 text-green-500" />
+                  <QrCode className="h-24 w-24 text-green-700" />
                 </div>
               </div>
               <div className="w-full md:w-1/2">
@@ -837,7 +909,7 @@ export default function HomePage() {
                   </h3>
                   <p className="text-gray-700 leading-relaxed">
                     お渡ししたい画像を選択して<strong className="font-semibold">QRコードを生成。</strong><br />
-                    お客様がスマートフォンで読み込むだけで、<strong className="font-semibold text-green-600">その場で画像を保存</strong>できます。<br />
+                    お客様がスマートフォンで読み込むだけで、<strong className="font-semibold text-green-700">その場で画像を保存</strong>できます。<br />
                     メールアドレス不要で、<strong className="font-semibold">瞬時に高品質な提案資料をお渡し</strong>できます。
                   </p>
                 </div>
@@ -869,11 +941,11 @@ export default function HomePage() {
               </div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-700 flex-shrink-0" />
                   <span className="text-gray-700">月30回の画像生成</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-700 flex-shrink-0" />
                   <span className="text-gray-700">顧客管理無制限</span>
                 </li>
               </ul>
@@ -905,7 +977,7 @@ export default function HomePage() {
                 </li>
               </ul>
               <Link href="/auth/signup" className="block">
-                <Button className="w-full bg-white text-orange-600 hover:bg-gray-100 font-bold">
+                <Button className="w-full bg-white text-orange-700 hover:bg-gray-100 font-bold">
                   無料で始める
                 </Button>
               </Link>
@@ -920,11 +992,11 @@ export default function HomePage() {
               </div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-700 flex-shrink-0" />
                   <span className="text-gray-700">月300回の画像生成</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-700 flex-shrink-0" />
                   <span className="text-gray-700">顧客管理無制限</span>
                 </li>
               </ul>
@@ -937,7 +1009,7 @@ export default function HomePage() {
           </div>
 
           <div className="text-center">
-            <Link href="/pricing" className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 font-semibold text-lg">
+            <Link href="/pricing" className="inline-flex items-center gap-2 text-orange-700 hover:text-orange-700 font-semibold text-lg">
               すべての料金プランを見る
               <ChevronRight className="h-5 w-5" />
             </Link>
@@ -1094,7 +1166,7 @@ export default function HomePage() {
             {/* FAQ 1 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                <span className="text-orange-600">Q.</span>
+                <span className="text-orange-700">Q.</span>
                 <span>どのような建物に対応していますか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
@@ -1107,7 +1179,7 @@ export default function HomePage() {
             {/* FAQ 2 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                <span className="text-orange-600">Q.</span>
+                <span className="text-orange-700">Q.</span>
                 <span>スマートフォンで使えますか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
@@ -1120,11 +1192,11 @@ export default function HomePage() {
             {/* FAQ 3 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                <span className="text-orange-600">Q.</span>
+                <span className="text-orange-700">Q.</span>
                 <span>商用利用は可能ですか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
-                はい、Paintlyで生成した画像は<strong className="font-semibold text-green-600">商用利用が可能</strong>です。<br />
+                はい、Paintlyで生成した画像は<strong className="font-semibold text-green-700">商用利用が可能</strong>です。<br />
                 お客様への提案資料、見積書への添付、ウェブサイトやSNSでの事例紹介など、営業活動や広告宣伝に自由にご利用いただけます。<br />
                 ただし、生成画像そのものを販売する行為は禁止されています。
               </p>
@@ -1133,7 +1205,7 @@ export default function HomePage() {
             {/* FAQ 4 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                <span className="text-orange-600">Q.</span>
+                <span className="text-orange-700">Q.</span>
                 <span>料金プランの違いは何ですか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
@@ -1146,11 +1218,11 @@ export default function HomePage() {
             {/* FAQ 5 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                <span className="text-orange-600">Q.</span>
+                <span className="text-orange-700">Q.</span>
                 <span>無料プランで何回使えますか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
-                無料プランでは<strong className="font-semibold text-orange-600">アカウント作成後3回まで</strong>画像生成が可能です。<br />
+                無料プランでは<strong className="font-semibold text-orange-700">アカウント作成後3回まで</strong>画像生成が可能です。<br />
                 クレジットカード登録は不要で、すぐにお試しいただけます。<br />
                 3回使い切った後も、有料プランにアップグレードすることで継続してご利用いただけます。
               </p>
@@ -1159,7 +1231,7 @@ export default function HomePage() {
             {/* FAQ 6 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                <span className="text-orange-600">Q.</span>
+                <span className="text-orange-700">Q.</span>
                 <span>クレジットカードは必要ですか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
@@ -1172,11 +1244,11 @@ export default function HomePage() {
             {/* FAQ 7 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                <span className="text-orange-600">Q.</span>
+                <span className="text-orange-700">Q.</span>
                 <span>解約はいつでもできますか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
-                はい、<strong className="font-semibold text-green-600">いつでも解約可能</strong>です。<br />
+                はい、<strong className="font-semibold text-green-700">いつでも解約可能</strong>です。<br />
                 解約手続きは設定ページから簡単に行えます。次回請求日の前に解約すれば、それ以降の課金は発生しません。<br />
                 解約後も、当月分の生成回数は引き続きご利用いただけます。
               </p>
@@ -1185,11 +1257,11 @@ export default function HomePage() {
             {/* FAQ 8 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                <span className="text-orange-600">Q.</span>
+                <span className="text-orange-700">Q.</span>
                 <span>生成された画像の著作権はどうなりますか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
-                Paintlyで生成された画像の<strong className="font-semibold text-green-600">著作権は利用者に帰属</strong>します。<br />
+                Paintlyで生成された画像の<strong className="font-semibold text-green-700">著作権は利用者に帰属</strong>します。<br />
                 営業資料、見積書、SNS投稿など、自由にご利用いただけます。<br />
                 ただし、生成画像そのものを商品として販売する行為は利用規約で禁止されています。
               </p>
@@ -1198,7 +1270,7 @@ export default function HomePage() {
             {/* FAQ 9 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                <span className="text-orange-600">Q.</span>
+                <span className="text-orange-700">Q.</span>
                 <span>オフラインでも使えますか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
@@ -1211,7 +1283,7 @@ export default function HomePage() {
             {/* FAQ 10 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                <span className="text-orange-600">Q.</span>
+                <span className="text-orange-700">Q.</span>
                 <span>どのブラウザに対応していますか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
@@ -1224,11 +1296,11 @@ export default function HomePage() {
             {/* FAQ 11 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                <span className="text-orange-600">Q.</span>
+                <span className="text-orange-700">Q.</span>
                 <span>画像生成にどれくらい時間がかかりますか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
-                最新のAI技術により、<strong className="font-semibold text-orange-600">通常5〜10秒程度</strong>で高精度なシミュレーション画像を生成します。<br />
+                最新のAI技術により、<strong className="font-semibold text-orange-700">通常5〜10秒程度</strong>で高精度なシミュレーション画像を生成します。<br />
                 ネットワーク環境や画像のサイズによって若干変動する場合がありますが、お客様をお待たせすることなく、その場で提示できるスピードです。
               </p>
             </div>
@@ -1236,7 +1308,7 @@ export default function HomePage() {
             {/* FAQ 12 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                <span className="text-orange-600">Q.</span>
+                <span className="text-orange-700">Q.</span>
                 <span>他の塗装シミュレーションツールとの違いは？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
@@ -1249,11 +1321,11 @@ export default function HomePage() {
             {/* FAQ 13 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                <span className="text-orange-600">Q.</span>
+                <span className="text-orange-700">Q.</span>
                 <span>導入までどれくらいかかりますか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
-                <strong className="font-semibold text-green-600">今すぐ始められます。</strong><br />
+                <strong className="font-semibold text-green-700">今すぐ始められます。</strong><br />
                 メールアドレスで無料アカウントを作成すれば、特別な設定や研修なしで、すぐに画像生成をお試しいただけます。<br />
                 直感的な操作画面で、初めての方でも迷わずご利用いただけます。
               </p>
@@ -1262,11 +1334,11 @@ export default function HomePage() {
             {/* FAQ 14 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                <span className="text-orange-600">Q.</span>
+                <span className="text-orange-700">Q.</span>
                 <span>サポート体制はどうなっていますか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
-                メールでのサポートを提供しています（<a href="mailto:sanri.3159@gmail.com" className="text-orange-600 hover:underline">sanri.3159@gmail.com</a>）。<br />
+                メールでのサポートを提供しています（<a href="mailto:sanri.3159@gmail.com" className="text-orange-700 hover:underline">sanri.3159@gmail.com</a>）。<br />
                 よくある質問やチュートリアルも充実しており、多くの疑問はサイト内で解決できます。<br />
                 有料プランご利用の方には<strong className="font-semibold">優先的に対応</strong>させていただきます。
               </p>
@@ -1275,7 +1347,7 @@ export default function HomePage() {
             {/* FAQ 15 */}
             <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                <span className="text-orange-600">Q.</span>
+                <span className="text-orange-700">Q.</span>
                 <span>データのセキュリティは大丈夫ですか？</span>
               </h3>
               <p className="text-gray-700 ml-8 leading-relaxed">
@@ -1287,7 +1359,7 @@ export default function HomePage() {
           </div>
 
           <div className="text-center">
-            <Link href="/faq" className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 font-semibold text-lg">
+            <Link href="/faq" className="inline-flex items-center gap-2 text-orange-700 hover:text-orange-700 font-semibold text-lg">
               すべてのFAQを見る
               <ChevronRight className="h-5 w-5" />
             </Link>
@@ -1310,7 +1382,7 @@ export default function HomePage() {
           {/* 期待効果の数値（業界平均データ） */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
             <div className="bg-white rounded-xl p-6 shadow-lg text-center">
-              <div className="text-4xl md:text-5xl font-bold text-orange-600 mb-2">2〜3倍</div>
+              <div className="text-4xl md:text-5xl font-bold text-orange-700 mb-2">2〜3倍</div>
               <p className="text-gray-700 font-semibold mb-1">成約率の向上</p>
               <p className="text-xs text-gray-500">※業界平均データ</p>
             </div>
@@ -1325,7 +1397,7 @@ export default function HomePage() {
               <p className="text-xs text-gray-500">※業界平均データ</p>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-lg text-center">
-              <div className="text-4xl md:text-5xl font-bold text-green-600 mb-2">明確化</div>
+              <div className="text-4xl md:text-5xl font-bold text-green-700 mb-2">明確化</div>
               <p className="text-gray-700 font-semibold mb-1">競合との差別化</p>
               <p className="text-xs text-gray-500">※業界平均データ</p>
             </div>
@@ -1348,8 +1420,8 @@ export default function HomePage() {
                 お客様に「この色にしたらどうなるか」を実際に見ていただくことで、色見本だけでは伝わらなかった<strong className="font-semibold">完成イメージを具体的に共有</strong>できます。
               </p>
               <p className="text-gray-700 leading-relaxed">
-                最新のAI技術により、<strong className="font-semibold text-orange-600">わずか数秒で高精度なシミュレーション画像を生成。</strong><br />
-                お客様の「この色素敵！」という感動の瞬間を逃さず、<strong className="font-semibold text-green-600">熱量が高いうちに商談を進められる</strong>ため、従来の「持ち帰り検討」で起きていた<strong className="font-semibold text-red-600">熱量低下と失注を防ぎます。</strong>
+                最新のAI技術により、<strong className="font-semibold text-orange-700">わずか数秒で高精度なシミュレーション画像を生成。</strong><br />
+                お客様の「この色素敵！」という感動の瞬間を逃さず、<strong className="font-semibold text-green-700">熱量が高いうちに商談を進められる</strong>ため、従来の「持ち帰り検討」で起きていた<strong className="font-semibold text-red-700">熱量低下と失注を防ぎます。</strong>
               </p>
             </article>
 
@@ -1368,8 +1440,8 @@ export default function HomePage() {
                 <strong className="font-semibold text-blue-600">140色以上</strong>の実際の塗料色を色名で直感的に選択でき、お客様との<strong className="font-semibold">共通認識を作りやすく</strong>設計されています。
               </p>
               <p className="text-gray-700 leading-relaxed">
-                建物の形状や光の当たり方まで<strong className="font-semibold">AIが考慮</strong>するため、「カラー見本と実際の仕上がりが違った」という<strong className="font-semibold text-red-600">クレームを未然に防止。</strong><br />
-                <strong className="font-semibold">ビフォーアフター比較機能</strong>により、現在の状態と塗装後の変化を明確に可視化し、お客様の<strong className="font-semibold text-green-600">意思決定をサポート</strong>します。
+                建物の形状や光の当たり方まで<strong className="font-semibold">AIが考慮</strong>するため、「カラー見本と実際の仕上がりが違った」という<strong className="font-semibold text-red-700">クレームを未然に防止。</strong><br />
+                <strong className="font-semibold">ビフォーアフター比較機能</strong>により、現在の状態と塗装後の変化を明確に可視化し、お客様の<strong className="font-semibold text-green-700">意思決定をサポート</strong>します。
               </p>
             </article>
 
@@ -1389,7 +1461,7 @@ export default function HomePage() {
               </p>
               <p className="text-gray-700 leading-relaxed">
                 <strong className="font-semibold">顧客ページごとに生成画像を自動保存</strong>する履歴管理機能により、「前回はこの色でご提案しましたね」など<strong className="font-semibold">具体的な会話が可能に。</strong><br />
-                お客様一人ひとりに合わせた<strong className="font-semibold">きめ細やかな対応</strong>ができ、<strong className="font-semibold text-green-600">リピート率の向上と長期的な信頼関係構築</strong>につながります。
+                お客様一人ひとりに合わせた<strong className="font-semibold">きめ細やかな対応</strong>ができ、<strong className="font-semibold text-green-700">リピート率の向上と長期的な信頼関係構築</strong>につながります。
               </p>
             </article>
           </div>
@@ -1576,7 +1648,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/auth/signup">
-              <Button className="bg-white text-orange-600 hover:bg-gray-100 px-8 py-6 text-lg font-bold shadow-2xl transform hover:scale-105 transition-all">
+              <Button className="bg-white text-orange-700 hover:bg-gray-100 px-8 py-6 text-lg font-bold shadow-2xl transform hover:scale-105 transition-all">
                 <Star className="mr-2 h-5 w-5" />
                 無料で始める
               </Button>
