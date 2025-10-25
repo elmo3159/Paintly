@@ -95,18 +95,6 @@ export default function RootLayout({
         className={`${fontClassNames} relative min-h-screen text-foreground`}
         suppressHydrationWarning
       >
-        {/* ペイントドリップ背景画像 */}
-        <div
-          className="fixed inset-0 -z-10"
-          style={{
-            backgroundImage: 'url(/Paintly-haikei.png)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'top center',
-            backgroundRepeat: 'no-repeat',
-            backgroundAttachment: 'fixed'
-          }}
-        />
-
         {/* <ErrorBoundary> */}
           {/* <ThemeProvider
             attribute="class"
