@@ -125,12 +125,6 @@ export default function HomePage() {
 
       {/* 第1画面: すべてのコンテンツを統合（背景動画） */}
       <section className="relative h-screen w-full overflow-hidden">
-        {/* 背景画像 - LCP最適化: poster画像を常に表示 */}
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center"
-          style={{ backgroundImage: "url('/bg-paint-drip.png')" }}
-        />
-
         {/* 背景動画 - LCP最適化: ページ読み込み完了後に遅延読み込み */}
         {videoLoaded && (
           <video

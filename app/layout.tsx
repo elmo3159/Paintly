@@ -101,13 +101,6 @@ export default function RootLayout({
         `,
           }}
         />
-        {/* Preload LCP poster image for faster initial render */}
-        <link
-          rel="preload"
-          as="image"
-          href="/bg-paint-drip.png"
-          fetchPriority="high"
-        />
         {/* PWA icons */}
         <link rel="apple-touch-icon" sizes="180x180" href="/icon-192.png" />
         <meta name="mobile-web-app-capable" content="yes" />
