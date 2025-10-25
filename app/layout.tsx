@@ -88,6 +88,11 @@ export default function RootLayout({
   return (
     <html lang="ja" suppressHydrationWarning>
       <head>
+        {/* LCP最適化: フォント読み込み高速化 - Google Fontsへの早期接続 */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
         {/* Critical CSS - inline for fastest initial render (LCP optimization) */}
         <style
           dangerouslySetInnerHTML={{
@@ -123,6 +128,7 @@ export default function RootLayout({
         <Script
           id="structured-data"
           type="application/ld+json"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
