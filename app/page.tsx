@@ -97,7 +97,7 @@ export default function HomePage() {
           loop
           playsInline
           preload="none"
-          poster="/_next/image?url=%2FPaintly-haikei.png&w=828&q=75"
+          poster="/Paintly-haikei.png"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src="/demo/slider-demo.mp4" type="video/mp4" />
