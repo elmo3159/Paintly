@@ -1,0 +1,27 @@
+# モダンブラウザのみをターゲット（14.7 KiBレガシーJS削減）
+# PageSpeed Insights推奨設定 (2025年版)
+
+# Chrome（世界シェア65%、2020年8月以降）
+chrome >= 84
+
+# Firefox（世界シェア3%、2020年7月以降）
+firefox >= 78
+
+# Safari（世界シェア20%、2020年9月以降）
+safari >= 14
+
+# Edge（Chromiumベース、2020年1月以降）
+edge >= 84
+
+# iOS Safari（モバイル重要、2020年9月以降）
+ios_saf >= 14
+
+# Android Chrome（モバイル重要、2020年8月以降）
+and_chr >= 84
+
+# 以下のレガシーブラウザを除外
+not ie 11
+not ie_mob 11
+not op_mini all
+not dead
+not < 0.2%

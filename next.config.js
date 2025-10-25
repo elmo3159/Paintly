@@ -193,34 +193,73 @@ const nextConfig = {
     }
     
     if (!dev && !isServer) {
-      // 本番環境でのバンドル最適化
+      // 本番環境でのバンドル最適化（Unused JS削減）
       config.optimization = {
         ...config.optimization,
+        // Tree shaking強化
+        usedExports: true,
+        sideEffects: true,
+        // より細かいchunk分割でunused JS削減
         splitChunks: {
           chunks: 'all',
+          maxSize: 200000, // 200KB以上は分割
+          minSize: 10000,  // 10KB以下は統合
           cacheGroups: {
-            vendor: {
-              test: /[\/]node_modules[\/]/,
-              name: 'vendors',
-              priority: 10,
+            // React本体（最優先、頻繁に使用）
+            react: {
+              test: /[\/]node_modules[\/](react|react-dom)[\/]/,
+              name: 'react-vendor',
+              priority: 30,
               reuseExistingChunk: true,
+              enforce: true,
             },
+            // Supabase（ページごとに使用有無が異なる）
             supabase: {
               test: /[\/]node_modules[\/]@supabase[\/]/,
               name: 'supabase',
-              priority: 20,
+              priority: 25,
               reuseExistingChunk: true,
             },
+            // Radix UI（コンポーネントごとに分割可能）
             radix: {
               test: /[\/]node_modules[\/]@radix-ui[\/]/,
               name: 'radix-ui',
+              priority: 25,
+              reuseExistingChunk: true,
+            },
+            // Lucide Icons（アイコン大量、分割効果大）
+            lucide: {
+              test: /[\/]node_modules[\/]lucide-react[\/]/,
+              name: 'lucide-icons',
               priority: 20,
               reuseExistingChunk: true,
             },
+            // FAL AI（画像生成ページのみ使用）
             fal: {
               test: /[\/]node_modules[\/]@fal-ai[\/]/,
               name: 'fal-ai',
               priority: 20,
+              reuseExistingChunk: true,
+            },
+            // Stripe（決済ページのみ使用）
+            stripe: {
+              test: /[\/]node_modules[\/](@stripe|stripe)[\/]/,
+              name: 'stripe',
+              priority: 20,
+              reuseExistingChunk: true,
+            },
+            // Framer Motion（アニメーションページのみ）
+            framer: {
+              test: /[\/]node_modules[\/]framer-motion[\/]/,
+              name: 'framer-motion',
+              priority: 20,
+              reuseExistingChunk: true,
+            },
+            // その他のvendor（低優先度）
+            vendor: {
+              test: /[\/]node_modules[\/]/,
+              name: 'vendors',
+              priority: 10,
               reuseExistingChunk: true,
             },
           },
