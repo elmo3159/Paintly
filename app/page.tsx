@@ -370,7 +370,7 @@ export default function HomePage() {
                   <h3 className="text-xl font-bold text-white mb-2">実例 1</h3>
                   <p className="text-sm text-gray-400">外壁カラー変更シミュレーション</p>
                 </div>
-                <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl" style={{contain: 'layout style paint', contentVisibility: 'auto'}}>
+                <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl">
                   <ReactCompareSlider
                     itemOne={
                       <div className="relative w-full h-full">
@@ -425,7 +425,7 @@ export default function HomePage() {
                   <h3 className="text-xl font-bold text-white mb-2">実例 2</h3>
                   <p className="text-sm text-gray-400">複数色組み合わせシミュレーション</p>
                 </div>
-                <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl" style={{contain: 'layout style paint', contentVisibility: 'auto'}}>
+                <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl">
                   <ReactCompareSlider
                     itemOne={
                       <div className="relative w-full h-full">
@@ -480,7 +480,7 @@ export default function HomePage() {
                   <h3 className="text-xl font-bold text-white mb-2">実例 3</h3>
                   <p className="text-sm text-gray-400">屋根・外壁一括変更シミュレーション</p>
                 </div>
-                <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl" style={{contain: 'layout style paint', contentVisibility: 'auto'}}>
+                <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl">
                   <ReactCompareSlider
                     itemOne={
                       <div className="relative w-full h-full">
