@@ -10,21 +10,23 @@ export const inter = Inter({
 })
 
 // Noto Sans JP for Japanese text - clean, readable appearance with Japanese support
+// LCP optimization: reduced from 5 weights to 2 for faster loading
 export const notoSansJP = Noto_Sans_JP({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-noto-sans-jp',
   preload: true,
-  weight: ['300', '400', '500', '700', '900'],
+  weight: ['400', '700'],
   fallback: ['system-ui', 'arial'],
 })
 
 // Caveat for handwritten style
+// LCP optimization: reduced from 4 weights to 2 for faster loading
 export const caveat = Caveat({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-caveat',
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '700'],
   fallback: ['cursive'],
 })
 
