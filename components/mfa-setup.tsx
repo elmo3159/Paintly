@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Shield, Smartphone, QrCode, CheckCircle2, XCircle, Loader2 } from 'lucide-react'
-import QRCode from 'qrcode'
+// QRCodeライブラリは動的インポートに変更（MFA設定時のみ30-40KBロード）
 
 export function MFASetup() {
   const [loading, setLoading] = useState(false)
@@ -69,12 +69,13 @@ export function MFASetup() {
         setFactorId(data.id)
         setSecret(data.totp.secret)
 
-        // Generate QR code
+        // Generate QR code (動的インポートでバンドルサイズ削減)
         const { data: { user } } = await supabase.auth.getUser()
         const email = user?.email || 'user@paintly.pro'
         const totpUri = data.totp.uri || `otpauth://totp/Paintly:${email}?secret=${data.totp.secret}&issuer=Paintly`
 
-        const qrCodeDataUrl = await QRCode.toDataURL(totpUri)
+        const QRCode = await import('qrcode')
+        const qrCodeDataUrl = await QRCode.default.toDataURL(totpUri)
         setQrCode(qrCodeDataUrl)
         setSuccess('QRコードを生成しました。Authenticatorアプリでスキャンしてください。')
       }
