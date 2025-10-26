@@ -32,7 +32,13 @@ const ImageComparisonGrid = dynamic(
 )
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+// Dialogを動的インポート（削除確認時のみ使用）
+const Dialog = dynamic(() => import('@/components/ui/dialog').then(mod => ({ default: mod.Dialog })), { ssr: false })
+const DialogContent = dynamic(() => import('@/components/ui/dialog').then(mod => ({ default: mod.DialogContent })), { ssr: false })
+const DialogDescription = dynamic(() => import('@/components/ui/dialog').then(mod => ({ default: mod.DialogDescription })), { ssr: false })
+const DialogFooter = dynamic(() => import('@/components/ui/dialog').then(mod => ({ default: mod.DialogFooter })), { ssr: false })
+const DialogHeader = dynamic(() => import('@/components/ui/dialog').then(mod => ({ default: mod.DialogHeader })), { ssr: false })
+const DialogTitle = dynamic(() => import('@/components/ui/dialog').then(mod => ({ default: mod.DialogTitle })), { ssr: false })
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, Sparkles, AlertCircle, Edit, Save, X, Trash2 } from 'lucide-react'
@@ -40,8 +46,11 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 // AIProviderSelector removed - using Gemini only
-import { EnhancedLoading } from '@/components/enhanced-loading'
-import { EnhancedError, useEnhancedError, type ErrorType } from '@/components/enhanced-error'
+// EnhancedLoadingを動的インポート（生成中のみ使用）
+const EnhancedLoading = dynamic(() => import('@/components/enhanced-loading').then(mod => ({ default: mod.EnhancedLoading })), { ssr: false })
+// EnhancedErrorを動的インポート（エラー発生時のみ使用）
+const EnhancedError = dynamic(() => import('@/components/enhanced-error').then(mod => ({ default: mod.EnhancedError })), { ssr: false })
+import { useEnhancedError, type ErrorType } from '@/components/enhanced-error'
 import { CustomerPageSkeleton } from '@/components/skeleton-loader'
 import { cn } from '@/lib/utils'
 import { canGenerate, getGenerationBlockedMessage } from '@/lib/plan-warning'
