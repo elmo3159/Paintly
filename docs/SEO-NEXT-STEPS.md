@@ -66,12 +66,20 @@ vercel --prod
 4. ステータスが「成功しました」になることを確認
 
 **ステップ4: 初期設定**
-1. **ターゲット国設定**: 日本を指定
-2. **インデックス登録リクエスト**: 主要ページをリクエスト
-   - https://www.paintly.pro/
-   - https://www.paintly.pro/pricing
-   - https://www.paintly.pro/faq
-3. **モバイルユーザビリティ**: レポート確認
+
+> ⚠️ 注意: 2025年現在、ターゲット国設定は新しいSearch Console UIでは表示されません。
+> Paintlyは既にコード上で `locale: 'ja_JP'` を設定済みのため、Googleが自動的に日本向けサイトとして認識します。
+
+1. **~~ターゲット国設定~~**: **スキップ（不要）** - コードで設定済み
+2. **インデックス登録リクエスト**（最重要）: 主要ページをリクエスト
+   - Search Console上部の検索バー（🔍）にURLを入力
+   - 「公開URLをテスト」→「インデックス登録をリクエスト」
+   - 対象URL:
+     * https://www.paintly.pro/
+     * https://www.paintly.pro/pricing
+     * https://www.paintly.pro/faq
+3. **モバイルユーザビリティ**: エクスペリエンス → モバイルユーザビリティで確認
+   - 初回は「データを処理しています」と表示される場合あり（数日後に再確認）
 
 #### 期待される効果
 - インデックス登録速度の向上（通常数日→数時間）
@@ -129,11 +137,18 @@ PageSpeed Insightsで以下の問題が指摘されました：
 
 #### 手順
 
-**ステップ1: Google Mobile-Friendly Test**
-1. https://search.google.com/test/mobile-friendly にアクセス
+**ステップ1: PageSpeed Insights（モバイル）**
+> ⚠️ 注意: Google Mobile-Friendly Testは2023年12月に廃止されました。PageSpeed Insightsを使用してください。
+
+1. https://pagespeed.web.dev/ にアクセス
 2. `https://www.paintly.pro` を入力
-3. 「URLをテスト」をクリック
-4. 結果を確認
+3. 「分析」ボタンをクリック
+4. **「モバイル」**タブを選択
+5. 結果を確認（目標: 全項目85点以上）
+   - パフォーマンス: 85+
+   - ユーザー補助: 95+
+   - おすすめの方法: 95+
+   - SEO: 95+
 
 **ステップ2: 実機テスト**
 以下のデバイス・ブラウザで実際に操作：
@@ -290,6 +305,6 @@ SEO最適化のため、適切なアンカーテキストを使用してくだ�
 
 ---
 
-**最終更新**: 2025年10月25日
+**最終更新**: 2025年10月27日
 **作成者**: ClaudeCode
-**バージョン**: 1.0
+**バージョン**: 1.1（Mobile-Friendly Test廃止対応、ターゲット国設定不要の注記追加）
