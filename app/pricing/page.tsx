@@ -93,13 +93,13 @@ export default function PricingPage() {
 
         {/* ヘッダー */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             料金プラン
           </h1>
-          <p className="text-lg text-white">
+          <p className="text-lg text-gray-800">
             あなたのビジネスに最適なプランをお選びください
           </p>
-          <p className="text-sm text-white/80 mt-2">
+          <p className="text-sm text-gray-700 mt-2">
             まずは無料登録から始めましょう
           </p>
         </div>
@@ -114,9 +114,9 @@ export default function PricingPage() {
         {/* プランカード */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {plans.map((plan) => (
-            <Card key={plan.id} className={`paint-card relative ${plan.slug === 'standard' ? 'border-primary/50 shadow-xl' : ''}`}>
+            <Card key={plan.id} className={`paint-card relative overflow-visible ${plan.slug === 'standard' ? 'border-primary/50 shadow-xl' : ''}`}>
               {plan.slug === 'standard' && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-bold">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-bold z-10 whitespace-nowrap">
                   人気
                 </div>
               )}
