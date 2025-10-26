@@ -59,7 +59,7 @@ export function LegalFooter({ variant = 'default', className = '' }: LegalFooter
             rel="noopener noreferrer"
             className="text-blue-600 hover:underline ml-1"
           >
-            利用規約
+            Googleの利用規約
           </a>
           が適用されます。
         </p>
@@ -176,7 +176,7 @@ export function LegalFooter({ variant = 'default', className = '' }: LegalFooter
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline ml-1"
             >
-              利用規約
+              Googleの利用規約
             </a>
             が適用されます。
           </p>
