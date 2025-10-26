@@ -67,11 +67,11 @@ const nextConfig = {
       'framer-motion',
       'react-dropzone'
     ],
-    // Critical CSS optimization - DISABLED: Critters doesn't support App Router streaming
-    // optimizeCss: true,  // Not working with App Router, causing issues
-    // CSS最小化とTree Shaking強化
-    cssChunking: 'strict',
+    // CSS最小化とTree Shaking強化（レンダリングブロックCSS対策：150ms削減目標）
+    cssChunking: 'strict', // CSSを厳格に分割してレンダリングブロック削減
     webVitalsAttribution: ['CLS', 'LCP'],
+    // 強制リフロー対策：スクリプト最適化（80ms削減目標）
+    optimisticClientCache: true, // クライアントキャッシュ最適化
   },
   
   // SWCコンパイラ最適化（ポリフィル削減、ES2022+対応）

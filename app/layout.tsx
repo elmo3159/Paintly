@@ -88,10 +88,24 @@ export default function RootLayout({
   return (
     <html lang="ja" suppressHydrationWarning>
       <head>
-        {/* LCP最適化: フォント読み込み高速化 - Google Fontsへの早期接続 */}
+        {/* レンダリングブロックCSS対策（150ms削減目標） */}
+        {/* 1. フォント読み込み最適化 - Google Fontsへの早期接続 */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
+        {/* 2. ネットワーク依存関係最適化 - Vercelへの早期接続（730ms削減目標） */}
+        <link rel="preconnect" href="https://paintly.pro" />
+        <link rel="preconnect" href="https://www.paintly.pro" />
+        <link rel="dns-prefetch" href="https://paintly.pro" />
+        
+        {/* 3. Supabase/外部API早期接続（ネットワーク依存関係最適化） */}
+        <link rel="preconnect" href="https://mockfjcakfzbzccabcgm.supabase.co" />
+        <link rel="dns-prefetch" href="https://mockfjcakfzbzccabcgm.supabase.co" />
+        
+        {/* 4. CDN/静的リソース早期接続 */}
+        <link rel="preconnect" href="https://vercel.live" />
+        <link rel="dns-prefetch" href="https://vercel.live" />
 
         {/* Critical CSS - inline for fastest initial render (LCP optimization) */}
         <style

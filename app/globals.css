@@ -1318,3 +1318,81 @@
   pointer-events: none !important;
 }
 
+/* ============================================
+   PageSpeed最適化：強制リフロー対策（80ms削減目標）
+   ============================================ */
+/* GPU アクセラレーション有効化 - レイアウトシフト防止 */
+@layer utilities {
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* レイアウト範囲を制限してリフロー範囲を最小化 */
+  .contain-layout {
+    contain: layout style paint;
+  }
+
+  /* 非表示要素のレンダリングスキップ（スクロール外要素） */
+  .defer-offscreen {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+  }
+}
+
+/* 重要な要素にパフォーマンス最適化を自動適用 */
+.paint-card,
+.paint-button,
+.sidebar,
+[data-radix-scroll-area-viewport] {
+  contain: layout style paint;
+  will-change: auto; /* 必要時のみwill-changeを適用 */
+}
+
+/* アニメーション要素は transform/opacity のみ使用（layout プロパティ回避） */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-in,
+  .animate-out,
+  [data-state="open"],
+  [data-state="closed"] {
+    transform: translateZ(0); /* GPU アクセラレーション */
+  }
+}
+
+/* スクロールパフォーマンス最適化 */
+.scroll-smooth {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* リストレンダリング最適化（大量アイテム対応） */
+.virtualized-list > * {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 100px;
+}
+
+/* 画像読み込み最適化 - レイアウトシフト防止 */
+img,
+picture,
+video {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1px; /* 最小サイズ確保 */
+}
+
+/* ============================================
+   Critical Rendering Path 最適化
+   ============================================ */
+/* Above-the-fold コンテンツ優先レンダリング */
+.above-fold {
+  content-visibility: visible;
+  contain: none;
+}
+
+/* Below-the-fold コンテンツ遅延レンダリング */
+.below-fold {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 300px;
+}
+
