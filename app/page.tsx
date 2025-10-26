@@ -257,14 +257,14 @@ export default function HomePage() {
 
               {/* CTAボタン - 中央配置 */}
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link href="/auth/signup">
-                  <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white min-h-[48px] min-w-[48px] px-6 py-4 md:px-8 md:py-5 text-sm md:text-base font-bold shadow-[0_8px_30px_rgb(249,115,22,0.4)] hover:shadow-[0_12px_40px_rgb(249,115,22,0.5)] border-2 border-orange-400 transition-all duration-300 transform hover:scale-105">
+                <Link href="/auth/signup" className="inline-block">
+                  <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white h-12 min-w-[48px] px-6 py-4 md:px-8 md:py-5 text-sm md:text-base font-bold shadow-[0_8px_30px_rgb(249,115,22,0.4)] hover:shadow-[0_12px_40px_rgb(249,115,22,0.5)] border-2 border-orange-400 transition-all duration-300 transform hover:scale-105">
                     <Star className="mr-2 h-4 w-4" />
                     無料で始める
                   </Button>
                 </Link>
-                <Link href="/auth/signin">
-                  <Button variant="outline" className="border-2 border-white bg-white/10 backdrop-blur-sm text-white hover:bg-white hover:text-black min-h-[48px] min-w-[48px] px-6 py-4 md:px-8 md:py-5 text-sm md:text-base font-bold shadow-[0_8px_30px_rgba(255,255,255,0.2)] hover:shadow-[0_12px_40px_rgba(255,255,255,0.3)] transition-all duration-300 transform hover:scale-105">
+                <Link href="/auth/signin" className="inline-block">
+                  <Button variant="outline" className="border-2 border-white bg-white/10 backdrop-blur-sm text-white hover:bg-white hover:text-black h-12 min-w-[48px] px-6 py-4 md:px-8 md:py-5 text-sm md:text-base font-bold shadow-[0_8px_30px_rgba(255,255,255,0.2)] hover:shadow-[0_12px_40px_rgba(255,255,255,0.3)] transition-all duration-300 transform hover:scale-105">
                     <Palette className="mr-2 h-4 w-4" />
                     ログインして続ける
                   </Button>
@@ -635,10 +635,10 @@ export default function HomePage() {
 
           {/* CTAボタン */}
           <div className="mt-16 text-center">
-            <Link href="/auth/signup">
+            <Link href="/auth/signup" className="inline-block">
               <Button
                 size="lg"
-                className="text-lg min-h-[48px] min-w-[48px] px-10 py-6 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 hover:from-orange-600 hover:via-pink-600 hover:to-purple-600 text-white font-bold rounded-full shadow-2xl hover:shadow-pink-500/50 transition-all duration-300 hover:scale-105"
+                className="text-lg h-12 min-w-[48px] px-10 py-6 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 hover:from-orange-600 hover:via-pink-600 hover:to-purple-600 text-white font-bold rounded-full shadow-2xl hover:shadow-pink-500/50 transition-all duration-300 hover:scale-105"
               >
                 今すぐ無料で始める
                 <ChevronRight className="ml-2 h-5 w-5" />
@@ -1369,14 +1369,14 @@ export default function HomePage() {
             <strong className="font-bold">クレジットカード登録不要</strong>で、今すぐPaintlyの威力を体感してください。
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/auth/signup">
-              <Button className="bg-white text-orange-700 hover:bg-gray-100 min-h-[48px] min-w-[48px] px-8 py-6 text-lg font-bold shadow-2xl transform hover:scale-105 transition-all">
+            <Link href="/auth/signup" className="inline-block">
+              <Button className="bg-white text-orange-700 hover:bg-gray-100 h-12 min-w-[48px] px-8 py-6 text-lg font-bold shadow-2xl transform hover:scale-105 transition-all">
                 <Star className="mr-2 h-5 w-5" />
                 無料で始める
               </Button>
             </Link>
-            <Link href="/pricing">
-              <Button variant="outline" className="border-2 border-white text-white hover:bg-white/10 min-h-[48px] min-w-[48px] px-8 py-6 text-lg font-bold transform hover:scale-105 transition-all">
+            <Link href="/pricing" className="inline-block">
+              <Button variant="outline" className="border-2 border-white text-white hover:bg-white/10 h-12 min-w-[48px] px-8 py-6 text-lg font-bold transform hover:scale-105 transition-all">
                 料金プランを見る
               </Button>
             </Link>
