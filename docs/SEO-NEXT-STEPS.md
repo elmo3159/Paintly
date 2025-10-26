@@ -180,12 +180,12 @@ iPhone SEでテストした結果：
 
 ---
 
-### 4. 内部リンク構造の強化 【優先度: 低】（ClaudeCodeが実装可能）
+### 4. 内部リンク構造の強化 【優先度: 低】✅ **完了（2025年10月27日）**
 
 #### 目的
 ページ間の回遊性を高め、クロール効率を向上させる
 
-#### 現在の内部リンク状況
+#### ✅ 実装完了した内部リンク構造
 ```
 LP (/)
  └→ /pricing ✅
@@ -200,42 +200,68 @@ FAQ (/faq)
 料金プラン (/pricing)
  └→ /faq ✅
  └→ /auth/signup ✅
- └→ / ❌（不足）
+ └→ / ✅（実装済み）
 
 利用規約 (/terms)
- └→ / ❌（不足）
- └→ /pricing ❌（不足）
+ └→ / ✅（実装済み）
+ └→ /pricing ✅（実装済み）
+ └→ /privacy ✅（実装済み）
 
 プライバシーポリシー (/privacy)
- └→ / ❌（不足）
- └→ /faq ❌（不足）
+ └→ / ✅（実装済み）
+ └→ /terms ✅（実装済み）
+ └→ /faq ✅（実装済み）
+
+特定商取引法表記 (/legal)
+ └→ / ✅（2025/10/27実装）
+ └→ /pricing ✅（2025/10/27実装）
+ └→ /terms ✅（2025/10/27実装）
+ └→ /privacy ✅（2025/10/27実装）
 ```
 
-#### 推奨改善箇所
+#### 実装詳細
 
-**A. LPページ（app/page.tsx）**
-- FAQセクションに「よくある質問を見る」リンク追加
-- 料金プランセクションに「詳しい料金プランを見る」リンク追加
+**A. LPページ（app/page.tsx）** - ✅ 実装済み
+- FAQセクションに「すべてのFAQを見る」リンク実装済み（components/faq-section.tsx:244-247）
 
-**B. 料金ページ（app/pricing/page.tsx）**
-- ヘッダーに「ホームに戻る」リンク追加
+**B. 料金ページ（app/pricing/page.tsx）** - ✅ 実装済み
+- ヘッダーに「ホームに戻る」リンク実装済み（lines 84-92）
 
-**C. 法的ページ（terms, privacy, legal）**
-- 各ページの冒頭に「サービスを試す」CTAリンク追加
-- 関連ページへのリンク追加（例: 利用規約 ↔ プライバシーポリシー）
+**C. 法的ページ（terms, privacy, legal）** - ✅ 実装済み
+- 利用規約ページ: ホーム、プライバシーポリシー、料金プランへのナビゲーションリンク実装済み
+- プライバシーポリシーページ: ホーム、利用規約、FAQへのナビゲーションリンク実装済み
+- 特定商取引法表記ページ: ホーム、料金プラン、利用規約、プライバシーポリシーへのナビゲーションリンク実装（2025/10/27）
 
-#### ClaudeCodeへの依頼
+#### 実装コード例（app/legal/page.tsx）
+```tsx
+import Link from 'next/link'
+import { Home, FileText, DollarSign, Shield } from 'lucide-react'
+
+<div className="mb-6 flex flex-wrap gap-4">
+  <Link href="/" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors">
+    <Home className="h-4 w-4" />
+    ホームに戻る
+  </Link>
+  <Link href="/pricing" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors">
+    <DollarSign className="h-4 w-4" />
+    料金プラン
+  </Link>
+  <Link href="/terms" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors">
+    <FileText className="h-4 w-4" />
+    利用規約
+  </Link>
+  <Link href="/privacy" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors">
+    <Shield className="h-4 w-4" />
+    プライバシーポリシー
+  </Link>
+</div>
 ```
-内部リンク構造を強化してください。
-具体的には：
-1. 料金ページにホームへのリンク追加
-2. 利用規約・プライバシーポリシーページにホーム/料金プランへのリンク追加
-3. LPページのFAQセクションにFAQページへのリンク追加
 
-SEO最適化のため、適切なアンカーテキストを使用してください。
-```
-
-**私（ClaudeCode）がこの後実装します。**
+#### SEO効果
+- ✅ 全ページからの相互リンク確立
+- ✅ クロール効率の向上
+- ✅ ユーザー体験の改善（法的ページからの離脱防止）
+- ✅ ページランクの適切な分配
 
 ---
 
