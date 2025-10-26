@@ -380,10 +380,10 @@ export default function HomePage() {
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-semibold text-orange-400 uppercase tracking-wider">実例 1</span>
-                    <span className="text-xs text-gray-400">スライダーを動かす ↓</span>
+                    <span className="text-xs text-gray-600">スライダーを動かす ↓</span>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">実例 1</h3>
-                  <p className="text-sm text-gray-400">外壁カラー変更シミュレーション</p>
+                  <p className="text-sm text-gray-600">外壁カラー変更シミュレーション</p>
                 </div>
                 <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl" style={{contain: 'layout style paint', contentVisibility: 'auto'}}>
                   <ReactCompareSlider
@@ -416,7 +416,7 @@ export default function HomePage() {
                     className="h-full w-full"
                   />
                 </div>
-                <div className="mt-4 flex items-center justify-between text-xs text-gray-400">
+                <div className="mt-4 flex items-center justify-between text-xs text-gray-600">
                   <span className="flex items-center gap-1">
                     <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
                     Before
@@ -435,10 +435,10 @@ export default function HomePage() {
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-semibold text-pink-400 uppercase tracking-wider">実例 2</span>
-                    <span className="text-xs text-gray-400">スライダーを動かす ↓</span>
+                    <span className="text-xs text-gray-600">スライダーを動かす ↓</span>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">実例 2</h3>
-                  <p className="text-sm text-gray-400">複数色組み合わせシミュレーション</p>
+                  <p className="text-sm text-gray-600">複数色組み合わせシミュレーション</p>
                 </div>
                 <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl" style={{contain: 'layout style paint', contentVisibility: 'auto'}}>
                   <ReactCompareSlider
@@ -471,7 +471,7 @@ export default function HomePage() {
                     className="h-full w-full"
                   />
                 </div>
-                <div className="mt-4 flex items-center justify-between text-xs text-gray-400">
+                <div className="mt-4 flex items-center justify-between text-xs text-gray-600">
                   <span className="flex items-center gap-1">
                     <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
                     Before
@@ -490,10 +490,10 @@ export default function HomePage() {
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-semibold text-purple-400 uppercase tracking-wider">実例 3</span>
-                    <span className="text-xs text-gray-400">スライダーを動かす ↓</span>
+                    <span className="text-xs text-gray-600">スライダーを動かす ↓</span>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">実例 3</h3>
-                  <p className="text-sm text-gray-400">屋根・外壁一括変更シミュレーション</p>
+                  <p className="text-sm text-gray-600">屋根・外壁一括変更シミュレーション</p>
                 </div>
                 <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl" style={{contain: 'layout style paint', contentVisibility: 'auto'}}>
                   <ReactCompareSlider
@@ -526,7 +526,7 @@ export default function HomePage() {
                     className="h-full w-full"
                   />
                 </div>
-                <div className="mt-4 flex items-center justify-between text-xs text-gray-400">
+                <div className="mt-4 flex items-center justify-between text-xs text-gray-600">
                   <span className="flex items-center gap-1">
                     <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
                     Before
@@ -644,7 +644,7 @@ export default function HomePage() {
                 <ChevronRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <p className="mt-4 text-sm text-gray-400">
+            <p className="mt-4 text-sm text-gray-600">
               クレジットカード不要 • 3回まで完全無料
             </p>
           </div>
@@ -1106,22 +1106,22 @@ export default function HomePage() {
             <div className="bg-white rounded-xl p-6 shadow-lg text-center">
               <div className="text-4xl md:text-5xl font-bold text-orange-700 mb-2">2〜3倍</div>
               <p className="text-gray-700 font-semibold mb-1">成約率の向上</p>
-              <p className="text-xs text-gray-500">※業界平均データ</p>
+              <p className="text-xs text-gray-600">※業界平均データ</p>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-lg text-center">
               <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">40〜60%</div>
               <p className="text-gray-700 font-semibold mb-1">商談時間短縮</p>
-              <p className="text-xs text-gray-500">※業界平均データ</p>
+              <p className="text-xs text-gray-600">※業界平均データ</p>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-lg text-center">
               <div className="text-4xl md:text-5xl font-bold text-purple-600 mb-2">大幅向上</div>
               <p className="text-gray-700 font-semibold mb-1">顧客満足度</p>
-              <p className="text-xs text-gray-500">※業界平均データ</p>
+              <p className="text-xs text-gray-600">※業界平均データ</p>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-lg text-center">
               <div className="text-4xl md:text-5xl font-bold text-green-700 mb-2">明確化</div>
               <p className="text-gray-700 font-semibold mb-1">競合との差別化</p>
-              <p className="text-xs text-gray-500">※業界平均データ</p>
+              <p className="text-xs text-gray-600">※業界平均データ</p>
             </div>
           </div>
 

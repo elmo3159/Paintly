@@ -48,7 +48,7 @@ export function LegalFooter({ variant = 'default', className = '' }: LegalFooter
             href="https://policies.google.com/privacy"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 hover:underline ml-1"
+            className="text-blue-600 underline ml-1"
           >
             プライバシーポリシー
           </a>
@@ -57,7 +57,7 @@ export function LegalFooter({ variant = 'default', className = '' }: LegalFooter
             href="https://policies.google.com/terms"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 hover:underline ml-1"
+            className="text-blue-600 underline ml-1"
           >
             Googleの利用規約
           </a>
@@ -165,7 +165,7 @@ export function LegalFooter({ variant = 'default', className = '' }: LegalFooter
               href="https://policies.google.com/privacy"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline ml-1"
+              className="text-blue-600 underline ml-1"
             >
               プライバシーポリシー
             </a>
@@ -174,7 +174,7 @@ export function LegalFooter({ variant = 'default', className = '' }: LegalFooter
               href="https://policies.google.com/terms"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline ml-1"
+              className="text-blue-600 underline ml-1"
             >
               Googleの利用規約
             </a>
