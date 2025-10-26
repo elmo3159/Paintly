@@ -7,6 +7,23 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  // 動的クラス名保護（未使用CSS削減の精度向上）
+  safelist: [
+    // アニメーション関連
+    'animate-in',
+    'animate-out',
+    // State関連（Radix UI）
+    {
+      pattern: /data-state-(open|closed|active|inactive)/,
+    },
+    // パフォーマンス最適化クラス
+    'gpu-accelerated',
+    'contain-layout',
+    'defer-offscreen',
+    'scroll-smooth',
+    'above-fold',
+    'below-fold',
+  ],
   theme: {
     container: {
       center: true,
