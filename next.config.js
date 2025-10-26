@@ -328,7 +328,11 @@ const nextConfig = {
             vendor: {
               test: /[\/]node_modules[\/]/,
               name(module) {
-                const packageName = module.context.match(/[\/]node_modules[\/](.*?)([\/]|$)/)[1];
+                // module.contextのnullチェックとフォールバック
+                if (!module.context) return 'vendor.unknown';
+                const match = module.context.match(/[\/]node_modules[\/](.*?)([\/]|$)/);
+                if (!match || !match[1]) return 'vendor.unknown';
+                const packageName = match[1];
                 return `vendor.${packageName.replace('@', '')}`;
               },
               priority: 10,
