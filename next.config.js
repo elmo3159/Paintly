@@ -235,30 +235,61 @@ const nextConfig = {
           chunks: 'all',
           maxSize: 200000, // 200KB以上は分割
           minSize: 10000,  // 10KB以下は統合
+          maxInitialRequests: 30, // 初期リクエスト数上限（より細かい分割許可）
+          maxAsyncRequests: 30,   // 非同期リクエスト数上限
           cacheGroups: {
-            // React本体（最優先、頻繁に使用）
-            react: {
-              test: /[\/]node_modules[\/](react|react-dom)[\/]/,
-              name: 'react-vendor',
-              priority: 30,
+            // React Core（最小限のコア、個別キャッシュ）
+            reactCore: {
+              test: /[\/]node_modules[\/]react[\/]/,
+              name: 'react-core',
+              priority: 35,
               reuseExistingChunk: true,
               enforce: true,
             },
-            // Supabase（ページごとに使用有無が異なる）
-            supabase: {
-              test: /[\/]node_modules[\/]@supabase[\/]/,
-              name: 'supabase',
-              priority: 25,
+            // ReactDOM（React本体と分離）
+            reactDom: {
+              test: /[\/]node_modules[\/]react-dom[\/]/,
+              name: 'react-dom',
+              priority: 34,
+              reuseExistingChunk: true,
+              enforce: true,
+            },
+            // Scheduler（React内部依存）
+            reactScheduler: {
+              test: /[\/]node_modules[\/]scheduler[\/]/,
+              name: 'react-scheduler',
+              priority: 33,
               reuseExistingChunk: true,
             },
-            // Radix UI（コンポーネントごとに分割可能）
-            radix: {
+            // Supabase SSR（認証用、頻繁に使用）
+            supabaseSSR: {
+              test: /[\/]node_modules[\/]@supabase[\/]ssr[\/]/,
+              name: 'supabase-ssr',
+              priority: 28,
+              reuseExistingChunk: true,
+            },
+            // Supabase Client（データアクセス用）
+            supabaseClient: {
+              test: /[\/]node_modules[\/]@supabase[\/]supabase-js[\/]/,
+              name: 'supabase-client',
+              priority: 27,
+              reuseExistingChunk: true,
+            },
+            // Radix UI - Dialog系（使用頻度低、動的ロード推奨）
+            radixDialog: {
+              test: /[\/]node_modules[\/]@radix-ui[\/]react-dialog[\/]/,
+              name: 'radix-dialog',
+              priority: 26,
+              reuseExistingChunk: true,
+            },
+            // Radix UI - その他コンポーネント
+            radixOther: {
               test: /[\/]node_modules[\/]@radix-ui[\/]/,
               name: 'radix-ui',
               priority: 25,
               reuseExistingChunk: true,
             },
-            // Lucide Icons（アイコン大量、分割効果大）
+            // Lucide Icons（Tree Shakingで既に最適化済み）
             lucide: {
               test: /[\/]node_modules[\/]lucide-react[\/]/,
               name: 'lucide-icons',
@@ -286,12 +317,23 @@ const nextConfig = {
               priority: 20,
               reuseExistingChunk: true,
             },
-            // その他のvendor（低優先度）
+            // Google Generative AI（画像生成APIのみ使用）
+            gemini: {
+              test: /[\/]node_modules[\/]@google[\/]generative-ai[\/]/,
+              name: 'gemini-ai',
+              priority: 20,
+              reuseExistingChunk: true,
+            },
+            // その他のvendor（細かく分割）
             vendor: {
               test: /[\/]node_modules[\/]/,
-              name: 'vendors',
+              name(module) {
+                const packageName = module.context.match(/[\/]node_modules[\/](.*?)([\/]|$)/)[1];
+                return `vendor.${packageName.replace('@', '')}`;
+              },
               priority: 10,
               reuseExistingChunk: true,
+              minSize: 20000, // 20KB以上のみ個別分離
             },
           },
         },
