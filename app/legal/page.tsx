@@ -187,7 +187,7 @@ export default function LegalPage() {
               <ul className="space-y-2">
                 <li>• <strong>初回</strong>: プラン購入時に即時決済</li>
                 <li>• <strong>継続課金</strong>: 毎月の課金日に自動決済</li>
-                <li>• 課金日はプラン購入日と同じ日（例: 1月15日購入→毎月15日に課金）</li>
+                <li>• 課金日はプラン購入日と同じ日（例: 1月15日購入の場合、毎月15日に課金）</li>
               </ul>
             </div>
           </section>
