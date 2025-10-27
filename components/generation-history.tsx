@@ -396,7 +396,7 @@ export function GenerationHistory({ customerId, onSliderView, refreshTrigger, la
           {enableSelection && (
             <div className="mt-3 space-y-2">
               <p className="text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 p-3 rounded-md border border-blue-200 dark:border-blue-800">
-                💡 比較タブで画像を並べて表示するには、チェックボックスで選択してください（最大9個）
+                💡 チェックボックスで画像を選択すると、比較タブで並べて表示したり、QRコードで共有できます（最大9個）
               </p>
               {selectedIds.length > 0 && (
                 <Button

@@ -109,9 +109,6 @@ export function ImageComparisonGrid({ selectedIds, customerId }: ImageComparison
             履歴タブから比較したい画像を選択してください
           </p>
           <p className="text-sm text-muted-foreground text-center mt-2">
-            （QRコード共有時も、渡したい画像すべてにチェックを入れてください）
-          </p>
-          <p className="text-sm text-muted-foreground text-center mt-1">
             最大9個まで選択可能（3×3グリッド）
           </p>
         </CardContent>
