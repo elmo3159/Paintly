@@ -737,12 +737,12 @@ export function Sidebar() {
           transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
         }}
         className={cn(
-          "fixed left-0 top-0 h-[100dvh] w-80 bg-white/95 backdrop-blur-xl border-r z-50 overflow-hidden",
+          "fixed left-0 top-0 h-[100dvh] bg-white/95 backdrop-blur-xl border-r z-50 overflow-hidden",
           "transform will-change-transform will-change-opacity",
-          "md:relative",
+          "md:relative transition-[width]",
           (isMobileOpen || isSidebarOpen)
-            ? "translate-x-0 opacity-100 scale-100"
-            : "-translate-x-full opacity-0 scale-90"
+            ? "w-80 translate-x-0 opacity-100 scale-100"
+            : "w-80 md:w-0 -translate-x-full opacity-0 scale-90"
         )}
         role="navigation"
         aria-label="メインナビゲーション"
