@@ -17,11 +17,11 @@ export const pricingPlans: PricingPlan[] = [
     price: 0,
     features: [
       '生成回数: 3回まで',
-      '顧客ページ: 3件まで', 
-      '画像保存期間: 7日間'
+      '顧客ページ: 3件まで',
+      '画像保存期間: 無期限'
     ],
     generationLimit: 3,
-    storageMonths: 0.25,
+    storageMonths: 9999,
     description: 'お試し利用に最適'
   },
   {
@@ -32,10 +32,10 @@ export const pricingPlans: PricingPlan[] = [
     features: [
       '生成回数: 30回/月',
       '顧客ページ: 無制限',
-      '画像保存期間: 1ヶ月'
+      '画像保存期間: 無期限'
     ],
     generationLimit: 30,
-    storageMonths: 1,
+    storageMonths: 9999,
     description: '週1-2件の営業活動に'
   },
   {
@@ -46,10 +46,10 @@ export const pricingPlans: PricingPlan[] = [
     features: [
       '生成回数: 100回/月',
       '顧客ページ: 無制限',
-      '画像保存期間: 3ヶ月'
+      '画像保存期間: 無期限'
     ],
     generationLimit: 100,
-    storageMonths: 3,
+    storageMonths: 9999,
     highlighted: true,
     description: '週3-5件の営業活動に'
   },
@@ -61,10 +61,10 @@ export const pricingPlans: PricingPlan[] = [
     features: [
       '生成回数: 300回/月',
       '顧客ページ: 無制限',
-      '画像保存期間: 6ヶ月'
+      '画像保存期間: 無期限'
     ],
     generationLimit: 300,
-    storageMonths: 6,
+    storageMonths: 9999,
     description: '毎日の営業活動に'
   },
   {
@@ -75,10 +75,10 @@ export const pricingPlans: PricingPlan[] = [
     features: [
       '生成回数: 1,000回/月',
       '顧客ページ: 無制限',
-      '画像保存期間: 1年間'
+      '画像保存期間: 無期限'
     ],
     generationLimit: 1000,
-    storageMonths: 12,
+    storageMonths: 9999,
     description: '大量の営業活動に'
   }
 ]

@@ -38,11 +38,11 @@ const faqData: FAQItem[] = [
       <>
         <p className="mb-3">Paintlyは生成回数に応じた複数の料金プランをご用意しています：</p>
         <ul className="space-y-2 ml-4">
-          <li><strong>無料プラン:</strong> 月3回生成・顧客ページ3件まで（お試し用）</li>
-          <li><strong>ライトプラン:</strong> 月額2,980円 - 月30回生成・顧客ページ無制限</li>
-          <li><strong>スタンダードプラン:</strong> 月額5,980円 - 月100回生成・顧客ページ無制限</li>
-          <li><strong>プロプラン:</strong> 月額9,980円 - 月300回生成・顧客ページ無制限</li>
-          <li><strong>ビジネスプラン:</strong> 月額19,800円 - 月1,000回生成・顧客ページ無制限</li>
+          <li><strong>無料プラン:</strong> 月3回生成・顧客ページ3件まで・画像保存無期限（お試し用）</li>
+          <li><strong>ライトプラン:</strong> 月額2,980円 - 月30回生成・顧客ページ無制限・画像保存無期限</li>
+          <li><strong>スタンダードプラン:</strong> 月額5,980円 - 月100回生成・顧客ページ無制限・画像保存無期限</li>
+          <li><strong>プロプラン:</strong> 月額9,980円 - 月300回生成・顧客ページ無制限・画像保存無期限</li>
+          <li><strong>ビジネスプラン:</strong> 月額19,800円 - 月1,000回生成・顧客ページ無制限・画像保存無期限</li>
         </ul>
         <p className="mt-3">
           <Link href="/pricing" className="text-orange-600 hover:underline font-semibold">
