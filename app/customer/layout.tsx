@@ -9,7 +9,7 @@ export default function CustomerLayout({
 }) {
   return (
     <TutorialProvider>
-      <div className="flex h-screen overflow-hidden">
+      <div className="fixed inset-0 flex overflow-hidden">
         <Sidebar />
         <main className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900">
           {children}
