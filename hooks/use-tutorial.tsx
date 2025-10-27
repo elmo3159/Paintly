@@ -36,7 +36,7 @@ const tutorialSteps: TutorialStep[] = [
   {
     id: 'select-colors',
     title: '色を選択',
-    description: '壁、屋根、ドアの色を選択できます。日塗工番号に対応したカラーパレットから選択します。変更しない部分は「変更なし」のままにしてください。',
+    description: '壁、屋根、ドアの色を選択できます。色名で表記されたカラーパレットから選択します。変更しない部分は「変更なし」のままにしてください。',
     highlightElement: 'color-selector',
     imageUrl: '/tutorial/step4-color-selection.png',
   },

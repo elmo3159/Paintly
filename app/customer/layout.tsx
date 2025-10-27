@@ -12,9 +12,7 @@ export default function CustomerLayout({
       <div className="flex h-screen overflow-hidden">
         <Sidebar />
         <main className="flex-1 overflow-y-auto">
-          <div className="container mx-auto p-6 md:p-8">
-            {children}
-          </div>
+          {children}
         </main>
         <TutorialModal />
       </div>
