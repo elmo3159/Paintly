@@ -1,6 +1,6 @@
 // Service Worker for Paintly PWA - Enhanced Version
-// v5: Fixed 206 Partial Response caching errors and locked body errors
-const CACHE_VERSION = '2025.10.22-v5'
+// v6: Force cache refresh for modal positioning fix
+const CACHE_VERSION = '2025.10.27-v6'
 const STATIC_CACHE = `paintly-static-${CACHE_VERSION}`
 const DYNAMIC_CACHE = `paintly-dynamic-${CACHE_VERSION}`
 const IMAGES_CACHE = `paintly-images-${CACHE_VERSION}`
