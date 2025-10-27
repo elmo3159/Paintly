@@ -561,7 +561,7 @@ export default function CustomerPage() {
   }
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900">
+    <>
       <div className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="flex items-center justify-center">
@@ -1024,6 +1024,6 @@ export default function CustomerPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   )
 }
