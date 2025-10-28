@@ -39,17 +39,17 @@ export default async function DashboardPage() {
           </p>
         </div>
 
+        {/* お試し画像セクション - 無料プランユーザー向け（最上部に配置） */}
+        <Suspense fallback={null}>
+          <TrialImageSection />
+        </Suspense>
+
         {/* 統計カード - Suspenseで非同期レンダリング */}
         <div className="relative z-10">
           <Suspense fallback={<StatsCardsSkeleton />}>
             <StatsCards />
           </Suspense>
         </div>
-
-        {/* お試し画像セクション - 無料プランユーザー向け */}
-        <Suspense fallback={null}>
-          <TrialImageSection />
-        </Suspense>
 
         <div className="grid gap-6 2xl:grid-cols-2 relative z-10">
           {/* クイックスタート */}
