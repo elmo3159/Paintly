@@ -9,6 +9,7 @@ import { Palette, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { StatsCards } from '@/components/dashboard-stats-cards'
 import { RecentGenerations } from '@/components/dashboard-recent-generations'
+import { TrialImageSection } from '@/components/trial-image-section'
 import {
   StatsCardsSkeleton,
   RecentGenerationsSkeleton,
@@ -44,6 +45,11 @@ export default async function DashboardPage() {
             <StatsCards />
           </Suspense>
         </div>
+
+        {/* お試し画像セクション - 無料プランユーザー向け */}
+        <Suspense fallback={null}>
+          <TrialImageSection />
+        </Suspense>
 
         <div className="grid gap-6 2xl:grid-cols-2 relative z-10">
           {/* クイックスタート */}
