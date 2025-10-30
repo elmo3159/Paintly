@@ -20,8 +20,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // リクエストボディからpriceIdを取得
-    const { priceId } = await request.json()
+    // リクエストボディからpriceIdとplanNameを取得
+    const { priceId, planName } = await request.json()
 
     if (!priceId) {
       return NextResponse.json(
@@ -29,6 +29,15 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
+
+    // planNameからプラン情報を取得（コンバージョントラッキング用）
+    const planPrices: Record<string, number> = {
+      'ライトプラン': 2980,
+      'スタンダードプラン': 5980,
+      'プロプラン': 9980,
+      'ビジネスプラン': 19800,
+    }
+    const planPrice = planPrices[planName || ''] || 0
 
     // ユーザー情報を取得
     const { data: userData, error: userError } = await supabase
@@ -66,6 +75,18 @@ export async function POST(request: NextRequest) {
     }
 
     // Checkout Sessionを作成
+    const origin = request.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'https://www.paintly.pro'
+
+    // コンバージョントラッキング用のsuccess_url（プラン名と金額を含む）
+    const successUrl = new URL('/billing/success', origin)
+    successUrl.searchParams.set('session_id', '{CHECKOUT_SESSION_ID}')
+    if (planName) {
+      successUrl.searchParams.set('plan', planName)
+    }
+    if (planPrice > 0) {
+      successUrl.searchParams.set('amount', planPrice.toString())
+    }
+
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       line_items: [
@@ -75,10 +96,11 @@ export async function POST(request: NextRequest) {
         },
       ],
       mode: 'subscription',
-      success_url: `${request.headers.get('origin')}/dashboard?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${request.headers.get('origin')}/pricing?canceled=true`,
+      success_url: successUrl.toString(),
+      cancel_url: `${origin}/pricing?canceled=true`,
       metadata: {
         supabase_user_id: user.id,
+        plan_name: planName || '',
       },
       allow_promotion_codes: true,
       billing_address_collection: 'auto',

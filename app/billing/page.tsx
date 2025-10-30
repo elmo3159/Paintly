@@ -68,7 +68,7 @@ export default function BillingPage() {
       }
 
       // Create checkout session via API
-      const response = await fetch('/api/create-checkout-session', {
+      const response = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,28 +76,22 @@ export default function BillingPage() {
         body: JSON.stringify({
           priceId: plan.priceId,
           planId: plan.id,
+          planName: plan.name, // Google Ads コンバージョントラッキング用
         }),
       })
 
-      const { sessionId, error: sessionError } = await response.json()
+      const data = await response.json()
 
-      if (sessionError) {
-        throw new Error(sessionError)
+      if (data.error) {
+        throw new Error(data.error)
       }
 
-      // Redirect to Stripe Checkout
-      const stripe = await stripePromise
-      if (!stripe) {
-        throw new Error('Stripe公開キーが設定されていません。管理者にお問い合わせください。')
+      if (!data.url) {
+        throw new Error('チェックアウトURLの取得に失敗しました')
       }
 
-      const { error: stripeError } = await stripe.redirectToCheckout({
-        sessionId,
-      })
-
-      if (stripeError) {
-        throw stripeError
-      }
+      // Stripe Checkoutページへリダイレクト
+      window.location.href = data.url
     } catch (err: any) {
       setError(err.message || 'エラーが発生しました')
     } finally {
