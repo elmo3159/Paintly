@@ -5,21 +5,11 @@
  * - 会員登録完了時: trackConversion('sign_up')
  * - 有料プラン購入時: trackConversion('purchase', { value: 2980, currency: 'JPY' })
  * - 画像生成完了時: trackConversion('generate_image')
+ *
+ * Note: gtagのグローバル型定義は components/analytics.tsx で定義済み
  */
 
-// gtagのグローバル型定義
-declare global {
-  interface Window {
-    gtag?: (
-      command: 'config' | 'event' | 'js' | 'set',
-      targetId: string | Date,
-      config?: Record<string, any>
-    ) => void
-    dataLayer?: any[]
-  }
-}
-
-const GA_TRACKING_ID = 'AW-17664021447'
+const GA_TRACKING_ID = 'AW-17664041447'
 
 /**
  * Google Adsコンバージョンイベントを送信
