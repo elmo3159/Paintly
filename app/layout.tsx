@@ -4,6 +4,7 @@ import './globals.css'
 // import { ErrorBoundary } from '@/components/error-boundary'
 import { fontClassNames } from '@/lib/fonts'
 import Script from 'next/script'
+import { GoogleAdsTracking } from '@/components/google-ads-tracking'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://paintly.pro'),
@@ -120,6 +121,10 @@ export default function RootLayout({
         `,
           }}
         />
+
+        {/* Google Ads トラッキング */}
+        <GoogleAdsTracking />
+
         {/* PWA icons */}
         <link rel="apple-touch-icon" sizes="180x180" href="/icon-192.png" />
         <meta name="mobile-web-app-capable" content="yes" />

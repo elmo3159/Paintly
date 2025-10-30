@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { StatsCards } from '@/components/dashboard-stats-cards'
 import { RecentGenerations } from '@/components/dashboard-recent-generations'
 import { TrialImageSection } from '@/components/trial-image-section'
+import { ConversionTracker } from '@/components/conversion-tracker'
 import {
   StatsCardsSkeleton,
   RecentGenerationsSkeleton,
@@ -25,8 +26,20 @@ export default async function DashboardPage() {
       throw new Error('Authentication failed')
     }
 
+    // ユーザーの作成日時を取得（コンバージョントラッキング用）
+    const { data: userData } = await supabase
+      .from('users')
+      .select('created_at')
+      .eq('id', user.id)
+      .maybeSingle()
+
+    const userCreatedAt = userData?.created_at || user.created_at
+
     return (
       <div className="space-y-8 workshop-bg px-4 sm:px-6 lg:px-8">
+        {/* Google Ads コンバージョントラッキング */}
+        <ConversionTracker userId={user.id} createdAt={userCreatedAt} />
+
         {/* Paint Drips at Top */}
         <div className="paint-drips"></div>
 
