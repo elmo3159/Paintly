@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://paintly.pro'
+  const baseUrl = 'https://www.paintly.pro'
 
   // 主要ページの最終更新日を明示的に設定（SEO最適化）
   const mainPageDate = new Date('2025-01-20T00:00:00+09:00') // メイン機能の最終更新日

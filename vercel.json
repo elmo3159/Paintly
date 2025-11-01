@@ -30,6 +30,19 @@
       ]
     }
   ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "paintly.pro"
+        }
+      ],
+      "destination": "https://www.paintly.pro/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/offline",

@@ -1,4 +1,4 @@
-# robots.txt for Paintly (https://paintly.pro)
+# robots.txt for Paintly (https://www.paintly.pro)
 # SEO最適化版 - 2025年1月更新
 
 User-agent: *
@@ -20,7 +20,7 @@ Disallow: /test
 Disallow: /test-*
 
 # Sitemap（SEO用）
-Sitemap: https://paintly.pro/sitemap.xml
+Sitemap: https://www.paintly.pro/sitemap.xml
 
 # クロール頻度の推奨（主要クローラー用）
 # Crawl-delay: 1

@@ -7,7 +7,7 @@ import Script from 'next/script'
 import { GoogleAdsTracking } from '@/components/google-ads-tracking'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://paintly.pro'),
+  metadataBase: new URL('https://www.paintly.pro'),
   title: {
     default: 'Paintly - AI塗装シミュレーションツール | 営業成約率を劇的に向上',
     template: '%s | Paintly'
@@ -31,11 +31,11 @@ export const metadata: Metadata = {
     description: '建物の写真から瞬時に塗装シミュレーションを生成。営業成約率を劇的に向上させる次世代ツール。',
     type: 'website',
     locale: 'ja_JP',
-    url: 'https://paintly.pro',
+    url: 'https://www.paintly.pro',
     siteName: 'Paintly',
     images: [
       {
-        url: 'https://paintly.pro/og-image.png',
+        url: 'https://www.paintly.pro/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Paintly - AI塗装シミュレーションツール',
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     description: '建物の写真から瞬時に塗装シミュレーションを生成。営業成約率を劇的に向上。',
     creator: '@Paintly',
     site: '@Paintly',
-    images: ['https://paintly.pro/twitter-image.png'],
+    images: ['https://www.paintly.pro/twitter-image.png'],
   },
   robots: {
     index: true,
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     google: process.env.GOOGLE_SITE_VERIFICATION,
   },
   alternates: {
-    canonical: 'https://paintly.pro',
+    canonical: 'https://www.paintly.pro',
   },
 }
 
